@@ -56,11 +56,6 @@
       "destination": "/api/:path*"
     }
   ],
-  "env": {
-    "NEXT_PUBLIC_APP_URL": "@production_url",
-    "NEXT_PUBLIC_PUSHER_KEY": "@pusher_key",
-    "NEXT_PUBLIC_PUSHER_CLUSTER": "@pusher_cluster"
-  },
   "github": {
     "silent": true
   }
