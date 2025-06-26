@@ -1,0 +1,279 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* DIVINE PALETTE - SIMPLIFIED FOR PERFORMANCE */
+    --sacred-midnight: #0A0E27;
+    --royal-purple: #5B21B6;
+    --holy-gold: #FCD34D;
+    --divine-white: #FEFCE8;
+    --deep-shadow: #1F2937;
+    --light-whisper: #F9FAFB;
+    
+    /* ENHANCED CONTRAST VARIANTS */
+    --holy-gold-dark: #D4A017; /* Better contrast on white */
+    --royal-purple-light: #7C3AED; /* Better for dark backgrounds */
+    --sacred-midnight-soft: #1E293B; /* Softer but readable */
+    
+    /* SYSTEM COLORS */
+    --color-background: white;
+    --color-foreground: var(--deep-shadow);
+    --color-primary: var(--royal-purple);
+    --color-accent: var(--holy-gold);
+  }
+}
+
+/* PERFORMANCE-FIRST RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: var(--color-foreground);
+  background: var(--color-background);
+  overflow-x: hidden;
+}
+
+/* TYPOGRAPHY - CLEAN & FAST */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--sacred-midnight);
+}
+
+h1 { font-size: clamp(2.5rem, 5vw, 4rem); }
+h2 { font-size: clamp(2rem, 4vw, 3rem); }
+h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+
+/* CONTAINER - RESPONSIVE & CENTERED */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* SECTIONS - PROPER SPACING */
+section {
+  padding: 4rem 0;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  section {
+    padding: 6rem 0;
+  }
+}
+
+/* HERO - OPTIMIZED GRADIENT */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--sacred-midnight) 0%, var(--royal-purple) 100%);
+  color: white;
+  position: relative;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(252, 211, 77, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* CARDS - CLEAN & MODERN */
+.card {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* BUTTONS - PERFORMANT & BEAUTIFUL */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background: var(--royal-purple);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--sacred-midnight);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--royal-purple);
+  border: 2px solid var(--royal-purple);
+}
+
+.btn-secondary:hover {
+  background: var(--royal-purple);
+  color: white;
+}
+
+/* TEXT UTILITIES - MINIMAL */
+.text-gradient {
+  background: linear-gradient(135deg, var(--royal-purple), var(--holy-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-sacred { color: var(--sacred-midnight); }
+.text-purple { color: var(--royal-purple); }
+.text-gold { color: var(--holy-gold); }
+.text-gold-dark { color: var(--holy-gold-dark); } /* Better contrast */
+.text-white { color: white; }
+
+/* HIGH CONTRAST UTILITIES */
+.text-high-contrast-gold { 
+  color: var(--holy-gold-dark); 
+  text-shadow: 0 0 1px rgba(0,0,0,0.1);
+}
+
+.text-high-contrast-purple { 
+  color: var(--royal-purple); 
+  font-weight: 600;
+}
+
+/* ENSURE READABILITY ON GRADIENTS */
+.on-gradient-text {
+  color: white;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* BACKGROUNDS - SIMPLE */
+.bg-white { background: white; }
+.bg-light { background: var(--light-whisper); }
+.bg-gradient { background: linear-gradient(135deg, var(--royal-purple), var(--sacred-midnight)); }
+
+/* LETTER CONTAINER - REFINED */
+.letter {
+  background: white;
+  border-radius: 1rem;
+  padding: 3rem;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  border-top: 4px solid var(--royal-purple);
+}
+
+/* ANIMATIONS - GPU OPTIMIZED */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* GRID - RESPONSIVE */
+.grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* DIVINE ACCENTS - SUBTLE */
+.divine-accent {
+  position: relative;
+}
+
+.divine-accent::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--holy-gold), var(--royal-purple));
+  border-radius: 2px;
+}
+
+/* MOBILE OPTIMIZATIONS */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .letter {
+    padding: 2rem 1.5rem;
+  }
+  
+  .card {
+    padding: 1.5rem;
+  }
+  
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+}
+
+/* SCROLL PERFORMANCE */
+.will-change-transform {
+  will-change: transform;
+}
+
+/* FOCUS STATES */
+:focus-visible {
+  outline: 2px solid var(--royal-purple);
+  outline-offset: 2px;
+}
+
+/* REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
