@@ -401,6 +401,36 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* BRIDGE BUILDING SECTION - SEPARATOR */}
+      <section className="bg-white">
+        <div className="container">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-sacred-midnight mb-6">Building Bridges, Not Walls</h2>
+            <p className="text-xl text-gray-700 mb-8">
+              Every action you take here creates a ripple effect. A heartbeat becomes hope. 
+              A letter becomes a lifeline. A moment of belief becomes a movement of transformation.
+            </p>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="card">
+                <div className="text-4xl mb-3">💗</div>
+                <h3 className="text-lg font-bold text-royal-purple mb-2">Hearts United</h3>
+                <p className="text-sm">Join hundreds standing with JAHmere</p>
+              </div>
+              <div className="card">
+                <div className="text-4xl mb-3">✉️</div>
+                <h3 className="text-lg font-bold text-royal-purple mb-2">Voices Heard</h3>
+                <p className="text-sm">Your letter could tip the scales</p>
+              </div>
+              <div className="card">
+                <div className="text-4xl mb-3">🌟</div>
+                <h3 className="text-lg font-bold text-royal-purple mb-2">Lives Changed</h3>
+                <p className="text-sm">Youth waiting for mentorship</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* LETTERS OF HOPE - NEW SECTION */}
       <LettersOfHope />
 

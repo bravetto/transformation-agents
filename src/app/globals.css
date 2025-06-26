@@ -177,6 +177,92 @@ section {
   text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
+/* CRITICAL FIX: Force white text on all gradient backgrounds */
+.bg-gradient *,
+.bg-gradient-to-br *,
+.bg-gradient-to-r *,
+[class*="bg-gradient"] * {
+  color: white !important;
+}
+
+/* Ensure specific elements maintain proper contrast */
+.bg-gradient .text-holy-gold,
+.bg-gradient-to-br .text-holy-gold,
+[class*="bg-gradient"] .text-holy-gold {
+  color: #FCD34D !important;
+}
+
+.bg-gradient .text-red-500,
+.bg-gradient-to-br .text-red-500,
+[class*="bg-gradient"] .text-red-500 {
+  color: #EF4444 !important;
+}
+
+/* Button text contrast fix */
+.bg-holy-gold {
+  color: var(--sacred-midnight) !important;
+}
+
+/* UTILITY CLASSES FOR UI COMPONENTS */
+.bg-muted {
+  background-color: #f1f5f9;
+}
+
+.text-muted-foreground {
+  color: #64748b;
+}
+
+.bg-primary {
+  background-color: var(--royal-purple);
+}
+
+.border-primary {
+  border-color: var(--royal-purple);
+}
+
+.bg-primary\/5 {
+  background-color: rgba(91, 33, 182, 0.05);
+}
+
+.bg-background {
+  background-color: white;
+}
+
+.border-input {
+  border-color: #e2e8f0;
+}
+
+.ring-offset-background {
+  --tw-ring-offset-color: white;
+}
+
+.placeholder\:text-muted-foreground::placeholder {
+  color: #64748b;
+}
+
+.focus-visible\:ring-ring:focus-visible {
+  --tw-ring-color: var(--royal-purple);
+}
+
+.focus-visible\:ring-2:focus-visible {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.focus-visible\:ring-offset-2:focus-visible {
+  --tw-ring-offset-width: 2px;
+}
+
+.focus-visible\:outline-none:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.hover\:bg-muted:hover {
+  background-color: #f1f5f9;
+}
+
 /* BACKGROUNDS - SIMPLE */
 .bg-white { background: white; }
 .bg-light { background: var(--light-whisper); }

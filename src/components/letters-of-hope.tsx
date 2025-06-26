@@ -198,7 +198,7 @@ export default function LettersOfHope() {
               <div className="relative z-10 flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <FileText className="h-6 w-6 text-holy-gold" />
-                  <h3 className="text-xl font-bold">Letters to Honor Judge Ferrero</h3>
+                  <h3 className="text-xl font-bold text-white">Letters to Honor Judge Ferrero</h3>
                 </div>
                 <motion.div
                   animate={{ rotate: showImpactBurst ? 360 : 0 }}
@@ -242,7 +242,7 @@ export default function LettersOfHope() {
                     </motion.div>
                   )}
                 </motion.div>
-                <p className="text-lg mt-2">Voices for Transformation</p>
+                <p className="text-lg mt-2 text-white font-medium">Voices for Transformation</p>
               </div>
 
               {/* Visual Letter Stream */}
@@ -313,15 +313,15 @@ export default function LettersOfHope() {
                       >
                         <FileText className="h-4 w-4 text-holy-gold flex-shrink-0 mt-0.5" />
                         <div className="flex-1">
-                          <p className="font-semibold">{letter.name} from {letter.location}</p>
-                          <p className="text-xs opacity-75">{letter.preview}</p>
+                          <p className="font-semibold text-white">{letter.name} from {letter.location}</p>
+                          <p className="text-sm text-white/90">{letter.preview}</p>
                         </div>
                       </motion.div>
                     ))
                   ) : (
-                    <div className="text-center py-4 text-sm opacity-75">
-                      <p>Be the first to write today!</p>
-                      <p className="text-xs mt-1">Your words matter.</p>
+                    <div className="text-center py-4 text-sm text-white">
+                      <p className="font-medium">Be the first to write today!</p>
+                      <p className="text-sm mt-1 text-white/90">Your words matter.</p>
                     </div>
                   )}
                 </AnimatePresence>
@@ -329,9 +329,9 @@ export default function LettersOfHope() {
 
               {/* Connection to Impact Dashboard */}
               <motion.div
-                animate={{ opacity: [0.5, 1, 0.5] }}
+                animate={{ opacity: [0.8, 1, 0.8] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="relative z-10 text-center text-xs mt-4 opacity-75"
+                className="relative z-10 text-center text-sm mt-4 text-white"
               >
                 <p>Every letter updates the live counter →</p>
                 <p className="text-holy-gold font-semibold">Watch your impact in real-time!</p>

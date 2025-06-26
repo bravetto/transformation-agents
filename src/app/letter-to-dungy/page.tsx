@@ -1,17 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 
 export default function LetterToDungyPage() {
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) return null
+  console.log("Letter to Dungy page is rendering")
 
   return (
     <main className="pt-16">

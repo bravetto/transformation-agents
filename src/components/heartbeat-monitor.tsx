@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Heart, Activity } from "lucide-react"
+import { impactEvents } from "./impact-dashboard"
 
 interface HeartbeatMonitorProps {
   className?: string
@@ -80,7 +81,7 @@ export default function HeartbeatMonitor({ className = "" }: HeartbeatMonitorPro
         <div className="relative z-10 flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <Activity className="h-6 w-6 text-holy-gold" />
-            <h3 className="text-xl font-bold">Community Heartbeat</h3>
+            <h3 className="text-xl font-bold text-white">Community Heartbeat</h3>
           </div>
           <motion.div
             animate={isBeating ? { scale: 1.2 } : { scale: 1 }}
@@ -108,7 +109,7 @@ export default function HeartbeatMonitor({ className = "" }: HeartbeatMonitorPro
               />
             )}
           </motion.div>
-          <p className="text-lg mt-2">Hearts Beating with JAHmere</p>
+          <p className="text-lg mt-2 text-white font-medium">Hearts Beating with JAHmere</p>
         </div>
 
         {/* Live Pulse Visualization */}
@@ -162,7 +163,7 @@ export default function HeartbeatMonitor({ className = "" }: HeartbeatMonitorPro
                 className="flex items-center gap-2 text-sm bg-white/10 rounded-lg px-3 py-2"
               >
                 <Heart className="h-4 w-4 text-red-500 fill-current" />
-                <span>{heart.name} from {heart.location} joined the movement</span>
+                <span className="text-white font-medium">{heart.name} from {heart.location} joined the movement</span>
               </motion.div>
             ))}
           </AnimatePresence>
@@ -176,6 +177,8 @@ export default function HeartbeatMonitor({ className = "" }: HeartbeatMonitorPro
             setHeartCount(prev => prev + 1)
             setShowPulse(true)
             setTimeout(() => setShowPulse(false), 1000)
+            // Dispatch global impact event
+            impactEvents.addHeart()
           }}
           className="relative z-10 w-full mt-6 bg-holy-gold text-sacred-midnight py-3 rounded-lg font-bold hover:bg-white transition-colors"
         >
@@ -183,7 +186,7 @@ export default function HeartbeatMonitor({ className = "" }: HeartbeatMonitorPro
         </motion.button>
 
         {/* Motivational Text */}
-        <p className="relative z-10 text-center text-xs mt-4 opacity-75">
+        <p className="relative z-10 text-center text-sm mt-4 text-white font-medium">
           "Every heartbeat is a vote for transformation over incarceration"
         </p>
       </motion.div>

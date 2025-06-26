@@ -12,9 +12,9 @@ interface ImpactMetrics {
 
 // Global event system for tracking actions
 export const impactEvents = {
-  addHeart: () => window.dispatchEvent(new Event('newHeart')),
-  addLetter: () => window.dispatchEvent(new Event('newLetter')),
-  addYouth: () => window.dispatchEvent(new Event('newYouth')),
+  addHeart: () => window.dispatchEvent(new CustomEvent('impact-update', { detail: { type: 'heart' } })),
+  addLetter: () => window.dispatchEvent(new CustomEvent('impact-update', { detail: { type: 'letter' } })),
+  addYouth: () => window.dispatchEvent(new CustomEvent('impact-update', { detail: { type: 'youth' } })),
 }
 
 export default function ImpactDashboard() {

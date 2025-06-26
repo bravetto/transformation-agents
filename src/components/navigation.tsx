@@ -34,7 +34,7 @@ export default function Navigation() {
         animate={{ y: 0 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled 
-            ? 'bg-sacred-midnight/95 backdrop-blur-lg shadow-lg' 
+            ? 'bg-gradient-to-r from-royal-purple to-sacred-midnight backdrop-blur-lg shadow-lg' 
             : 'bg-gradient-to-b from-sacred-midnight/80 to-transparent'
         }`}
       >
@@ -64,7 +64,7 @@ export default function Navigation() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="flex items-center gap-2 text-white/80 hover:text-holy-gold transition-colors"
+                  className="flex items-center gap-2 text-white/90 hover:text-holy-gold transition-colors"
                 >
                   {item.icon}
                   <span className="text-sm font-medium">{item.label}</span>
@@ -90,7 +90,7 @@ export default function Navigation() {
             initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
-            className="fixed inset-0 z-40 bg-sacred-midnight/95 backdrop-blur-lg md:hidden"
+            className="fixed inset-0 z-40 bg-gradient-to-br from-royal-purple to-sacred-midnight backdrop-blur-lg md:hidden"
           >
             <div className="flex flex-col pt-20 px-8">
               {navItems.map((item, index) => (

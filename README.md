@@ -1,113 +1,118 @@
-# 🌉 THE BRIDGE PROJECT
+# 🌉 The Bridge Project
 
-> From System Survivor to Youth Guide - Transforming Criminal Justice Through Divine Technology
+> **Transforming Justice Through Divine Technology**  
+> An experiment in restorative justice, community accountability, and second chances.
 
-## 🎯 Mission
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Next.js](https://img.shields.io/badge/Next.js-14.2.0-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
+![Status](https://img.shields.io/badge/status-beta-yellow)
 
-Transform the criminal justice system through technology-enabled accountability, mentorship, and community support. We're building a platform that turns system survivors into youth guides, creating cycles of healing instead of harm.
+## 🎯 Overview
 
-## ✨ Features
+The Bridge Project is a revolutionary digital platform designed to transform criminal justice through community-based rehabilitation. This project represents JAHmere Webb's vision for an alternative to incarceration - one that builds bridges instead of walls.
 
-### Living Technology
-- **Heartbeat Monitor**: Real-time community pulse visualization
-- **Impact Dashboard**: Live metrics showing hearts, letters, and countdown
-- **Prophetic Moment**: Immersive storytelling experience
-- **Cursor Trail**: Hope words following user interaction
-- **Social Amplification**: Viral sharing engine with platform-specific messages
-
-### Community Features
-- **Youth Mentorship Portal**: Connect at-risk youth with mentors
-- **Letters of Hope**: Digital testimonies supporting transformation
-- **Risk Mitigation Dashboard**: Data-driven insights for judges
-- **Daily Check-ins**: GPS-enabled accountability system
+### Key Features
+- 📱 **Daily Digital Check-ins** - Location-verified accountability system
+- 💗 **Community Heartbeat** - Real-time support tracking
+- 📝 **Letters of Hope** - Community testimonials and support
+- 🌟 **Youth Mentorship** - Connecting at-risk youth with mentors
+- 📊 **Judge Dashboard** - Complete transparency and oversight
+- 🔐 **Secure Authentication** - Privacy-first design
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
-- PostgreSQL database
-- Pusher account (for real-time features)
+- Node.js 18.0 or higher
+- npm or yarn
+- Git
 
 ### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/the-bridge.git
-cd the-bridge
+git clone https://github.com/bravetto/transformation-agents.git
+cd transformation-agents/the-bridge
 
 # Install dependencies
 npm install
-
-# Set up environment variables
-cp .env.example .env.local
-# Edit .env.local with your values
-
-# Set up the database
-npx prisma generate
-npx prisma db push
 
 # Run development server
 npm run dev
 ```
 
-## 🌐 Deployment to Vercel
+Visit `http://localhost:3000` to see the application.
 
-### One-Click Deploy
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/the-bridge)
+## 📁 Project Structure
 
-### Manual Deployment
+```
+the-bridge/
+├── src/
+│   ├── app/           # Next.js App Router pages
+│   ├── components/    # React components
+│   └── lib/          # Utility functions
+├── public/           # Static assets
+├── docs/            # Additional documentation
+└── ...configuration files
+```
 
-1. **Push to GitHub**
-   ```bash
-   git add .
-   git commit -m "feat: Initial deployment"
-   git push origin main
-   ```
+## 🛠️ Technology Stack
 
-2. **Connect to Vercel**
-   - Go to [vercel.com](https://vercel.com)
-   - Import your GitHub repository
-   - Configure environment variables:
-     - `DATABASE_URL`
-     - `NEXTAUTH_SECRET` 
-     - `NEXT_PUBLIC_PUSHER_KEY`
-     - `NEXT_PUBLIC_PUSHER_CLUSTER`
-
-3. **Deploy**
-   - Click "Deploy"
-   - Your site will be live at `your-project.vercel.app`
+- **Frontend**: Next.js 14, React 18, TypeScript
+- **Styling**: Tailwind CSS, Framer Motion
+- **Icons**: Lucide React
+- **Deployment**: Vercel-ready
 
 ## 🎨 Design System
 
-### Divine Color Palette
-- Sacred Midnight: `#0A0E27`
-- Royal Purple: `#5B21B6`
-- Holy Gold: `#FCD34D`
-- Holy Gold Dark: `#D4A017` (High contrast)
+The project uses a divine color palette:
+- **Sacred Midnight** (#0A0E27) - Deep transformation
+- **Royal Purple** (#5B21B6) - Dignity and justice
+- **Holy Gold** (#FCD34D) - Divine hope and light
 
-### Typography
-- Headers: System font stack with divine gradient
-- Body: Clean, readable sans-serif
-- Special: Monospace for metrics
+See [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) for complete guidelines.
 
-## 🔒 Security
+## 📝 Environment Variables
 
-- HTTPS enforced
-- Content Security Policy headers
-- Input sanitization
-- Rate limiting on API routes
-- Secure session management
+Create a `.env.local` file with:
 
-## 📊 Performance
+```env
+# Currently no required environment variables
+# Future additions will include:
+# DATABASE_URL=
+# NEXTAUTH_SECRET=
+```
 
-- Lighthouse Score: 95+
-- First Contentful Paint: < 1.5s
-- Time to Interactive: < 3s
-- Core Web Vitals: All green
+## 🚢 Deployment
+
+### Vercel (Recommended)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/bravetto/transformation-agents/tree/main/the-bridge)
+
+### Manual Deployment
+
+```bash
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
+
+## 📊 Project Status
+
+- ✅ Core UI Components
+- ✅ Homepage & Navigation
+- ✅ Check-in System UI
+- ✅ Community Features
+- ✅ Responsive Design
+- 🚧 Backend Integration
+- 🚧 Authentication System
+- 🚧 Real-time Features
 
 ## 🤝 Contributing
 
-We welcome contributions that align with our mission of transformation and healing.
+This project is part of JAHmere Webb's appeal for restorative justice. We welcome contributions that align with the mission of transformation and second chances.
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
@@ -115,28 +120,32 @@ We welcome contributions that align with our mission of transformation and heali
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📜 License
+## 📚 Documentation
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **JAHmere Webb** - The vision and heart behind The Bridge
-- **Tony Dungy** - Mentor and spiritual guide
-- **Jordan Dungy** - Prophetic voice and advocate
-- **The Community** - Every heart beating with us
+- [QUICK_START.md](./QUICK_START.md) - Getting started guide
+- [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) - Design guidelines
+- [COMPONENT_PATTERNS.md](./COMPONENT_PATTERNS.md) - Component usage
+- [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) - Deployment instructions
 
 ## 💫 The Vision
 
-We're not just building a compliance tool. We're creating a transformation platform that:
-- Humanizes the justice system
-- Empowers participants to become mentors
-- Protects youth from entering the system
-- Transforms communities through radical transparency
-- Demonstrates that second chances work
+> "What if we tried something different? What if instead of warehousing human potential, we developed it? What if accountability meant building someone up instead of breaking them down?"
+
+This project represents hope - hope that our justice system can evolve, that communities can heal, and that every person deserves a chance to bridge the gap between who they were and who they can become.
+
+## 📧 Contact
+
+- **Project Lead**: JAHmere Webb
+- **Mentor**: Coach Tony Dungy
+- **Technical Lead**: [Your Name]
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-**Clear Eyes. Full Hearts. Can't Lose. 🔥**
-
-*Building Tomorrow's Justice Today* 
+<div align="center">
+  <p><strong>Building bridges, not walls.</strong></p>
+  <p><em>Clear Eyes. Full Hearts. Can't Lose.</em></p>
+</div> 

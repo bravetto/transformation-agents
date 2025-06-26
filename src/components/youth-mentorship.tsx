@@ -240,10 +240,10 @@ export default function YouthMentorship() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-br from-royal-purple/10 to-holy-gold/10 rounded-2xl p-6 border border-royal-purple/20 overflow-hidden"
+              className="bg-gradient-to-br from-royal-purple to-sacred-midnight rounded-2xl p-6 overflow-hidden shadow-2xl"
             >
               {/* Animated Background */}
-              <div className="absolute inset-0 opacity-20">
+              <div className="absolute inset-0 opacity-10">
                 <svg className="w-full h-full" viewBox="0 0 400 300">
                   {[...Array(5)].map((_, i) => (
                     <motion.circle
@@ -251,7 +251,7 @@ export default function YouthMentorship() {
                       cx={Math.random() * 400}
                       cy={Math.random() * 300}
                       r="2"
-                      fill="currentColor"
+                      fill="#FCD34D"
                       initial={{ opacity: 0, scale: 0 }}
                       animate={{ 
                         opacity: [0, 1, 0],
@@ -270,8 +270,8 @@ export default function YouthMentorship() {
               {/* Header */}
               <div className="relative z-10 flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <Users className="h-6 w-6 text-royal-purple" />
-                  <h3 className="text-xl font-bold text-sacred-midnight">Young Voices Rising</h3>
+                  <Users className="h-6 w-6 text-holy-gold" />
+                  <h3 className="text-xl font-bold text-white">Young Voices Rising</h3>
                 </div>
                 <motion.div
                   animate={{ rotate: showSuccess ? 360 : 0 }}
@@ -289,7 +289,7 @@ export default function YouthMentorship() {
                   animate={{ scale: 1, opacity: 1 }}
                   className="relative inline-block"
                 >
-                  <span className="text-6xl font-bold text-royal-purple">{youthCount}</span>
+                  <span className="text-6xl font-bold text-holy-gold">{youthCount}</span>
                   {showSuccess && (
                     <motion.div
                       initial={{ y: 0, opacity: 1 }}
@@ -301,15 +301,15 @@ export default function YouthMentorship() {
                     </motion.div>
                   )}
                 </motion.div>
-                <p className="text-lg mt-2 text-sacred-midnight">Youth Ready for Mentorship</p>
-                <p className="text-sm text-royal-purple/60 mt-1">
+                <p className="text-lg mt-2 text-white font-semibold">Youth Ready for Mentorship</p>
+                <p className="text-sm text-white/80 mt-1">
                   Each one represents a life waiting to be transformed
                 </p>
               </div>
 
               {/* Recent Messages Preview */}
               <div className="relative z-10 space-y-2 mb-4">
-                <p className="text-sm font-semibold text-sacred-midnight mb-2">Recent Dreams Shared:</p>
+                <p className="text-sm font-semibold text-holy-gold mb-2">Recent Dreams Shared:</p>
                 <AnimatePresence>
                   {recentMessages.slice(0, 3).map((msg, index) => (
                     <motion.div
@@ -318,12 +318,12 @@ export default function YouthMentorship() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
                       transition={{ delay: index * 0.1 }}
-                      className="bg-white/60 backdrop-blur-sm rounded-lg p-3 text-sm"
+                      className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-sm border border-white/20"
                     >
-                      <p className="font-medium text-royal-purple">
+                      <p className="font-medium text-holy-gold">
                         {msg.name}, {msg.age} → {msg.to}
                       </p>
-                      <p className="text-sacred-midnight/70 line-clamp-2 text-xs mt-1">
+                      <p className="text-white/90 line-clamp-2 text-xs mt-1">
                         "{msg.message}"
                       </p>
                     </motion.div>
@@ -333,11 +333,11 @@ export default function YouthMentorship() {
 
               {/* Call to Action */}
               <motion.div
-                animate={{ opacity: [0.5, 1, 0.5] }}
+                animate={{ opacity: [0.7, 1, 0.7] }}
                 transition={{ duration: 2, repeat: Infinity }}
                 className="relative z-10 text-center text-sm"
               >
-                <p className="text-royal-purple font-semibold">
+                <p className="text-holy-gold font-semibold">
                   Your voice could be next →
                 </p>
               </motion.div>

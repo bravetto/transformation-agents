@@ -121,7 +121,7 @@ export default function CheckInPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-center">
-              <div className="text-4xl font-bold gradient-text">45</div>
+              <div className="text-4xl font-bold text-gradient">45</div>
               <div className="text-sm text-muted-foreground">Day Streak</div>
             </div>
             <div className="pt-4">
@@ -154,7 +154,7 @@ export default function CheckInPage() {
         {/* Progress Bar */}
         <div className="mb-8 h-2 w-full rounded-full bg-muted">
           <div 
-            className="h-full rounded-full bg-gradient-to-r from-bridge-blue to-bridge-purple transition-all duration-300"
+            className="h-full rounded-full bg-gradient-to-r from-royal-purple to-sacred-midnight transition-all duration-300"
             style={{ width: `${(currentStep / 4) * 100}%` }}
           />
         </div>

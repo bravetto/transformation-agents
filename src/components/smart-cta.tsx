@@ -148,11 +148,11 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
                   {config.icon}
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-bold text-lg mb-1">{config.title}</h3>
-                  <p className="text-sm opacity-90 mb-3">{config.subtitle}</p>
+                  <h3 className="font-bold text-lg mb-1 text-white">{config.title}</h3>
+                  <p className="text-sm text-white/95 mb-3">{config.subtitle}</p>
                   <Link
                     href={config.link}
-                    className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg font-semibold transition-colors"
+                    className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg font-semibold transition-colors text-white"
                   >
                     {config.action}
                     <ArrowRight className="h-4 w-4" />
@@ -208,15 +208,15 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -100 }}
-            className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-holy-gold to-royal-purple text-white p-4"
+            className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-royal-purple to-sacred-midnight text-white p-4 shadow-2xl"
           >
             <div className="container mx-auto flex items-center justify-between">
-              <p className="font-bold">
+              <p className="font-bold text-white text-lg">
                 You've read the whole story. Now it's time to act.
               </p>
               <Link
                 href="/contact"
-                className="bg-white text-royal-purple px-6 py-2 rounded-lg font-bold hover:bg-holy-gold hover:text-sacred-midnight transition-colors"
+                className="bg-holy-gold text-sacred-midnight px-6 py-2 rounded-lg font-bold hover:bg-white transition-colors shadow-lg"
               >
                 I'm Ready to Help
               </Link>
