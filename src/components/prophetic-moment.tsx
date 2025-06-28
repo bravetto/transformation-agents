@@ -46,6 +46,12 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
       subtext: "Vouching for the man who felt too much.",
       duration: 5000,
       particles: "⚡🌟",
+    },
+    {
+      text: "Welcome to The Bridge Project",
+      subtext: "Where pain becomes purpose. Where justice transforms.",
+      duration: 5000,
+      particles: "🌉✨",
     }
   ]
 
@@ -150,11 +156,20 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
 
           {/* Jordan's Identity */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: "easeOut" }}
             className="mb-12"
           >
-            <p className="text-holy-gold text-lg mb-2">A Testimony from</p>
+            <motion.p 
+              className="text-holy-gold text-lg mb-2"
+              animate={{
+                opacity: [0.5, 1, 0.5],
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              A Testimony from
+            </motion.p>
             <h2 className="text-4xl font-bold text-white">Jordan Dungy</h2>
             <p className="text-white/60 mt-2">Son of NFL Legend Tony Dungy</p>
           </motion.div>
@@ -163,10 +178,10 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
           <AnimatePresence mode="wait">
             <motion.div
               key={currentPhase}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.1 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0, scale: 0.8, y: 50 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: -50 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
               className="space-y-6"
             >
               <motion.h1 
@@ -174,7 +189,7 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
                 animate={{
                   textShadow: [
                     "0 0 20px rgba(252, 211, 77, 0.5)",
-                    "0 0 40px rgba(252, 211, 77, 0.8)",
+                    "0 0 60px rgba(252, 211, 77, 0.8)",
                     "0 0 20px rgba(252, 211, 77, 0.5)"
                   ]
                 }}
@@ -191,6 +206,16 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
               >
                 {phases[currentPhase].subtext}
               </motion.p>
+
+              {/* Particle Emoji */}
+              <motion.div 
+                className="text-6xl"
+                initial={{ scale: 0 }}
+                animate={{ scale: [0, 1.2, 1] }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
+                {phases[currentPhase].particles}
+              </motion.div>
             </motion.div>
           </AnimatePresence>
 
