@@ -5,7 +5,7 @@ export const coachDungy: PersonData = {
   slug: 'coach-dungy',
   name: 'Coach Tony Dungy',
   title: 'Where Championships Meet Character',
-  heroImage: 'https://images.unsplash.com/photo-1583404230561-a5f8f78a8a05?w=1920&h=1080&fit=crop',
+  heroImage: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=1920&h=1080&fit=crop',
   
   testimony: {
     quote: 'I won Super Bowls, but my greatest victories are the lives transformed through second chances. Pain is God\'s megaphone, and I\'ve learned to listen.',
@@ -43,7 +43,7 @@ export const coachDungy: PersonData = {
         title: 'Coach Tony Dungy',
         subtitle: 'Where Championships Meet Character',
         description: "I won Super Bowls, but my greatest victories are the lives transformed through second chances. Pain is God's megaphone, and I've learned to listen.",
-        backgroundImage: 'https://images.unsplash.com/photo-1583404230561-a5f8f78a8a05?w=1920&h=1080&fit=crop'
+        backgroundImage: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=1920&h=1080&fit=crop'
       }
     },
     {

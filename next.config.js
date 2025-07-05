@@ -2,9 +2,15 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['images.unsplash.com'],
-    // Add your production domain when ready
-    // domains: ['images.unsplash.com', 'thebridgeproject.org'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
+    ],
+    // Old configuration that's now deprecated:
+    // domains: ['images.unsplash.com'],
   },
   // Production optimizations
   swcMinify: true,
