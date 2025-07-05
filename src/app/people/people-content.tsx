@@ -2,7 +2,6 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 import { getAllPeople } from '@/data/people';
 import InteractivePersonGrid from '@/components/people/interactive-person-grid';
 import { withErrorBoundary } from '@/components/with-error-boundary';
@@ -36,33 +35,6 @@ const DivineParticles = () => {
         />
       ))}
     </div>
-  );
-};
-
-// Sacred geometry pattern SVG
-const SacredGeometryPattern = () => {
-  return (
-    <svg 
-      width="100%" 
-      height="100%" 
-      viewBox="0 0 200 200" 
-      xmlns="http://www.w3.org/2000/svg"
-      className="absolute inset-0 w-full h-full opacity-5 pointer-events-none"
-    >
-      <g fill="currentColor">
-        <circle cx="100" cy="100" r="20" />
-        {[0, 60, 120, 180, 240, 300].map((angle, i) => {
-          const x = 100 + Math.cos(angle * Math.PI / 180) * 40;
-          const y = 100 + Math.sin(angle * Math.PI / 180) * 40;
-          return <circle key={`ring1-${i}`} cx={x} cy={y} r="20" />;
-        })}
-        {[30, 90, 150, 210, 270, 330].map((angle, i) => {
-          const x = 100 + Math.cos(angle * Math.PI / 180) * 40 * Math.sqrt(3) / 2;
-          const y = 100 + Math.sin(angle * Math.PI / 180) * 40 * Math.sqrt(3) / 2;
-          return <circle key={`ring2-${i}`} cx={x} cy={y} r="20" />;
-        })}
-      </g>
-    </svg>
   );
 };
 
@@ -142,32 +114,10 @@ function PeopleContent({ simulationConfig }: PeopleContentProps) {
             >
               Meet the extraordinary individuals whose faith journeys are transforming lives and communities through authentic connection and divine purpose.
             </motion.p>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.6 }}
-              className="mt-8 text-center"
-            >
-              <Link href="/people/view-test" 
-                className="view-modes-link inline-flex items-center px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300 group"
-              >
-                <span className="mr-2 text-hope-gold">✨</span>
-                <span>Try Different View Modes</span>
-                <svg className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5-5 5" />
-                </svg>
-              </Link>
-            </motion.div>
           </div>
-          
-          {/* Sacred geometry pattern background */}
-          <SacredGeometryPattern />
           
           {/* Divine particles background */}
           <DivineParticles />
-          
-          {/* Subtle gradient background */}
-          <div className="absolute inset-0 bg-gradient-radial from-courage-blue/10 to-transparent rounded-3xl"></div>
         </motion.div>
         
         {/* Loading, Error or Content */}

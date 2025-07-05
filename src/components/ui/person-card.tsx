@@ -75,39 +75,6 @@ const roleColors: Record<PersonRole, {
   }
 };
 
-// Flower of Life sacred geometry pattern SVG
-const FlowerOfLifePattern = ({ className }: { className?: string }) => {
-  return (
-    <svg 
-      width="100%" 
-      height="100%" 
-      viewBox="0 0 200 200" 
-      xmlns="http://www.w3.org/2000/svg"
-      className={cn("absolute inset-0 w-full h-full", className)}
-      style={{ opacity: 0.05 }}
-    >
-      <g fill="currentColor">
-        {/* Central circle */}
-        <circle cx="100" cy="100" r="20" />
-        
-        {/* First ring */}
-        {[0, 60, 120, 180, 240, 300].map((angle, i) => {
-          const x = 100 + Math.cos(angle * Math.PI / 180) * 40;
-          const y = 100 + Math.sin(angle * Math.PI / 180) * 40;
-          return <circle key={`ring1-${i}`} cx={x} cy={y} r="20" />;
-        })}
-        
-        {/* Second ring */}
-        {[30, 90, 150, 210, 270, 330].map((angle, i) => {
-          const x = 100 + Math.cos(angle * Math.PI / 180) * 40 * Math.sqrt(3) / 2;
-          const y = 100 + Math.sin(angle * Math.PI / 180) * 40 * Math.sqrt(3) / 2;
-          return <circle key={`ring2-${i}`} cx={x} cy={y} r="20" />;
-        })}
-      </g>
-    </svg>
-  );
-};
-
 // Floating particles animation component
 const FloatingParticles = ({ role, isHovered }: { role: PersonRole, isHovered: boolean }) => {
   const prefersReducedMotion = 
@@ -371,14 +338,11 @@ function PersonCard({
           }}
         />
 
-        {/* Sacred geometry pattern */}
-        <FlowerOfLifePattern className="z-0 text-white" />
-        
         {/* Floating particles effect */}
         <FloatingParticles role={role} isHovered={isHovered} />
         
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-70 z-0" />
+        {/* Gradient overlay - changed to only cover bottom 30% */}
+        <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-t from-black to-transparent rounded-b-xl" />
         
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
@@ -429,61 +393,20 @@ function PersonCard({
           </motion.div>
         </div>
         
-        {/* Content Overlay */}
-        <div className="relative h-full flex flex-col justify-end z-10">
-          <div className={cn(
-            "text-white transition-all backdrop-blur-lg bg-black/30 rounded-b-xl border-t border-white/10 shadow-inner",
-            sizeStyles[size].content
-          )}>
-            {/* Title */}
-            <h2 className={cn(
-              "font-bold mb-1 transition-all text-transparent bg-clip-text bg-gradient-to-r from-white to-white/90",
-              sizeStyles[size].title
-            )}>
-              {name}
-            </h2>
-            
-            {/* Subtitle */}
-            <p 
-              className="font-medium mb-3 transition-all"
-              style={{ color: divineAccent.glow }}
-            >
-              {title}
-            </p>
-            
-            {/* Description */}
-            {description && (
-              <p className={cn(
-                "text-white/90 mb-4",
-                sizeStyles[size].description
-              )}>
-                {description}
-              </p>
-            )}
-            
-            {/* Read more link */}
-            <motion.div 
-              animate={{ 
-                x: isHovered ? 5 : 0, 
-                transition: { duration: 0.3 } 
-              }}
-              className="inline-flex items-center text-sm font-medium"
-              style={{ 
-                color: divineAccent.glow,
-                transition: 'color 0.3s ease'
-              }}
-            >
-              <span className="relative">
-                Read Story
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full" 
-                  style={{ width: isHovered ? '100%' : '0%' }}
-                />
-              </span>
-              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5-5 5" />
-              </svg>
-            </motion.div>
-          </div>
+        {/* Content Overlay - moved to bottom */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 p-4">
+          {/* Title */}
+          <h3 className="text-lg font-bold text-white" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.9)' }}>
+            {name}
+          </h3>
+          
+          {/* Subtitle */}
+          <p className="text-sm" style={{ 
+            color: divineAccent.glow, 
+            textShadow: '0 2px 6px rgba(0,0,0,0.9)'
+          }}>
+            {title}
+          </p>
         </div>
       </Link>
     </motion.div>

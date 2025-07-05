@@ -11,10 +11,7 @@ import {
   LoadingMessages, 
   ErrorWithRetry 
 } from '@/components/people/LoadingStates';
-import ViewModeSelector, { ViewMode } from '@/components/people/ViewModeSelector';
 import GridView from '@/components/people/GridView';
-import ListView from '@/components/people/ListView';
-import TimelineView from '@/components/people/TimelineView';
 
 // Import CustomSectionContent type
 interface CustomSectionContent {
@@ -27,7 +24,6 @@ interface CustomSectionContent {
 
 export interface InteractivePersonGridProps {
   people: PersonData[];
-  initialViewMode?: ViewMode;
   className?: string;
   simulateLoadingDelay?: number; // Add prop to simulate loading delay for testing
 }
@@ -204,7 +200,6 @@ const determinePersonImpactLevel = (person: PersonData): PersonImpactLevel => {
 
 function InteractivePersonGrid({
   people,
-  initialViewMode = 'grid',
   className,
   simulateLoadingDelay = 0, // Default to no delay
 }: InteractivePersonGridProps) {
@@ -215,8 +210,6 @@ function InteractivePersonGrid({
     setIsMounted(true);
   }, []);
   
-  // View mode state with localStorage persistence
-  const [viewMode, setViewMode] = useState<ViewMode>(initialViewMode);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredPeople, setFilteredPeople] = useState<PersonData[]>(people);
   
@@ -237,46 +230,6 @@ function InteractivePersonGrid({
   
   // Track scroll position
   const [scrollPosition, setScrollPosition] = useState(0);
-  
-  // Load view mode from localStorage on mount
-  useEffect(() => {
-    if (typeof window !== 'undefined' && isMounted) {
-      const savedViewMode = localStorage.getItem('peopleViewMode');
-      if (savedViewMode && (savedViewMode === 'grid' || savedViewMode === 'list' || savedViewMode === 'timeline')) {
-        setViewMode(savedViewMode as ViewMode);
-      }
-    }
-  }, [isMounted]);
-  
-  // Save view mode to localStorage when it changes
-  useEffect(() => {
-    if (typeof window !== 'undefined' && isMounted) {
-      localStorage.setItem('peopleViewMode', viewMode);
-    }
-  }, [viewMode, isMounted]);
-  
-  // Handle view mode change
-  const handleViewModeChange = useCallback((newMode: ViewMode) => {
-    // Save current scroll position
-    if (typeof window !== 'undefined') {
-      setScrollPosition(window.scrollY);
-    }
-    
-    // Update view mode
-    setViewMode(newMode);
-  }, []);
-  
-  // Restore scroll position after view mode change
-  useEffect(() => {
-    if (scrollPosition > 0 && typeof window !== 'undefined' && isMounted) {
-      setTimeout(() => {
-        window.scrollTo({
-          top: scrollPosition,
-          behavior: 'auto'
-        });
-      }, 100);
-    }
-  }, [viewMode, scrollPosition, isMounted]);
   
   // Calculate filter counts using useMemo to prevent dependency changes on every render
   const roleCount = useMemo<Record<PersonRole, number>>(() => ({
@@ -439,23 +392,6 @@ function InteractivePersonGrid({
     },
   };
 
-  // Subtle background pattern component
-  const BackgroundPattern = () => (
-    <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-      <svg className="opacity-5 absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <defs>
-          <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5" opacity="0.3" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#grid)" />
-      </svg>
-      
-      {/* Subtle radial gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-radial from-courage-blue/5 to-transparent opacity-50" />
-    </div>
-  );
-
   // If loading, show loading skeleton
   if (isLoading) {
     return (
@@ -480,7 +416,6 @@ function InteractivePersonGrid({
 
   return (
     <div className={cn("space-y-8 z-10 relative people-interactive-grid", className)}>
-      <BackgroundPattern />
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
         {/* Filters sidebar */}
         <div className="lg:w-1/4 z-10 relative">
@@ -517,85 +452,112 @@ function InteractivePersonGrid({
               </div>
               <input
                 type="text"
-                className="py-2 pl-10 pr-4 w-full md:w-64 glass backdrop-blur-md rounded-lg border border-white/10 shadow-inner focus:ring-2 focus:ring-white/50 focus:outline-none text-white"
-                placeholder="Search people..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search people..."
+                className="pl-10 pr-4 py-2 rounded-lg bg-white/10 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-hope-gold/50 w-full md:w-80"
               />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                >
+                  <svg className="w-5 h-5 text-gray-400 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
             </div>
             
-            {/* View mode toggle */}
-            <ViewModeSelector 
-              viewMode={viewMode}
-              onChange={handleViewModeChange}
-              className="view-mode-selector-visible"
-            />
+            <div className="flex flex-wrap gap-2 text-sm">
+              {/* Filter pills */}
+              {(roleFilters.length > 0 || themeFilters.length > 0 || impactFilters.length > 0) && (
+                <div className="flex flex-wrap gap-2 items-center filter-pills">
+                  <span className="text-gray-400">Filters:</span>
+                  
+                  {roleFilters.map(role => (
+                    <span 
+                      key={`role-${role}`} 
+                      className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 text-sm"
+                    >
+                      {role}
+                      <button 
+                        onClick={() => setRoleFilters(prev => prev.filter(r => r !== role))}
+                        className="ml-2 hover:text-red-400"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                  
+                  {themeFilters.map(theme => (
+                    <span 
+                      key={`theme-${theme}`} 
+                      className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 text-sm"
+                    >
+                      {theme}
+                      <button 
+                        onClick={() => setThemeFilters(prev => prev.filter(t => t !== theme))}
+                        className="ml-2 hover:text-red-400"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                  
+                  {impactFilters.map(impact => (
+                    <span 
+                      key={`impact-${impact}`} 
+                      className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 text-sm"
+                    >
+                      {impact}
+                      <button 
+                        onClick={() => setImpactFilters(prev => prev.filter(i => i !== impact))}
+                        className="ml-2 hover:text-red-400"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                  
+                  <button 
+                    onClick={clearAllFilters}
+                    className="text-hope-gold hover:underline text-sm"
+                  >
+                    Clear all
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
           
-          {/* Empty state */}
-          {filteredPeople.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="py-12 text-center glass rounded-xl backdrop-blur-md p-8 border border-white/10 shadow-lg"
-            >
-              <svg className="w-16 h-16 mx-auto text-white/50 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.5 12a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.9 16.5c1.9.1 3.5.8 4.8 1.9a9 9 0 11-15.4 0c1.3-1.1 2.9-1.8 4.8-1.9m5.8 0h-5.8" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 21v-2m0 0l-2-2m2 2l2-2" />
-              </svg>
-              <h3 className="text-xl font-semibold mb-2 text-white">No people found</h3>
-              <p className="text-white/70 mb-6">Your current filter combination returned no results.</p>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={clearAllFilters}
-                className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm transition-colors ease-divine"
-              >
-                Clear all filters
-              </motion.button>
-            </motion.div>
-          )}
-          
-          {/* People grid/list/timeline view */}
-          {filteredPeople.length > 0 && (
+          {/* Results count */}
+          <div className="flex items-center justify-between">
+            <div className="text-gray-400">
+              Showing <span className="text-white font-semibold">{filteredPeople.length}</span> of <span className="text-white font-semibold">{people.length}</span> transformation agents
+            </div>
+          </div>
+
+          {/* Grid view */}
+          <div className="grid-container">
             <AnimatePresence mode="wait">
               <motion.div
-                key={viewMode}
+                key="grid"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ 
+                exit={{ opacity: 0, y: -10 }}
+                transition={{
                   duration: 0.5,
-                  ease: [0.16, 1, 0.3, 1] // ease-divine
+                  ease: [0.16, 1, 0.3, 1]  // Divine ease
                 }}
               >
-                {viewMode === 'grid' && (
-                  <GridView people={filteredPeople.map(person => ({
-                    ...person,
-                    derivedRole: determinePersonRole(person)
-                  }))} />
-                )}
-                
-                {viewMode === 'list' && (
-                  <ListView people={filteredPeople.map(person => ({
-                    ...person,
-                    derivedRole: determinePersonRole(person),
-                    derivedThemes: determinePersonThemes(person)
-                  }))} />
-                )}
-                
-                {viewMode === 'timeline' && (
-                  <TimelineView people={filteredPeople.map(person => ({
-                    ...person,
-                    derivedRole: determinePersonRole(person),
-                    derivedJourneyStage: determineJourneyStage(person),
-                    derivedImpactLevel: determinePersonImpactLevel(person)
-                  }))} />
-                )}
+                <GridView people={filteredPeople.map(person => ({
+                  ...person,
+                  derivedRole: determinePersonRole(person)
+                }))} />
               </motion.div>
             </AnimatePresence>
-          )}
+          </div>
         </div>
       </div>
     </div>

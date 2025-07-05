@@ -253,38 +253,23 @@ function FilterBar({
       )}
     >
       {/* Filter summary */}
-      <div className="flex justify-between items-center mb-4">
-        <div className="flex items-center gap-2">
-          <h3 className="text-xl font-cinzel font-bold bg-gradient-to-r from-white via-hope-gold to-white bg-clip-text text-transparent">Filters</h3>
-          {activeFilterCount > 0 && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="px-2 py-0.5 bg-white/10 text-xs font-semibold rounded-full"
-            >
-              {activeFilterCount} active
-            </motion.div>
-          )}
-        </div>
-        
-        <div className="flex items-center gap-2">
-          <div className="text-sm text-white/80">
-            Showing <span className="font-semibold">{filteredCount}</span> of <span className="text-hope-gold">{totalCount}</span>
+      <div className="mb-6 pb-4 border-b border-white/10">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold text-white">Filters</h2>
+          <div className="flex items-center gap-6 text-sm text-white/70">
+            {activeFilterCount > 0 && (
+              <span className="text-white">{activeFilterCount} active</span>
+            )}
+            <span>Showing {filteredCount} of {totalCount}</span>
+            {activeFilterCount > 0 && (
+              <button 
+                onClick={onClearAll}
+                className="text-white hover:text-white/80 hover:underline transition-colors"
+              >
+                Clear all
+              </button>
+            )}
           </div>
-          
-          {activeFilterCount > 0 && mounted && (
-            <motion.button
-              initial={{ opacity: 0, x: 10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 10 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onClearAll}
-              className="text-sm text-white/70 hover:text-white px-2 py-1 rounded transition-colors ease-divine"
-            >
-              Clear all
-            </motion.button>
-          )}
         </div>
       </div>
       
