@@ -34,7 +34,7 @@ export default function HomePage() {
     setMounted(true)
     
     // Optional: Re-enable prophetic moment later with a feature flag
-    const ENABLE_PROPHETIC_MOMENT = false; // Set to true when ready
+    const ENABLE_PROPHETIC_MOMENT = true; // Set to true when ready
 
     if (ENABLE_PROPHETIC_MOMENT) {
       const hasSeenProphetic = sessionStorage.getItem('hasSeenPropheticMoment');
