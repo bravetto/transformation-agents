@@ -43,15 +43,13 @@ export default function HomePage() {
       if (hasSeenHomePageIntro !== 'true') {
         setShowHeroContent(false);
         setTriggerProphetic(true);
-        // Store with page-specific key
-        sessionStorage.setItem('hasSeenHomePagePropheticMoment', 'true');
       }
     }
     
-    // Always ensure content shows after component mounts (failsafe)
+    // Always ensure content shows after component mounts
     const timer = setTimeout(() => {
       setShowHeroContent(true);
-    }, 500);
+    }, 100);
     
     return () => clearTimeout(timer);
   }, [])
