@@ -95,6 +95,27 @@ export function PersonCardSkeleton({
   // Determine delay based on index for staggered animation
   const delay = 0.1 + (index * 0.05);
   
+  // Role-based colors for loading skeletons (rotate through roles)
+  const roles = ['lightworker', 'messenger', 'witness', 'guardian'];
+  const roleIndex = index % roles.length;
+  const role = roles[roleIndex];
+  
+  // Role-based gradient classes
+  const roleGradients = {
+    lightworker: 'from-amber-600/30 to-orange-500/30',
+    messenger: 'from-blue-600/30 to-sky-500/30',
+    witness: 'from-emerald-600/30 to-teal-500/30',
+    guardian: 'from-amber-600/30 to-orange-500/30'
+  };
+  
+  // Role-based shimmer classes
+  const roleShimmer = {
+    lightworker: 'shimmer-lightworker',
+    messenger: 'shimmer-messenger',
+    witness: 'shimmer-witness',
+    guardian: 'shimmer-guardian'
+  };
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -102,7 +123,7 @@ export function PersonCardSkeleton({
       transition={{ duration: 0.5, delay }}
       className={cn(
         "relative overflow-hidden rounded-xl glass",
-        "backdrop-blur-md border border-white/10",
+        "backdrop-blur-md border border-white/10 shadow-md",
         sizeStyles[size].container,
         className
       )}
@@ -110,7 +131,29 @@ export function PersonCardSkeleton({
       <EtherealParticles />
       
       {/* Glass overlay with gradient */}
+      <div className={cn(
+        "absolute inset-0 bg-gradient-to-br opacity-40",
+        roleGradients[role as keyof typeof roleGradients]
+      )} />
       <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/20 to-transparent opacity-50" />
+      
+      {/* Sacred geometry pattern for enhanced visual */}
+      <svg 
+        width="100%" 
+        height="100%" 
+        viewBox="0 0 200 200" 
+        xmlns="http://www.w3.org/2000/svg"
+        className="absolute inset-0 w-full h-full opacity-5 pointer-events-none"
+      >
+        <g fill="white">
+          <circle cx="100" cy="100" r="20" />
+          {[0, 60, 120, 180, 240, 300].map((angle, i) => {
+            const x = 100 + Math.cos(angle * Math.PI / 180) * 40;
+            const y = 100 + Math.sin(angle * Math.PI / 180) * 40;
+            return <circle key={`ring1-${i}`} cx={x} cy={y} r="20" />;
+          })}
+        </g>
+      </svg>
       
       {/* Content skeleton */}
       <div className={cn(
@@ -121,20 +164,20 @@ export function PersonCardSkeleton({
           sizeStyles[size].content
         )}>
           {/* Name skeleton */}
-          <div className="h-7 w-3/5 rounded-md shimmer" />
+          <div className={cn("h-7 w-3/5 rounded-md", roleShimmer[role as keyof typeof roleShimmer])} />
           
           {/* Subtitle skeleton */}
-          <div className="h-5 w-4/5 rounded-md shimmer" />
+          <div className={cn("h-5 w-4/5 rounded-md", roleShimmer[role as keyof typeof roleShimmer], "opacity-80")} />
           
           {/* Description skeleton */}
           <div className="space-y-2">
-            <div className="h-4 w-full rounded-md shimmer" />
-            <div className="h-4 w-11/12 rounded-md shimmer" />
-            <div className="h-4 w-4/5 rounded-md shimmer" />
+            <div className={cn("h-4 w-full rounded-md", roleShimmer[role as keyof typeof roleShimmer], "opacity-60")} />
+            <div className={cn("h-4 w-11/12 rounded-md", roleShimmer[role as keyof typeof roleShimmer], "opacity-60")} />
+            <div className={cn("h-4 w-4/5 rounded-md", roleShimmer[role as keyof typeof roleShimmer], "opacity-60")} />
           </div>
           
           {/* Read more skeleton */}
-          <div className="h-5 w-28 rounded-md shimmer mt-4" />
+          <div className={cn("h-5 w-28 rounded-md", roleShimmer[role as keyof typeof roleShimmer], "opacity-70", "mt-4")} />
         </div>
       </div>
     </motion.div>

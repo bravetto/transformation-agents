@@ -14,15 +14,32 @@ interface GridViewProps {
 }
 
 function GridView({ people, className }: GridViewProps) {
-  // Animation variants
+  // Animation variants with divine easing
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.12,
+        delayChildren: 0.1,
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1]
       },
     },
+  };
+  
+  // Item variants for individual cards
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.9 },
+    show: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1,
+      transition: {
+        duration: 0.7,
+        ease: [0.16, 1, 0.3, 1]
+      }
+    }
   };
 
   return (
@@ -31,7 +48,7 @@ function GridView({ people, className }: GridViewProps) {
       initial="hidden"
       animate="show"
       className={cn(
-        "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6",
+        "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-10",
         className
       )}
     >
@@ -42,11 +59,16 @@ function GridView({ people, className }: GridViewProps) {
         return (
           <motion.div
             key={person.id}
+            variants={itemVariants}
             layout
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: index * 0.05 }}
+            className="transform-gpu will-change-transform"
+            whileHover={{ 
+              scale: 1.05,
+              rotate: Math.random() > 0.5 ? 1 : -1,
+              boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3), 0 0 25px rgba(255, 255, 255, 0.3)",
+              filter: "brightness(1.05)",
+              transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
+            }}
           >
             <PersonCard
               id={person.id}

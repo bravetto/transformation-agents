@@ -125,24 +125,28 @@ const FloatingParticles = ({ role, isHovered }: { role: PersonRole, isHovered: b
   };
   
   const color = getGlowColor(role);
+  const particleCount = 20; // Increased from 12
   
   return (
     <div className={cn(
       "absolute inset-0 overflow-hidden pointer-events-none transition-opacity duration-500",
       isHovered ? "opacity-100" : "opacity-0"
     )}>
-      {[...Array(12)].map((_, i) => (
+      {[...Array(particleCount)].map((_, i) => (
         <div
           key={`particle-${i}`}
-          className="absolute w-1.5 h-1.5 rounded-full blur-[1px] opacity-0"
+          className="absolute rounded-full blur-[1px] opacity-0"
           style={{
+            width: isHovered ? `${Math.random() * 2 + 1}px` : '1.5px',
+            height: isHovered ? `${Math.random() * 2 + 1}px` : '1.5px',
             left: `${Math.random() * 100}%`,
             bottom: `-5%`,
-            opacity: isHovered ? 0.7 : 0,
+            opacity: isHovered ? 0.9 : 0, // Increased opacity
             backgroundColor: color,
             animation: isHovered ? 
               `floatUp ${2 + Math.random() * 3}s ease-out ${Math.random() * 2}s infinite` : 
-              'none'
+              'none',
+            filter: isHovered ? 'blur(1.5px)' : 'blur(1px)'
           }}
         />
       ))}
@@ -251,9 +255,9 @@ function PersonCard({
       }
     },
     hover: {
-      y: -8,
-      scale: prefersReducedMotion ? 1 : 1.03,
-      boxShadow: '0 15px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.2)',
+      y: -10, // Increased lift
+      scale: prefersReducedMotion ? 1 : 1.05, // Increased from 1.03
+      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 255, 255, 0.3)', // Stronger shadow
       transition: {
         duration: 0.4,
         ease: divineEasing
@@ -266,7 +270,7 @@ function PersonCard({
       scale: 1,
     },
     hover: {
-      scale: prefersReducedMotion ? 1 : 1.08,
+      scale: prefersReducedMotion ? 1 : 1.1, // Increased from 1.08
       transition: {
         duration: 0.5,
         ease: divineEasing
@@ -336,7 +340,7 @@ function PersonCard({
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       className={cn(
-        "relative overflow-hidden rounded-xl glass transition-all ease-divine",
+        "relative overflow-hidden rounded-xl glass transition-all ease-divine transform-gpu will-change-transform",
         sizeStyles[size].container,
         isHovered ? divineAccent.glowClass : "",
         className
@@ -351,6 +355,7 @@ function PersonCard({
           )}
           style={{
             opacity: isHovered ? 0.9 : 0.7,
+            filter: isHovered ? 'brightness(1.2)' : 'brightness(1)',
           }}
         />
 

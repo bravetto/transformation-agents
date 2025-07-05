@@ -439,6 +439,23 @@ function InteractivePersonGrid({
     },
   };
 
+  // Subtle background pattern component
+  const BackgroundPattern = () => (
+    <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+      <svg className="opacity-5 absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <defs>
+          <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5" opacity="0.3" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)" />
+      </svg>
+      
+      {/* Subtle radial gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-radial from-courage-blue/5 to-transparent opacity-50" />
+    </div>
+  );
+
   // If loading, show loading skeleton
   if (isLoading) {
     return (
@@ -463,7 +480,8 @@ function InteractivePersonGrid({
 
   return (
     <div className={cn("space-y-8 z-10 relative people-interactive-grid", className)}>
-      <div className="flex flex-col lg:flex-row gap-8">
+      <BackgroundPattern />
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
         {/* Filters sidebar */}
         <div className="lg:w-1/4 z-10 relative">
           <FilterBar
@@ -499,7 +517,7 @@ function InteractivePersonGrid({
               </div>
               <input
                 type="text"
-                className="py-2 pl-10 pr-4 w-full md:w-64 glass backdrop-blur-md rounded-lg focus:ring-2 focus:ring-white/50 focus:outline-none text-white"
+                className="py-2 pl-10 pr-4 w-full md:w-64 glass backdrop-blur-md rounded-lg border border-white/10 shadow-inner focus:ring-2 focus:ring-white/50 focus:outline-none text-white"
                 placeholder="Search people..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -519,7 +537,7 @@ function InteractivePersonGrid({
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="py-12 text-center glass rounded-xl backdrop-blur-md p-8"
+              className="py-12 text-center glass rounded-xl backdrop-blur-md p-8 border border-white/10 shadow-lg"
             >
               <svg className="w-16 h-16 mx-auto text-white/50 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.5 12a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0z" />
@@ -548,7 +566,7 @@ function InteractivePersonGrid({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ 
-                  duration: 0.3,
+                  duration: 0.5,
                   ease: [0.16, 1, 0.3, 1] // ease-divine
                 }}
               >

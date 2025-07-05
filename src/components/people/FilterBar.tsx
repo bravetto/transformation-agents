@@ -246,7 +246,8 @@ function FilterBar({
     <div 
       ref={filterBarRef}
       className={cn(
-        "space-y-6 rounded-xl glass filter-bar-override p-6 ease-divine transition-all duration-300",
+        "space-y-6 rounded-xl p-6 ease-divine transition-all duration-300",
+        "backdrop-blur-md bg-white/5 border border-white/10 shadow-lg",
         activeFilterCount > 0 ? "ring-1 ring-white/30" : "",
         className
       )}
@@ -254,7 +255,7 @@ function FilterBar({
       {/* Filter summary */}
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
-          <h3 className="text-lg font-bold">Filters</h3>
+          <h3 className="text-xl font-cinzel font-bold bg-gradient-to-r from-white via-hope-gold to-white bg-clip-text text-transparent">Filters</h3>
           {activeFilterCount > 0 && (
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
@@ -289,10 +290,22 @@ function FilterBar({
       
       {/* Filter categories */}
       <div className="space-y-6">
-        {filterCategories.map((category) => (
-          <div key={category.name} className="space-y-2">
-            <h4 className={cn("text-sm font-semibold", category.colorClass)}>
-              {category.name}
+        {filterCategories.map((category, index) => (
+          <div key={category.name} className="space-y-3">
+            {/* Category header with gradient accent */}
+            <h4 className={cn(
+              "text-sm font-semibold flex items-center",
+              category.colorClass
+            )}>
+              <span className="relative">
+                {category.name}
+                <motion.span
+                  className="absolute -bottom-1 left-0 h-0.5 bg-current rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 0.7, delay: index * 0.1 }}
+                />
+              </span>
             </h4>
             
             <div className="flex flex-wrap gap-2">
@@ -320,19 +333,20 @@ function FilterBar({
                         handleKeyDown(e, category as FilterCategory<PersonImpactLevel>, option as FilterOption<PersonImpactLevel>);
                       }
                     }}
-                    whileHover={mounted ? { scale: 1.05 } : undefined}
+                    whileHover={mounted ? { scale: 1.05, y: -2 } : undefined}
                     whileTap={mounted ? { scale: 0.95 } : undefined}
                     tabIndex={0}
                     className={cn(
-                      "px-3 py-1.5 rounded-full text-sm font-medium transition-all ease-divine focus:outline-none focus:ring-2 focus:ring-white/50",
+                      "px-3 py-1.5 rounded-full text-sm font-medium transition-all ease-divine",
+                      "focus:outline-none focus:ring-2 focus:ring-white/50",
                       "backdrop-blur-sm",
                       isActive 
                         ? cn(
-                            "bg-white/15 text-white",
+                            "bg-white/15 text-white shadow-md", 
                             option.count === 0 ? "opacity-50" : "", 
                             category.glowClass
                           )
-                        : "bg-white/5 text-white/80 hover:bg-white/10",
+                        : "bg-white/5 text-white/80 hover:bg-white/10 hover:text-white",
                       option.count === 0 && !isActive ? "opacity-40" : ""
                     )}
                   >
@@ -355,6 +369,11 @@ function FilterBar({
                 );
               })}
             </div>
+            
+            {/* Add divider between categories - except last one */}
+            {index < filterCategories.length - 1 && (
+              <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent my-3" />
+            )}
           </div>
         ))}
       </div>

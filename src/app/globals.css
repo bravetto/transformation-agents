@@ -204,10 +204,12 @@
 
 /* Enhanced People Page Styling */
 .people-page-header {
-  padding: 3rem 0;
+  padding: 4rem 0;
   background: linear-gradient(to bottom, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.8));
   position: relative;
   overflow: hidden;
+  border-radius: 1rem;
+  margin-bottom: 3rem;
 }
 
 .people-page-header::before {
@@ -218,24 +220,27 @@
   right: 0;
   bottom: 0;
   background: 
-    radial-gradient(circle at 20% 20%, rgba(252, 211, 77, 0.15), transparent 35%),
-    radial-gradient(circle at 80% 80%, rgba(125, 211, 252, 0.15), transparent 35%);
+    radial-gradient(circle at 20% 20%, rgba(252, 211, 77, 0.2), transparent 35%),
+    radial-gradient(circle at 80% 80%, rgba(125, 211, 252, 0.2), transparent 35%);
   z-index: 0;
+  opacity: 0.8;
+  animation: pulseGlow 8s infinite alternate ease-in-out;
 }
 
 .people-page-title {
   font-size: clamp(2.5rem, 6vw, 4.5rem);
   font-weight: 800;
+  font-family: 'Cinzel', serif;
   letter-spacing: -0.02em;
   text-align: center;
-  background: linear-gradient(to right, #FCD34D, #F59E0B);
+  background: linear-gradient(to right, #ffffff, #FCD34D, #F59E0B, #ffffff);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   position: relative;
   z-index: 1;
-  text-shadow: 0 0 30px rgba(252, 211, 77, 0.3);
+  text-shadow: 0 0 30px rgba(252, 211, 77, 0.4);
 }
 
 .people-page-subtitle {
@@ -256,18 +261,19 @@
   font-weight: 500;
   color: var(--lightworker-glow);
   margin-top: 1.5rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.5rem;
   border-radius: 9999px;
   background: rgba(245, 158, 11, 0.1);
   transition: all 0.3s ease-divine;
   position: relative;
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .view-modes-link:hover {
   background: rgba(245, 158, 11, 0.2);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(245, 158, 11, 0.2);
+  box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
 }
 
 .view-modes-link::before {
@@ -291,7 +297,88 @@
   }
 }
 
-/* Shimmer Animation */
+/* Enhanced Divine Glow Effects */
+.glow-lightworker {
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.5), 0 0 60px rgba(252, 211, 77, 0.3);
+  position: relative;
+}
+
+.glow-lightworker::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(to right, rgba(245, 158, 11, 0.5), rgba(252, 211, 77, 0.3));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.glow-messenger {
+  box-shadow: 0 0 30px rgba(37, 99, 235, 0.5), 0 0 60px rgba(125, 211, 252, 0.3);
+  position: relative;
+}
+
+.glow-messenger::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(to right, rgba(37, 99, 235, 0.5), rgba(125, 211, 252, 0.3));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.glow-witness {
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.5), 0 0 60px rgba(110, 231, 183, 0.3);
+  position: relative;
+}
+
+.glow-witness::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(to right, rgba(16, 185, 129, 0.5), rgba(110, 231, 183, 0.3));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.glow-guardian {
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.5), 0 0 60px rgba(252, 211, 77, 0.3);
+  position: relative;
+}
+
+.glow-guardian::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(to right, rgba(245, 158, 11, 0.5), rgba(252, 211, 77, 0.3));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Enhanced Shimmer Animation */
 @keyframes shimmerAnimation {
   0% {
     transform: translateX(-100%);
@@ -302,6 +389,80 @@
   100% {
     transform: translateX(100%);
   }
+}
+
+/* Pulse glow animation for headers */
+@keyframes pulseGlow {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+/* Enhanced floating particles animation */
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-150px) scale(0.5) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+/* Radial gradient backgrounds */
+.bg-gradient-radial {
+  background: radial-gradient(circle at center, var(--from), transparent 80%);
+}
+
+/* Enhanced filter bar */
+.filter-bar-override {
+  position: relative;
+  overflow: hidden;
+}
+
+.filter-bar-override::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(125, 211, 252, 0.1), transparent 70%),
+              radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.1), transparent 70%);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+/* Enhanced People Interactive Grid */
+.people-interactive-grid {
+  position: relative;
+}
+
+.people-interactive-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: -2rem;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.05), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.05), transparent 40%);
+  z-index: -1;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* Add divider styling */
+.divine-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+  margin: 1.5rem 0;
 }
 
 /* Floating Particles Animation */
