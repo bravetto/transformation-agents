@@ -6,7 +6,8 @@ import ErrorBoundaryWrapper from '@/components/error-boundary-wrapper';
 import { Suspense } from 'react';
 
 const Navigation = dynamic(() => import("@/components/navigation"), { ssr: false });
-const ImpactDashboard = dynamic(() => import("@/components/impact-dashboard"), { ssr: false });
+// Temporarily disabled the Impact Dashboard
+// const ImpactDashboard = dynamic(() => import("@/components/impact-dashboard"), { ssr: false });
 const Footer = dynamic(() => import("@/components/footer"), { ssr: false });
 
 export const metadata: Metadata = {
@@ -66,9 +67,11 @@ export default function RootLayout({
           </ErrorBoundaryWrapper>
         </main>
         
+        {/* Impact Dashboard temporarily disabled 
         <ErrorBoundaryWrapper id="impact-dashboard">
           <ImpactDashboard />
         </ErrorBoundaryWrapper>
+        */}
         
         <ErrorBoundaryWrapper id="footer">
           <Footer />
