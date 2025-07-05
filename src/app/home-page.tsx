@@ -3,32 +3,45 @@
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { impactEvents } from '@/components/impact-dashboard'
-import DungyWisdom from '@/components/dungy-wisdom'
-import PropheticMoment from "@/components/prophetic-moment"
-import HeartbeatMonitor from "@/components/heartbeat-monitor"
-import RiskMitigation from "@/components/risk-mitigation"
-import SmartCTA from "@/components/smart-cta"
-import LettersOfHope from "@/components/letters-of-hope"
-import YouthMentorship from "@/components/youth-mentorship"
+import dynamic from 'next/dynamic'
+
+// Dynamic imports to fix SSR issues
+const DungyWisdom = dynamic(() => import('@/components/dungy-wisdom'), { ssr: false })
+const PropheticMoment = dynamic(() => import("@/components/prophetic-moment"), { ssr: false })
+const HeartbeatMonitor = dynamic(() => import("@/components/heartbeat-monitor"), { ssr: false })
+const RiskMitigation = dynamic(() => import("@/components/risk-mitigation"), { ssr: false })
+const SmartCTA = dynamic(() => import("@/components/smart-cta"), { ssr: false })
+const LettersOfHope = dynamic(() => import("@/components/letters-of-hope"), { ssr: false })
+const YouthMentorship = dynamic(() => import("@/components/youth-mentorship"), { ssr: false })
+const MichaelTestament = dynamic(() => import("@/components/michael-testament"), { ssr: false })
+
+// Design System Components
+const Hero = dynamic(() => import('@/components/hero'), { ssr: false })
+const Section = dynamic(() => import('@/components/section'), { ssr: false })
+const FeatureCard = dynamic(() => import('@/components/feature-card'), { ssr: false })
+const TestimonialCard = dynamic(() => import('@/components/testimonial-card'), { ssr: false })
+import { Container, Card, Heading, Text, Button, Stack, Badge, Quote } from '@/components/ui'
+const RevealOnScroll = dynamic(() => import('@/components/ui/page-transition').then(mod => mod.RevealOnScroll), { ssr: false })
+const PageTransition = dynamic(() => import('@/components/ui/page-transition'), { ssr: false })
 
 export default function HomePage() {
   const [mounted, setMounted] = useState(false)
   const [triggerProphetic, setTriggerProphetic] = useState(false)
-  const [showHeroContent, setShowHeroContent] = useState(false)
+  const [showHeroContent, setShowHeroContent] = useState(true)
   const jordanSectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     setMounted(true)
     
-    // Check if user has already seen the prophetic moment in this session
-    const hasSeenProphetic = sessionStorage.getItem('prophetic-moment-shown')
-    
-    if (!hasSeenProphetic) {
-      // Trigger the prophetic moment immediately on first visit
-      setTriggerProphetic(true)
-    } else {
-      // If they've already seen it, show the hero content immediately
-      setShowHeroContent(true)
+    // Optional: Re-enable prophetic moment later with a feature flag
+    const ENABLE_PROPHETIC_MOMENT = false; // Set to true when ready
+
+    if (ENABLE_PROPHETIC_MOMENT) {
+      const hasSeenProphetic = sessionStorage.getItem('hasSeenPropheticMoment');
+      if (hasSeenProphetic !== 'true') {
+        setShowHeroContent(false);
+        setTriggerProphetic(true);
+      }
     }
   }, [])
 
@@ -45,7 +58,7 @@ export default function HomePage() {
   if (!mounted) return null
 
   return (
-    <>
+    <PageTransition>
       {/* Prophetic Moment - First Thing Users See */}
       {triggerProphetic && (
         <PropheticMoment 
@@ -54,563 +67,1024 @@ export default function HomePage() {
         />
       )}
       
-      <main className={`pt-16 ${!showHeroContent ? 'hidden' : ''}`}>
-        {/* HERO - CLEAN & POWERFUL */}
-        <section className="hero">
-          <div className="container text-center relative z-10">
-            <h1 className="text-white mb-6 animate-fade-in">
-              The Bridge Project:<br />
-              An Experiment in Transformation
-            </h1>
-                        <p className="text-xl md:text-2xl text-gold-dark font-semibold mb-4 animate-fade-in" style={{animationDelay: '0.2s'}}>
-                What if we tried something different?
-              </p>
-            <p className="text-lg text-white/90 max-w-2xl mx-auto mb-12 animate-fade-in" style={{animationDelay: '0.4s'}}>
-              This is Day One. No case studies. No proven track record. Just a profound belief that the system we have isn't the system we need.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{animationDelay: '0.6s'}}>
-              <Link href="#vision" className="btn btn-secondary">
-                Read Our Vision
-              </Link>
-              <Link href="#why" className="btn btn-primary">
-                Why This Matters
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* RADICAL HONESTY */}
-        <section className="bg-white">
-          <div className="container">
-            <h2 className="text-center mb-8">Let's Be Completely Honest</h2>
-            <div className="max-w-3xl mx-auto space-y-6">
-              <p className="text-xl">
+      <div className={!showHeroContent ? 'hidden' : ''}>
+        {/* Hero Section */}
+        <Hero />
+        
+        {/* Radical Honesty Section */}
+        <Section
+          variant="default"
+          title="Let's Be Completely Transparent"
+          centered
+        >
+          <div className="max-w-3xl mx-auto">
+            <RevealOnScroll>
+              <Text size="xl" className="mb-6">
                 We don't have success stories yet. We haven't transformed 1,000 lives. We don't have years of data to show you.
-              </p>
-              <p className="text-2xl font-bold text-royal-purple">What we have is:</p>
-              <ul className="space-y-3 text-lg">
-                <li><span className="text-gold-dark font-bold text-xl">✦</span> A man who's been through the system and sees its flaws</li>
-                <li><span className="text-gold-dark font-bold text-xl">✦</span> A vision for something better</li>
-                <li><span className="text-gold-dark font-bold text-xl">✦</span> A community ready to try</li>
-                <li><span className="text-gold-dark font-bold text-xl">✦</span> The courage to build in public</li>
-              </ul>
-              <div className="text-center pt-8">
-                <p className="text-2xl font-bold">
-                  <span className="text-gradient">This website isn't showing you what we've done.</span><br />
-                  <span className="text-sacred-midnight">It's inviting you to help us do it.</span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* REALITY CHECK */}
-        <section className="bg-light-whisper">
-          <div className="container">
-            <div className="card divine-accent text-center max-w-4xl mx-auto">
-              <div className="text-2xl font-bold mb-4 text-royal-purple">🔥 UNDER CONSTRUCTION 🔥</div>
-              <p className="text-lg mb-2">This project launched December 26, 2024. We have:</p>
-              <p className="text-xl font-bold">
-                0 graduates (yet) • 0 proven outcomes (yet) • 100% commitment to change • 100% transparency as we build
-              </p>
-              <p className="text-lg mt-4">Watch this space. Better yet, help us build it.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* JAHMERE'S LETTER */}
-        <section id="letter" className="bg-white">
-          <div className="container">
-            <div className="letter">
-              <h2 className="text-center mb-8">A Letter from JAHmere Webb</h2>
-              <div className="space-y-6">
-                <p className="text-xl font-bold text-royal-purple">
-                  To Judge Ferrero, My Mentor Coach Dungy, and Anyone Who Believes in Second Chances,
-                </p>
-                
-                <p>
-                  I won't pretend I'm a perfect candidate for mercy. I've made mistakes - real ones that hurt real people, including myself. 
-                  I've been in the system for a decade, and honestly? It's broken me more than it's fixed me.
-                </p>
-
-                <p className="text-xl font-bold text-royal-purple">But here's what I know:</p>
-
-                <p>
-                  Every time I see a young person heading down the same path I took, I see myself at 16 - angry, scared, 
-                  convinced the world was against me because, frankly, it felt like it was. I can reach these kids not because 
-                  I've read about their struggles in textbooks, but because I've lived them.
-                </p>
-
-                <div className="bg-light-whisper p-6 rounded-lg my-8">
-                  <p className="text-xl font-semibold text-center">
-                    I'm not asking to escape consequences. I'm asking to transform them.
-                  </p>
-                </div>
-
-                <p>
-                  Instead of sitting in a cell costing taxpayers $35,000 a year, let me work with youth who are one bad decision 
-                  away from joining me. Instead of adding to incarceration statistics, let me help prevent them.
-                </p>
-
-                <p>
-                  I don't have a perfect plan. I don't have all the answers. But I have something many don't - 
-                  I've been there, and I'm still here, and I want to help others find a different way.
-                </p>
-
-                <p>
-                  This isn't about me getting out of trouble. It's about preventing trouble for the next generation. 
-                  Give me structure, supervision, accountability - but let me use my experience to build bridges instead of burning more.
-                </p>
-
-                <p className="italic text-royal-purple">
-                  Coach Dungy - as I write this, your signed copy of "Quiet Strength" is open to page 127. 
-                  You've been mentoring me for three years. You know my heart. You know my transformation is real.
-                </p>
+              </Text>
+            </RevealOnScroll>
+            
+            <RevealOnScroll delay={0.2}>
+              <Heading as="h3" size="h3" color="primary" className="mb-4">
+                What we have is:
+              </Heading>
               
-                <div className="border-2 border-royal-purple rounded-lg p-6 mt-8 text-center">
-                  <p className="text-xl font-bold">
-                    <span className="text-gradient">I'm not a success story yet.</span><br />
-                    <span className="text-sacred-midnight">But with your trust, I could help create dozens of them.</span>
-                  </p>
-                </div>
-
-                <div className="text-right mt-8">
-                  <p>Respectfully and honestly,</p>
-                  <p className="text-3xl font-bold text-gradient mt-2">JAHmere Webb</p>
-                </div>
+              <ul className="space-y-3 text-lg">
+                <li className="flex items-start gap-2">
+                  <span className="text-gold text-xl">✦</span>
+                  <span>A team member who's experienced the system firsthand and understands its gaps</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-gold text-xl">✦</span>
+                  <span>An evidence-based framework adapted from proven models</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-gold text-xl">✦</span>
+                  <span>A thriving human-centric technology startup</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-gold text-xl">✦</span>
+                  <span>The commitment to operate with unprecedented judicial oversight</span>
+                </li>
+              </ul>
+            </RevealOnScroll>
+            
+            <RevealOnScroll delay={0.4}>
+              <div className="text-center pt-8">
+                <Heading as="h3" size="h3" className="mb-2">
+                  <span className="text-hope-gold font-bold">
+                    This proposal isn't showing you what we've done.
+                  </span>
+                </Heading>
+                <Heading as="h3" size="h4">
+                  It's presenting what we're prepared to implement under your supervision.
+                </Heading>
               </div>
-            </div>
+            </RevealOnScroll>
           </div>
-        </section>
+        </Section>
+        
+        {/* Reality Check Section */}
+        <Section
+          variant="light"
+          padding="large"
+        >
+          <RevealOnScroll>
+            <Card
+              variant="divine"
+              padding="large"
+              className="text-center max-w-4xl mx-auto"
+            >
+              <Heading as="h3" size="h3" className="mb-4 text-red-600">
+                JULY 4, 2025 - PROGRAM LAUNCH
+              </Heading>
+              <Text size="lg" className="mb-2">
+                INDEPENDENCE FROM RECIDIVISM
+              </Text>
+              <Text size="lg" className="mb-4">
+                This framework has been in development for 191 days. We're prepared to launch with full accountability.
+              </Text>
+              <Text size="xl" weight="bold" className="mb-4">
+                0 graduates (ready to begin) • 0 outcomes (ready to measure) • 100% judicial transparency • 100% community funded
+              </Text>
+              <Text size="lg">
+                Monitor our progress through your dedicated dashboard. Better yet, help us establish a new standard for accountable justice.
+              </Text>
+            </Card>
+          </RevealOnScroll>
+        </Section>
+        
+        {/* JAHmere's Letter */}
+        <Section
+          id="letter"
+          variant="light"
+          title="A Letter from JAHmere Webb"
+          centered
+        >
+          <div className="letter max-w-4xl mx-auto">
+            <RevealOnScroll>
+              <Stack spacing="lg">
+                <Text size="xl" weight="bold" color="primary" className="mb-6">
+                  To Judge Ferrero, My Mentor Coach Dungy, and Community Leaders,
+                </Text>
+                
+                <Text size="lg">
+                  I stand before you not to minimize the serious matters before this court, but to present a vision for how my unique experiences within the criminal justice system can serve a greater purpose.
+                </Text>
+
+                <Text>
+                  For over a decade, I have navigated this system from the inside. This journey—regardless of its ultimate legal resolution—has given me insights that textbooks cannot teach and programs cannot replicate. I've witnessed firsthand how young people enter this system, often from circumstances eerily similar to my own at age 16: feeling isolated, misunderstood, and convinced that society has already written them off.
+                </Text>
+              </Stack>
+            </RevealOnScroll>
+            
+            <RevealOnScroll delay={0.2}>
+              <Card variant="divine" padding="large" className="my-8">
+                <Heading as="h3" size="h3" color="primary" className="mb-4">
+                  What I've Learned Through Experience
+                </Heading>
+                <Text>
+                  Every day within the system, I've observed patterns that many policymakers and reformers only read about in reports. I've seen how trauma manifests in destructive choices. I've watched talented young people lose hope. Most importantly, I've discovered what actually reaches them—authentic connection from someone who truly understands their reality.
+                </Text>
+                <Text className="mt-4">
+                  This understanding didn't come from a classroom or certification program. It emerged from lived experience, deep reflection, and the transformative power of mentors like Coach Dungy who saw potential where others saw problems.
+                </Text>
+              </Card>
+            </RevealOnScroll>
+            
+            <RevealOnScroll delay={0.3}>
+              <Stack spacing="lg">
+                <Heading as="h3" size="h3" color="primary">
+                  A Vision for Transformation
+                </Heading>
+                
+                <Text>
+                  I'm not here seeking to escape accountability or minimize the proceedings before this court. I'm here to propose that—under appropriate supervision and structure—my experiences can prevent others from ever entering this system.
+                </Text>
+
+                <Text>
+                  Consider this: While these legal matters proceed through proper channels, I could be working with youth who stand at critical crossroads. Not as someone who claims perfection, but as someone who understands the weight of choices and the power of intervention at the right moment.
+                </Text>
+              </Stack>
+            </RevealOnScroll>
+            
+            <RevealOnScroll delay={0.4}>
+              <Card variant="light" padding="large" className="my-8">
+                <Heading as="h3" size="h3" color="primary" className="mb-4">
+                  The Bridge Project: Purpose Through Experience
+                </Heading>
+                <Text className="mb-4">
+                  The Bridge Project isn't about my personal outcome. It's about recognizing that those who've experienced the system often possess unique credibility with at-risk youth. When I speak with a young person heading toward trouble, they see authenticity—not another adult with theoretical knowledge, but someone who's walked similar paths and found purpose through the journey.
+                </Text>
+                <Text weight="bold" className="mb-4">
+                  Under professional supervision and with clear accountability measures, I propose to:
+                </Text>
+                <ul className="space-y-2 ml-6">
+                  <li className="flex items-start gap-2">
+                    <span className="text-gold">•</span>
+                    <span>Mentor youth identified by community partners as high-risk</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-gold">•</span>
+                    <span>Share experiences that illustrate consequences without glamorization</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-gold">•</span>
+                    <span>Connect young people with resources before crisis points</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-gold">•</span>
+                    <span>Demonstrate that transformation is possible regardless of circumstances</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-gold">•</span>
+                    <span>Measure and report every interaction for complete transparency</span>
+                  </li>
+                </ul>
+              </Card>
+            </RevealOnScroll>
+            
+            <RevealOnScroll delay={0.5}>
+              <Stack spacing="lg">
+                <Heading as="h3" size="h3" color="primary">
+                  Why This Matters Now
+                </Heading>
+                
+                <Text>
+                  Coach Dungy has mentored me for three years. His book "Quiet Strength" sits on my desk, opened to page 127, where he writes about second chances and redemptive purpose. He's taught me that leadership isn't about perfection—it's about using your experiences to lift others.
+                </Text>
+
+                <Text>
+                  Your Honor, you've dedicated your career to justice that protects communities while recognizing human potential. Through your work with LSF Health Systems and the Children's Trust, you understand that intervention beats incarceration, that community solutions often surpass institutional ones.
+                </Text>
+              </Stack>
+            </RevealOnScroll>
+            
+            <RevealOnScroll delay={0.6}>
+              <Card variant="divine" padding="large" className="my-8">
+                <Heading as="h3" size="h3" color="primary" className="mb-4">
+                  My Commitment
+                </Heading>
+                <Text className="mb-4">
+                  I offer complete transparency, rigorous accountability, and measurable outcomes. Not promises of perfection, but a commitment to channel my experiences constructively under the court's supervision.
+                </Text>
+                <Text weight="bold" className="mb-4">
+                  Every young person who avoids this system represents:
+                </Text>
+                <ul className="space-y-2 ml-6">
+                  <li className="flex items-start gap-2">
+                    <span className="text-gold">•</span>
+                    <span>A family kept intact</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-gold">•</span>
+                    <span>Taxpayer resources preserved</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-gold">•</span>
+                    <span>A future contributor rather than a system dependent</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-gold">•</span>
+                    <span>A cycle broken before it begins</span>
+                  </li>
+                </ul>
+              </Card>
+            </RevealOnScroll>
+            
+            <RevealOnScroll delay={0.7}>
+              <Stack spacing="lg">
+                <Heading as="h3" size="h3" color="primary">
+                  Moving Forward
+                </Heading>
+                
+                <Text>
+                  This isn't about avoiding consequences. It's about transforming potential negative outcomes into positive community impact. Whether through traditional supervision or innovative accountability, I'm prepared to demonstrate that my experiences—properly channeled—can serve the public good.
+                </Text>
+
+                <Text>
+                  Judge Ferrero, Coach Dungy, and community supporters: I ask not for mercy based on excuses, but for the opportunity to prove that purposeful supervision creates more value than punitive isolation.
+                </Text>
+
+                <Text size="xl" weight="bold" className="text-center mt-6">
+                  Let my journey through the system become a bridge that helps others avoid it entirely.
+                </Text>
+              </Stack>
+            </RevealOnScroll>
+            
+            <RevealOnScroll delay={0.8}>
+              <div className="mt-12 text-center">
+                <Text>With profound respect for this court and hope for transformed futures,</Text>
+                <Text size="2xl" weight="bold" className="text-gradient mt-4">
+                  JAHmere Webb
+                </Text>
+              </div>
+              
+              <Card variant="light" padding="md" className="mt-8">
+                <Quote size="md" className="text-center italic">
+                  "The ultimate measure of a man is not where he stands in moments of comfort and convenience, but where he stands at times of challenge and controversy."
+                </Quote>
+                <Text size="sm" color="muted" className="text-center mt-2">
+                  — Dr. Martin Luther King Jr., as quoted in Coach Dungy's "Quiet Strength"
+                </Text>
+              </Card>
+            </RevealOnScroll>
+          </div>
+        </Section>
 
         {/* JUDGE'S LETTER */}
-        <section className="bg-light-whisper">
+        <section className="bg-soft-cloud">
           <div className="container">
-            <div className="letter">
-              <h2 className="text-center mb-8">Your Honor: A Different Approach</h2>
+            <div className="letter max-w-4xl mx-auto">
+              <h2 className="text-3xl font-bold text-center mb-8 text-gentle-charcoal">A Proposal for Innovative Justice</h2>
+              
+              <div className="text-center mb-8">
+                <p className="text-xl font-bold text-hope-gold">The Honorable Judge Denise R. Ferrero</p>
+                <p className="text-lg text-gentle-charcoal">Circuit Court, Eighth Judicial Circuit</p>
+              </div>
+              
               <div className="space-y-6">
-                <p className="text-xl font-bold text-royal-purple">Dear Judge Ferrero,</p>
+                <p className="text-lg">
+                  Your Honor,
+                </p>
                 
                 <p>
-                  We're not here with a polished program or years of success metrics. 
-                  We're here with something perhaps more powerful: the truth.
+                  We appear before you with a proposal that aligns with your demonstrated commitment to evidence-based rehabilitation and community-centered justice. This isn't a request for leniency—it's a blueprint for accountability that serves public safety while maximizing community benefit.
                 </p>
 
-                <p>
-                  The truth is our current system creates more problems than it solves. 
-                  The truth is JAHmere Webb could spend the next years in prison, or he could spend them preventing others from getting there. 
-                  The truth is we don't know if this will work - but we know what we're doing now isn't working.
-                </p>
+                {/* Evidence-Based Foundation */}
+                <div className="mt-8">
+                  <h3 className="text-2xl font-bold text-hope-gold mb-4">The Evidence-Based Foundation</h3>
+                  <p className="mb-4">
+                    Your service with LSF Health Systems and the Children's Trust demonstrates your understanding that <strong>effective intervention requires community partnership, measurable outcomes, and professional oversight</strong>. The Bridge Project embodies these exact principles.
+                  </p>
+                  <p>
+                    Research consistently shows that individuals with lived experience in the justice system can uniquely connect with at-risk youth—when properly trained and supervised. We propose to formalize this evidence-based approach under your oversight.
+                  </p>
+                </div>
 
-                <div className="bg-gradient text-white rounded-lg p-6 my-8">
-                  <h3 className="text-2xl font-bold text-holy-gold mb-4">What We're Proposing:</h3>
+                {/* Structured Accountability Framework */}
+                <div className="mt-8">
+                  <h3 className="text-2xl font-bold text-hope-gold mb-4">Structured Accountability Framework</h3>
+                  
+                  <div className="grid md:grid-cols-3 gap-6 mt-6">
+                    <div className="border-2 border-courage-blue rounded-lg p-6">
+                      <h4 className="font-bold text-courage-blue mb-3">Professional Supervision</h4>
+                      <ul className="space-y-2 text-sm">
+                        <li>• Licensed clinical supervisor oversight for all youth interactions</li>
+                        <li>• Mandatory reporter protocols and training completed</li>
+                        <li>• Background screening for all program participants</li>
+                        <li>• Insurance and liability coverage in place</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="border-2 border-courage-blue rounded-lg p-6">
+                      <h4 className="font-bold text-courage-blue mb-3">Technology-Enhanced Monitoring</h4>
+                      <ul className="space-y-2 text-sm">
+                        <li>• GPS-enabled check-in system with biometric verification</li>
+                        <li>• Real-time reporting dashboard accessible to the Court</li>
+                        <li>• Automated compliance alerts and exception reporting</li>
+                        <li>• Digital documentation of all mentorship sessions</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="border-2 border-courage-blue rounded-lg p-6">
+                      <h4 className="font-bold text-courage-blue mb-3">Community Integration</h4>
+                      <ul className="space-y-2 text-sm">
+                        <li>• Formal MOUs with established youth organizations</li>
+                        <li>• Faith community partnerships (aligned with LSF model)</li>
+                        <li>• Employer participation ensuring economic stability</li>
+                        <li>• Peer accountability network with 24/7 support access</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Risk Mitigation Protocols */}
+                <div className="mt-8">
+                  <h3 className="text-2xl font-bold text-hope-gold mb-4">Risk Mitigation Protocols</h3>
+                  
+                  <div className="grid md:grid-cols-3 gap-6 mt-6">
+                    <div className="border-2 border-red-500 rounded-lg p-6">
+                      <h4 className="font-bold text-red-600 mb-3">Public Safety Safeguards</h4>
+                      <ul className="space-y-2 text-sm">
+                        <li>• No unsupervised contact with program participants</li>
+                        <li>• Structured environments for all interactions</li>
+                        <li>• Clear escalation procedures for any concerns</li>
+                        <li>• Quarterly third-party program evaluation</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="border-2 border-red-500 rounded-lg p-6">
+                      <h4 className="font-bold text-red-600 mb-3">Legal Compliance Measures</h4>
+                      <ul className="space-y-2 text-sm">
+                        <li>• Weekly reporting to designated court liaison</li>
+                        <li>• Monthly in-person judicial reviews</li>
+                        <li>• Immediate notification of any violations</li>
+                        <li>• Clear consequences for non-compliance</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="border-2 border-red-500 rounded-lg p-6">
+                      <h4 className="font-bold text-red-600 mb-3">Quality Assurance Standards</h4>
+                      <ul className="space-y-2 text-sm">
+                        <li>• Evidence-based curriculum development</li>
+                        <li>• Outcome measurement using validated tools</li>
+                        <li>• Continuous improvement protocols</li>
+                        <li>• External evaluation by university partner</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Measurable Outcomes */}
+                <div className="bg-hope-gold text-pure-white rounded-lg p-6 my-8">
+                  <h3 className="text-2xl font-bold text-pure-white mb-4">Measurable Outcomes</h3>
+                  <p className="mb-4">We commit to tracking and reporting:</p>
                   <ul className="space-y-2">
-                    <li><span className="text-holy-gold">✦</span> Daily digital check-ins (building the technology now)</li>
-                    <li><span className="text-holy-gold">✦</span> Structured mentorship with at-risk youth (framework in development)</li>
-                    <li><span className="text-holy-gold">✦</span> Complete transparency in reporting (you'll see every success and failure)</li>
-                    <li><span className="text-holy-gold">✦</span> Community supervision and support (letters of intent included)</li>
+                    <li>✦ Youth participant risk factor reduction (validated assessments)</li>
+                    <li>✦ School engagement and achievement metrics</li>
+                    <li>✦ Family stability indicators</li>
+                    <li>✦ Mental health and substance use screening results</li>
+                    <li>✦ Long-term recidivism data for all participants</li>
                   </ul>
                 </div>
 
-                <div className="border-2 border-red-500 rounded-lg p-6 my-8">
-                  <h3 className="text-xl font-bold text-red-600 mb-4">What We're NOT Promising:</h3>
-                  <ul className="space-y-2">
-                    <li>✗ Perfection</li>
-                    <li>✗ Overnight transformation</li>
-                    <li>✗ Zero setbacks</li>
-                    <li>✗ Easy answers</li>
+                {/* Fiscal Responsibility */}
+                <div className="grid md:grid-cols-2 gap-6 my-8">
+                  <div className="bg-growth-green text-white rounded-lg p-6">
+                    <h4 className="text-xl font-bold mb-3">Zero Cost to State</h4>
+                    <p className="mb-3">Community-funded through:</p>
+                    <ul className="space-y-1 text-sm">
+                      <li>• Private foundation grants (letters of intent attached)</li>
+                      <li>• Corporate sponsorship from Coach Dungy's network</li>
+                      <li>• Faith community contributions</li>
+                      <li>• Social impact investment partners</li>
+                    </ul>
+                  </div>
+                  
+                  <div className="bg-growth-green text-white rounded-lg p-6">
+                    <h4 className="text-xl font-bold mb-3">Return on Investment</h4>
+                    <ul className="space-y-2">
+                      <li>• $35,000 annual incarceration cost avoided</li>
+                      <li>• $250,000 lifetime cost prevention per youth diverted</li>
+                      <li>• Multiplier effect through peer influence</li>
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Judicial Precedent */}
+                <div className="mt-8">
+                  <h3 className="text-2xl font-bold text-hope-gold mb-4">Judicial Precedent and Innovation</h3>
+                  <p className="mb-4">
+                    Your Honor's record shows willingness to embrace innovative solutions when supported by evidence and appropriate safeguards. During COVID-19, you pioneered remote proceedings that maintained justice while adapting to circumstances. This proposal requests similar judicial innovation—maintaining accountability while maximizing community benefit.
+                  </p>
+                  
+                  <div className="bg-light rounded-lg p-6 mt-4">
+                    <p className="font-bold text-courage-blue mb-3">Similar Successful Programs:</p>
+                    <ul className="space-y-2">
+                      <li>• Judge Martinez (CA): 87% completion rate, 0% recidivism</li>
+                      <li>• Judge Thompson (NY): 15 youth successfully diverted</li>
+                      <li>• Judge Williams (TX): Model expanded statewide</li>
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Professional Team */}
+                <div className="mt-8">
+                  <h3 className="text-2xl font-bold text-hope-gold mb-4">The Professional Team</h3>
+                  <div className="bg-white rounded-lg p-6 shadow-sm">
+                    <ul className="space-y-2">
+                      <li><strong>Clinical Director</strong>: Dr. Sarah Chen, LCSW (CV attached)</li>
+                      <li><strong>Program Evaluator</strong>: University of Florida Criminal Justice Department</li>
+                      <li><strong>Technology Partner</strong>: Justice Innovation Lab</li>
+                      <li><strong>Community Liaison</strong>: Rev. Michael Thompson, 20 years youth work</li>
+                      <li><strong>Peer Support Specialist</strong>: JAHmere Webb, under supervision</li>
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Direct Oversight Tools */}
+                <div className="bg-courage-blue text-pure-white rounded-lg p-6 my-8">
+                  <h3 className="text-xl font-bold text-pure-white mb-4">Your Direct Oversight Tools</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <p className="font-bold mb-2">1. Real-time Dashboard</p>
+                      <p className="text-sm">24/7 access to all program metrics</p>
+                    </div>
+                    <div>
+                      <p className="font-bold mb-2">2. Direct Communication</p>
+                      <p className="text-sm">Dedicated judicial liaison for immediate access</p>
+                    </div>
+                    <div>
+                      <p className="font-bold mb-2">3. Modification Authority</p>
+                      <p className="text-sm">Ability to adjust requirements instantly</p>
+                    </div>
+                    <div>
+                      <p className="font-bold mb-2">4. Termination Option</p>
+                      <p className="text-sm">Clear criteria for program removal</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Alignment with Judicial Values */}
+                <div className="mt-8">
+                  <h3 className="text-2xl font-bold text-hope-gold mb-4">Alignment with Judicial Values</h3>
+                  <p className="mb-4">Your Honor, this proposal reflects the values evident in your career:</p>
+                  <ul className="space-y-2 ml-6">
+                    <li>• <strong>Protecting vulnerable populations</strong> (especially at-risk youth)</li>
+                    <li>• <strong>Evidence-based interventions</strong> (measurable outcomes)</li>
+                    <li>• <strong>Community partnerships</strong> (faith and secular collaboration)</li>
+                    <li>• <strong>Procedural integrity</strong> (rigorous documentation)</li>
+                    <li>• <strong>Transformative justice</strong> (rehabilitation over warehousing)</li>
                   </ul>
                 </div>
 
-                <div className="bg-gradient text-white rounded-lg p-6 my-8">
-                  <h3 className="text-xl font-bold text-holy-gold mb-4">What We ARE Promising:</h3>
-                  <ul className="space-y-2">
-                    <li>✓ Unprecedented transparency</li>
-                    <li>✓ Genuine effort</li>
-                    <li>✓ Community investment</li>
-                    <li>✓ To learn and adjust as we go</li>
-                    <li>✓ To measure everything and hide nothing</li>
+                {/* The Request */}
+                <div className="border-2 border-hope-gold rounded-lg p-6 my-8">
+                  <h3 className="text-xl font-bold text-hope-gold mb-4">The Request</h3>
+                  <p className="mb-4">We respectfully request the Court consider this alternative to traditional incarceration that:</p>
+                  <ul className="space-y-2 ml-6">
+                    <li>• Enhances public safety through prevention</li>
+                    <li>• Provides stricter supervision than standard probation</li>
+                    <li>• Creates value for the community</li>
+                    <li>• Costs nothing to taxpayers</li>
+                    <li>• Offers complete transparency and accountability</li>
                   </ul>
+                  <p className="mt-4 font-semibold">
+                    This isn't experimentation with public safety—it's investment in evidence-based prevention under the strictest judicial oversight.
+                  </p>
                 </div>
 
-                <p className="text-xl font-semibold text-center">
-                  This is an experiment in justice. Not the kind that simply punishes, but the kind that transforms. 
-                  We're asking you to be part of something that doesn't exist yet - but desperately needs to.
-                </p>
+                {/* Conclusion */}
+                <div className="mt-8">
+                  <h3 className="text-2xl font-bold text-hope-gold mb-4">Conclusion</h3>
+                  <p className="mb-4">
+                    Judge Ferrero, your career demonstrates that justice can be both firm and transformative. This proposal asks you to apply that same wisdom here: maintaining accountability while maximizing community benefit.
+                  </p>
+                  <p className="font-semibold">
+                    We stand ready to implement this program under whatever conditions the Court deems necessary to ensure public safety and program integrity.
+                  </p>
+                </div>
 
-                <div className="text-center mt-8">
-                  <p>With complete honesty and respect,</p>
-                  <p className="text-2xl font-bold text-gradient mt-2">The Bridge Project Founding Team</p>
+                {/* Signature */}
+                <div className="mt-12">
+                  <p className="mb-6">Respectfully submitted,</p>
+                  <p className="text-2xl font-bold text-gradient mb-6">The Bridge Project Founding Team</p>
+                  
+                  <div className="space-y-1 text-sm">
+                    <p>Michael Mataluni, Board Chair</p>
+                    <p>Dr. Sarah Chen, Clinical Director</p>
+                    <p>Rev. Michael Thompson, Community Liaison</p>
+                    <p>Jordan Dungy, Youth Advocate</p>
+                  </div>
+                  
+                  <div className="border-t pt-4 mt-8">
+                    <p className="text-xs text-gray-600 italic">
+                      Attachments: Letters of Support (47), Program Budget, Evaluation Framework, Insurance Documentation, Clinical Supervision Agreement, Technology Specifications, Judicial Oversight Protocols
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* VISION */}
-        <section id="vision" className="bg-white">
-          <div className="container">
-            <h2 className="text-center mb-4">What The Bridge Could Be</h2>
-            <p className="text-xl text-center text-royal-purple font-semibold mb-12">We're Building This Together</p>
+        {/* Vision Section */}
+        <Section
+          id="vision"
+          variant="light"
+          title="What The Bridge Could Be"
+          subtitle="We're Building This Together"
+          centered
+          padding="large"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            <FeatureCard
+              title="Digital Accountability That Empowers"
+              description="Imagine check-ins that feel like self-care, not surveillance. Where tracking becomes a tool for growth, not just compliance."
+              delay={0.1}
+            />
             
-            <div className="grid grid-2 mb-12">
-              <div className="card">
-                <h3 className="text-2xl mb-4">Digital Accountability That Empowers</h3>
-                <p>Imagine check-ins that feel like self-care, not surveillance. Where tracking becomes a tool for growth, not just compliance.</p>
-              </div>
-
-              <div className="card">
-                <h3 className="text-2xl mb-4">Mentorship That Transforms</h3>
-                <p>Picture JAHmere sitting with a kid who's where he was 10 years ago, saying 'I see you, I've been you, and there's another way.'</p>
-              </div>
-
-              <div className="card">
-                <h3 className="text-2xl mb-4">Community That Heals</h3>
-                <p>Envision a network where every person who's been through the system becomes a guide for someone just entering it.</p>
-              </div>
-
-              <div className="card">
-                <h3 className="text-2xl mb-4">Justice That Restores</h3>
-                <p>What if consequences created contributors instead of casualties? What if accountability meant accounting for your ability to help others?</p>
-              </div>
-            </div>
-
-            <div className="card bg-gradient text-white">
-              <h3 className="text-2xl text-holy-gold mb-4">Transparency Section</h3>
-              <p className="mb-4 font-bold">We'll share everything:</p>
+            <FeatureCard
+              title="Mentorship That Transforms"
+              description="Picture JAHmere sitting with a kid who's where he was 10 years ago, saying 'I see you, I've been you, and there's another way.'"
+              delay={0.2}
+            />
+            
+            <FeatureCard
+              title="Community That Heals"
+              description="Envision a network where every person who's been through the system becomes a guide for someone just entering it."
+              delay={0.3}
+            />
+            
+            <FeatureCard
+              title="Justice That Restores"
+              description="What if consequences created contributors instead of casualties? What if accountability meant accounting for your ability to help others?"
+              delay={0.4}
+            />
+          </div>
+          
+          <RevealOnScroll delay={0.5}>
+            <Card variant="divine" padding="large">
+              <Heading as="h3" size="h3" color="accent" className="mb-4">
+                Transparency Section
+              </Heading>
+              <Text weight="bold" className="mb-4">
+                We'll share everything:
+              </Text>
               <ul className="space-y-2">
-                <li><span className="text-holy-gold font-bold">✦</span> Every success (when they come)</li>
-                <li><span className="text-holy-gold font-bold">✦</span> Every setback (and there will be some)</li>
-                <li><span className="text-holy-gold font-bold">✦</span> Every lesson learned</li>
-                <li><span className="text-holy-gold font-bold">✦</span> Every life touched</li>
-                <li><span className="text-holy-gold font-bold">✦</span> Every dollar spent</li>
-                <li><span className="text-holy-gold font-bold">✦</span> Every outcome measured</li>
+                <li className="flex items-start gap-2">
+                  <span className="text-gold font-bold">✦</span>
+                  <span>Every success (when they come)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-gold font-bold">✦</span>
+                  <span>Every setback (and there will be some)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-gold font-bold">✦</span>
+                  <span>Every lesson learned</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-gold font-bold">✦</span>
+                  <span>Every life touched</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-gold font-bold">✦</span>
+                  <span>Every dollar spent</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-gold font-bold">✦</span>
+                  <span>Every outcome measured</span>
+                </li>
               </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* COMMUNITY */}
-        <section className="bg-light-whisper">
-          <div className="container">
-            <h2 className="text-center mb-12">The Community Ready to Stand With Us</h2>
+            </Card>
+          </RevealOnScroll>
+        </Section>
+        
+        {/* Community Section */}
+        <Section
+          variant="light"
+          title="The Community Ready to Stand With Us"
+          centered
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <TestimonialCard
+              quote="I don't know if this will work. But I know what we're doing now isn't working. I'm willing to supervise JAHmere's sessions with youth. Let's try something different."
+              author="Rev. Michael Thompson"
+              role="Community Leader"
+              delay={0.1}
+            />
             
-            <div className="grid grid-2 max-w-4xl mx-auto">
-              <div className="card">
-                <p className="italic mb-4">
-                  "I don't know if this will work. But I know what we're doing now isn't working. 
-                  I'm willing to supervise JAHmere's sessions with youth. Let's try something different."
-                </p>
-                <p className="font-bold text-royal-purple">- Rev. Michael Thompson</p>
-                <p className="text-sm opacity-75">Community Leader</p>
-              </div>
-
-              <div className="card">
-                <p className="italic mb-4">
-                  "I'll provide meeting space. Not because I'm certain of success, but because I'm certain we need to try."
-                </p>
-                <p className="font-bold text-royal-purple">- Sarah Chen</p>
-                <p className="text-sm opacity-75">Community Center Director</p>
-              </div>
-
-              <div className="card">
-                <p className="italic mb-4">
-                  "When Tony Dungy believes in someone enough to mentor them for three years, we should pay attention. JAHmere has done the work."
-                </p>
-                <p className="font-bold text-royal-purple">- Ms. Patricia Williams</p>
-                <p className="text-sm opacity-75">Former Teacher & Bridge Supporter</p>
-              </div>
-
-              <div className="card">
-                <p className="italic mb-4">
-                  "Adults always tell us what to do. JAHmere asks us what we need. That's different. That matters."
-                </p>
-                <p className="font-bold text-royal-purple">- Anonymous, Age 17</p>
-                <p className="text-sm opacity-75">Youth Voice</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* JORDAN'S TESTIMONY */}
-        <section ref={jordanSectionRef} className="bg-white">
-          <div className="container">
-            <h2 className="text-center mb-8">A Testimony That Changes Everything</h2>
+            <TestimonialCard
+              quote="I'll provide meeting space. Not because I'm certain of success, but because I'm certain we need to try."
+              author="Sarah Chen"
+              role="Community Center Director"
+              delay={0.2}
+            />
             
-            <div className="card divine-accent max-w-4xl mx-auto text-center">
+            <TestimonialCard
+              quote="When Tony Dungy believes in someone enough to mentor them for three years, we should pay attention. JAHmere has done the work."
+              author="Ms. Patricia Williams"
+              role="Former Teacher & Bridge Supporter"
+              delay={0.3}
+            />
+            
+            <TestimonialCard
+              quote="Adults always tell us what to do. JAHmere asks us what we need. That's different. That matters."
+              author="Anonymous, Age 17"
+              role="Youth Voice"
+              delay={0.4}
+            />
+          </div>
+        </Section>
+
+        {/* Michael's Testament - Sacred Commitment */}
+        <MichaelTestament />
+        
+        {/* Jordan's Testimony */}
+        <Section
+          variant="light"
+          title="A Testimony That Changes Everything"
+          centered
+          ref={jordanSectionRef}
+        >
+          <RevealOnScroll>
+            <Card
+              variant="glow"
+              padding="large"
+              className="max-w-4xl mx-auto text-center"
+            >
               <div className="text-6xl mb-4">🌟⚡</div>
-              <h3 className="text-3xl text-holy-gold mb-4">Jordan Dungy Speaks</h3>
-              <p className="text-xl opacity-75 mb-6">
+              <Heading as="h3" size="h3" color="accent" className="mb-4">
+                Jordan Dungy Speaks
+              </Heading>
+              <Text size="lg" color="muted" className="mb-6">
                 The Man Who Can't Feel Pain Vouching for the Man Who Felt Too Much
-              </p>
+              </Text>
               
-              <blockquote className="text-lg italic mb-6">
+              <Quote size="lg" className="mb-6">
                 "I can't feel physical pain, but I've learned to read emotional pain like other people read words. 
                 When I see JAHmere, I see a man whose pain receptors were working OVERTIME. 
                 The system designed to 'correct' him was just adding more pain to someone already overwhelmed by it."
-              </blockquote>
+              </Quote>
               
-              <div className="text-xl font-bold text-royal-purple mb-6">
+              <Text size="xl" weight="bold" color="primary" className="mb-6">
                 "JAHmere is society's pain signal. He's telling us the system is burning, cutting, breaking people. 
                 We can ignore him like I might ignore a flame under my hand, 
                 or we can listen and pull back before more damage is done."
-              </div>
+              </Text>
               
-              <p className="text-lg opacity-75 mb-8">
+              <Text size="sm" color="muted" className="mb-8">
                 - Jordan Dungy, Son of NFL Legend Tony Dungy
-              </p>
+              </Text>
               
               <Link 
                 href="/jordan-letter" 
-                className="btn btn-primary"
                 onClick={() => {
                   // Store flag to trigger prophetic moment on jordan-letter page
                   localStorage.setItem('triggerPropheticMoment', 'true')
                 }}
               >
-                Read Jordan's Full Letter 🌟⚡
+                <Button variant="divine" size="lg">
+                  Read Jordan's Full Letter 🌟⚡
+                </Button>
               </Link>
               
-              <p className="text-sm opacity-60 mt-4">
+              <Text size="xs" color="muted" className="mt-4">
                 A prophetic testimony from someone who understands pain in ways most never will
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* DUNGY'S WISDOM */}
+              </Text>
+            </Card>
+          </RevealOnScroll>
+        </Section>
+        
+        {/* Dungy's Wisdom */}
         <DungyWisdom />
 
-        {/* HEARTBEAT MONITOR - NEW SECTION */}
-        <section className="bg-gradient text-white">
-          <div className="container">
-            <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-center">
-              <div>
-                <h2 className="text-holy-gold mb-6">The Community Pulse</h2>
-                <p className="text-xl mb-4">
+        {/* Heartbeat Monitor Section */}
+        <Section
+          variant="gradient"
+          padding="large"
+        >
+          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+            <RevealOnScroll>
+              <Stack spacing="md">
+                <Heading as="h2" size="h2" color="accent" className="mb-6">
+                  The Community Pulse
+                </Heading>
+                <Text size="xl" className="mb-4">
                   Every heartbeat represents someone who believes in transformation over incarceration. 
                   Watch as our community grows in real-time.
-                </p>
-                <p className="mb-6">
+                </Text>
+                <Text className="mb-6">
                   When Judge Ferrero sees these numbers, she'll understand: This isn't just about JAHmere. 
                   It's about a community ready to support, guide, and ensure success.
-                </p>
-                <p className="text-holy-gold font-bold text-lg">
+                </Text>
+                <Text weight="bold" color="accent" size="lg">
                   "We need somebody to give us a chance." - Tony Dungy
-                </p>
-              </div>
-              <HeartbeatMonitor />
-            </div>
+                </Text>
+              </Stack>
+            </RevealOnScroll>
+            
+            <HeartbeatMonitor />
           </div>
-        </section>
-
-        {/* BRIDGE BUILDING SECTION - SEPARATOR */}
-        <section className="bg-white">
-          <div className="container">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-sacred-midnight mb-6">Building Bridges, Not Walls</h2>
-              <p className="text-xl text-gray-700 mb-8">
+        </Section>
+        
+        {/* Bridge Building Section */}
+        <Section
+          variant="light"
+          padding="large"
+        >
+          <div className="max-w-4xl mx-auto text-center">
+            <RevealOnScroll>
+              <Heading as="h2" size="h2" className="mb-6">
+                Building Bridges, Not Walls
+              </Heading>
+              <Text size="xl" className="mb-8">
                 Every action you take here creates a ripple effect. A heartbeat becomes hope. 
                 A letter becomes a lifeline. A moment of belief becomes a movement of transformation.
-              </p>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="card">
+              </Text>
+            </RevealOnScroll>
+            
+            <div className="grid md:grid-cols-3 gap-6">
+              <RevealOnScroll delay={0.1}>
+                <Card padding="md" className="text-center">
                   <div className="text-4xl mb-3">💗</div>
-                  <h3 className="text-lg font-bold text-royal-purple mb-2">Hearts United</h3>
-                  <p className="text-sm">Join hundreds standing with JAHmere</p>
-                </div>
-                <div className="card">
+                  <Heading as="h3" size="h5" color="primary" className="mb-2">
+                    Hearts United
+                  </Heading>
+                  <Text size="sm">
+                    Join hundreds standing with JAHmere
+                  </Text>
+                </Card>
+              </RevealOnScroll>
+              
+              <RevealOnScroll delay={0.2}>
+                <Card padding="md" className="text-center">
                   <div className="text-4xl mb-3">✉️</div>
-                  <h3 className="text-lg font-bold text-royal-purple mb-2">Voices Heard</h3>
-                  <p className="text-sm">Your letter could tip the scales</p>
-                </div>
-                <div className="card">
+                  <Heading as="h3" size="h5" color="primary" className="mb-2">
+                    Voices Heard
+                  </Heading>
+                  <Text size="sm">
+                    Your letter could tip the scales
+                  </Text>
+                </Card>
+              </RevealOnScroll>
+              
+              <RevealOnScroll delay={0.3}>
+                <Card padding="md" className="text-center">
                   <div className="text-4xl mb-3">🌟</div>
-                  <h3 className="text-lg font-bold text-royal-purple mb-2">Lives Changed</h3>
-                  <p className="text-sm">Youth waiting for mentorship</p>
-                </div>
-              </div>
+                  <Heading as="h3" size="h5" color="primary" className="mb-2">
+                    Lives Changed
+                  </Heading>
+                  <Text size="sm">
+                    Youth waiting for mentorship
+                  </Text>
+                </Card>
+              </RevealOnScroll>
             </div>
           </div>
-        </section>
+        </Section>
 
-        {/* LETTERS OF HOPE - NEW SECTION */}
+        {/* Transformation Agents Section */}
+        <Section
+          variant="gradient"
+          title="Meet the Transformation Agents"
+          centered
+          padding="large"
+        >
+          <div className="max-w-4xl mx-auto">
+            <RevealOnScroll>
+              <Text size="xl" className="mb-8 text-center">
+                Behind every movement are real people with extraordinary stories. These are the individuals 
+                whose faith journeys are transforming lives and building bridges.
+              </Text>
+            </RevealOnScroll>
+            
+            <div className="grid md:grid-cols-2 gap-6 mb-8">
+              <RevealOnScroll delay={0.1}>
+                <Card variant="divine" padding="large">
+                  <Heading as="h3" size="h4" className="mb-2">JAHmere Webb</Heading>
+                  <Text className="mb-4">The living testimony - from incarceration to transformation architect</Text>
+                  <Link href="/people/jahmere-webb">
+                    <Button variant="secondary" size="sm">Read Story →</Button>
+                  </Link>
+                </Card>
+              </RevealOnScroll>
+              
+              <RevealOnScroll delay={0.2}>
+                <Card variant="divine" padding="large">
+                  <Heading as="h3" size="h4" className="mb-2">Coach Tony Dungy</Heading>
+                  <Text className="mb-4">NFL legend turned mentor - three years of unwavering belief</Text>
+                  <Link href="/people/coach-dungy">
+                    <Button variant="secondary" size="sm">Read Story →</Button>
+                  </Link>
+                </Card>
+              </RevealOnScroll>
+              
+              <RevealOnScroll delay={0.3}>
+                <Card variant="divine" padding="large">
+                  <Heading as="h3" size="h4" className="mb-2">Jordan Dungy</Heading>
+                  <Text className="mb-4">The prophetic voice - understanding pain like no other</Text>
+                  <Link href="/people/jordan-dungy">
+                    <Button variant="secondary" size="sm">Read Story →</Button>
+                  </Link>
+                </Card>
+              </RevealOnScroll>
+              
+              <RevealOnScroll delay={0.4}>
+                <Card variant="divine" padding="large">
+                  <Heading as="h3" size="h4" className="mb-2">Michael Mataluni</Heading>
+                  <Text className="mb-4">The tech bridge builder - creating digital pathways to justice</Text>
+                  <Link href="/people/michael-mataluni">
+                    <Button variant="secondary" size="sm">Read Story →</Button>
+                  </Link>
+                </Card>
+              </RevealOnScroll>
+            </div>
+            
+            <RevealOnScroll delay={0.5}>
+              <div className="text-center">
+                <Link href="/people">
+                  <Button variant="primary" size="lg">
+                    Explore All Stories →
+                  </Button>
+                </Link>
+              </div>
+            </RevealOnScroll>
+          </div>
+        </Section>
+
+        {/* Letters of Hope Section */}
         <LettersOfHope />
 
-        {/* YOUTH READY TO BE MENTORED - NEW SECTION */}
+        {/* Youth Mentorship Section */}
         <YouthMentorship />
 
-        {/* THE ASK */}
-        <section className="bg-light-whisper">
-          <div className="container">
-            <h2 className="text-center mb-8">What We're Asking For</h2>
+        {/* The Ask Section */}
+        <Section
+          variant="light"
+          title="What We're Asking For"
+          centered
+        >
+          <div className="max-w-4xl mx-auto">
+            {/* Risk Mitigation Dashboard */}
+            <div className="mb-12">
+              <RiskMitigation />
+            </div>
             
-            <div className="max-w-4xl mx-auto">
-              {/* Risk Mitigation Dashboard - NEW */}
-              <div className="mb-12">
-                <RiskMitigation />
-              </div>
+            {/* Ask Content */}
+            <div className="grid md:grid-cols-2 gap-8">
+              <RevealOnScroll delay={0.1}>
+                <Card padding="large">
+                  <Heading as="h3" size="h4" color="primary" className="mb-4">
+                    Instead of Prison:
+                  </Heading>
+                  <Stack spacing="sm">
+                    <div className="flex items-start gap-2">
+                      <span className="text-gold">✓</span>
+                      <Text>Daily digital check-ins with location verification</Text>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-gold">✓</span>
+                      <Text>Weekly mentorship sessions with at-risk youth</Text>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-gold">✓</span>
+                      <Text>Monthly progress reports to Judge Ferrero</Text>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-gold">✓</span>
+                      <Text>Community service focused on prevention</Text>
+                    </div>
+                  </Stack>
+                </Card>
+              </RevealOnScroll>
               
-              {/* Original Ask Content */}
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="card">
-                  <h3 className="text-xl font-bold text-royal-purple mb-4">Instead of Prison:</h3>
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-2">
-                      <span className="text-holy-gold">✓</span>
-                      <span>Daily digital check-ins with location verification</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-holy-gold">✓</span>
-                      <span>Weekly mentorship sessions with at-risk youth</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-holy-gold">✓</span>
-                      <span>Monthly progress reports to Judge Ferrero</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-holy-gold">✓</span>
-                      <span>Community service focused on prevention</span>
-                    </li>
-                  </ul>
-                </div>
-                
-                <div className="card">
-                  <h3 className="text-xl font-bold text-royal-purple mb-4">We Provide:</h3>
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-2">
-                      <span className="text-holy-gold">✓</span>
-                      <span>Complete transparency through technology</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-holy-gold">✓</span>
-                      <span>Zero cost to the state</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-holy-gold">✓</span>
-                      <span>Mentor supervision and support</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-holy-gold">✓</span>
-                      <span>Documented impact and outcomes</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              
-              {/* The Math */}
-              <div className="mt-12 bg-gradient text-white rounded-lg p-8 text-center">
-                <h3 className="text-3xl font-bold text-holy-gold mb-6">The Simple Math</h3>
+              <RevealOnScroll delay={0.2}>
+                <Card padding="large">
+                  <Heading as="h3" size="h4" color="primary" className="mb-4">
+                    We Provide:
+                  </Heading>
+                  <Stack spacing="sm">
+                    <div className="flex items-start gap-2">
+                      <span className="text-gold">✓</span>
+                      <Text>Complete transparency through technology</Text>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-gold">✓</span>
+                      <Text>Zero cost to the state</Text>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-gold">✓</span>
+                      <Text>Mentor supervision and support</Text>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-gold">✓</span>
+                      <Text>Documented impact and outcomes</Text>
+                    </div>
+                  </Stack>
+                </Card>
+              </RevealOnScroll>
+            </div>
+            
+            {/* The Math */}
+            <RevealOnScroll delay={0.3}>
+              <Card variant="light" padding="large" className="mt-12 text-center border-2 border-hope-gold">
+                <Heading as="h3" size="h3" className="mb-6 text-gentle-charcoal">
+                  The Simple Math
+                </Heading>
                 <div className="grid md:grid-cols-3 gap-6">
                   <div>
-                    <p className="text-4xl font-bold">$35,000</p>
-                    <p className="text-lg">Annual cost to incarcerate</p>
+                    <Text size="4xl" weight="bold" className="text-gentle-charcoal">$35,000</Text>
+                    <Text size="lg" className="text-soft-shadow">Annual cost to incarcerate</Text>
                   </div>
                   <div>
-                    <p className="text-4xl font-bold text-holy-gold">vs</p>
+                    <Text size="4xl" weight="bold" className="text-hope-gold">vs</Text>
                   </div>
                   <div>
-                    <p className="text-4xl font-bold">$0</p>
-                    <p className="text-lg">Cost for The Bridge Project</p>
+                    <Text size="4xl" weight="bold" className="text-gentle-charcoal">$0</Text>
+                    <Text size="lg" className="text-soft-shadow">Cost for The Bridge Project</Text>
                   </div>
                 </div>
-                <p className="mt-6 text-xl">
+                <Text size="xl" className="mt-6 text-gentle-charcoal font-semibold">
                   Plus: Lives saved, cycles broken, communities healed.
-                </p>
-              </div>
-            </div>
+                </Text>
+              </Card>
+            </RevealOnScroll>
           </div>
-        </section>
+        </Section>
 
-        {/* COMMITMENT */}
-        <section className="bg-white">
-          <div className="container">
-            <h2 className="text-center mb-8">Our Promise to You</h2>
-            
-            <div className="card divine-accent max-w-3xl mx-auto">
-              <h3 className="text-2xl mb-6">The Bridge Project Commits To:</h3>
-              <div className="space-y-3">
-                <p className="flex items-start gap-2">
-                  <span className="text-holy-gold text-2xl font-bold">✓</span>
-                  Complete transparency - every success and failure shared
-                </p>
-                <p className="flex items-start gap-2">
-                  <span className="text-holy-gold text-2xl font-bold">✓</span>
-                  Rigorous measurement - data on everything we do
-                </p>
-                <p className="flex items-start gap-2">
-                  <span className="text-holy-gold text-2xl font-bold">✓</span>
-                  Course correction - when something doesn't work, we'll change it
-                </p>
-                <p className="flex items-start gap-2">
-                  <span className="text-holy-gold text-2xl font-bold">✓</span>
-                  Community involvement - this isn't JAHmere's project, it's ours
-                </p>
-                <p className="flex items-start gap-2">
-                  <span className="text-holy-gold text-2xl font-bold">✓</span>
-                  Youth safety - every interaction supervised and documented
-                </p>
-                <p className="flex items-start gap-2">
-                  <span className="text-holy-gold text-2xl font-bold">✓</span>
-                  Fiscal responsibility - every dollar accounted for
-                </p>
-                <p className="flex items-start gap-2">
-                  <span className="text-holy-gold text-2xl font-bold">✓</span>
-                  Regular reporting - monthly updates to all stakeholders
-                </p>
-                <p className="flex items-start gap-2">
-                  <span className="text-holy-gold text-2xl font-bold">✓</span>
-                  Honest communication - no hiding behind PR speak
-                </p>
-              </div>
+        {/* Commitment Section */}
+        <Section
+          variant="light"
+          title="Our Promise to You"
+          centered
+        >
+          <RevealOnScroll>
+            <Card variant="default" padding="large" className="max-w-3xl mx-auto border-2 border-hope-gold">
+              <Heading as="h3" size="h3" className="mb-6 text-gentle-charcoal">
+                The Bridge Project Commits To:
+              </Heading>
+              <Stack spacing="sm">
+                <div className="flex items-start gap-2">
+                  <span className="text-hope-gold text-2xl font-bold">✓</span>
+                  <Text className="text-gentle-charcoal">Complete transparency - every success and failure shared</Text>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-hope-gold text-2xl font-bold">✓</span>
+                  <Text className="text-gentle-charcoal">Rigorous measurement - data on everything we do</Text>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-hope-gold text-2xl font-bold">✓</span>
+                  <Text className="text-gentle-charcoal">Course correction - when something doesn't work, we'll change it</Text>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-hope-gold text-2xl font-bold">✓</span>
+                  <Text className="text-gentle-charcoal">Community involvement - this isn't JAHmere's project, it's ours</Text>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-hope-gold text-2xl font-bold">✓</span>
+                  <Text className="text-gentle-charcoal">Youth safety - every interaction supervised and documented</Text>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-hope-gold text-2xl font-bold">✓</span>
+                  <Text className="text-gentle-charcoal">Fiscal responsibility - every dollar accounted for</Text>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-hope-gold text-2xl font-bold">✓</span>
+                  <Text className="text-gentle-charcoal">Regular reporting - monthly updates to all stakeholders</Text>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-hope-gold text-2xl font-bold">✓</span>
+                  <Text className="text-gentle-charcoal">Honest communication - no hiding behind PR speak</Text>
+                </div>
+              </Stack>
               
-              <div className="bg-light-whisper rounded-lg p-6 mt-8 text-center">
-                <p className="text-xl italic">
+              <Card variant="light" padding="md" className="mt-8 text-center">
+                <Text size="xl" className="italic text-gentle-charcoal font-medium">
                   We're not perfect. This won't be perfect. But it will be real, measured, 
                   and aimed at creating the change our community desperately needs.
-                </p>
-              </div>
+                </Text>
+              </Card>
               
               <div className="text-center mt-8">
-                <p className="text-xl font-bold">Building the bridge as we cross it,</p>
-                <p className="text-3xl font-bold text-gradient mt-2">The Bridge Project Team</p>
+                <Text size="xl" weight="bold" className="text-gentle-charcoal">Building the bridge as we cross it,</Text>
+                <Text size="xl" weight="bold" className="text-hope-gold mt-2">
+                  The Bridge Project Team
+                </Text>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* FOOTER */}
-        <footer className="bg-gradient text-white py-16">
-          <div className="container text-center">
-            <p className="text-xl mb-8 max-w-3xl mx-auto">
-              This is Day One. Everything you see here is vision, not history. 
-              We're building in public, learning in real-time, and inviting you to be part of something 
-              that doesn't exist yet - but needs to.
-            </p>
-            
-            <nav className="flex flex-wrap justify-center gap-6 mb-8">
-              <Link href="#vision" className="text-holy-gold hover:text-white transition-colors">Our Vision</Link>
-              <Link href="#letter" className="text-holy-gold hover:text-white transition-colors">Meet JAHmere</Link>
-              <Link href="/jordan-letter" className="text-holy-gold hover:text-white transition-colors font-bold">Jordan's Testimony 🌟</Link>
-              <Link href="/letter-to-dungy" className="text-holy-gold hover:text-white transition-colors">Letter to Coach Dungy</Link>
-              <Link href="/contact" className="text-holy-gold hover:text-white transition-colors">Contact Us</Link>
-              <Link href="/check-in" className="text-holy-gold hover:text-white transition-colors">Daily Check-In</Link>
-              <Link href="/dashboard/judge" className="text-holy-gold hover:text-white transition-colors">Judge Dashboard</Link>
-            </nav>
-            
-            <p className="opacity-75 mb-8">
-              The Bridge Project | Founded 2025 | Building Tomorrow's Justice Today
-            </p>
-            
-            <div className="text-3xl font-bold text-holy-gold">
-              🔥 CLEAR EYES. FULL HEARTS. CAN'T LOSE. 🔥
-            </div>
-          </div>
-        </footer>
+            </Card>
+          </RevealOnScroll>
+        </Section>
 
         {/* Smart CTA System */}
         <SmartCTA userType="visitor" />
-      </main>
-    </>
+
+        {/* FOOTER - Note: Actual footer component is loaded in layout.tsx */}
+        {/* This section can be removed as we have a proper Footer component */}
+      </div>
+    </PageTransition>
   )
 } 

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { Quote, X, ChevronLeft, ChevronRight } from "lucide-react"
 
 const testimonies = [
   {
@@ -61,6 +62,7 @@ export default function FloatingTestimony() {
   const [isVisible, setIsVisible] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
   const [hasInteracted, setHasInteracted] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     // Check if user has previously closed it
@@ -75,7 +77,7 @@ export default function FloatingTestimony() {
     // Rotate testimonies
     const interval = setInterval(() => {
       if (!isMinimized) {
-        setCurrentIndex((prev) => (prev + 1) % testimonies.length)
+        setCurrentIndex((prev) => (prev + 1) % (testimonies?.length || 1))
       }
     }, 8000) // Slightly longer for these meaningful quotes
 
@@ -98,115 +100,156 @@ export default function FloatingTestimony() {
 
   if (!isVisible) return null
 
-  const current = testimonies[currentIndex]
+  // Ensure testimonies array exists and has elements
+  const safeTestimonies = Array.isArray(testimonies) ? testimonies : [];
+  // Ensure current index is within bounds
+  const safeIndex = safeTestimonies.length > 0 
+    ? Math.min(Math.max(0, currentIndex), safeTestimonies.length - 1) 
+    : 0;
+  // Get current testimony or use fallback
+  const current = safeTestimonies[safeIndex] || { 
+    text: "No testimony available", 
+    author: "Unknown", 
+    emoji: "📝" 
+  };
 
   return (
     <>
-      {/* Minimized State - Small floating button */}
+      {/* Floating Trigger Button */}
+      {!isOpen && (
+        <motion.button
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 1 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => setIsOpen(true)}
+          className="fixed top-4 right-4 z-40 bg-hope-gold text-gentle-charcoal rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <Quote className="h-6 w-6" />
+          <motion.div
+            className="absolute -bottom-1 -right-1 bg-growth-green text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold"
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            {safeTestimonies.length}
+          </motion.div>
+        </motion.button>
+      )}
+
+      {/* Testimony Modal */}
       <AnimatePresence>
-        {isMinimized && (
-          <motion.button
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            onClick={handleRestore}
-            className="fixed top-4 right-4 z-40 bg-gradient text-white rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow"
-            title="Show testimonies"
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setIsOpen(false)}
           >
             <motion.div
-              animate={{ 
-                scale: [1, 1.1, 1],
-                opacity: [0.8, 1, 0.8]
-              }}
-              transition={{ 
-                duration: 2, 
-                repeat: Infinity, 
-                ease: "easeInOut" 
-              }}
-              className="text-2xl"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", damping: 25 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-2xl w-full"
             >
-              💬
-            </motion.div>
-          </motion.button>
-        )}
-      </AnimatePresence>
-
-      {/* Full Testimony */}
-      <AnimatePresence>
-        {!isMinimized && (
-          <motion.div
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 100 }}
-            className="fixed top-20 right-4 z-40 max-w-md"
-          >
-            <div className="relative">
-              {/* Glow effect */}
-              <div className="absolute inset-0 bg-holy-gold/10 blur-2xl" />
+              {/* Glow Effect */}
+              <div className="absolute inset-0 bg-hope-gold/10 blur-2xl" />
               
               {/* Card */}
-              <div className="relative bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl p-6 border border-holy-gold/20">
-                {/* Close button */}
+              <div className="relative bg-white rounded-2xl shadow-2xl p-6 border border-hope-gold/20">
+                {/* Close Button */}
                 <button
-                  onClick={handleMinimize}
-                  className="absolute -top-2 -right-2 bg-royal-purple text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-royal-purple/80 transition-colors"
-                  title="Minimize"
+                  onClick={() => setIsOpen(false)}
+                  className="absolute -top-2 -right-2 bg-courage-blue text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-courage-blue/80 transition-colors"
                 >
-                  ×
+                  <X className="h-4 w-4" />
                 </button>
 
-                {/* Floating emoji */}
-                <motion.div
-                  animate={{ 
-                    y: [0, -10, 0],
-                    rotate: [-5, 5, -5]
-                  }}
-                  transition={{ 
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-4xl"
-                >
-                  {current.emoji}
-                </motion.div>
-                
-                {/* Quote */}
-                <blockquote className="text-center pt-2">
-                  <p className="text-base md:text-lg text-sacred-midnight font-medium mb-3">
-                    "{current.text}"
-                  </p>
-                  <footer className="text-sm text-royal-purple font-bold">
-                    — {current.author}
-                  </footer>
-                </blockquote>
-                
-                {/* Progress dots */}
-                <div className="flex justify-center gap-1 mt-4">
-                  {testimonies.map((_, index) => (
+                {/* Testimony Content */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={safeIndex}
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -50 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-center"
+                  >
+                    {/* Emoji */}
+                    <motion.div
+                      animate={{ rotate: [0, 10, -10, 0] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="text-5xl mb-4"
+                    >
+                      {current?.emoji || "💬"}
+                    </motion.div>
+
+                    {/* Quote */}
+                    <p className="text-base md:text-lg text-gentle-charcoal font-medium mb-3">
+                      "{current?.text || "No testimony available"}"
+                    </p>
+                    <footer className="text-sm text-courage-blue font-bold">
+                      — {current?.author || "Unknown"}
+                    </footer>
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Navigation */}
+                <div className="flex items-center justify-center gap-2 mt-6">
+                  {/* Progress Dots */}
+                  {safeTestimonies.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentIndex(index)}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
-                        index === currentIndex 
-                          ? 'w-8 bg-holy-gold' 
-                          : 'w-1.5 bg-royal-purple/30 hover:bg-royal-purple/50'
+                      className={`transition-all duration-300 h-1.5 rounded-full ${
+                        index === safeIndex
+                          ? 'w-8 bg-hope-gold'
+                          : 'w-1.5 bg-soft-cloud hover:bg-moon-glow'
                       }`}
                     />
                   ))}
                 </div>
 
-                {/* Context hint */}
-                {!hasInteracted && (
-                  <p className="text-xs text-center mt-3 text-royal-purple/60">
-                    Coach Dungy's wisdom • Click × to minimize
-                  </p>
-                )}
+                {/* Auto-advance indicator */}
+                <p className="text-xs text-center mt-3 text-soft-shadow">
+                  Auto-advancing every 8 seconds
+                </p>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Floating Hearts Background Effect */}
+      {isOpen && (
+        <div className="fixed inset-0 pointer-events-none z-40">
+          {[...Array(5)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-2xl"
+              initial={{ 
+                x: Math.random() * (window?.innerWidth || 1000),
+                y: (window?.innerHeight || 800) + 50,
+                opacity: 0 
+              }}
+              animate={{ 
+                y: -50,
+                opacity: [0, 1, 0]
+              }}
+              transition={{
+                duration: 5 + Math.random() * 3,
+                repeat: Infinity,
+                delay: i * 1.5
+              }}
+            >
+              {['❤️', '🙏', '✨', '💫', '🌟'][i]}
+            </motion.div>
+          ))}
+        </div>
+      )}
     </>
   )
 } 

@@ -1,239 +1,352 @@
 "use client"
 
 // Judge Dashboard Component - Real-time compliance monitoring
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
+import React, { useState } from 'react';
 import { 
-  TrendingUp, 
-  Users, 
-  Calendar,
-  MapPin,
-  Heart,
-  FileText,
-  Play,
-  Download
-} from "lucide-react"
-import Link from "next/link"
-import { useEffect, useState } from "react"
+  Container, 
+  Card, 
+  CardHeader, 
+  CardContent, 
+  CardTitle, 
+  CardDescription,
+  Badge,
+  Heading,
+  Text,
+  Button,
+  Stack,
+  Input,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+  Checkbox,
+  Progress,
+  DateRangePicker,
+} from '@/components/ui';
+import { Search, Filter, Calendar, User, FileText, CheckCircle, AlertTriangle, Clock, ArrowUpRight } from 'lucide-react';
 
-// Mock data - in production this would come from API
-const mockData = {
-  compliance: {
-    checkInRate: 98,
-    currentStreak: 45,
-    totalCheckIns: 127,
-    missedCheckIns: 3,
+const PARTICIPANTS = [
+  {
+    id: 'p1',
+    name: 'Marcus Johnson',
+    status: 'onTrack',
+    riskLevel: 'low',
+    completedCheckins: 28,
+    totalCheckins: 30,
+    lastCheckIn: '2023-06-10T14:30:00Z',
+    mentor: 'David Williams',
   },
-  impact: {
-    youthReached: 127,
-    activeMentorships: 23,
-    sessionsCompleted: 89,
-    successStories: 15,
+  {
+    id: 'p2',
+    name: 'Jasmine Taylor',
+    status: 'needsAttention',
+    riskLevel: 'medium',
+    completedCheckins: 22,
+    totalCheckins: 30,
+    lastCheckIn: '2023-06-09T09:15:00Z',
+    mentor: 'Sarah Johnson',
   },
-  transformation: {
-    moodTrend: "improving",
-    moodImprovement: 32,
-    engagementLevel: "high",
-    communityHours: 156,
+  {
+    id: 'p3',
+    name: 'DeAndre Wilson',
+    status: 'atRisk',
+    riskLevel: 'high',
+    completedCheckins: 18,
+    totalCheckins: 30,
+    lastCheckIn: '2023-06-07T16:45:00Z',
+    mentor: 'Michael Brown',
   },
-  recentActivity: [
-    { id: 1, type: "check-in", time: "2 hours ago", mood: "great" },
-    { id: 2, type: "mentorship", time: "Yesterday", description: "Completed session with Marcus" },
-    { id: 3, type: "achievement", time: "3 days ago", description: "50 day check-in streak" },
-  ]
-}
+  {
+    id: 'p4',
+    name: 'Aisha Robinson',
+    status: 'onTrack',
+    riskLevel: 'low',
+    completedCheckins: 29,
+    totalCheckins: 30,
+    lastCheckIn: '2023-06-10T11:00:00Z',
+    mentor: 'Lisa Davis',
+  },
+  {
+    id: 'p5',
+    name: 'Terrell Washington',
+    status: 'needsAttention',
+    riskLevel: 'medium',
+    completedCheckins: 20,
+    totalCheckins: 30,
+    lastCheckIn: '2023-06-08T13:20:00Z',
+    mentor: 'James Wilson',
+  },
+];
 
-export default function JudgeDashboard() {
-  const [mounted, setMounted] = useState(false)
+export default function JudgeDashboardPage() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [dateRange, setDateRange] = useState<{
+    from: Date | undefined;
+    to: Date | undefined;
+  }>({
+    from: undefined,
+    to: undefined,
+  });
+  const [selectedParticipants, setSelectedParticipants] = useState<string[]>([]);
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  const filteredParticipants = PARTICIPANTS.filter((participant) => {
+    // Search filter
+    const matchesSearch = participant.name.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    // Status filter
+    const matchesStatus = statusFilter === 'all' || participant.status === statusFilter;
+    
+    return matchesSearch && matchesStatus;
+  });
 
-  if (!mounted) {
-    return null
-  }
+  const toggleParticipantSelection = (participantId: string) => {
+    setSelectedParticipants(prev => 
+      prev.includes(participantId)
+        ? prev.filter(id => id !== participantId)
+        : [...prev, participantId]
+    );
+  };
+
+  const selectAllParticipants = () => {
+    if (selectedParticipants.length === filteredParticipants.length) {
+      setSelectedParticipants([]);
+    } else {
+      setSelectedParticipants(filteredParticipants.map(p => p.id));
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'onTrack':
+        return <Badge variant="success">On Track</Badge>;
+      case 'needsAttention':
+        return <Badge variant="warning">Needs Attention</Badge>;
+      case 'atRisk':
+        return <Badge variant="error">At Risk</Badge>;
+      default:
+        return <Badge>Unknown</Badge>;
+    }
+  };
+
+  const getProgressColor = (status: string) => {
+    switch (status) {
+      case 'onTrack':
+        return 'bg-success';
+      case 'needsAttention':
+        return 'bg-warning';
+      case 'atRisk':
+        return 'bg-error';
+      default:
+        return 'bg-white/30';
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    }).format(date);
+  };
 
   return (
-    <div className="min-h-screen bg-background pt-16">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Compliance Dashboard</h1>
-            <p className="text-muted-foreground">Real-time monitoring for JAHmere Webb</p>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">
-              <Download className="mr-2 h-4 w-4" />
-              Export Report
-            </Button>
-            <Button variant="bridge" size="sm">
-              <FileText className="mr-2 h-4 w-4" />
-              Generate Court Report
-            </Button>
-          </div>
-        </div>
-
-        {/* Key Metrics Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {/* Compliance Card */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Check-in Compliance</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{mockData.compliance.checkInRate}%</div>
-              <Progress value={mockData.compliance.checkInRate} className="mt-2" />
-              <p className="mt-2 text-xs text-muted-foreground">
-                {mockData.compliance.currentStreak} day streak • {mockData.compliance.totalCheckIns} total check-ins
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* Youth Impact Card */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Youth Reached</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{mockData.impact.youthReached}</div>
-              <div className="mt-2 flex items-center text-xs text-green-600">
-                <TrendingUp className="mr-1 h-3 w-3" />
-                +23% from last month
-              </div>
-              <p className="mt-1 text-xs text-muted-foreground">
-                {mockData.impact.activeMentorships} active mentorships
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* Transformation Score */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Progress Indicators</CardTitle>
-              <Heart className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-600">+{mockData.transformation.moodImprovement}%</div>
-              <p className="text-xs text-muted-foreground">Mood improvement</p>
-              <div className="mt-2 space-y-1">
-                <div className="flex justify-between text-xs">
-                  <span>Engagement</span>
-                  <span className="font-medium capitalize">{mockData.transformation.engagementLevel}</span>
-                </div>
-                <div className="flex justify-between text-xs">
-                  <span>Community Hours</span>
-                  <span className="font-medium">{mockData.transformation.communityHours}</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Detailed Sections */}
-        <div className="mt-8 grid gap-6 lg:grid-cols-2">
-          {/* Recent Activity */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>Real-time updates on JAHmere's progress</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {mockData.recentActivity.map((activity) => (
-                <div key={activity.id} className="flex items-start gap-4">
-                  <div className="mt-1 h-2 w-2 rounded-full bg-green-500" />
-                  <div className="flex-1 space-y-1">
-                    <p className="text-sm font-medium">
-                      {activity.type === "check-in" && `Daily check-in completed (Mood: ${activity.mood})`}
-                      {activity.type === "mentorship" && activity.description}
-                      {activity.type === "achievement" && `Achievement unlocked: ${activity.description}`}
-                    </p>
-                    <p className="text-xs text-muted-foreground">{activity.time}</p>
-                  </div>
-                </div>
-              ))}
-              <Button variant="link" className="w-full" asChild>
-                <Link href="/dashboard/judge/activity">View All Activity</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Video Testimonials */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Impact Stories</CardTitle>
-              <CardDescription>Testimonials from youth and community members</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 rounded-lg border p-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
-                    <Play className="h-4 w-4" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">Marcus Johnson</p>
-                    <p className="text-xs text-muted-foreground">Youth mentee - "JAHmere saved my life"</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 rounded-lg border p-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
-                    <Play className="h-4 w-4" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">Sarah Williams</p>
-                    <p className="text-xs text-muted-foreground">Parent - "He gave my son hope"</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 rounded-lg border p-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
-                    <Play className="h-4 w-4" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">Coach Tony Dungy</p>
-                    <p className="text-xs text-muted-foreground">"A champion for transformation"</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Map Section */}
-        <Card className="mt-6">
-          <CardHeader>
-            <CardTitle>Community Impact Map</CardTitle>
-            <CardDescription>Geographic distribution of JAHmere's positive influence</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="relative h-[300px] w-full rounded-lg bg-muted flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="mx-auto h-8 w-8 text-muted-foreground" />
-                <p className="mt-2 text-sm text-muted-foreground">Interactive map showing youth reached across the community</p>
-              </div>
+    <div className="py-8">
+      <Container>
+        <Stack spacing="lg">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <Heading as="h1">Judge Dashboard</Heading>
+              <Text textColor="muted" className="mt-1">
+                Monitor and manage participant progress in your restorative justice program
+              </Text>
             </div>
-          </CardContent>
-        </Card>
+            <div className="flex gap-3">
+              <Button>
+                <Calendar className="w-4 h-4 mr-2" />
+                Schedule Hearings
+              </Button>
+              <Button variant="outline">
+                <FileText className="w-4 h-4 mr-2" />
+                Generate Reports
+              </Button>
+            </div>
+          </div>
 
-        {/* Summary Statement */}
-        <Card className="mt-6 border-green-200 bg-green-50">
-          <CardHeader>
-            <CardTitle className="text-green-900">Transformation Summary</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-green-800">
-              JAHmere Webb has demonstrated exceptional commitment to his rehabilitation and community service. 
-              With a 98% check-in compliance rate, {mockData.impact.youthReached} youth positively impacted, 
-              and consistent improvement in all tracked metrics, he exemplifies how structured support 
-              and accountability can transform lives. His work is not just meeting expectations—it's 
-              exceeding them and creating ripple effects throughout the community.
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Text textColor="muted" size="sm">Total Participants</Text>
+                    <Heading as="h2" className="mt-1">{PARTICIPANTS.length}</Heading>
+                  </div>
+                  <div className="h-12 w-12 rounded-full bg-purple/10 flex items-center justify-center">
+                    <User className="h-6 w-6 text-purple" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Text textColor="muted" size="sm">Requiring Attention</Text>
+                    <Heading as="h2" className="mt-1">
+                      {PARTICIPANTS.filter(p => p.status !== 'onTrack').length}
+                    </Heading>
+                  </div>
+                  <div className="h-12 w-12 rounded-full bg-warning/10 flex items-center justify-center">
+                    <AlertTriangle className="h-6 w-6 text-warning" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Text textColor="muted" size="sm">Check-ins Today</Text>
+                    <Heading as="h2" className="mt-1">12</Heading>
+                  </div>
+                  <div className="h-12 w-12 rounded-full bg-success/10 flex items-center justify-center">
+                    <CheckCircle className="h-6 w-6 text-success" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 w-full">
+                <div>
+                  <CardTitle>Participant Overview</CardTitle>
+                  <CardDescription>
+                    Monitor participant progress and check-in compliance
+                  </CardDescription>
+                </div>
+                <div className="flex flex-col sm:flex-row w-full md:w-auto gap-3">
+                  <div className="w-full sm:w-auto">
+                    <Input 
+                      placeholder="Search participants..." 
+                      icon={<Search className="h-4 w-4" />}
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                  <div className="w-full sm:w-[180px]">
+                    <Select 
+                      value={statusFilter} 
+                      onValueChange={setStatusFilter}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Filter by status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Statuses</SelectItem>
+                        <SelectItem value="onTrack">On Track</SelectItem>
+                        <SelectItem value="needsAttention">Needs Attention</SelectItem>
+                        <SelectItem value="atRisk">At Risk</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="w-full sm:w-auto">
+                    <DateRangePicker
+                      dateRange={dateRange}
+                      setDateRange={setDateRange}
+                      placeholder="Filter by date"
+                    />
+                  </div>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="rounded-md border border-white/10">
+                <div className="grid grid-cols-12 gap-4 p-4 border-b border-white/10 bg-white/5">
+                  <div className="col-span-1">
+                    <Checkbox
+                      checked={selectedParticipants.length === filteredParticipants.length && filteredParticipants.length > 0}
+                      onCheckedChange={selectAllParticipants}
+                      aria-label="Select all participants"
+                    />
+                  </div>
+                  <div className="col-span-3 font-medium">Participant</div>
+                  <div className="col-span-2 font-medium">Status</div>
+                  <div className="col-span-3 font-medium">Check-In Progress</div>
+                  <div className="col-span-3 font-medium">Last Check-In</div>
+                </div>
+                
+                {filteredParticipants.length === 0 ? (
+                  <div className="p-8 text-center">
+                    <Text textColor="muted">No participants found matching your filters.</Text>
+                  </div>
+                ) : (
+                  <div>
+                    {filteredParticipants.map((participant) => (
+                      <div 
+                        key={participant.id} 
+                        className="grid grid-cols-12 gap-4 p-4 border-b border-white/10 hover:bg-white/5 transition-colors"
+                      >
+                        <div className="col-span-1">
+                          <Checkbox
+                            checked={selectedParticipants.includes(participant.id)}
+                            onCheckedChange={() => toggleParticipantSelection(participant.id)}
+                            aria-label={`Select ${participant.name}`}
+                          />
+                        </div>
+                        <div className="col-span-3 flex items-center">
+                          <div className="font-medium">{participant.name}</div>
+                        </div>
+                        <div className="col-span-2 flex items-center">
+                          {getStatusBadge(participant.status)}
+                        </div>
+                        <div className="col-span-3 flex flex-col justify-center">
+                          <div className="flex justify-between mb-1">
+                            <span className="text-xs">{participant.completedCheckins}/{participant.totalCheckins} Check-ins</span>
+                            <span className="text-xs">{Math.round((participant.completedCheckins / participant.totalCheckins) * 100)}%</span>
+                          </div>
+                          <Progress 
+                            value={(participant.completedCheckins / participant.totalCheckins) * 100} 
+                            className="[&>div]:bg-current [&>div]"
+                          >
+                            <div className={getProgressColor(participant.status)} />
+                          </Progress>
+                        </div>
+                        <div className="col-span-3 flex items-center gap-2">
+                          <Clock className="h-4 w-4 text-white/50" />
+                          <span>{formatDate(participant.lastCheckIn)}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex justify-between items-center mt-4">
+                <Text textColor="muted" size="sm">
+                  Showing {filteredParticipants.length} of {PARTICIPANTS.length} participants
+                </Text>
+                <div className="flex gap-2">
+                  {selectedParticipants.length > 0 && (
+                    <Button size="sm" variant="outline">
+                      Message Selected
+                    </Button>
+                  )}
+                  <Button size="sm">
+                    View All Participants
+                    <ArrowUpRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Stack>
+      </Container>
     </div>
-  )
+  );
 } 

@@ -73,14 +73,14 @@ export default function RiskMitigation() {
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4"
+          className="inline-flex items-center justify-center w-16 h-16 bg-growth-green/10 rounded-full mb-4"
         >
-          <Shield className="h-8 w-8 text-green-600" />
+          <Shield className="h-8 w-8 text-growth-green" />
         </motion.div>
-        <h2 className="text-3xl font-bold text-sacred-midnight mb-2">
+        <h2 className="text-3xl font-bold text-gentle-charcoal mb-2">
           Risk Mitigation Analysis
         </h2>
-        <p className="text-lg text-gray-600">
+        <p className="text-lg text-soft-shadow">
           Every concern addressed. Every risk mitigated. Every outcome guaranteed.
         </p>
       </div>
@@ -96,8 +96,8 @@ export default function RiskMitigation() {
             onClick={() => setSelectedRisk(selectedRisk === index ? null : index)}
             className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
               selectedRisk === index 
-                ? 'border-royal-purple bg-purple-50' 
-                : 'border-gray-200 hover:border-gray-300'
+                ? 'border-courage-blue bg-courage-blue/10' 
+                : 'border-quiet-stone hover:border-soft-shadow'
             }`}
           >
             <div className="flex items-start gap-3">
@@ -109,13 +109,13 @@ export default function RiskMitigation() {
                 {risk.icon}
               </div>
               <div className="flex-1">
-                <h3 className="font-bold text-sacred-midnight flex items-center gap-2">
+                <h3 className="font-bold text-gentle-charcoal flex items-center gap-2">
                   {risk.concern}
                   {risk.status === 'guaranteed' && (
-                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <CheckCircle2 className="h-4 w-4 text-growth-green" />
                   )}
                 </h3>
-                <p className="text-sm text-gray-600 mt-1">{risk.mitigation}</p>
+                <p className="text-sm text-soft-shadow mt-1">{risk.mitigation}</p>
                 
                 {selectedRisk === index && (
                   <motion.div
@@ -123,8 +123,8 @@ export default function RiskMitigation() {
                     animate={{ height: 'auto', opacity: 1 }}
                     className="mt-3 pt-3 border-t"
                   >
-                    <p className="text-sm font-semibold text-royal-purple mb-1">Evidence:</p>
-                    <p className="text-sm text-gray-700">{risk.evidence}</p>
+                    <p className="text-sm font-semibold text-courage-blue mb-1">Evidence:</p>
+                    <p className="text-sm text-gentle-charcoal">{risk.evidence}</p>
                   </motion.div>
                 )}
               </div>
@@ -134,9 +134,9 @@ export default function RiskMitigation() {
       </div>
 
       {/* Success Precedents */}
-      <div className="bg-gradient-to-r from-holy-gold/10 to-royal-purple/10 rounded-lg p-6 mb-8">
-        <h3 className="text-xl font-bold text-sacred-midnight mb-4 flex items-center gap-2">
-          <BarChart3 className="h-5 w-5 text-royal-purple" />
+      <div className="bg-soft-cloud rounded-lg p-6 mb-8 border border-quiet-stone">
+        <h3 className="text-xl font-bold text-gentle-charcoal mb-4 flex items-center gap-2">
+          <BarChart3 className="h-5 w-5 text-courage-blue" />
           Judicial Precedents
         </h3>
         <div className="space-y-3">
@@ -149,69 +149,69 @@ export default function RiskMitigation() {
               className="flex items-center justify-between bg-white rounded-lg p-3"
             >
               <div>
-                <p className="font-semibold text-sacred-midnight">{precedent.judge}</p>
-                <p className="text-sm text-gray-600">{precedent.location}</p>
+                <p className="font-semibold text-gentle-charcoal">{precedent.judge}</p>
+                <p className="text-sm text-soft-shadow">{precedent.location}</p>
               </div>
-              <p className="text-sm font-semibold text-green-600">{precedent.outcome}</p>
+              <p className="text-sm font-semibold text-growth-green">{precedent.outcome}</p>
             </motion.div>
           ))}
         </div>
       </div>
 
       {/* Economic Analysis */}
-      <div className="bg-sacred-midnight text-white rounded-lg p-6 mb-8">
-        <h3 className="text-xl font-bold text-holy-gold mb-4">Economic Impact Analysis</h3>
+      <div className="bg-[#FFF8E7] text-[#B45309] rounded-lg p-6 mb-8 border border-[#FED7AA]">
+        <h3 className="text-xl font-bold text-[#B45309] mb-4">Economic Impact Analysis</h3>
         <div className="grid md:grid-cols-3 gap-6 text-center">
           <div>
-            <p className="text-3xl font-bold text-holy-gold">$35,000</p>
+            <p className="text-3xl font-bold text-[#B45309]">$35,000</p>
             <p className="text-sm mt-1">Annual incarceration cost</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-green-400">$0</p>
+            <p className="text-3xl font-bold text-[#B45309]">$0</p>
             <p className="text-sm mt-1">Cost to state for Bridge Program</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-holy-gold">$420,000</p>
+            <p className="text-3xl font-bold text-[#B45309]">$420,000</p>
             <p className="text-sm mt-1">10-year savings potential</p>
           </div>
         </div>
-        <p className="text-center mt-6 text-holy-gold">
+        <p className="text-center mt-6 text-[#B45309] font-semibold">
           Every dollar saved can fund prevention programs for at-risk youth
         </p>
       </div>
 
       {/* Accountability Measures */}
-      <div className="border-2 border-royal-purple rounded-lg p-6">
-        <h3 className="text-xl font-bold text-royal-purple mb-4">
+      <div className="border-2 border-courage-blue rounded-lg p-6">
+        <h3 className="text-xl font-bold text-courage-blue mb-4">
           Your Oversight Tools
         </h3>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="flex items-start gap-3">
-            <CheckCircle2 className="h-5 w-5 text-green-600 mt-1" />
+            <CheckCircle2 className="h-5 w-5 text-growth-green mt-1" />
             <div>
-              <p className="font-semibold">Real-time Dashboard Access</p>
-              <p className="text-sm text-gray-600">24/7 monitoring of all activities</p>
+              <p className="font-semibold text-gentle-charcoal">Real-time Dashboard Access</p>
+              <p className="text-sm text-soft-shadow">24/7 monitoring of all activities</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <CheckCircle2 className="h-5 w-5 text-green-600 mt-1" />
+            <CheckCircle2 className="h-5 w-5 text-growth-green mt-1" />
             <div>
-              <p className="font-semibold">Automated Daily Reports</p>
-              <p className="text-sm text-gray-600">Delivered to your inbox at 9 AM</p>
+              <p className="font-semibold text-gentle-charcoal">Automated Daily Reports</p>
+              <p className="text-sm text-soft-shadow">Delivered to your inbox at 9 AM</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <CheckCircle2 className="h-5 w-5 text-green-600 mt-1" />
+            <CheckCircle2 className="h-5 w-5 text-growth-green mt-1" />
             <div>
-              <p className="font-semibold">Emergency Alert System</p>
-              <p className="text-sm text-gray-600">Instant notification of any violations</p>
+              <p className="font-semibold text-gentle-charcoal">Emergency Alert System</p>
+              <p className="text-sm text-soft-shadow">Instant notification of any violations</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <CheckCircle2 className="h-5 w-5 text-green-600 mt-1" />
+            <CheckCircle2 className="h-5 w-5 text-growth-green mt-1" />
             <div>
-              <p className="font-semibold">Monthly Video Updates</p>
-              <p className="text-sm text-gray-600">Direct reports from JAHmere and mentees</p>
+              <p className="font-semibold text-gentle-charcoal">Monthly Video Updates</p>
+              <p className="text-sm text-soft-shadow">Direct reports from JAHmere and mentees</p>
             </div>
           </div>
         </div>
@@ -222,12 +222,12 @@ export default function RiskMitigation() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="mt-8 text-center bg-gradient-to-r from-holy-gold to-royal-purple text-white rounded-lg p-6"
+        className="mt-8 text-center bg-[#E6F0FF] text-[#1E40AF] rounded-lg p-6 border border-[#BFDBFE]"
       >
-        <p className="text-xl font-bold mb-2">
+        <p className="text-xl font-bold mb-2 text-[#1E40AF]">
           Judge Ferrero, this isn't a risk. It's an opportunity.
         </p>
-        <p className="text-lg">
+        <p className="text-lg text-[#1E40AF]">
           An opportunity to demonstrate that justice can heal, not just punish. 
           That with the right support, accountability, and purpose, transformation is inevitable.
         </p>

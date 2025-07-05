@@ -55,7 +55,7 @@ export default function ContactPage() {
     }, 3000)
     
     // Here you would typically send the data to your backend
-    console.log('Support letter submitted:', supportForm)
+    // TODO: Implement backend API call to submit support form
   }
 
   const handleVolunteerSubmit = (e: React.FormEvent) => {
@@ -64,7 +64,7 @@ export default function ContactPage() {
     impactEvents.addHeart()
     setVolunteerSubmitted(true)
     // Here you would typically send the data to your backend
-    console.log('Volunteer form submitted:', volunteerForm)
+    // TODO: Implement backend API call to submit volunteer form
   }
 
   if (!mounted) return null

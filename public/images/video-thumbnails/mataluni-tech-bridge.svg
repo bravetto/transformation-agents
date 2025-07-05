@@ -1,0 +1,11 @@
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="720" fill="#1F2937"/>
+  <rect x="40" y="40" width="1200" height="640" fill="#374151" rx="20"/>
+  <polygon points="590,360 690,310 690,410" fill="#FFFFFF" opacity="0.8"/>
+  <text x="640" y="500" font-family="Arial, sans-serif" font-size="48" fill="#FFFFFF" text-anchor="middle">
+    Technology as a Bridge
+  </text>
+  <text x="640" y="560" font-family="Arial, sans-serif" font-size="24" fill="#FFFFFF" text-anchor="middle" opacity="0.6">
+    Video Placeholder
+  </text>
+</svg>

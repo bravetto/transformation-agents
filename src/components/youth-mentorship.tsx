@@ -116,17 +116,17 @@ export default function YouthMentorship() {
   }
 
   return (
-    <section className="bg-white">
-      <div className="container">
+    <section className="bg-comfort-cream py-16">
+      <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-start">
           {/* Left Side - Content & Form */}
           <div>
-            <h2 className="text-sacred-midnight mb-6">Youth Ready to Be Mentored</h2>
-            <p className="text-xl text-royal-purple mb-4">
+            <h2 className="text-gentle-charcoal text-3xl font-bold mb-6">Youth Ready to Be Mentored</h2>
+            <p className="text-xl text-courage-blue mb-4">
               Young voices speaking truth to power. Dreams waiting to be guided. 
               Hope looking for direction.
             </p>
-            <p className="mb-6 text-sacred-midnight/80">
+            <p className="mb-6 text-soft-shadow">
               Write your letter of hope. Share your dreams. Tell them why mentorship 
               matters. Your voice joins a movement of transformation.
             </p>
@@ -137,7 +137,7 @@ export default function YouthMentorship() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsWriting(true)}
-                className="bg-royal-purple text-white px-6 py-3 rounded-lg font-bold hover:bg-sacred-midnight transition-colors flex items-center gap-2"
+                className="bg-courage-blue text-white px-6 py-3 rounded-lg font-bold hover:bg-courage-blue/90 transition-colors flex items-center gap-2"
               >
                 <Star className="h-5 w-5" />
                 Share Your Dreams
@@ -147,7 +147,7 @@ export default function YouthMentorship() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 onSubmit={handleSubmit}
-                className="space-y-4"
+                className="space-y-4 bg-white p-6 rounded-lg border border-quiet-stone shadow-md"
               >
                 {/* Recipient Selection */}
                 <div className="grid grid-cols-2 gap-2">
@@ -158,12 +158,12 @@ export default function YouthMentorship() {
                       onClick={() => setSelectedRecipient(recipient.value as YouthMessage['to'])}
                       className={`p-3 rounded-lg border-2 transition-all ${
                         selectedRecipient === recipient.value
-                          ? 'border-royal-purple bg-royal-purple/10'
-                          : 'border-gray-200 hover:border-royal-purple/50'
+                          ? 'border-courage-blue bg-courage-blue/10'
+                          : 'border-quiet-stone hover:border-courage-blue/50'
                       }`}
                     >
                       <span className="text-2xl">{recipient.emoji}</span>
-                      <p className="text-sm font-medium mt-1">{recipient.label}</p>
+                      <p className="text-sm font-medium mt-1 text-gentle-charcoal">{recipient.label}</p>
                     </button>
                   ))}
                 </div>
@@ -175,7 +175,7 @@ export default function YouthMentorship() {
                     placeholder="Your name"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:border-royal-purple focus:outline-none"
+                    className="px-4 py-2 border border-quiet-stone rounded-lg focus:border-courage-blue focus:outline-none"
                     required
                   />
                   <input
@@ -185,7 +185,7 @@ export default function YouthMentorship() {
                     max="25"
                     value={formData.age}
                     onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:border-royal-purple focus:outline-none"
+                    className="px-4 py-2 border border-quiet-stone rounded-lg focus:border-courage-blue focus:outline-none"
                     required
                   />
                 </div>
@@ -195,7 +195,7 @@ export default function YouthMentorship() {
                   placeholder={`Dear ${selectedRecipient}, my hopes and dreams are...`}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full p-4 border border-gray-300 rounded-lg focus:border-royal-purple focus:outline-none resize-none"
+                  className="w-full p-4 border border-quiet-stone rounded-lg focus:border-courage-blue focus:outline-none resize-none"
                   rows={4}
                   required
                 />
@@ -204,7 +204,7 @@ export default function YouthMentorship() {
                 <div className="flex gap-2">
                   <button
                     type="submit"
-                    className="flex-1 bg-royal-purple text-white px-4 py-2 rounded-lg font-bold hover:bg-sacred-midnight transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 bg-courage-blue text-white px-4 py-2 rounded-lg font-bold hover:bg-courage-blue/90 transition-colors flex items-center justify-center gap-2"
                   >
                     <Send className="h-4 w-4" />
                     Send Message
@@ -212,7 +212,7 @@ export default function YouthMentorship() {
                   <button
                     type="button"
                     onClick={() => setIsWriting(false)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="px-4 py-2 border border-quiet-stone rounded-lg hover:bg-soft-cloud transition-colors text-soft-shadow"
                   >
                     Cancel
                   </button>
@@ -225,7 +225,7 @@ export default function YouthMentorship() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="mt-6 text-sm text-sacred-midnight/60"
+              className="mt-6 text-sm text-soft-shadow"
             >
               <p>
                 💫 Every message creates a ripple of hope<br />
@@ -240,21 +240,22 @@ export default function YouthMentorship() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-br from-royal-purple to-sacred-midnight rounded-2xl p-6 overflow-hidden shadow-2xl"
+              className="bg-white rounded-2xl p-6 overflow-hidden shadow-md border border-hope-gold/30"
             >
-              {/* Animated Background */}
-              <div className="absolute inset-0 opacity-10">
-                <svg className="w-full h-full" viewBox="0 0 400 300">
+              {/* Subtle Background */}
+              <div className="absolute inset-0">
+                <svg className="w-full h-full" viewBox="0 0 400 300" aria-hidden="true">
                   {[...Array(5)].map((_, i) => (
                     <motion.circle
                       key={i}
                       cx={Math.random() * 400}
                       cy={Math.random() * 300}
                       r="2"
-                      fill="#FCD34D"
+                      fill="#F59E0B"
+                      opacity="0.2"
                       initial={{ opacity: 0, scale: 0 }}
                       animate={{ 
-                        opacity: [0, 1, 0],
+                        opacity: [0, 0.2, 0],
                         scale: [0, 1, 0]
                       }}
                       transition={{ 
@@ -270,14 +271,14 @@ export default function YouthMentorship() {
               {/* Header */}
               <div className="relative z-10 flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <Users className="h-6 w-6 text-holy-gold" />
-                  <h3 className="text-xl font-bold text-white">Young Voices Rising</h3>
+                  <Users className="h-6 w-6 text-hope-gold" />
+                  <h3 className="text-xl font-bold text-gentle-charcoal">Young Voices Rising</h3>
                 </div>
                 <motion.div
                   animate={{ rotate: showSuccess ? 360 : 0 }}
                   transition={{ duration: 1 }}
                 >
-                  <Sparkles className="h-6 w-6 text-holy-gold" />
+                  <Sparkles className="h-6 w-6 text-hope-gold" />
                 </motion.div>
               </div>
 
@@ -289,27 +290,27 @@ export default function YouthMentorship() {
                   animate={{ scale: 1, opacity: 1 }}
                   className="relative inline-block"
                 >
-                  <span className="text-6xl font-bold text-holy-gold">{youthCount}</span>
+                  <span className="text-6xl font-bold text-hope-gold">{youthCount}</span>
                   {showSuccess && (
                     <motion.div
                       initial={{ y: 0, opacity: 1 }}
                       animate={{ y: -50, opacity: 0 }}
                       transition={{ duration: 2 }}
-                      className="absolute -top-2 right-0 text-2xl text-holy-gold"
+                      className="absolute -top-2 right-0 text-2xl text-growth-green"
                     >
                       +1
                     </motion.div>
                   )}
                 </motion.div>
-                <p className="text-lg mt-2 text-white font-semibold">Youth Ready for Mentorship</p>
-                <p className="text-sm text-white/80 mt-1">
+                <p className="text-lg mt-2 text-gentle-charcoal font-semibold">Youth Ready for Mentorship</p>
+                <p className="text-sm text-soft-shadow mt-1">
                   Each one represents a life waiting to be transformed
                 </p>
               </div>
 
               {/* Recent Messages Preview */}
               <div className="relative z-10 space-y-2 mb-4">
-                <p className="text-sm font-semibold text-holy-gold mb-2">Recent Dreams Shared:</p>
+                <p className="text-sm font-semibold text-hope-gold mb-2">Recent Dreams Shared:</p>
                 <AnimatePresence>
                   {recentMessages.slice(0, 3).map((msg, index) => (
                     <motion.div
@@ -318,12 +319,12 @@ export default function YouthMentorship() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
                       transition={{ delay: index * 0.1 }}
-                      className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-sm border border-white/20"
+                      className="bg-soft-cloud rounded-lg p-3 text-sm border border-quiet-stone"
                     >
-                      <p className="font-medium text-holy-gold">
+                      <p className="font-medium text-hope-gold">
                         {msg.name}, {msg.age} → {msg.to}
                       </p>
-                      <p className="text-white/90 line-clamp-2 text-xs mt-1">
+                      <p className="text-soft-shadow line-clamp-2 text-xs mt-1">
                         "{msg.message}"
                       </p>
                     </motion.div>
@@ -337,7 +338,7 @@ export default function YouthMentorship() {
                 transition={{ duration: 2, repeat: Infinity }}
                 className="relative z-10 text-center text-sm"
               >
-                <p className="text-holy-gold font-semibold">
+                <p className="text-hope-gold font-semibold">
                   Your voice could be next →
                 </p>
               </motion.div>
@@ -352,7 +353,7 @@ export default function YouthMentorship() {
                   exit={{ opacity: 0, scale: 0.8 }}
                   className="absolute inset-0 flex items-center justify-center pointer-events-none"
                 >
-                  <div className="bg-holy-gold text-sacred-midnight rounded-lg p-6 text-center shadow-2xl">
+                  <div className="bg-hope-gold text-gentle-charcoal rounded-lg p-6 text-center shadow-md">
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1 }}
@@ -374,21 +375,21 @@ export default function YouthMentorship() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}
-                  className="absolute bottom-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4"
+                  className="absolute bottom-4 left-4 right-4 bg-white rounded-lg shadow-md p-4 border border-quiet-stone"
                 >
-                  <p className="text-sm font-bold text-sacred-midnight mb-2">
+                  <p className="text-sm font-bold text-gentle-charcoal mb-2">
                     Share your hope with the world!
                   </p>
                   <button
                     onClick={shareMessage}
-                    className="w-full bg-royal-purple text-white px-4 py-2 rounded-lg font-bold hover:bg-sacred-midnight transition-colors flex items-center justify-center gap-2"
+                    className="w-full bg-courage-blue text-white px-4 py-2 rounded-lg font-bold hover:bg-courage-blue/90 transition-colors flex items-center justify-center gap-2"
                   >
                     <Share2 className="h-4 w-4" />
                     Share Your Message
                   </button>
                   <button
                     onClick={() => setShowViral(false)}
-                    className="w-full mt-2 text-sm text-gray-500 hover:text-gray-700"
+                    className="w-full mt-2 text-sm text-soft-shadow hover:text-gentle-charcoal"
                   >
                     Maybe later
                   </button>

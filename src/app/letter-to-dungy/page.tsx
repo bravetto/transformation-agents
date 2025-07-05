@@ -4,8 +4,6 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 
 export default function LetterToDungyPage() {
-  console.log("Letter to Dungy page is rendering")
-
   return (
     <main className="pt-16">
       {/* HERO */}

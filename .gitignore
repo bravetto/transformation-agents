@@ -43,3 +43,18 @@ next-env.d.ts
 # OS
 .DS_Store
 Thumbs.db 
+# Build artifacts
+tsconfig.tsbuildinfo
+
+# Development scripts
+launch-*.sh
+build-*.sh
+verify-*.sh
+
+# Temporary files
+current-files.txt
+actual-files.txt
+index-*.txt
+
+# Local development
+.cursor/

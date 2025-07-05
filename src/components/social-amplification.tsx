@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Share2, Twitter, Instagram, MessageCircle, Link as LinkIcon, Check, TrendingUp, Users } from "lucide-react"
+import { Share2, Twitter, Instagram, MessageCircle, Copy, Users, TrendingUp, Heart } from "lucide-react"
 
 interface ShareStats {
   twitter: number
@@ -11,9 +11,18 @@ interface ShareStats {
   total: number
 }
 
+interface Share {
+  message: string
+  platform: string
+  timestamp: number
+}
+
 export default function SocialAmplification() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [showPanel, setShowPanel] = useState(false)
+  const [showToast, setShowToast] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [toastMessage, setToastMessage] = useState("")
+  const [recentShares, setRecentShares] = useState<Share[]>([])
   const [shareStats, setShareStats] = useState<ShareStats>({
     twitter: 147,
     instagram: 89,
@@ -93,8 +102,9 @@ Read the full story and consider adding your support: ${shareUrl}
         // Copy to clipboard for Instagram
         navigator.clipboard.writeText(shareMessages.instagram)
         setCopied(true)
+        setToastMessage("Instagram caption copied!")
+        setShowToast(true)
         setTimeout(() => setCopied(false), 3000)
-        alert('Instagram caption copied! Open Instagram to share JAHmere\'s story.')
         break
       case 'whatsapp':
         window.open(
@@ -108,173 +118,192 @@ Read the full story and consider adding your support: ${shareUrl}
   const copyLink = () => {
     navigator.clipboard.writeText(shareUrl)
     setCopied(true)
-    setTimeout(() => setCopied(false), 3000)
+    setToastMessage("Link copied to clipboard!")
+    setShowToast(true)
+    setTimeout(() => {
+      setCopied(false)
+      setShowToast(false)
+    }, 3000)
+  }
+  
+  // Function to copy a message to clipboard
+  const handleCopyMessage = (message: string) => {
+    navigator.clipboard.writeText(message)
+    setToastMessage("Message copied to clipboard!")
+    setShowToast(true)
+    
+    // Add to recent shares
+    const newShare: Share = {
+      message: message.substring(0, 30) + "...",
+      platform: "clipboard",
+      timestamp: Date.now()
+    }
+    
+    setRecentShares(prev => [newShare, ...prev].slice(0, 5))
+    
+    setTimeout(() => {
+      setShowToast(false)
+    }, 3000)
   }
 
   return (
     <>
       {/* Floating Share Button */}
-      <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-24 right-4 z-40 bg-gradient-to-r from-holy-gold to-royal-purple text-white rounded-full p-4 shadow-lg"
-      >
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <Share2 className="h-6 w-6" />
-        </motion.div>
-        
-        {/* Share count badge */}
-        <motion.div
+      {!showPanel && (
+        <motion.button
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold"
+          transition={{ delay: 0.5 }}
+          onClick={() => setShowPanel(true)}
+          className="fixed bottom-24 right-4 z-40 bg-hope-gold text-gentle-charcoal rounded-full p-4 shadow-lg"
         >
-          {shareStats.total > 999 ? '999+' : shareStats.total}
-        </motion.div>
-      </motion.button>
+          <Share2 className="h-6 w-6" />
+          {shareStats.total > 0 && (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="absolute -top-2 -right-2 bg-growth-green text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold"
+            >
+              {shareStats.total}
+            </motion.div>
+          )}
+        </motion.button>
+      )}
 
       {/* Share Panel */}
       <AnimatePresence>
-        {isOpen && (
+        {showPanel && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 100 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 100 }}
-            className="fixed bottom-44 right-4 z-40 bg-white rounded-2xl shadow-2xl p-6 w-96 max-w-[calc(100vw-2rem)]"
+            initial={{ opacity: 0, x: 400 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 400 }}
+            className="fixed right-0 top-20 bottom-0 w-full max-w-md bg-white shadow-2xl z-40 overflow-y-auto"
           >
-            {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-sacred-midnight">
-                Amplify JAHmere's Story
-              </h3>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="text-gray-400 hover:text-gray-600"
-              >
-                ×
-              </button>
-            </div>
-
-            {/* Share Stats */}
-            <div className="bg-gradient-to-r from-holy-gold/10 to-royal-purple/10 rounded-lg p-4 mb-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-sacred-midnight">
-                  Community Impact
-                </span>
-                <TrendingUp className="h-4 w-4 text-green-600" />
+            <div className="p-6">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold text-gentle-charcoal">
+                  Amplify JAHmere's Story
+                </h3>
+                <button
+                  onClick={() => setShowPanel(false)}
+                  className="text-soft-shadow hover:text-gentle-charcoal"
+                  aria-label="Close sharing panel"
+                >
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" role="img">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
               </div>
-              <div className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-royal-purple" />
-                <span className="text-2xl font-bold text-royal-purple">
-                  {shareStats.total}
-                </span>
-                <span className="text-sm text-gray-600">
-                  people spreading hope
-                </span>
-              </div>
-            </div>
 
-            {/* Share Buttons */}
-            <div className="space-y-3 mb-4">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => handleShare('twitter')}
-                className="w-full flex items-center gap-3 bg-[#1DA1F2] text-white rounded-lg p-3 hover:bg-[#1a8cd8] transition-colors"
-              >
-                <Twitter className="h-5 w-5" />
-                <span className="flex-1 text-left">Share on Twitter/X</span>
-                <span className="text-xs opacity-75">{shareStats.twitter} shares</span>
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => handleShare('instagram')}
-                className="w-full flex items-center gap-3 bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] text-white rounded-lg p-3 hover:opacity-90 transition-opacity"
-              >
-                <Instagram className="h-5 w-5" />
-                <span className="flex-1 text-left">Copy for Instagram</span>
-                <span className="text-xs opacity-75">{shareStats.instagram} shares</span>
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => handleShare('whatsapp')}
-                className="w-full flex items-center gap-3 bg-[#25D366] text-white rounded-lg p-3 hover:bg-[#22c55e] transition-colors"
-              >
-                <MessageCircle className="h-5 w-5" />
-                <span className="flex-1 text-left">Share on WhatsApp</span>
-                <span className="text-xs opacity-75">{shareStats.whatsapp} shares</span>
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={copyLink}
-                className="w-full flex items-center gap-3 bg-gray-100 text-sacred-midnight rounded-lg p-3 hover:bg-gray-200 transition-colors"
-              >
-                {copied ? <Check className="h-5 w-5 text-green-600" /> : <LinkIcon className="h-5 w-5" />}
-                <span className="flex-1 text-left">
-                  {copied ? 'Link Copied!' : 'Copy Link'}
-                </span>
-              </motion.button>
-            </div>
-
-            {/* Viral Hashtags */}
-            <div className="border-t pt-4">
-              <p className="text-sm font-semibold text-sacred-midnight mb-2">
-                Trending Hashtags:
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {['#BridgeOverPrison', '#TransformJustice', '#SecondChances', '#TonyDungy'].map(tag => (
-                  <span
-                    key={tag}
-                    className="bg-royal-purple/10 text-royal-purple text-xs px-2 py-1 rounded-full cursor-pointer hover:bg-royal-purple/20"
-                    onClick={() => navigator.clipboard.writeText(tag)}
-                  >
-                    {tag}
+              {/* Impact Counter */}
+              <div className="bg-moon-glow rounded-lg p-4 mb-4">
+                <p className="text-sm text-soft-shadow mb-2">
+                  <span className="text-sm font-semibold text-gentle-charcoal">
+                    Your share could be the one that changes everything
                   </span>
-                ))}
+                </p>
+                <div className="flex items-center gap-2">
+                  <Users className="h-5 w-5 text-courage-blue" />
+                  <span className="text-2xl font-bold text-courage-blue">
+                    {shareStats.total}
+                  </span>
+                  <span className="text-sm text-soft-shadow">people have shared</span>
+                </div>
               </div>
-            </div>
 
-            {/* Impact Message */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="mt-4 text-center text-sm text-gray-600"
-            >
-              <p className="font-semibold text-holy-gold">
-                Every share saves a life.
-              </p>
-              <p className="text-xs mt-1">
-                Your voice joins {shareStats.total} others demanding transformation.
-              </p>
-            </motion.div>
+              {/* Platform Buttons */}
+              <div className="space-y-3 mb-6">
+                <button
+                  onClick={() => handleShare('twitter')}
+                  className="w-full flex items-center gap-3 bg-[#1DA1F2] text-white rounded-lg p-3 hover:bg-[#1a8cd8] transition-colors"
+                >
+                  <Twitter className="h-5 w-5" />
+                  <span className="flex-1 text-left">Share on Twitter/X</span>
+                  <span className="text-xs text-white">{shareStats.twitter} shares</span>
+                </button>
+
+                <button
+                  onClick={() => handleShare('instagram')}
+                  className="w-full flex items-center gap-3 bg-[#E4405F] text-white rounded-lg p-3 hover:bg-[#d62d4a] transition-colors"
+                >
+                  <Instagram className="h-5 w-5" />
+                  <span className="flex-1 text-left">Share Story to Instagram</span>
+                  <span className="text-xs text-white">{shareStats.instagram} shares</span>
+                </button>
+
+                <button
+                  onClick={() => handleShare('whatsapp')}
+                  className="w-full flex items-center gap-3 bg-[#25D366] text-white rounded-lg p-3 hover:bg-[#22c55e] transition-colors"
+                >
+                  <MessageCircle className="h-5 w-5" />
+                  <span className="flex-1 text-left">Send via WhatsApp</span>
+                  <span className="text-xs text-white">{shareStats.whatsapp} shares</span>
+                </button>
+
+                <button
+                  onClick={copyLink}
+                  className="w-full flex items-center gap-3 bg-moon-glow text-gentle-charcoal rounded-lg p-3 hover:bg-soft-cloud transition-colors"
+                >
+                  <Copy className="h-5 w-5" />
+                  <span className="flex-1 text-left">Copy Link</span>
+                </button>
+              </div>
+
+              {/* Pre-written Messages */}
+              <div className="mb-6">
+                <p className="text-sm font-semibold text-gentle-charcoal mb-2">
+                  Tap to copy powerful messages:
+                </p>
+                <div className="space-y-2">
+                  {Object.values(shareMessages).map((msg, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleCopyMessage(msg)}
+                      className="bg-soft-cloud text-gentle-charcoal text-xs px-2 py-1 rounded-full cursor-pointer hover:bg-moon-glow w-full text-left"
+                    >
+                      "{msg}"
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Recent Shares */}
+              {recentShares.length > 0 && (
+                <div>
+                  <p className="text-sm font-semibold text-soft-shadow mb-2">Recent shares:</p>
+                  <div className="space-y-2">
+                    {recentShares.map((share, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="flex items-center gap-2 text-sm text-soft-shadow"
+                      >
+                        <Heart className="h-4 w-4 text-growth-green" />
+                        <span>{share.message}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Copy Success Toast */}
+      {/* Success Toast */}
       <AnimatePresence>
-        {copied && (
+        {showToast && (
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50"
+            exit={{ opacity: 0, y: 100 }}
+            className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-growth-green text-white px-6 py-3 rounded-lg shadow-lg z-50"
           >
-            <div className="flex items-center gap-2">
-              <Check className="h-5 w-5" />
-              <span>Copied to clipboard!</span>
-            </div>
+            <p className="font-semibold text-white">
+              {toastMessage}
+            </p>
           </motion.div>
         )}
       </AnimatePresence>

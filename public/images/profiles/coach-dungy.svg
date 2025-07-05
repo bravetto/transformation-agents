@@ -1,0 +1,13 @@
+<svg width="800" height="800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="800" fill="#DC2626"/>
+  <circle cx="400" cy="400" r="350" fill="#DC2626" stroke="#FFFFFF" stroke-width="20" opacity="0.3"/>
+  <text x="400" y="420" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+    TD
+  </text>
+  <text x="400" y="520" font-family="Arial, sans-serif" font-size="48" fill="#FFFFFF" text-anchor="middle" opacity="0.8">
+    Tony Dungy
+  </text>
+  <text x="400" y="700" font-family="Arial, sans-serif" font-size="32" fill="#FFFFFF" text-anchor="middle" opacity="0.6">
+    PLACEHOLDER IMAGE
+  </text>
+</svg>

@@ -48,7 +48,8 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
           action: "Access Judge Dashboard",
           link: "/dashboard/judge",
           icon: <AlertCircle className="h-5 w-5" />,
-          color: "from-green-500 to-blue-600"
+          bgColor: "bg-courage-blue",
+          textColor: "text-white"
         }
       }
       return {
@@ -57,7 +58,8 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
         action: "View Dashboard",
         link: "/dashboard/judge",
         icon: <AlertCircle className="h-5 w-5" />,
-        color: "from-royal-purple to-sacred-midnight"
+        bgColor: "bg-hope-gold",
+        textColor: "text-gentle-charcoal"
       }
     }
 
@@ -69,7 +71,8 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
         action: "Write a Letter of Support",
         link: "/contact",
         icon: <FileText className="h-5 w-5" />,
-        color: "from-holy-gold to-royal-purple"
+        bgColor: "bg-hope-gold",
+        textColor: "text-gentle-charcoal"
       }
     }
 
@@ -81,7 +84,8 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
         action: "Join the Movement",
         link: "/contact",
         icon: <Users className="h-5 w-5" />,
-        color: "from-royal-purple to-holy-gold"
+        bgColor: "bg-courage-blue",
+        textColor: "text-white"
       }
     }
 
@@ -92,7 +96,8 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
         action: "Support JAHmere",
         link: "/contact",
         icon: <Heart className="h-5 w-5" />,
-        color: "from-red-500 to-pink-600"
+        bgColor: "bg-growth-green",
+        textColor: "text-white"
       }
     }
 
@@ -103,7 +108,8 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
       action: "Take Action",
       link: "/contact",
       icon: <Clock className="h-5 w-5" />,
-      color: "from-royal-purple to-sacred-midnight"
+      bgColor: "bg-courage-blue",
+      textColor: "text-white"
     }
   }
 
@@ -131,28 +137,28 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
           >
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className={`bg-gradient-to-r ${config.color} rounded-2xl p-6 text-white shadow-2xl`}
+              className={`${config.bgColor} rounded-2xl p-6 ${config.textColor} shadow-2xl`}
             >
               {/* Urgency Indicator */}
               <motion.div
                 animate={{ opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="absolute -top-2 -right-2 bg-red-500 rounded-full p-2"
+                className="absolute -top-2 -right-2 bg-growth-green rounded-full p-2"
               >
                 <div className="h-3 w-3 bg-white rounded-full" />
               </motion.div>
 
               {/* Content */}
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 bg-white/20 rounded-lg p-3">
+                <div className={`flex-shrink-0 ${config.textColor === 'text-white' ? 'bg-white/20' : 'bg-gentle-charcoal/10'} rounded-lg p-3`}>
                   {config.icon}
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-bold text-lg mb-1 text-white">{config.title}</h3>
-                  <p className="text-sm text-white/95 mb-3">{config.subtitle}</p>
+                  <h3 className={`font-bold text-lg mb-1 ${config.textColor}`}>{config.title}</h3>
+                  <p className={`text-sm mb-3 ${config.textColor === 'text-white' ? 'text-white' : 'text-soft-shadow'}`}>{config.subtitle}</p>
                   <Link
                     href={config.link}
-                    className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg font-semibold transition-colors text-white"
+                    className={`inline-flex items-center gap-2 ${config.textColor === 'text-white' ? 'bg-white/20 hover:bg-white/30 text-white' : 'bg-gentle-charcoal/10 hover:bg-gentle-charcoal/20 text-gentle-charcoal'} px-4 py-2 rounded-lg font-semibold transition-colors`}
                   >
                     {config.action}
                     <ArrowRight className="h-4 w-4" />
@@ -161,9 +167,9 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
               </div>
 
               {/* Progress Indicator */}
-              <div className="mt-4 bg-white/10 rounded-full h-1 overflow-hidden">
+              <div className={`mt-4 ${config.textColor === 'text-white' ? 'bg-white/10' : 'bg-gentle-charcoal/10'} rounded-full h-1 overflow-hidden`}>
                 <motion.div
-                  className="h-full bg-white/50"
+                  className={`h-full ${config.textColor === 'text-white' ? 'bg-white/50' : 'bg-gentle-charcoal/30'}`}
                   initial={{ width: "0%" }}
                   animate={{ width: `${scrollProgress}%` }}
                 />
@@ -188,13 +194,13 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
             animate={{
               scale: [1, 1.2, 1],
               boxShadow: [
-                "0 0 0 0 rgba(252, 211, 77, 0)",
-                "0 0 0 20px rgba(252, 211, 77, 0.2)",
-                "0 0 0 0 rgba(252, 211, 77, 0)"
+                "0 0 0 0 rgba(245, 158, 11, 0)",
+                "0 0 0 20px rgba(245, 158, 11, 0.2)",
+                "0 0 0 0 rgba(245, 158, 11, 0)"
               ]
             }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="bg-holy-gold text-sacred-midnight rounded-full p-4 shadow-lg"
+            className="bg-hope-gold text-gentle-charcoal rounded-full p-4 shadow-lg"
           >
             <Heart className="h-6 w-6 fill-current" />
           </motion.div>
@@ -208,7 +214,7 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -100 }}
-            className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-royal-purple to-sacred-midnight text-white p-4 shadow-2xl"
+            className="fixed top-0 left-0 right-0 z-50 bg-courage-blue text-white p-4 shadow-2xl"
           >
             <div className="container mx-auto flex items-center justify-between">
               <p className="font-bold text-white text-lg">
@@ -216,7 +222,7 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
               </p>
               <Link
                 href="/contact"
-                className="bg-holy-gold text-sacred-midnight px-6 py-2 rounded-lg font-bold hover:bg-white transition-colors shadow-lg"
+                className="bg-hope-gold text-gentle-charcoal px-6 py-2 rounded-lg font-bold hover:bg-pure-white transition-colors shadow-lg"
               >
                 I'm Ready to Help
               </Link>

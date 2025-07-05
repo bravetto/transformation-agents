@@ -4,6 +4,9 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { FileText, Send, Sparkles, TrendingUp } from "lucide-react"
 import { impactEvents } from "./impact-dashboard"
+import DivineParticles from "./divine-particles"
+import { SacredReveal, MagneticButton, FloatingElement } from "./sacred-animations"
+import { AutoAnimateList } from "./auto-animate-wrapper"
 
 interface LetterData {
   id: number
@@ -80,38 +83,50 @@ export default function LettersOfHope() {
   }
 
   return (
-    <section className="bg-gradient text-white">
-      <div className="container">
+    <section className="bg-comfort-cream relative overflow-hidden py-20">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0">
+        <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <pattern id="dots" width="10" height="10" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1" fill="#F59E0B" opacity="0.1"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#dots)" />
+        </svg>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-start">
           {/* Left Side - Content & Form */}
           <div>
-            <h2 className="text-holy-gold mb-6">Letters of Hope</h2>
-            <p className="text-xl mb-4">
-              Every letter to Judge Ferrero is a voice for transformation. 
-              Watch your words join the chorus in real-time.
-            </p>
-            <p className="mb-6">
-              When you write, you're not just sending a letter—you're casting a vote 
-              for healing over harm, purpose over punishment.
-            </p>
+            <div>
+              <h2 className="text-4xl font-bold text-hope-gold mb-6">Letters of Hope</h2>
+              <p className="text-xl text-gentle-charcoal mb-4">
+                Every letter to Judge Ferrero is a voice for transformation. 
+                Watch your words join the chorus in real-time.
+              </p>
+              <p className="text-soft-shadow mb-6">
+                When you write, you're not just sending a letter—you're casting a vote 
+                for healing over harm, purpose over punishment.
+              </p>
+            </div>
             
             {/* Quick Letter Form */}
             {!isWriting ? (
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <button 
                 onClick={() => setIsWriting(true)}
-                className="bg-holy-gold text-sacred-midnight px-6 py-3 rounded-lg font-bold hover:bg-white transition-colors flex items-center gap-2"
+                className="bg-hope-gold text-gentle-charcoal px-6 py-3 rounded-lg font-bold hover:bg-courage-blue hover:text-white transition-colors flex items-center gap-2 inline-flex"
               >
                 <FileText className="h-5 w-5" />
                 Write Your Letter Now
-              </motion.button>
+              </button>
             ) : (
               <motion.form
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 onSubmit={handleSubmitLetter}
-                className="space-y-4 bg-white/10 backdrop-blur-sm rounded-lg p-6"
+                className="space-y-4 bg-white rounded-lg p-6 shadow-lg border border-hope-gold/30"
               >
                 <div className="grid md:grid-cols-2 gap-4">
                   <input
@@ -119,7 +134,7 @@ export default function LettersOfHope() {
                     placeholder="Your Name"
                     value={letterForm.name}
                     onChange={(e) => setLetterForm({ ...letterForm, name: e.target.value })}
-                    className="bg-white/20 border border-holy-gold/30 rounded px-4 py-2 text-white placeholder-white/60"
+                    className="bg-soft-cloud border border-moon-glow rounded px-4 py-2 text-gentle-charcoal placeholder-soft-shadow"
                     required
                   />
                   <input
@@ -127,7 +142,7 @@ export default function LettersOfHope() {
                     placeholder="Your City"
                     value={letterForm.location}
                     onChange={(e) => setLetterForm({ ...letterForm, location: e.target.value })}
-                    className="bg-white/20 border border-holy-gold/30 rounded px-4 py-2 text-white placeholder-white/60"
+                    className="bg-soft-cloud border border-moon-glow rounded px-4 py-2 text-gentle-charcoal placeholder-soft-shadow"
                     required
                   />
                 </div>
@@ -135,7 +150,7 @@ export default function LettersOfHope() {
                   placeholder="Your message to Judge Ferrero (even a few words matter)..."
                   value={letterForm.message}
                   onChange={(e) => setLetterForm({ ...letterForm, message: e.target.value })}
-                  className="w-full bg-white/20 border border-holy-gold/30 rounded px-4 py-2 text-white placeholder-white/60 min-h-[100px]"
+                  className="w-full bg-soft-cloud border border-moon-glow rounded px-4 py-2 text-gentle-charcoal placeholder-soft-shadow min-h-[100px]"
                   required
                 />
                 <div className="flex gap-4">
@@ -143,7 +158,7 @@ export default function LettersOfHope() {
                     type="submit"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex-1 bg-holy-gold text-sacred-midnight py-3 rounded-lg font-bold hover:bg-white transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 bg-hope-gold text-gentle-charcoal py-3 rounded-lg font-bold hover:bg-courage-blue hover:text-white transition-colors flex items-center justify-center gap-2"
                   >
                     <Send className="h-5 w-5" />
                     Send Letter
@@ -151,7 +166,7 @@ export default function LettersOfHope() {
                   <button
                     type="button"
                     onClick={() => setIsWriting(false)}
-                    className="px-6 py-3 border border-white/30 rounded-lg hover:bg-white/10 transition-colors"
+                    className="px-6 py-3 border border-soft-shadow rounded-lg hover:bg-moon-glow transition-colors text-gentle-charcoal"
                   >
                     Cancel
                   </button>
@@ -159,7 +174,7 @@ export default function LettersOfHope() {
               </motion.form>
             )}
 
-            <p className="text-holy-gold font-bold text-lg mt-6">
+            <p className="text-hope-gold font-bold text-lg mt-6">
               "Your letter could be the one that tips the scales of justice."
             </p>
           </div>
@@ -169,18 +184,19 @@ export default function LettersOfHope() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-br from-holy-gold/20 to-royal-purple/20 rounded-2xl p-6 backdrop-blur-sm border border-holy-gold/30 overflow-hidden"
+              className="bg-white rounded-2xl p-6 border border-hope-gold/30 shadow-lg overflow-hidden"
             >
               {/* Animated Background */}
-              <div className="absolute inset-0 opacity-20">
-                <svg className="w-full h-full" viewBox="0 0 400 300">
+              <div className="absolute inset-0">
+                <svg className="w-full h-full" viewBox="0 0 400 300" aria-hidden="true">
                   {[...Array(5)].map((_, i) => (
                     <motion.path
                       key={i}
                       d={`M ${i * 80} 300 Q ${i * 80 + 40} 150 ${i * 80} 0`}
-                      stroke="currentColor"
-                      strokeWidth="1"
+                      stroke="#F59E0B"
+                      strokeWidth="0.5"
                       fill="none"
+                      opacity="0.1"
                       initial={{ pathLength: 0 }}
                       animate={{ pathLength: 1 }}
                       transition={{ 
@@ -197,14 +213,14 @@ export default function LettersOfHope() {
               {/* Header */}
               <div className="relative z-10 flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <FileText className="h-6 w-6 text-holy-gold" />
-                  <h3 className="text-xl font-bold text-white">Letters to Honor Judge Ferrero</h3>
+                  <FileText className="h-6 w-6 text-hope-gold" />
+                  <h3 className="text-xl font-bold text-gentle-charcoal">Letters to Honor Judge Ferrero</h3>
                 </div>
                 <motion.div
                   animate={{ rotate: showImpactBurst ? 360 : 0 }}
                   transition={{ duration: 1 }}
                 >
-                  <Sparkles className="h-6 w-6 text-holy-gold" />
+                  <Sparkles className="h-6 w-6 text-hope-gold" />
                 </motion.div>
               </div>
 
@@ -219,7 +235,7 @@ export default function LettersOfHope() {
                       transition={{ duration: 1.5 }}
                       className="absolute inset-0 flex items-center justify-center"
                     >
-                      <div className="w-32 h-32 bg-holy-gold rounded-full" />
+                      <div className="w-32 h-32 bg-hope-gold/20 rounded-full" />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -230,19 +246,19 @@ export default function LettersOfHope() {
                   animate={{ scale: 1, opacity: 1 }}
                   className="relative inline-block"
                 >
-                  <span className="text-6xl font-bold text-holy-gold">{letterCount}</span>
+                  <span className="text-6xl font-bold text-hope-gold">{letterCount}</span>
                   {showSuccess && (
                     <motion.div
                       initial={{ y: 0, opacity: 1 }}
                       animate={{ y: -50, opacity: 0 }}
                       transition={{ duration: 2 }}
-                      className="absolute -top-2 right-0 text-2xl"
+                      className="absolute -top-2 right-0 text-2xl text-growth-green"
                     >
                       +1
                     </motion.div>
                   )}
                 </motion.div>
-                <p className="text-lg mt-2 text-white font-medium">Voices for Transformation</p>
+                <p className="text-lg mt-2 text-gentle-charcoal font-medium">Voices for Transformation</p>
               </div>
 
               {/* Visual Letter Stream */}
@@ -256,13 +272,13 @@ export default function LettersOfHope() {
                       transition={{ type: "spring", stiffness: 200 }}
                       className="absolute inset-0 flex items-center justify-center"
                     >
-                      <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4 border border-holy-gold">
-                        <p className="text-sm font-bold">Your letter is on its way! ✉️</p>
+                      <div className="bg-soft-cloud rounded-lg p-4 border border-hope-gold">
+                        <p className="text-sm font-bold text-gentle-charcoal">Your letter is on its way! ✉️</p>
                         <div className="mt-2 flex items-center justify-center">
                           <motion.div
                             animate={{ x: [0, 100] }}
                             transition={{ duration: 1.5, repeat: Infinity }}
-                            className="w-2 h-2 bg-holy-gold rounded-full"
+                            className="w-2 h-2 bg-hope-gold rounded-full"
                           />
                         </div>
                       </div>
@@ -297,44 +313,41 @@ export default function LettersOfHope() {
               {/* Recent Letters */}
               <div className="relative z-10 space-y-2">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-sm text-holy-gold font-semibold">Latest Letters:</p>
-                  <TrendingUp className="h-4 w-4 text-green-400" />
+                  <p className="text-sm text-hope-gold font-semibold">Latest Letters:</p>
+                  <TrendingUp className="h-4 w-4 text-growth-green" />
                 </div>
-                <AnimatePresence>
-                  {recentLetters.length > 0 ? (
-                    recentLetters.map((letter, index) => (
-                      <motion.div
-                        key={letter.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-start gap-2 text-sm bg-white/10 rounded-lg px-3 py-2"
-                      >
-                        <FileText className="h-4 w-4 text-holy-gold flex-shrink-0 mt-0.5" />
+                
+                {recentLetters.length > 0 ? (
+                  <AutoAnimateList
+                    items={recentLetters}
+                    renderItem={(letter, index) => (
+                      <div className="flex items-start gap-2 text-sm bg-soft-cloud rounded-lg px-3 py-2">
+                        <FileText className="h-4 w-4 text-hope-gold flex-shrink-0 mt-0.5" />
                         <div className="flex-1">
-                          <p className="font-semibold text-white">{letter.name} from {letter.location}</p>
-                          <p className="text-sm text-white/90">{letter.preview}</p>
+                          <p className="font-semibold text-gentle-charcoal">{letter.name} from {letter.location}</p>
+                          <p className="text-sm text-soft-shadow">{letter.preview}</p>
                         </div>
-                      </motion.div>
-                    ))
-                  ) : (
-                    <div className="text-center py-4 text-sm text-white">
-                      <p className="font-medium">Be the first to write today!</p>
-                      <p className="text-sm mt-1 text-white/90">Your words matter.</p>
-                    </div>
-                  )}
-                </AnimatePresence>
+                      </div>
+                    )}
+                    keyExtractor={(letter) => letter.id}
+                    duration={400}
+                  />
+                ) : (
+                  <div className="text-center py-4 text-sm text-soft-shadow">
+                    <p className="font-medium text-gentle-charcoal">Be the first to write today!</p>
+                    <p className="text-sm mt-1 text-soft-shadow">Your words matter.</p>
+                  </div>
+                )}
               </div>
 
               {/* Connection to Impact Dashboard */}
               <motion.div
                 animate={{ opacity: [0.8, 1, 0.8] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="relative z-10 text-center text-sm mt-4 text-white"
+                className="relative z-10 text-center text-sm mt-4 text-soft-shadow"
               >
                 <p>Every letter updates the live counter →</p>
-                <p className="text-holy-gold font-semibold">Watch your impact in real-time!</p>
+                <p className="text-hope-gold font-semibold">Watch your impact in real-time!</p>
               </motion.div>
             </motion.div>
 
@@ -347,7 +360,7 @@ export default function LettersOfHope() {
                   exit={{ opacity: 0, scale: 0.8 }}
                   className="absolute inset-0 flex items-center justify-center pointer-events-none"
                 >
-                  <div className="bg-holy-gold text-sacred-midnight rounded-lg p-6 text-center">
+                  <div className="bg-hope-gold text-gentle-charcoal rounded-lg p-6 text-center shadow-xl">
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1 }}

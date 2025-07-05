@@ -1,0 +1,5 @@
+<svg width="300" height="100" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
+  <path d="M20,50 Q50,20 80,40 T140,45 Q170,35 200,45 T260,50" 
+        stroke="#2C3E50" stroke-width="3" fill="none" opacity="0.8"/>
+  <text x="150" y="80" font-family="Brush Script MT, cursive" font-size="24" text-anchor="middle" fill="#2C3E50" opacity="0.7">Martha Henderson</text>
+</svg> 

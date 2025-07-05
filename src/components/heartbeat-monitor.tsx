@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Heart, Activity } from "lucide-react"
+import { Heart, Activity, TrendingUp } from "lucide-react"
 import { impactEvents } from "./impact-dashboard"
 
 interface HeartbeatMonitorProps {
@@ -14,6 +14,7 @@ export default function HeartbeatMonitor({ className = "" }: HeartbeatMonitorPro
   const [isBeating, setIsBeating] = useState(true)
   const [showPulse, setShowPulse] = useState(false)
   const [recentHearts, setRecentHearts] = useState<{ id: number; name: string; location: string }[]>([])
+  const [hasAddedHeart, setHasAddedHeart] = useState(false)
 
   // Simulate real-time heartbeats
   useEffect(() => {
@@ -54,140 +55,151 @@ export default function HeartbeatMonitor({ className = "" }: HeartbeatMonitorPro
     return () => clearInterval(beatInterval)
   }, [])
 
+  const addHeart = () => {
+    setHeartCount(prev => prev + 1)
+    setShowPulse(true)
+    setTimeout(() => setShowPulse(false), 1000)
+    // Dispatch global impact event
+    impactEvents.addHeart()
+    setHasAddedHeart(true)
+  }
+
   return (
     <div className={`relative ${className}`}>
       {/* Main Monitor Card */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-br from-sacred-midnight to-royal-purple rounded-2xl p-6 text-white shadow-2xl overflow-hidden"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.5 }}
+        className="bg-white rounded-2xl p-6 border border-hope-gold/30 shadow-2xl overflow-hidden"
       >
-        {/* ECG Line Background */}
-        <div className="absolute inset-0 opacity-10">
-          <svg className="w-full h-full" viewBox="0 0 400 200">
-            <motion.path
-              d="M 0 100 L 50 100 L 60 80 L 70 120 L 80 60 L 90 140 L 100 100 L 400 100"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="none"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
+        {/* Background Pattern */}
+        <div className="absolute inset-0">
+          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#F59E0B" strokeWidth="0.5" opacity="0.1"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
           </svg>
         </div>
 
         {/* Header */}
-        <div className="relative z-10 flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <Activity className="h-6 w-6 text-holy-gold" />
-            <h3 className="text-xl font-bold text-white">Community Heartbeat</h3>
-          </div>
-          <motion.div
-            animate={isBeating ? { scale: 1.2 } : { scale: 1 }}
-            className="text-red-500"
-          >
-            <Heart className="h-6 w-6 fill-current" />
-          </motion.div>
+        <div className="relative z-10 flex items-center gap-3 mb-6">
+          <Activity className="h-6 w-6 text-hope-gold" />
+          <h3 className="text-xl font-bold text-gentle-charcoal">Community Heartbeat</h3>
         </div>
 
-        {/* Heart Count */}
+        {/* Main Counter */}
         <div className="relative z-10 text-center mb-6">
           <motion.div
-            key={heartCount}
-            initial={{ scale: 1.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
+            animate={{ scale: [1, 1.05, 1] }}
+            transition={{ 
+              duration: 0.8,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
             className="relative inline-block"
           >
-            <span className="text-6xl font-bold text-holy-gold">{heartCount}</span>
-            {showPulse && (
+            <Heart className="h-24 w-24 text-growth-green fill-current mx-auto" />
+            
+            {/* Animated beat count */}
+            <AnimatePresence mode="wait">
               <motion.div
-                className="absolute inset-0 rounded-full bg-holy-gold/50"
-                initial={{ scale: 0.8, opacity: 0.8 }}
-                animate={{ scale: 2, opacity: 0 }}
-                transition={{ duration: 1 }}
-              />
-            )}
+                key={heartCount}
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 1.5, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                <span className="text-6xl font-bold text-hope-gold">{heartCount}</span>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Pulse effect */}
+            <motion.div
+              className="absolute inset-0 rounded-full bg-hope-gold/30"
+              animate={{ scale: [1, 1.5, 2], opacity: [0.5, 0.3, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            />
           </motion.div>
-          <p className="text-lg mt-2 text-white font-medium">Hearts Beating with JAHmere</p>
+
+          <p className="text-lg mt-2 text-gentle-charcoal font-medium">Hearts Beating with JAHmere</p>
         </div>
 
-        {/* Live Pulse Visualization */}
-        <div className="relative z-10 h-24 mb-6 flex items-center justify-center">
-          <svg width="100%" height="100" viewBox="0 0 400 100" className="overflow-visible">
-            {/* Background grid */}
-            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="white" strokeWidth="0.5" opacity="0.1"/>
-            </pattern>
-            <rect width="400" height="100" fill="url(#grid)" />
-            
-            {/* Heartbeat line */}
+        {/* EKG Line */}
+        <div className="relative z-10 h-20 mb-4 overflow-hidden">
+          <svg className="w-full h-full" viewBox="0 0 400 100" preserveAspectRatio="none" aria-hidden="true" role="img" aria-label="Heart rate visualization">
             <motion.path
-              d="M 0,50 L 100,50 L 120,50 L 130,20 L 140,80 L 150,10 L 160,90 L 170,50 L 180,50 L 200,50 L 210,45 L 220,55 L 230,50 L 400,50"
-              stroke="#FCD34D"
+              d="M 0 100 L 50 100 L 60 80 L 70 120 L 80 60 L 90 140 L 100 100 L 400 100"
+              stroke="#10B981"
               strokeWidth="3"
               fill="none"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{
-                pathLength: { duration: 2, repeat: Infinity },
-                opacity: { duration: 0.5 }
-              }}
-            />
-            
-            {/* Glow effect */}
-            <motion.path
-              d="M 0,50 L 100,50 L 120,50 L 130,20 L 140,80 L 150,10 L 160,90 L 170,50 L 180,50 L 200,50 L 210,45 L 220,55 L 230,50 L 400,50"
-              stroke="#FCD34D"
-              strokeWidth="6"
-              fill="none"
-              opacity="0.3"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
-              transition={{ duration: 2, repeat: Infinity }}
+              transition={{ 
+                duration: 2,
+                repeat: Infinity,
+                ease: "linear"
+              }}
             />
           </svg>
+          
+          {/* Moving dot */}
+          <motion.div
+            className="absolute w-3 h-3 bg-growth-green rounded-full shadow-lg"
+            animate={{
+              x: [0, 400],
+              y: [50, 50, 20, 50, 80, 50, 50]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            style={{ top: '40%' }}
+          />
         </div>
 
         {/* Recent Hearts */}
-        <div className="relative z-10 space-y-2">
-          <p className="text-sm text-holy-gold font-semibold mb-2">Latest Supporters:</p>
-          <AnimatePresence>
-            {recentHearts.map((heart, index) => (
+        <div className="relative z-10">
+          <p className="text-sm text-hope-gold font-semibold mb-2">Latest Supporters:</p>
+          <AnimatePresence mode="popLayout">
+            {recentHearts.map((heart) => (
               <motion.div
                 key={heart.id}
-                initial={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ delay: index * 0.1 }}
-                className="flex items-center gap-2 text-sm bg-white/10 rounded-lg px-3 py-2"
+                exit={{ opacity: 0, x: 50 }}
+                className="flex items-center gap-2 py-1"
               >
-                <Heart className="h-4 w-4 text-red-500 fill-current" />
-                <span className="text-white font-medium">{heart.name} from {heart.location} joined the movement</span>
+                <motion.div
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Heart className="h-4 w-4 text-growth-green fill-current" />
+                </motion.div>
+                <span className="text-gentle-charcoal font-medium">{heart.name} from {heart.location} joined the movement</span>
               </motion.div>
             ))}
           </AnimatePresence>
         </div>
 
-        {/* Call to Action */}
+        {/* Action Button */}
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => {
-            setHeartCount(prev => prev + 1)
-            setShowPulse(true)
-            setTimeout(() => setShowPulse(false), 1000)
-            // Dispatch global impact event
-            impactEvents.addHeart()
-          }}
-          className="relative z-10 w-full mt-6 bg-holy-gold text-sacred-midnight py-3 rounded-lg font-bold hover:bg-white transition-colors"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={addHeart}
+          disabled={hasAddedHeart}
+          className="relative z-10 w-full mt-6 bg-hope-gold text-gentle-charcoal py-3 rounded-lg font-bold hover:bg-courage-blue hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Add Your Heartbeat 💗
+          {hasAddedHeart ? "Your Heart is Beating with JAHmere ❤️" : "Add Your Heart"}
         </motion.button>
 
-        {/* Motivational Text */}
-        <p className="relative z-10 text-center text-sm mt-4 text-white font-medium">
-          "Every heartbeat is a vote for transformation over incarceration"
+        <p className="relative z-10 text-center text-sm mt-4 text-soft-shadow font-medium">
+          Every heart creates a ripple of hope
         </p>
       </motion.div>
 

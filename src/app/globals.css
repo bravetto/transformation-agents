@@ -2,27 +2,129 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CSS Custom Properties for Radical Transparency Design */
 @layer base {
   :root {
-    /* DIVINE PALETTE - SIMPLIFIED FOR PERFORMANCE */
-    --sacred-midnight: #0A0E27;
-    --royal-purple: #5B21B6;
-    --holy-gold: #FCD34D;
-    --divine-white: #FEFCE8;
-    --deep-shadow: #1F2937;
-    --light-whisper: #F9FAFB;
+    /* Truth in Light Palette */
+    --pure-white: #FFFFFF;
+    --comfort-cream: #FEFDF8;
+    --soft-cloud: #F9FAFB;
+    --moon-glow: #F3F4F6;
+    --quiet-stone: #E5E7EB;
     
-    /* ENHANCED CONTRAST VARIANTS */
-    --holy-gold-dark: #D4A017; /* Better contrast on white */
-    --royal-purple-light: #7C3AED; /* Better for dark backgrounds */
-    --sacred-midnight-soft: #1E293B; /* Softer but readable */
+    /* Truth Accents */
+    --hope-gold: #F59E0B;
+    --courage-blue: #2563EB;
+    --growth-green: #10B981;
     
-    /* SYSTEM COLORS */
-    --color-background: white;
-    --color-foreground: var(--deep-shadow);
-    --color-primary: var(--royal-purple);
-    --color-accent: var(--holy-gold);
+    /* Grounding Colors */
+    --gentle-charcoal: #374151;
+    --soft-shadow: #6B7280;
+    --whisper-gray: #9CA3AF;
+    
+    /* Semantic Mappings */
+    --background: var(--comfort-cream);
+    --foreground: var(--gentle-charcoal);
+    --accent: var(--hope-gold);
+    --border: var(--quiet-stone);
   }
+}
+
+/* Base Styles */
+@layer base {
+  body {
+    @apply bg-comfort-cream text-gentle-charcoal;
+  }
+  
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-gentle-charcoal font-bold;
+  }
+  
+  /* Links */
+  a {
+    @apply transition-colors;
+  }
+  
+  /* Focus States */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-courage-blue;
+  }
+}
+
+/* Utility Classes */
+@layer utilities {
+  /* Text Gradient - Now just solid gold for trust */
+  .text-gradient {
+    @apply text-hope-gold font-bold;
+  }
+  
+  /* Truth Badge */
+  .truth-badge {
+    @apply bg-pure-white border-2 border-hope-gold text-gentle-charcoal px-4 py-2 rounded-full font-semibold;
+  }
+  
+  /* Clean Container */
+  .container-clean {
+    @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+  }
+  
+  /* No Opacity Text - ENFORCE REAL COLORS */
+  .text-primary {
+    color: var(--gentle-charcoal) !important;
+  }
+  
+  .text-secondary {
+    color: var(--soft-shadow) !important;
+  }
+  
+  .text-muted {
+    color: var(--whisper-gray) !important;
+  }
+}
+
+/* Remove ALL text opacity utilities - RADICAL TRANSPARENCY */
+@layer utilities {
+  [class*="text-white/"],
+  [class*="text-black/"],
+  [class*="opacity-"] {
+    opacity: 1 !important;
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-soft-cloud;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-quiet-stone rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-soft-shadow;
+}
+
+/* Selection */
+::selection {
+  @apply bg-hope-gold/20 text-gentle-charcoal;
+}
+
+/* Print Styles */
+@media print {
+  body {
+    @apply bg-white text-black;
+  }
+}
+
+/* Transitions */
+* {
+  @apply transition-colors duration-300;
 }
 
 /* PERFORMANCE-FIRST RESET */
@@ -147,13 +249,6 @@ section {
 }
 
 /* TEXT UTILITIES - MINIMAL */
-.text-gradient {
-  background: linear-gradient(135deg, var(--royal-purple), var(--holy-gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 .text-sacred { color: var(--sacred-midnight); }
 .text-purple { color: var(--royal-purple); }
 .text-gold { color: var(--holy-gold); }

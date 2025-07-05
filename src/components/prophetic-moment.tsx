@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from "framer-motion"
 import { Volume2, VolumeX, ChevronRight } from "lucide-react"
 
@@ -14,9 +14,10 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
   const [hasBeenShown, setHasBeenShown] = useState(false)
   const [audioEnabled, setAudioEnabled] = useState(false)
   const [currentPhase, setCurrentPhase] = useState(0)
+  const timer = useRef<NodeJS.Timeout | null>(null)
 
-  // Prophetic phases of revelation
-  const phases = [
+  // Use useMemo to prevent the phases array from changing on every render
+  const phases = useMemo(() => [
     {
       text: "I can't feel physical pain.",
       subtext: "But I feel everything else.",
@@ -49,11 +50,17 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
     },
     {
       text: "Welcome to The Bridge Project",
-      subtext: "Where pain becomes purpose. Where justice transforms.",
+      subtext: "Where truth builds bridges. Where transparency transforms.",
       duration: 5000,
       particles: "🌉✨",
     }
-  ]
+  ], [])
+
+  // Use useCallback to prevent handleComplete from changing on every render
+  const handleComplete = useCallback(() => {
+    if (onComplete) onComplete()
+    setIsActive(false)
+  }, [onComplete])
 
   useEffect(() => {
     // Check if already shown in this session
@@ -80,12 +87,7 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
 
       return () => clearTimeout(timer)
     }
-  }, [isActive, currentPhase, phases])
-
-  const handleComplete = () => {
-    setIsActive(false)
-    if (onComplete) onComplete()
-  }
+  }, [isActive, currentPhase, phases, handleComplete])
 
   const handleSkip = () => {
     setIsActive(false)
@@ -100,7 +102,7 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] bg-sacred-midnight flex items-center justify-center overflow-hidden"
+        className="fixed inset-0 z-[100] bg-gentle-charcoal flex items-center justify-center overflow-hidden"
       >
         {/* Particle Background */}
         <div className="absolute inset-0 overflow-hidden">
@@ -134,9 +136,9 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
           className="absolute inset-0"
           animate={{
             background: [
-              "radial-gradient(circle at 50% 50%, rgba(252, 211, 77, 0.1) 0%, transparent 50%)",
-              "radial-gradient(circle at 50% 50%, rgba(252, 211, 77, 0.2) 0%, transparent 70%)",
-              "radial-gradient(circle at 50% 50%, rgba(252, 211, 77, 0.1) 0%, transparent 50%)"
+              "radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.1) 0%, transparent 50%)",
+              "radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.2) 0%, transparent 70%)",
+              "radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.1) 0%, transparent 50%)"
             ]
           }}
           transition={{ duration: 3, repeat: Infinity }}
@@ -149,7 +151,7 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             onClick={() => setAudioEnabled(!audioEnabled)}
-            className="absolute top-8 right-8 text-white/60 hover:text-white transition-colors"
+            className="absolute top-8 right-8 text-pure-white hover:text-hope-gold transition-colors"
           >
             {audioEnabled ? <Volume2 className="h-6 w-6" /> : <VolumeX className="h-6 w-6" />}
           </motion.button>
@@ -162,7 +164,7 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
             className="mb-12"
           >
             <motion.p 
-              className="text-holy-gold text-lg mb-2"
+              className="text-hope-gold text-lg mb-2"
               animate={{
                 opacity: [0.5, 1, 0.5],
               }}
@@ -170,8 +172,8 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
             >
               A Testimony from
             </motion.p>
-            <h2 className="text-4xl font-bold text-white">Jordan Dungy</h2>
-            <p className="text-white/60 mt-2">Son of NFL Legend Tony Dungy</p>
+            <h2 className="text-4xl font-bold text-pure-white">Jordan Dungy</h2>
+            <p className="text-moon-glow mt-2">Son of NFL Legend Tony Dungy</p>
           </motion.div>
 
           {/* Prophetic Text */}
@@ -185,12 +187,12 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
               className="space-y-6"
             >
               <motion.h1 
-                className="text-5xl md:text-7xl font-bold text-white leading-tight"
+                className="text-5xl md:text-7xl font-bold text-pure-white leading-tight"
                 animate={{
                   textShadow: [
-                    "0 0 20px rgba(252, 211, 77, 0.5)",
-                    "0 0 60px rgba(252, 211, 77, 0.8)",
-                    "0 0 20px rgba(252, 211, 77, 0.5)"
+                    "0 0 20px rgba(245, 158, 11, 0.5)",
+                    "0 0 60px rgba(245, 158, 11, 0.8)",
+                    "0 0 20px rgba(245, 158, 11, 0.5)"
                   ]
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
@@ -199,7 +201,7 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
               </motion.h1>
               
               <motion.p 
-                className="text-2xl md:text-3xl text-holy-gold font-semibold"
+                className="text-2xl md:text-3xl text-hope-gold font-semibold"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
@@ -229,13 +231,13 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
             {phases.map((_, index) => (
               <motion.div
                 key={index}
-                className="h-1 rounded-full bg-white/30 overflow-hidden"
+                className="h-1 rounded-full bg-pure-white/30 overflow-hidden"
                 initial={{ width: 20 }}
                 animate={{ width: index === currentPhase ? 60 : 20 }}
               >
                 {index === currentPhase && (
                   <motion.div
-                    className="h-full bg-holy-gold"
+                    className="h-full bg-hope-gold"
                     initial={{ width: "0%" }}
                     animate={{ width: "100%" }}
                     transition={{ duration: phases[index].duration / 1000 }}
@@ -251,7 +253,7 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
             animate={{ opacity: 0.5 }}
             whileHover={{ opacity: 1 }}
             onClick={handleSkip}
-            className="absolute bottom-8 right-8 text-white/60 hover:text-white transition-colors flex items-center gap-2 text-sm"
+            className="absolute bottom-8 right-8 text-moon-glow hover:text-pure-white transition-colors flex items-center gap-2 text-sm"
           >
             Continue to site <ChevronRight className="h-4 w-4" />
           </motion.button>
@@ -262,7 +264,7 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
           className="absolute inset-0 pointer-events-none"
           animate={{
             background: currentPhase === phases.length - 1 
-              ? "radial-gradient(circle at 50% 50%, rgba(252, 211, 77, 0.3) 0%, transparent 50%)"
+              ? "radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.3) 0%, transparent 50%)"
               : "none"
           }}
           transition={{ duration: 2 }}
