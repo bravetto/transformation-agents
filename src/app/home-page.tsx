@@ -36,13 +36,24 @@ export default function HomePage() {
     // Optional: Re-enable prophetic moment later with a feature flag
     const ENABLE_PROPHETIC_MOMENT = true; // Set to true when ready
 
+    // Use a page-specific key to avoid conflicts
+    const hasSeenHomePageIntro = sessionStorage.getItem('hasSeenHomePagePropheticMoment');
+    
     if (ENABLE_PROPHETIC_MOMENT) {
-      const hasSeenProphetic = sessionStorage.getItem('hasSeenPropheticMoment');
-      if (hasSeenProphetic !== 'true') {
+      if (hasSeenHomePageIntro !== 'true') {
         setShowHeroContent(false);
         setTriggerProphetic(true);
+        // Store with page-specific key
+        sessionStorage.setItem('hasSeenHomePagePropheticMoment', 'true');
       }
     }
+    
+    // Always ensure content shows after component mounts (failsafe)
+    const timer = setTimeout(() => {
+      setShowHeroContent(true);
+    }, 500);
+    
+    return () => clearTimeout(timer);
   }, [])
 
   // Handle when prophetic moment completes

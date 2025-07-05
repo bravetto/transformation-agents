@@ -58,6 +58,8 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
 
   // Use useCallback to prevent handleComplete from changing on every render
   const handleComplete = useCallback(() => {
+    // Store that user has seen the prophetic moment
+    sessionStorage.setItem('hasSeenHomePagePropheticMoment', 'true')
     if (onComplete) onComplete()
     setIsActive(false)
   }, [onComplete])
