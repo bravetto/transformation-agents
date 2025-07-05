@@ -6,6 +6,7 @@ export const marthaHenderson: PersonData = {
   name: 'Martha Henderson',
   title: 'Mother, Prayer Warrior & Foundation',
   heroImage: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=1920&h=1080&fit=crop',
+  localImage: true,
   testimony: {
     quote: "A mother's prayers can move mountains, and I've watched God move them for my son.",
     context: "The power of a praying mother in her son's transformation story",

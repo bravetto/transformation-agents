@@ -1,0 +1,468 @@
+"use client";
+
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
+import { withErrorBoundary } from '@/components/with-error-boundary';
+import { getPersonImageData, staticBlurPlaceholders } from '@/data/person-images';
+
+// Role type for the fallback images
+export type PersonRole = 'lightworker' | 'messenger' | 'witness' | 'guardian' | 'default';
+
+// Function to determine fallback image based on role
+const getFallbackImage = (role: PersonRole = 'default') => {
+  switch (role) {
+    case 'lightworker':
+      return '/images/fallbacks/lightworker-fallback.jpg';
+    case 'messenger':
+      return '/images/fallbacks/messenger-fallback.jpg';
+    case 'witness':
+      return '/images/fallbacks/witness-fallback.jpg';
+    case 'guardian':
+      return '/images/fallbacks/guardian-fallback.jpg';
+    default:
+      return '/images/fallbacks/default-fallback.jpg';
+  }
+};
+
+// Generate initials from name
+const getInitials = (name: string) => {
+  return name
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .toUpperCase();
+};
+
+// Role-based colors for divine effects
+const roleColors: Record<PersonRole, {
+  primary: string;
+  glow: string;
+  gradient: string;
+  glowClass: string;
+}> = {
+  lightworker: {
+    primary: 'var(--lightworker-primary)',
+    glow: 'var(--lightworker-glow)',
+    gradient: 'from-amber-600 to-orange-500',
+    glowClass: 'glow-lightworker'
+  },
+  messenger: {
+    primary: 'var(--messenger-primary)',
+    glow: 'var(--messenger-glow)',
+    gradient: 'from-blue-600 to-sky-500',
+    glowClass: 'glow-messenger'
+  },
+  witness: {
+    primary: 'var(--witness-primary)',
+    glow: 'var(--witness-glow)',
+    gradient: 'from-emerald-600 to-teal-500',
+    glowClass: 'glow-witness'
+  },
+  guardian: {
+    primary: 'var(--guardian-primary)',
+    glow: 'var(--guardian-glow)',
+    gradient: 'from-amber-600 to-orange-500',
+    glowClass: 'glow-guardian'
+  },
+  default: {
+    primary: 'var(--courage-blue)',
+    glow: 'var(--hope-gold)',
+    gradient: 'from-blue-500 to-indigo-600',
+    glowClass: 'glow-messenger'
+  }
+};
+
+// Flower of Life sacred geometry pattern SVG
+const FlowerOfLifePattern = ({ className }: { className?: string }) => {
+  return (
+    <svg 
+      width="100%" 
+      height="100%" 
+      viewBox="0 0 200 200" 
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("absolute inset-0 w-full h-full", className)}
+      style={{ opacity: 0.05 }}
+    >
+      <g fill="currentColor">
+        {/* Central circle */}
+        <circle cx="100" cy="100" r="20" />
+        
+        {/* First ring */}
+        {[0, 60, 120, 180, 240, 300].map((angle, i) => {
+          const x = 100 + Math.cos(angle * Math.PI / 180) * 40;
+          const y = 100 + Math.sin(angle * Math.PI / 180) * 40;
+          return <circle key={`ring1-${i}`} cx={x} cy={y} r="20" />;
+        })}
+        
+        {/* Second ring */}
+        {[30, 90, 150, 210, 270, 330].map((angle, i) => {
+          const x = 100 + Math.cos(angle * Math.PI / 180) * 40 * Math.sqrt(3) / 2;
+          const y = 100 + Math.sin(angle * Math.PI / 180) * 40 * Math.sqrt(3) / 2;
+          return <circle key={`ring2-${i}`} cx={x} cy={y} r="20" />;
+        })}
+      </g>
+    </svg>
+  );
+};
+
+// Floating particles animation component
+const FloatingParticles = ({ role, isHovered }: { role: PersonRole, isHovered: boolean }) => {
+  const prefersReducedMotion = 
+    typeof window !== 'undefined' ? 
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
+  
+  if (prefersReducedMotion) return null;
+  
+  // Get divine accent colors for the given role
+  const getGlowColor = (roleType: PersonRole): string => {
+    return roleType === 'lightworker' ? 'var(--lightworker-glow)' : 
+           roleType === 'messenger' ? 'var(--messenger-glow)' : 
+           roleType === 'witness' ? 'var(--witness-glow)' : 
+           roleType === 'guardian' ? 'var(--guardian-glow)' : 'var(--hope-gold)';
+  };
+  
+  const color = getGlowColor(role);
+  
+  return (
+    <div className={cn(
+      "absolute inset-0 overflow-hidden pointer-events-none transition-opacity duration-500",
+      isHovered ? "opacity-100" : "opacity-0"
+    )}>
+      {[...Array(12)].map((_, i) => (
+        <div
+          key={`particle-${i}`}
+          className="absolute w-1.5 h-1.5 rounded-full blur-[1px] opacity-0"
+          style={{
+            left: `${Math.random() * 100}%`,
+            bottom: `-5%`,
+            opacity: isHovered ? 0.7 : 0,
+            backgroundColor: color,
+            animation: isHovered ? 
+              `floatUp ${2 + Math.random() * 3}s ease-out ${Math.random() * 2}s infinite` : 
+              'none'
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+export interface PersonCardProps {
+  id: string;
+  slug: string;
+  name: string;
+  title: string;
+  description?: string;
+  imageSrc?: string;
+  localImage?: boolean;
+  role?: PersonRole;
+  size?: 'small' | 'medium' | 'large' | 'featured';
+  className?: string;
+}
+
+function PersonCard({
+  id,
+  slug,
+  name,
+  title,
+  description,
+  imageSrc,
+  localImage = false,
+  role = 'default',
+  size = 'medium',
+  className,
+}: PersonCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  
+  // Get the person's local image data if available
+  const personImageData = localImage && id ? getPersonImageData(id, role) : undefined;
+  
+  // Check for reduced motion preference
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+    
+    const handleChange = () => setPrefersReducedMotion(mediaQuery.matches);
+    mediaQuery.addEventListener('change', handleChange);
+    
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+  
+  // Define size-specific styles
+  const sizeStyles = {
+    small: {
+      container: 'h-60',
+      image: 'h-28 w-28',
+      title: 'text-lg',
+      content: 'p-4',
+      description: 'line-clamp-2 text-xs',
+    },
+    medium: {
+      container: 'h-80',
+      image: 'h-36 w-36',
+      title: 'text-xl',
+      content: 'p-5',
+      description: 'line-clamp-3 text-sm',
+    },
+    large: {
+      container: 'h-96',
+      image: 'h-48 w-48',
+      title: 'text-2xl',
+      content: 'p-6',
+      description: 'line-clamp-4',
+    },
+    featured: {
+      container: 'h-96 md:h-[32rem] col-span-2',
+      image: 'h-48 w-48 md:h-64 md:w-64',
+      title: 'text-3xl',
+      content: 'p-6 md:p-8',
+      description: 'md:line-clamp-6 text-base',
+    },
+  };
+
+  // Role-based colors for fallback avatars
+  const roleColors = {
+    lightworker: 'bg-amber-600 text-white',
+    messenger: 'bg-blue-600 text-white',
+    witness: 'bg-emerald-600 text-white',
+    guardian: 'bg-amber-600 text-white',
+    default: 'bg-courage-blue text-white',
+  };
+
+  // Motion variants for animations with divine easing
+  const divineEasing = [0.16, 1, 0.3, 1]; // cubic-bezier(0.16, 1, 0.3, 1)
+  
+  const cardVariants = {
+    initial: { 
+      y: 20,
+      opacity: 0 
+    },
+    animate: { 
+      y: 0, 
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: divineEasing
+      }
+    },
+    hover: {
+      y: -8,
+      scale: prefersReducedMotion ? 1 : 1.03,
+      boxShadow: '0 15px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.2)',
+      transition: {
+        duration: 0.4,
+        ease: divineEasing
+      }
+    }
+  };
+
+  const imageVariants = {
+    initial: {
+      scale: 1,
+    },
+    hover: {
+      scale: prefersReducedMotion ? 1 : 1.08,
+      transition: {
+        duration: 0.5,
+        ease: divineEasing
+      }
+    }
+  };
+
+  // Determine the image sources in order of priority
+  const getImageSource = () => {
+    // First check for local image data
+    if (personImageData) {
+      // Use the display size by default or full size for featured cards
+      return size === 'featured' ? personImageData.full : personImageData.display;
+    }
+    
+    // Next check for remote image URL
+    if (!imageError && imageSrc) {
+      return imageSrc;
+    }
+    
+    // Finally, use role-based fallback
+    return getFallbackImage(role);
+  };
+  
+  // Get the appropriate blur data URL
+  const getBlurDataURL = () => {
+    if (personImageData?.blurDataURL) {
+      return personImageData.blurDataURL;
+    }
+    
+    // Use static placeholders based on role if no specific blur data
+    return staticBlurPlaceholders[role] || staticBlurPlaceholders.default;
+  };
+  
+  // Determine if we should use placeholder blur
+  const shouldUseBlur = !!personImageData?.blurDataURL;
+  
+  // Determine the image source based on availability
+  const imageSource = getImageSource();
+    
+  // Get role-specific colors
+  const roleColor = roleColors[role] || roleColors.default;
+  const divineColors = role in roleColors ? roleColors[role] : roleColors.default;
+
+  // Get divine accent colors
+  const divineAccent = {
+    glowClass: role === 'lightworker' ? 'glow-lightworker' : 
+              role === 'messenger' ? 'glow-messenger' : 
+              role === 'witness' ? 'glow-witness' : 
+              role === 'guardian' ? 'glow-guardian' : 'glow-messenger',
+    gradient: role === 'lightworker' ? 'from-amber-600 to-orange-500' : 
+             role === 'messenger' ? 'from-blue-600 to-sky-500' : 
+             role === 'witness' ? 'from-emerald-600 to-teal-500' : 
+             role === 'guardian' ? 'from-amber-600 to-orange-500' : 'from-blue-500 to-indigo-600',
+    glow: role === 'lightworker' ? 'var(--lightworker-glow)' : 
+         role === 'messenger' ? 'var(--messenger-glow)' : 
+         role === 'witness' ? 'var(--witness-glow)' : 
+         role === 'guardian' ? 'var(--guardian-glow)' : 'var(--hope-gold)'
+  };
+
+  return (
+    <motion.div
+      initial="initial"
+      animate="animate"
+      whileHover="hover"
+      variants={cardVariants}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      className={cn(
+        "relative overflow-hidden rounded-xl glass transition-all ease-divine",
+        sizeStyles[size].container,
+        isHovered ? divineAccent.glowClass : "",
+        className
+      )}
+    >
+      <Link href={`/people/${slug}`} className="block h-full">
+        {/* Divine glow overlay */}
+        <div 
+          className={cn(
+            "absolute inset-0 opacity-70 z-0 transition-opacity duration-500 ease-divine",
+            `bg-gradient-to-br ${divineAccent.gradient}`
+          )}
+          style={{
+            opacity: isHovered ? 0.9 : 0.7,
+          }}
+        />
+
+        {/* Sacred geometry pattern */}
+        <FlowerOfLifePattern className="z-0 text-white" />
+        
+        {/* Floating particles effect */}
+        <FloatingParticles role={role} isHovered={isHovered} />
+        
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-70 z-0" />
+        
+        {/* Background Image */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
+          <motion.div
+            variants={imageVariants}
+            className="w-full h-full"
+          >
+            {!imageError && (personImageData || imageSrc) ? (
+              <Image
+                src={imageSource}
+                alt={name}
+                fill
+                sizes={
+                  size === 'small' 
+                    ? '(max-width: 640px) 100vw, 150px' 
+                    : size === 'medium' 
+                      ? '(max-width: 768px) 100vw, 300px' 
+                      : size === 'large' 
+                        ? '(max-width: 1024px) 100vw, 450px' 
+                        : '(max-width: 1280px) 100vw, 600px'
+                }
+                style={{ objectFit: 'cover' }}
+                className="opacity-90"
+                onError={() => setImageError(true)}
+                priority={size === 'featured'}
+                placeholder={shouldUseBlur ? "blur" : "empty"}
+                blurDataURL={shouldUseBlur ? getBlurDataURL() : undefined}
+              />
+            ) : (
+              <div className={cn(
+                "w-full h-full flex items-center justify-center",
+                roleColors[role]
+              )}>
+                <span className="text-6xl font-bold">{getInitials(name)}</span>
+              </div>
+            )}
+          </motion.div>
+        </div>
+        
+        {/* Content Overlay */}
+        <div className="relative h-full flex flex-col justify-end z-10">
+          <div className={cn(
+            "text-white transition-all backdrop-blur-lg bg-black/30 rounded-b-xl border-t border-white/10 shadow-inner",
+            sizeStyles[size].content
+          )}>
+            {/* Title */}
+            <h2 className={cn(
+              "font-bold mb-1 transition-all text-transparent bg-clip-text bg-gradient-to-r from-white to-white/90",
+              sizeStyles[size].title
+            )}>
+              {name}
+            </h2>
+            
+            {/* Subtitle */}
+            <p 
+              className="font-medium mb-3 transition-all"
+              style={{ color: divineAccent.glow }}
+            >
+              {title}
+            </p>
+            
+            {/* Description */}
+            {description && (
+              <p className={cn(
+                "text-white/90 mb-4",
+                sizeStyles[size].description
+              )}>
+                {description}
+              </p>
+            )}
+            
+            {/* Read more link */}
+            <motion.div 
+              animate={{ 
+                x: isHovered ? 5 : 0, 
+                transition: { duration: 0.3 } 
+              }}
+              className="inline-flex items-center text-sm font-medium"
+              style={{ 
+                color: divineAccent.glow,
+                transition: 'color 0.3s ease'
+              }}
+            >
+              <span className="relative">
+                Read Story
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full" 
+                  style={{ width: isHovered ? '100%' : '0%' }}
+                />
+              </span>
+              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5-5 5" />
+              </svg>
+            </motion.div>
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
+export default withErrorBoundary(PersonCard, {
+  componentName: 'PersonCard',
+  id: 'person-card'
+}); 

@@ -6,6 +6,7 @@ export const coachDungy: PersonData = {
   name: 'Coach Tony Dungy',
   title: 'Where Championships Meet Character',
   heroImage: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=1920&h=1080&fit=crop',
+  localImage: true,
   
   testimony: {
     quote: 'I won Super Bowls, but my greatest victories are the lives transformed through second chances. Pain is God\'s megaphone, and I\'ve learned to listen.',

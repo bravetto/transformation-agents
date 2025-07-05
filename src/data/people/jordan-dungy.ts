@@ -6,6 +6,7 @@ export const jordanDungy: PersonData = {
   name: 'Jordan Dungy',
   title: 'Where Legacy Meets Destiny',
   heroImage: 'https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?w=1920&h=1080&fit=crop',
+  localImage: true,
   
   testimony: {
     quote: 'Not living in my father\'s shadow but finding my own light. Teaching youth that their pain has purpose and their dreams have destiny.',

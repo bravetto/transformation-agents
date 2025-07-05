@@ -1,81 +1,117 @@
 "use client";
 
+import { useState, useEffect, Suspense } from 'react';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { getAllPeople } from '@/data/people';
+import InteractivePersonGrid from '@/components/people/interactive-person-grid';
+import { withErrorBoundary } from '@/components/with-error-boundary';
+import { GridLoadingSkeleton, LoadingMessages, ErrorWithRetry } from '@/components/people/LoadingStates';
+import { PersonData } from '@/types/person';
 
-export default function PeopleContent() {
-  let people;
+interface PeopleContentProps {
+  simulationConfig?: {
+    loadingDelay?: number;
+    simulateError?: boolean;
+  };
+}
+
+function PeopleContent({ simulationConfig }: PeopleContentProps) {
+  const [people, setPeople] = useState<PersonData[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
   
-  try {
-    people = getAllPeople();
-  } catch (error) {
-    console.error('Error loading people:', error);
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">Error Loading People</h2>
-          <p className="text-gray-600">Please try refreshing the page</p>
-        </div>
-      </div>
-    );
-  }
+  // For testing - use the passed configuration or defaults
+  const SIMULATE_LOADING_DELAY = simulationConfig?.loadingDelay || 0; 
+  const SIMULATE_ERROR = simulationConfig?.simulateError || false;
+  
+  useEffect(() => {
+    setIsLoading(true);
+    setError(null);
+    
+    // Calculate exponential backoff delay (min 1s, max 10s) for retries
+    const backoffDelay = Math.min(1000 * Math.pow(2, retryCount), 10000);
+    const delay = retryCount === 0 ? SIMULATE_LOADING_DELAY : backoffDelay;
+    
+    const timer = setTimeout(() => {
+      try {
+        // Simulate error for testing if enabled
+        if (SIMULATE_ERROR && retryCount === 0) {
+          throw new Error("Simulated error for testing");
+        }
+        
+        const loadedPeople = getAllPeople();
+        setPeople(loadedPeople);
+        setIsLoading(false);
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'Error loading transformation agents';
+        setError(errorMessage);
+        setIsLoading(false);
+      }
+    }, delay);
+    
+    return () => clearTimeout(timer);
+  }, [retryCount, SIMULATE_LOADING_DELAY, SIMULATE_ERROR, simulationConfig]);
+  
+  const handleRetry = () => {
+    setRetryCount(prev => prev + 1);
+  };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-      <div className="container mx-auto px-4 py-16">
-        <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
-          Transformation Agents
-        </h1>
-        <p className="text-lg text-center text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">
-          Meet the extraordinary individuals whose faith journeys are transforming lives and communities.
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {people.map((person) => (
-            <Link 
-              key={person.id} 
-              href={`/people/${person.slug}`}
-              className="block"
-            >
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6 h-full border border-gray-200 dark:border-gray-700">
-                <div className="space-y-3">
-                  {/* Avatar with initials */}
-                  <div className="w-20 h-20 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mb-4">
-                    <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                      {person.name.split(' ').map(n => n[0]).join('')}
-                    </span>
-                  </div>
-                  
-                  {/* Name */}
-                  <h2 className="text-xl font-semibold hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                    {person.name}
-                  </h2>
-                  
-                  {/* Title */}
-                  <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">
-                    {person.title}
-                  </p>
-                  
-                  {/* Bio */}
-                  <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
-                    {person.impact.description}
-                  </p>
-                  
-                  {/* Read Story Link */}
-                  <div className="pt-2">
-                    <span className="text-sm text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1">
-                      Read Story 
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-              </div>
+    <main className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+      <div className="container mx-auto px-4">
+        {/* Enhanced Hero Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="people-page-header mb-16 py-12"
+        >
+          <h1 className="people-page-title">
+            Transformation Agents
+          </h1>
+          <p className="people-page-subtitle">
+            Meet the extraordinary individuals whose faith journeys are transforming lives and communities through authentic connection and divine purpose.
+          </p>
+          <div className="mt-6 text-center">
+            <Link href="/people/view-test" className="view-modes-link">
+              <span>✨</span>
+              <span>Try Different View Modes</span>
+              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5-5 5" />
+              </svg>
             </Link>
-          ))}
-        </div>
+          </div>
+        </motion.div>
+        
+        {/* Loading, Error or Content */}
+        {isLoading ? (
+          <div className="space-y-8">
+            <LoadingMessages />
+            <GridLoadingSkeleton count={8} showFeatured={true} />
+          </div>
+        ) : error ? (
+          <div className="flex justify-center items-center py-16">
+            <ErrorWithRetry 
+              message={error}
+              onRetry={handleRetry}
+            />
+          </div>
+        ) : people && (
+          <Suspense fallback={<GridLoadingSkeleton count={8} showFeatured={true} />}>
+            <InteractivePersonGrid 
+              people={people} 
+              simulateLoadingDelay={0} // Set to a value to test with delay
+            />
+          </Suspense>
+        )}
       </div>
     </main>
   );
-} 
+}
+
+export default withErrorBoundary(PeopleContent, {
+  componentName: 'PeopleContent',
+  id: 'people-content'
+}); 

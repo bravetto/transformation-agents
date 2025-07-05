@@ -43,13 +43,15 @@ export default function HomePage() {
       if (hasSeenHomePageIntro !== 'true') {
         setShowHeroContent(false);
         setTriggerProphetic(true);
+        // Store with page-specific key
+        sessionStorage.setItem('hasSeenHomePagePropheticMoment', 'true');
       }
     }
     
-    // Always ensure content shows after component mounts
+    // Always ensure content shows after component mounts (failsafe)
     const timer = setTimeout(() => {
       setShowHeroContent(true);
-    }, 100);
+    }, 500);
     
     return () => clearTimeout(timer);
   }, [])
@@ -77,6 +79,19 @@ export default function HomePage() {
       )}
       
       <div className={!showHeroContent ? 'hidden' : ''}>
+        {/* Quick Navigation */}
+        <div className="bg-black/80 py-2 text-center">
+          <Container>
+            <Link href="/people" className="inline-flex items-center gap-2 text-white font-semibold hover:text-hope-gold transition-colors">
+              <span>✨</span>
+              <span>Meet Our Transformation Agents</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </Container>
+        </div>
+        
         {/* Hero Section */}
         <Hero />
         

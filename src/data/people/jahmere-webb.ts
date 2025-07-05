@@ -6,6 +6,13 @@ export const jahmereWebb: PersonData = {
   name: 'JAHmere Webb',
   title: 'From Broken Systems to Building Bridges',
   heroImage: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=1920&h=1080&fit=crop',
+  localImage: true,
+  
+  // Filter properties
+  role: 'messenger',
+  journeyStage: 'serving',
+  themes: ['transformation', 'courage', 'faith'],
+  impactLevel: 'regional',
   
   testimony: {
     quote: 'They tried to cage a bridge builder. They tried to silence a youth whisperer. But you can\'t chain what Heaven has released for purpose.',

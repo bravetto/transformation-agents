@@ -6,6 +6,7 @@ export const jayForte: PersonData = {
   name: 'Jay Forte',
   title: 'Discovering Greatness Zones in Everyone',
   heroImage: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1920&h=1080&fit=crop',
+  localImage: true,
   
   testimony: {
     quote: 'Most people play small because they don\'t know their capacity for greatness. I help them discover, develop, and deploy their unique gifts.',

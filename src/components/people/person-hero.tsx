@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Button } from '@/components/ui'
 import { withErrorBoundary } from '@/components/with-error-boundary'
+import { getPersonImageData } from '@/data/person-images'
 
 export interface PersonHeroProps {
   name: string
@@ -11,6 +12,9 @@ export interface PersonHeroProps {
   description: string
   imageSrc: string
   imageAlt: string
+  personId?: string
+  localImage?: boolean
+  role?: string
   cta?: {
     text: string
     link: string
@@ -24,6 +28,9 @@ function PersonHero({
   description,
   imageSrc,
   imageAlt,
+  personId,
+  localImage = false,
+  role = 'default',
   cta,
   variant = 'primary'
 }: PersonHeroProps) {
@@ -35,6 +42,10 @@ function PersonHero({
   }
   
   const currentBg = bgStyles[variant]
+  
+  // Check for local image
+  const personImageData = localImage && personId ? getPersonImageData(personId, role) : undefined;
+  const imageSource = personImageData ? personImageData.full : imageSrc;
   
   return (
     <section className={`relative overflow-hidden ${currentBg} py-16 md:py-24`}>
@@ -77,12 +88,14 @@ function PersonHero({
           >
             <div className="relative h-80 w-80 md:h-96 md:w-96 rounded-full overflow-hidden border-4 border-white/30 shadow-2xl">
               <Image
-                src={imageSrc}
+                src={imageSource}
                 alt={imageAlt}
                 fill
                 sizes="(max-width: 768px) 320px, 384px"
                 style={{ objectFit: 'cover' }}
                 priority
+                placeholder={personImageData?.blurDataURL ? "blur" : "empty"}
+                blurDataURL={personImageData?.blurDataURL}
               />
             </div>
           </motion.div>

@@ -33,7 +33,8 @@
     "cypress:headless": "cypress run",
     "e2e": "start-server-and-test dev http://localhost:3000 cypress",
     "e2e:headless": "start-server-and-test dev http://localhost:3000 cypress:headless",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "generate-blur": "node scripts/generate-blur-placeholders.js"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
@@ -48,6 +49,7 @@
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.8.1",
     "@use-gesture/react": "^10.3.1",
+    "canvas": "^3.1.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.0.0",
     "critters": "^0.0.25",

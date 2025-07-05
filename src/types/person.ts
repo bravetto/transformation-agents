@@ -7,6 +7,12 @@ export interface ImpactData {
   }>;
 }
 
+// Define filter-related types
+export type PersonRole = 'lightworker' | 'messenger' | 'witness' | 'guardian';
+export type JourneyStage = 'seeker' | 'awakening' | 'serving' | 'guiding';
+export type PersonTheme = 'faith' | 'courage' | 'transformation' | 'leadership' | 'unity' | 'wisdom';
+export type PersonImpactLevel = 'local' | 'regional' | 'global' | 'eternal';
+
 // Define content types for each section type
 interface HeroSectionContent {
   title: string;
@@ -89,6 +95,7 @@ export interface PersonData {
   name: string;
   title: string;
   heroImage: string;
+  localImage?: boolean;
   
   // Primary testimony
   testimony: {
@@ -109,4 +116,10 @@ export interface PersonData {
     description: string;
     ogImage?: string;
   };
+  
+  // Filter properties
+  role?: PersonRole;
+  journeyStage?: JourneyStage;
+  themes?: PersonTheme[];
+  impactLevel?: PersonImpactLevel;
 } 
