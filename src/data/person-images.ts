@@ -2,18 +2,27 @@
  * Person Image Mapping System
  * 
  * This file contains mappings of person IDs to their local image paths and blur data URLs.
- * Format: { personId: { full, display, thumbnail, blurDataURL } }
+ * Format: { personId: { full, display, thumbnail, fullJpg, displayJpg, thumbnailJpg, blurDataURL } }
  * 
- * - full: 600x800px images for detailed views
- * - display: 300x400px images for cards and medium displays
- * - thumbnail: 150x200px images for smaller displays
+ * - full: 600x800px WebP images for detailed views
+ * - display: 300x400px WebP images for cards and medium displays
+ * - thumbnail: 150x200px WebP images for smaller displays
+ * - fullJpg, displayJpg, thumbnailJpg: JPG fallbacks for browsers without WebP support
  * - blurDataURL: Base64 encoded tiny preview for progressive loading
  */
 
 export interface PersonImageData {
+  // WebP versions (primary format)
   full: string;
   display: string;
   thumbnail: string;
+  
+  // JPG fallbacks for browsers without WebP support
+  fullJpg: string;
+  displayJpg: string;
+  thumbnailJpg: string;
+  
+  // Blur data URL for progressive loading
   blurDataURL?: string;
 }
 
@@ -38,41 +47,67 @@ export const staticBlurPlaceholders = {
  */
 const personImages: PersonImageMapping = {
   'michael-mataluni': {
+    // WebP versions (primary)
     full: '/images/people/full/michael-mataluni.webp',
     display: '/images/people/display/michael-mataluni.webp',
     thumbnail: '/images/people/thumbnails/michael-mataluni.webp',
-    blurDataURL: staticBlurPlaceholders.lightworker
-  },
+    
+    // JPG fallbacks
+    fullJpg: '/images/people/full/michael-mataluni.jpg',
+    displayJpg: '/images/people/display/michael-mataluni.jpg',
+    thumbnailJpg: '/images/people/thumbnails/michael-mataluni.jpg',
+    
+    blurDataURL: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCDEABQADcAPABGADwAMgBQAEYAQQBGAFoAVQBQAF8AeADIAIIAeABuAG4AeAD1AK8AuQCRAMgBIgD/ATEBLAEdAP8BGAETAUABaAHMAYYBQAFUAbMBWQETARgBkAIhAZUBswHbAeoCAwIIAgMBNgGBAjUCXQIwAfQCWAHMAfkCAwHv/9sAgxEAVQBaAFoAeABpAHgA6wCCAIIA6wHvAUoBGAFKAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7//BABEIAAoACgMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/AAUUUVsM/9k='},
   'jahmere-webb': {
     full: '/images/people/full/jahmere-webb.webp',
     display: '/images/people/display/jahmere-webb.webp',
     thumbnail: '/images/people/thumbnails/jahmere-webb.webp',
-    blurDataURL: staticBlurPlaceholders.messenger
-  },
+    
+    fullJpg: '/images/people/full/jahmere-webb.jpg',
+    displayJpg: '/images/people/display/jahmere-webb.jpg',
+    thumbnailJpg: '/images/people/thumbnails/jahmere-webb.jpg',
+    
+    blurDataURL: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCDEABQADcAPABGADwAMgBQAEYAQQBGAFoAVQBQAF8AeADIAIIAeABuAG4AeAD1AK8AuQCRAMgBIgD/ATEBLAEdAP8BGAETAUABaAHMAYYBQAFUAbMBWQETARgBkAIhAZUBswHbAeoCAwIIAgMBNgGBAjUCXQIwAfQCWAHMAfkCAwHv/9sAgxEAVQBaAFoAeABpAHgA6wCCAIIA6wHvAUoBGAFKAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7//BABEIAAoACgMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/AGgDFJRRW5mf/9k='},
   'jordan-dungy': {
     full: '/images/people/full/jordan-dungy.webp',
     display: '/images/people/display/jordan-dungy.webp',
     thumbnail: '/images/people/thumbnails/jordan-dungy.webp',
-    blurDataURL: staticBlurPlaceholders.lightworker
-  },
+    
+    fullJpg: '/images/people/full/jordan-dungy.jpg',
+    displayJpg: '/images/people/display/jordan-dungy.jpg',
+    thumbnailJpg: '/images/people/thumbnails/jordan-dungy.jpg',
+    
+    blurDataURL: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCDEABQADcAPABGADwAMgBQAEYAQQBGAFoAVQBQAF8AeADIAIIAeABuAG4AeAD1AK8AuQCRAMgBIgD/ATEBLAEdAP8BGAETAUABaAHMAYYBQAFUAbMBWQETARgBkAIhAZUBswHbAeoCAwIIAgMBNgGBAjUCXQIwAfQCWAHMAfkCAwHv/9sAgxEAVQBaAFoAeABpAHgA6wCCAIIA6wHvAUoBGAFKAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7//BABEIAAoACgMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/AAUUUVsM/9k='},
   'coach-dungy': {
     full: '/images/people/full/coach-dungy.webp',
     display: '/images/people/display/coach-dungy.webp',
     thumbnail: '/images/people/thumbnails/coach-dungy.webp',
-    blurDataURL: staticBlurPlaceholders.guardian
-  },
+    
+    fullJpg: '/images/people/full/coach-dungy.jpg',
+    displayJpg: '/images/people/display/coach-dungy.jpg',
+    thumbnailJpg: '/images/people/thumbnails/coach-dungy.jpg',
+    
+    blurDataURL: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCDEABQADcAPABGADwAMgBQAEYAQQBGAFoAVQBQAF8AeADIAIIAeABuAG4AeAD1AK8AuQCRAMgBIgD/ATEBLAEdAP8BGAETAUABaAHMAYYBQAFUAbMBWQETARgBkAIhAZUBswHbAeoCAwIIAgMBNgGBAjUCXQIwAfQCWAHMAfkCAwHv/9sAgxEAVQBaAFoAeABpAHgA6wCCAIIA6wHvAUoBGAFKAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7//BABEIAAoACgMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/AJKKKK5zU//Z'},
   'jay-forte': {
     full: '/images/people/full/jay-forte.webp',
     display: '/images/people/display/jay-forte.webp',
     thumbnail: '/images/people/thumbnails/jay-forte.webp',
-    blurDataURL: staticBlurPlaceholders.witness
-  },
+    
+    fullJpg: '/images/people/full/jay-forte.jpg',
+    displayJpg: '/images/people/display/jay-forte.jpg',
+    thumbnailJpg: '/images/people/thumbnails/jay-forte.jpg',
+    
+    blurDataURL: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCDEABQADcAPABGADwAMgBQAEYAQQBGAFoAVQBQAF8AeADIAIIAeABuAG4AeAD1AK8AuQCRAMgBIgD/ATEBLAEdAP8BGAETAUABaAHMAYYBQAFUAbMBWQETARgBkAIhAZUBswHbAeoCAwIIAgMBNgGBAjUCXQIwAfQCWAHMAfkCAwHv/9sAgxEAVQBaAFoAeABpAHgA6wCCAIIA6wHvAUoBGAFKAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7//BABEIAAoACgMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/AFFJRRQYH//Z'},
   'martha-henderson': {
     full: '/images/people/full/martha-henderson.webp',
     display: '/images/people/display/martha-henderson.webp',
     thumbnail: '/images/people/thumbnails/martha-henderson.webp',
-    blurDataURL: staticBlurPlaceholders.messenger
-  }
+    
+    fullJpg: '/images/people/full/martha-henderson.jpg',
+    displayJpg: '/images/people/display/martha-henderson.jpg',
+    thumbnailJpg: '/images/people/thumbnails/martha-henderson.jpg',
+    
+    blurDataURL: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCDEABQADcAPABGADwAMgBQAEYAQQBGAFoAVQBQAF8AeADIAIIAeABuAG4AeAD1AK8AuQCRAMgBIgD/ATEBLAEdAP8BGAETAUABaAHMAYYBQAFUAbMBWQETARgBkAIhAZUBswHbAeoCAwIIAgMBNgGBAjUCXQIwAfQCWAHMAfkCAwHv/9sAgxEAVQBaAFoAeABpAHgA6wCCAIIA6wHvAUoBGAFKAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7wHvAe8B7//BABEIAAoACgMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/AGgDFJRRW5mf/9k='}
 };
 
 /**

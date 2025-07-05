@@ -295,6 +295,17 @@ function PersonCard({
     return getFallbackImage(role);
   };
   
+  // Get the JPG fallback image source
+  const getJpgFallbackSource = () => {
+    if (personImageData) {
+      // Use the display size by default or full size for featured cards
+      return size === 'featured' ? personImageData.fullJpg : personImageData.displayJpg;
+    }
+    
+    // Use role-based fallback if no personImageData
+    return getFallbackImage(role);
+  };
+  
   // Get the appropriate blur data URL
   const getBlurDataURL = () => {
     if (personImageData?.blurDataURL) {
@@ -310,6 +321,7 @@ function PersonCard({
   
   // Determine the image source based on availability
   const imageSource = getImageSource();
+  const jpgFallbackSource = getJpgFallbackSource();
     
   // Get role-specific colors
   const roleColor = roleColors[role] || roleColors.default;
@@ -375,26 +387,37 @@ function PersonCard({
             className="w-full h-full"
           >
             {!imageError && (personImageData || imageSrc) ? (
-              <Image
-                src={imageSource}
-                alt={name}
-                fill
-                sizes={
-                  size === 'small' 
-                    ? '(max-width: 640px) 100vw, 150px' 
-                    : size === 'medium' 
-                      ? '(max-width: 768px) 100vw, 300px' 
-                      : size === 'large' 
-                        ? '(max-width: 1024px) 100vw, 450px' 
-                        : '(max-width: 1280px) 100vw, 600px'
-                }
-                style={{ objectFit: 'cover' }}
-                className="opacity-90"
-                onError={() => setImageError(true)}
-                priority={size === 'featured'}
-                placeholder={shouldUseBlur ? "blur" : "empty"}
-                blurDataURL={shouldUseBlur ? getBlurDataURL() : undefined}
-              />
+              <>
+                <picture>
+                  {/* WebP source - primary format */}
+                  <source srcSet={imageSource} type="image/webp" />
+                  
+                  {/* JPG fallback for browsers without WebP support */}
+                  <source srcSet={jpgFallbackSource} type="image/jpeg" />
+                  
+                  {/* Image with all required props */}
+                  <Image
+                    src={imageSource}
+                    alt={name}
+                    fill
+                    sizes={
+                      size === 'small' 
+                        ? '(max-width: 640px) 100vw, 150px' 
+                        : size === 'medium' 
+                          ? '(max-width: 768px) 100vw, 300px' 
+                          : size === 'large' 
+                            ? '(max-width: 1024px) 100vw, 450px' 
+                            : '(max-width: 1280px) 100vw, 600px'
+                    }
+                    style={{ objectFit: 'cover' }}
+                    className="opacity-90"
+                    onError={() => setImageError(true)}
+                    priority={size === 'featured'}
+                    placeholder={shouldUseBlur ? "blur" : "empty"}
+                    blurDataURL={shouldUseBlur ? getBlurDataURL() : undefined}
+                  />
+                </picture>
+              </>
             ) : (
               <div className={cn(
                 "w-full h-full flex items-center justify-center",
