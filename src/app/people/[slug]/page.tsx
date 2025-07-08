@@ -1,35 +1,40 @@
-import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import { Suspense } from 'react'
-import { getPersonBySlug, getAllPeople } from '@/data/people'
-import type { PersonData } from '@/types/person'
-import { ErrorBoundary } from '@/components/error-boundary'
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import { getPersonBySlug, getAllPeople } from "@/data/people";
+import type { PersonData } from "@/types/person";
+import { ErrorBoundary } from "@/components/error-boundary";
 
 // Import enhanced components for rendering different section types
-import EnhancedPersonHero from '@/components/people/enhanced-person-hero'
-import PersonTestimony from '@/components/people/person-testimony'
-import PersonImpact from '@/components/people/person-impact'
-import PersonLetter from '@/components/people/person-letter'
-import PersonVideo from '@/components/people/person-video'
-import PersonCustom from '@/components/people/person-custom'
+import EnhancedPersonHero from "@/components/people/enhanced-person-hero";
+import PersonTestimony from "@/components/people/person-testimony";
+import PersonImpact from "@/components/people/person-impact";
+import PersonLetter from "@/components/people/person-letter";
+import PersonVideo from "@/components/people/person-video";
+import PersonCustom from "@/components/people/person-custom";
 
-// Define types for the page parameters
+// Define types for the page parameters (Next.js 15 async params)
 interface PersonPageParams {
-  params: {
-    slug: string
-  }
+  params: Promise<{
+    slug: string;
+  }>;
 }
 
 // Generate static metadata
-export async function generateMetadata({ params }: PersonPageParams): Promise<Metadata> {
-  const person = getPersonBySlug(params.slug)
-  
+export async function generateMetadata({
+  params,
+}: PersonPageParams): Promise<Metadata> {
+  const { slug } = await params;
+  const person = getPersonBySlug(slug);
+
   if (!person) {
     return {
-      title: 'Person Not Found',
-      description: 'The requested person could not be found.',
-    }
+      title: "Person Not Found",
+      description: "The requested person could not be found.",
+    };
   }
+
+  const defaultImage = "/images/fallbacks/default-fallback.jpg";
 
   return {
     title: person.metadata?.title || `${person.name} - The Bridge Project`,
@@ -39,23 +44,23 @@ export async function generateMetadata({ params }: PersonPageParams): Promise<Me
       description: person.metadata?.description || person.impact.description,
       images: [
         {
-          url: person.metadata?.ogImage || person.heroImage,
+          url: person.metadata?.ogImage || person.heroImage || defaultImage,
           width: 1200,
           height: 630,
           alt: `${person.name} - The Bridge Project`,
         },
       ],
     },
-  }
+  };
 }
 
 // Generate static paths for all person pages
 export async function generateStaticParams() {
-  const people = getAllPeople()
-  
-  return people.map(person => ({
-    slug: person.slug
-  }))
+  const people = getAllPeople();
+
+  return people.map((person) => ({
+    slug: person.slug,
+  }));
 }
 
 // Fallback component for loading state
@@ -74,10 +79,13 @@ function PersonPageSkeleton() {
 /**
  * Renders content sections based on the type
  */
-function renderSection(section: PersonData['sections'][0], personData: PersonData) {
+function renderSection(
+  section: NonNullable<PersonData["sections"]>[0],
+  personData: PersonData,
+) {
   try {
     switch (section.type) {
-      case 'hero':
+      case "hero":
         return (
           <EnhancedPersonHero
             key={`hero-${personData.id}`}
@@ -90,14 +98,18 @@ function renderSection(section: PersonData['sections'][0], personData: PersonDat
             localImage={personData.localImage}
             role={personData.role}
             variant="primary"
-            cta={section.content.ctaText && section.content.ctaHref ? {
-              text: section.content.ctaText,
-              link: section.content.ctaHref
-            } : undefined}
+            cta={
+              section.content.ctaText && section.content.ctaHref
+                ? {
+                    text: section.content.ctaText,
+                    link: section.content.ctaHref,
+                  }
+                : undefined
+            }
           />
         );
 
-      case 'testimony':
+      case "testimony":
         return (
           <PersonTestimony
             key={`testimony-${personData.id}`}
@@ -106,8 +118,8 @@ function renderSection(section: PersonData['sections'][0], personData: PersonDat
             testimonies={section.content.testimonies}
           />
         );
-      
-      case 'impact':
+
+      case "impact":
         return (
           <PersonImpact
             key={`impact-${personData.id}`}
@@ -117,12 +129,13 @@ function renderSection(section: PersonData['sections'][0], personData: PersonDat
             achievements={section.content.achievements || []}
           />
         );
-      
-      case 'letter':
-        const signature = typeof section.content.signature === 'object' 
-          ? section.content.signature?.image 
-          : section.content.signature;
-        
+
+      case "letter":
+        const signature =
+          typeof section.content.signature === "object"
+            ? section.content.signature?.image
+            : section.content.signature;
+
         return (
           <PersonLetter
             key={`letter-${personData.id}`}
@@ -132,8 +145,8 @@ function renderSection(section: PersonData['sections'][0], personData: PersonDat
             signature={signature}
           />
         );
-        
-      case 'video':
+
+      case "video":
         return (
           <PersonVideo
             key={`video-${personData.id}`}
@@ -143,8 +156,8 @@ function renderSection(section: PersonData['sections'][0], personData: PersonDat
             thumbnailUrl={section.content.thumbnailUrl}
           />
         );
-        
-      case 'custom':
+
+      case "custom":
         return (
           <PersonCustom
             key={`custom-${personData.id}-${section.content.component}`}
@@ -154,7 +167,7 @@ function renderSection(section: PersonData['sections'][0], personData: PersonDat
             props={section.content.props}
           />
         );
-      
+
       default:
         return null;
     }
@@ -162,7 +175,9 @@ function renderSection(section: PersonData['sections'][0], personData: PersonDat
     console.error(`Error rendering section ${section.type}:`, error);
     return (
       <div className="p-6 bg-red-50 text-red-800 rounded-lg">
-        <h3 className="text-lg font-semibold">Error rendering {section.type} section</h3>
+        <h3 className="text-lg font-semibold">
+          Error rendering {section.type} section
+        </h3>
         <p>The content could not be displayed. Please try again later.</p>
       </div>
     );
@@ -170,13 +185,16 @@ function renderSection(section: PersonData['sections'][0], personData: PersonDat
 }
 
 // The main person page component
-export default function PersonPage({ params }: PersonPageParams) {
+export default async function PersonPage({ params }: PersonPageParams) {
+  // Await params for Next.js 15
+  const { slug } = await params;
+
   // Get person data by slug
-  const person = getPersonBySlug(params.slug)
-  
+  const person = getPersonBySlug(slug);
+
   // If person doesn't exist, show 404 page
   if (!person) {
-    notFound()
+    notFound();
   }
 
   // Build hero props
@@ -188,45 +206,60 @@ export default function PersonPage({ params }: PersonPageParams) {
     imageAlt: `${person.name} profile photo`,
     personId: person.id,
     localImage: person.localImage,
-    role: person.role || 'default',
-    variant: 'primary' as const
-  }
-  
+    role: person.role || "default",
+    variant: "primary" as const,
+  };
+
   // Find the hero section if it exists
-  const heroSection = person.sections.find(section => section.type === 'hero')
-  
+  const heroSection = person.sections?.find(
+    (section) => section.type === "hero",
+  );
+
   return (
-    <ErrorBoundary fallback={<div className="p-8 text-center">Sorry, something went wrong loading this person's profile.</div>}>
-      <main>
-        {/* Hero Section */}
-        <Suspense fallback={<PersonPageSkeleton />}>
-          {heroSection ? (
-            renderSection(heroSection, person)
-          ) : (
-            <EnhancedPersonHero {...heroProps} />
-          )}
-        </Suspense>
-        
+    <ErrorBoundary
+      fallback={
+        <div className="p-8 text-center">
+          Sorry, something went wrong loading this person's profile.
+        </div>
+      }
+    >
+      <main className="page-container">
+        {/* Hero Section - Full Width */}
+        <section className="w-full">
+          <Suspense fallback={<PersonPageSkeleton />}>
+            {heroSection ? (
+              renderSection(heroSection, person)
+            ) : (
+              <EnhancedPersonHero {...heroProps} />
+            )}
+          </Suspense>
+        </section>
+
         {/* Render all non-hero sections dynamically */}
         <Suspense fallback={<PersonPageSkeleton />}>
           {person.sections
-            .filter(section => section.type !== 'hero')
+            ?.filter((section) => section.type !== "hero")
             .map((section) => (
-              <ErrorBoundary 
+              <section
                 key={`section-${section.type}-${section.id || Math.random().toString(36).substring(7)}`}
-                fallback={
-                  <div className="p-6 bg-gray-100 rounded-lg">
-                    <h3 className="text-lg font-semibold">Error loading {section.type} section</h3>
-                    <p>This content could not be displayed.</p>
-                  </div>
-                }
+                className="section-spacing"
               >
-                {renderSection(section, person)}
-              </ErrorBoundary>
-            ))
-          }
+                <ErrorBoundary
+                  fallback={
+                    <div className="container-wide p-6 bg-gray-100 rounded-lg">
+                      <h3 className="text-lg font-semibold">
+                        Error loading {section.type} section
+                      </h3>
+                      <p>This content could not be displayed.</p>
+                    </div>
+                  }
+                >
+                  {renderSection(section, person)}
+                </ErrorBoundary>
+              </section>
+            ))}
         </Suspense>
       </main>
     </ErrorBoundary>
-  )
-} 
+  );
+}

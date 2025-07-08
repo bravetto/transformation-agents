@@ -1,90 +1,69 @@
-import type { Metadata } from "next";
-import { Analytics } from '@/components/analytics';
-import "./globals.css";
-import dynamic from 'next/dynamic';
-import ErrorBoundaryWrapper from '@/components/error-boundary-wrapper';
-import { Suspense } from 'react';
+"use client";
 
-const Navigation = dynamic(() => import("@/components/navigation"), { ssr: false });
-// Temporarily disabled the Impact Dashboard
-// const ImpactDashboard = dynamic(() => import("@/components/impact-dashboard"), { ssr: false });
-const Footer = dynamic(() => import("@/components/footer"), { ssr: false });
+import { Inter as FontSans } from "next/font/google";
+import { motion, AnimatePresence } from "framer-motion";
+import { DivineParticles } from "@/components/divine-particles";
+import { cn } from "@/lib/utils";
+import "@/styles/sacred.css";
+import "@/app/globals.css";
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://thebridgeproject.org'),
-  title: "THE BRIDGE - Building Justice from Day One",
-  description: "Zero graduates. Infinite possibility. Join us in building a transparent approach to criminal justice reform.",
-  keywords: ["criminal justice", "transparency", "youth mentorship", "transformation", "second chances", "community support"],
-  authors: [{ name: "The Bridge Team" }],
-  openGraph: {
-    title: "THE BRIDGE PROJECT",
-    description: "Building Justice from Day One - A Transparent Approach to Criminal Justice Reform",
-    type: "website",
-    locale: "en_US",
-    url: "https://thebridgeproject.org",
-    siteName: "The Bridge Project",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "The Bridge Project - Zero Graduates. Infinite Possibility.",
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: "THE BRIDGE PROJECT",
-    description: "Building Justice from Day One - Zero Graduates. Infinite Possibility.",
-    images: ['/og-image.png'],
-    creator: '@thebridgeproject',
-  },
-  icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
-  },
-};
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet" />
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="theme-color" content="#000000" />
       </head>
-      <body className="bg-comfort-cream text-gentle-charcoal antialiased">
-        <ErrorBoundaryWrapper id="navigation">
-          <Navigation />
-        </ErrorBoundaryWrapper>
-        
-        <main className="min-h-screen pt-16">
-          <ErrorBoundaryWrapper id="main-content">
+      <body
+        className={cn(
+          "min-h-screen bg-sacred font-sans antialiased",
+          fontSans.variable,
+        )}
+      >
+        {/* Divine background particles */}
+        <div className="fixed inset-0 pointer-events-none">
+          <DivineParticles
+            variant="divine"
+            className="h-full w-full opacity-20"
+          />
+        </div>
+
+        {/* Sacred light rays */}
+        <div className="fixed inset-0 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-radial from-white/5 to-transparent opacity-20" />
+          <div className="absolute inset-0 bg-gradient-conic from-hope-gold/10 via-transparent to-hope-gold/10 animate-spin-slow" />
+        </div>
+
+        {/* Main content with page transitions */}
+        <AnimatePresence mode="wait">
+          <motion.main
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="relative z-10"
+          >
             {children}
-          </ErrorBoundaryWrapper>
-        </main>
-        
-        {/* Impact Dashboard temporarily disabled 
-        <ErrorBoundaryWrapper id="impact-dashboard">
-          <ImpactDashboard />
-        </ErrorBoundaryWrapper>
-        */}
-        
-        <ErrorBoundaryWrapper id="footer">
-          <Footer />
-        </ErrorBoundaryWrapper>
-        
-        {/* Web Vitals & Analytics - Wrapped in Suspense */}
-        <Suspense fallback={null}>
-          <Analytics />
-        </Suspense>
+          </motion.main>
+        </AnimatePresence>
+
+        {/* Divine footer */}
+        <footer className="relative z-10 py-8 mt-auto">
+          <div className="container mx-auto px-4 text-center">
+            <p className="text-white/60 text-sm">
+              Powered by Divine Love | Guided by Sacred Truth | Built with Holy
+              Purpose
+            </p>
+          </div>
+        </footer>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

@@ -1,23 +1,26 @@
-"use client"
+"use client";
+"use client";
 
-import { useState, useRef } from "react"
-import { motion, useInView } from "framer-motion"
-import { Heart, Briefcase, Shield, Star, ArrowRight } from "lucide-react"
+import { useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { Heart, Briefcase, Shield, Star, ArrowRight } from "lucide-react";
 
 export default function MichaelTestament() {
-  const [isExpanded, setIsExpanded] = useState(false)
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(sectionRef, { once: true })
+  const [isExpanded, setIsExpanded] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true });
 
   const handleExpand = () => {
-    setIsExpanded(true)
+    setIsExpanded(true);
     // Reward engagement
-    window.dispatchEvent(new CustomEvent('impact-update', { detail: { type: 'heart' } }))
-  }
+    window.dispatchEvent(
+      new CustomEvent("impact-update", { detail: { type: "heart" } }),
+    );
+  };
 
   return (
-    <section 
-      className="bg-comfort-cream py-16 relative overflow-hidden" 
+    <section
+      className="bg-comfort-cream py-16 relative overflow-hidden"
       ref={sectionRef}
     >
       <div className="container mx-auto px-4 relative z-10">
@@ -37,9 +40,7 @@ export default function MichaelTestament() {
 
         {/* Title */}
         <h2 className="text-4xl md:text-6xl font-bold mb-6 text-center">
-          <span className="text-gentle-charcoal">
-            A Testament to
-          </span>
+          <span className="text-gentle-charcoal">A Testament to</span>
           <span className="block text-xl md:text-2xl text-hope-gold font-semibold mt-2">
             Transformation, Redemption & Divine Purpose
           </span>
@@ -49,25 +50,37 @@ export default function MichaelTestament() {
         <div className="max-w-4xl mx-auto mb-16">
           <div className="relative">
             <div className="absolute inset-0 bg-hope-gold/10 blur-2xl rounded-3xl" />
-            
+
             {/* Card Content */}
             <div className="relative bg-white rounded-3xl p-8 md:p-12 border border-hope-gold/30 shadow-lg">
               {/* Message */}
               <div className="space-y-4 text-lg text-gentle-charcoal leading-relaxed">
                 <p>
                   <span className="text-hope-gold">"</span>
-                  When JAHmere Webb asked me to pen this testament, I saw not just a friend seeking support, but a divine appointment—a brother whose transformation mirrors the redemptive power of purpose-driven love.
+                  When JAHmere Webb asked me to pen this testament, I saw not
+                  just a friend seeking support, but a divine appointment—a
+                  brother whose transformation mirrors the redemptive power of
+                  purpose-driven love.
                   <span className="text-hope-gold">"</span>
                 </p>
 
                 <p>
-                  I stand before you today not as Michael Mataluni, the entrepreneur, but as a witness to modern-day resurrection. I've watched JAHmere transform from someone society had written off into a beacon of hope for countless young souls standing at the crossroads.
+                  I stand before you today not as Michael Mataluni, the
+                  entrepreneur, but as a witness to modern-day resurrection.
+                  I've watched JAHmere transform from someone society had
+                  written off into a beacon of hope for countless young souls
+                  standing at the crossroads.
                 </p>
 
                 <p>
-                  <span className="font-bold text-hope-gold">JAHmere Webb is not standing before you as a defendant seeking mercy.</span>
-                  {" "}
-                  <span className="text-gentle-charcoal">He stands before you as an agent of transformation who happens to have a past.</span>
+                  <span className="font-bold text-hope-gold">
+                    JAHmere Webb is not standing before you as a defendant
+                    seeking mercy.
+                  </span>{" "}
+                  <span className="text-gentle-charcoal">
+                    He stands before you as an agent of transformation who
+                    happens to have a past.
+                  </span>
                 </p>
               </div>
 
@@ -96,13 +109,13 @@ export default function MichaelTestament() {
             This isn't just about JAHmere anymore.
           </p>
           <p className="text-lg text-soft-shadow">
-            It's about every young person who needs to see that transformation is possible,
-            that second chances create first-class citizens,
-            and that sometimes the very people society gives up on
-            become the ones who lift society up.
+            It's about every young person who needs to see that transformation
+            is possible, that second chances create first-class citizens, and
+            that sometimes the very people society gives up on become the ones
+            who lift society up.
           </p>
         </motion.div>
       </div>
     </section>
-  )
-} 
+  );
+}

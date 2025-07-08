@@ -1,116 +1,118 @@
-"use client"
+"use client";
+"use client";
 
-import { useEffect, useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Quote, X, ChevronLeft, ChevronRight } from "lucide-react"
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Quote, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 const testimonies = [
   {
     text: "When things happen to us that aren't exactly what we had hoped for, there's only one response that will help us move on. Get over it, get up, and try it again.",
     author: "Tony Dungy",
-    emoji: "🙏"
+    emoji: "🙏",
   },
   {
     text: "We have so many young men growing up without their dads. We have to fill that void. We have to do a better job helping them see what it means to be a man.",
     author: "Tony Dungy",
-    emoji: "💪"
+    emoji: "💪",
   },
   {
     text: "If you want to make a difference in the lives of people, you must walk alongside them, lift and encourage them, spend time with them, not shout down from on high.",
     author: "Tony Dungy",
-    emoji: "🤝"
+    emoji: "🤝",
   },
   {
     text: "Sometimes I think God wants there to be a circus so we can show there's another way to respond.",
     author: "Tony Dungy",
-    emoji: "✨"
+    emoji: "✨",
   },
   {
     text: "Part of our purpose in life is to build a legacy – a consistent pattern of building into the lives of others.",
     author: "Tony Dungy",
-    emoji: "🌟"
+    emoji: "🌟",
   },
   {
     text: "We need somebody to give us a chance.",
     author: "Tony Dungy",
-    emoji: "🔑"
+    emoji: "🔑",
   },
   {
     text: "You can't always control circumstances. However, you can always control your attitude, approach, and response.",
     author: "Tony Dungy",
-    emoji: "💡"
+    emoji: "💡",
   },
   {
     text: "I don't have the strength or wisdom to get through a single day without guidance and grace from God.",
     author: "Tony Dungy",
-    emoji: "🕊️"
+    emoji: "🕊️",
   },
   {
     text: "I'm reading Coach's book in my cell right now. 'Quiet Strength' is teaching me how to lead from behind bars.",
     author: "JAHmere Webb",
-    emoji: "📖"
+    emoji: "📖",
   },
   {
     text: "The Lord has a plan. We always think the plans are A, B, C and D, and everything is going to be perfect for us and it may not be that way, but it's still his plan.",
     author: "Tony Dungy",
-    emoji: "🎯"
-  }
-]
+    emoji: "🎯",
+  },
+];
 
 export default function FloatingTestimony() {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isVisible, setIsVisible] = useState(false)
-  const [isMinimized, setIsMinimized] = useState(false)
-  const [hasInteracted, setHasInteracted] = useState(false)
-  const [isOpen, setIsOpen] = useState(false)
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     // Check if user has previously closed it
-    const wasMinimized = localStorage.getItem('testimony-minimized')
-    if (wasMinimized === 'true') {
-      setIsMinimized(true)
+    const wasMinimized = localStorage.getItem("testimony-minimized");
+    if (wasMinimized === "true") {
+      setIsMinimized(true);
     }
-    
+
     // Show after 3 seconds
-    const showTimer = setTimeout(() => setIsVisible(true), 3000)
-    
+    const showTimer = setTimeout(() => setIsVisible(true), 3000);
+
     // Rotate testimonies
     const interval = setInterval(() => {
       if (!isMinimized) {
-        setCurrentIndex((prev) => (prev + 1) % (testimonies?.length || 1))
+        setCurrentIndex((prev) => (prev + 1) % (testimonies?.length || 1));
       }
-    }, 8000) // Slightly longer for these meaningful quotes
+    }, 8000); // Slightly longer for these meaningful quotes
 
     return () => {
-      clearTimeout(showTimer)
-      clearInterval(interval)
-    }
-  }, [isMinimized])
+      clearTimeout(showTimer);
+      clearInterval(interval);
+    };
+  }, [isMinimized]);
 
   const handleMinimize = () => {
-    setIsMinimized(true)
-    setHasInteracted(true)
-    localStorage.setItem('testimony-minimized', 'true')
-  }
+    setIsMinimized(true);
+    setHasInteracted(true);
+    localStorage.setItem("testimony-minimized", "true");
+  };
 
   const handleRestore = () => {
-    setIsMinimized(false)
-    localStorage.removeItem('testimony-minimized')
-  }
+    setIsMinimized(false);
+    localStorage.removeItem("testimony-minimized");
+  };
 
-  if (!isVisible) return null
+  if (!isVisible) return null;
 
   // Ensure testimonies array exists and has elements
   const safeTestimonies = Array.isArray(testimonies) ? testimonies : [];
   // Ensure current index is within bounds
-  const safeIndex = safeTestimonies.length > 0 
-    ? Math.min(Math.max(0, currentIndex), safeTestimonies.length - 1) 
-    : 0;
+  const safeIndex =
+    safeTestimonies.length > 0
+      ? Math.min(Math.max(0, currentIndex), safeTestimonies.length - 1)
+      : 0;
   // Get current testimony or use fallback
-  const current = safeTestimonies[safeIndex] || { 
-    text: "No testimony available", 
-    author: "Unknown", 
-    emoji: "📝" 
+  const current = safeTestimonies[safeIndex] || {
+    text: "No testimony available",
+    author: "Unknown",
+    emoji: "📝",
   };
 
   return (
@@ -157,7 +159,7 @@ export default function FloatingTestimony() {
             >
               {/* Glow Effect */}
               <div className="absolute inset-0 bg-hope-gold/10 blur-2xl" />
-              
+
               {/* Card */}
               <div className="relative bg-white rounded-2xl shadow-2xl p-6 border border-hope-gold/20">
                 {/* Close Button */}
@@ -206,8 +208,8 @@ export default function FloatingTestimony() {
                       onClick={() => setCurrentIndex(index)}
                       className={`transition-all duration-300 h-1.5 rounded-full ${
                         index === safeIndex
-                          ? 'w-8 bg-hope-gold'
-                          : 'w-1.5 bg-soft-cloud hover:bg-moon-glow'
+                          ? "w-8 bg-hope-gold"
+                          : "w-1.5 bg-soft-cloud hover:bg-moon-glow"
                       }`}
                     />
                   ))}
@@ -230,26 +232,26 @@ export default function FloatingTestimony() {
             <motion.div
               key={i}
               className="absolute text-2xl"
-              initial={{ 
+              initial={{
                 x: Math.random() * (window?.innerWidth || 1000),
                 y: (window?.innerHeight || 800) + 50,
-                opacity: 0 
+                opacity: 0,
               }}
-              animate={{ 
+              animate={{
                 y: -50,
-                opacity: [0, 1, 0]
+                opacity: [0, 1, 0],
               }}
               transition={{
                 duration: 5 + Math.random() * 3,
                 repeat: Infinity,
-                delay: i * 1.5
+                delay: i * 1.5,
               }}
             >
-              {['❤️', '🙏', '✨', '💫', '🌟'][i]}
+              {["❤️", "🙏", "✨", "💫", "🌟"][i]}
             </motion.div>
           ))}
         </div>
       )}
     </>
-  )
-} 
+  );
+}

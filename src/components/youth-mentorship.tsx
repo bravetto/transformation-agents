@@ -1,67 +1,81 @@
-"use client"
+"use client";
+"use client";
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Heart, Sparkles, Send, Share2, TrendingUp, Users, Star } from "lucide-react"
-import { impactEvents } from './impact-dashboard'
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Heart,
+  Sparkles,
+  Send,
+  Share2,
+  TrendingUp,
+  Users,
+  Star,
+} from "lucide-react";
+import { impactEvents } from "./impact-dashboard";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 interface YouthMessage {
-  id: string
-  to: 'JAHmere' | 'Judge Ferrero' | 'Tony Dungy' | 'Jordan Dungy'
-  message: string
-  name: string
-  age: number
-  timestamp: Date
+  id: string;
+  to: "JAHmere" | "Judge Ferrero" | "Tony Dungy" | "Jordan Dungy";
+  message: string;
+  name: string;
+  age: number;
+  timestamp: Date;
 }
 
-export default function YouthMentorship() {
-  const [youthCount, setYouthCount] = useState(15)
-  const [isWriting, setIsWriting] = useState(false)
-  const [selectedRecipient, setSelectedRecipient] = useState<YouthMessage['to']>('JAHmere')
+function YouthMentorship() {
+  const [youthCount, setYouthCount] = useState(15);
+  const [isWriting, setIsWriting] = useState(false);
+  const [selectedRecipient, setSelectedRecipient] =
+    useState<YouthMessage["to"]>("JAHmere");
   const [formData, setFormData] = useState({
-    name: '',
-    age: '',
-    message: ''
-  })
-  const [showSuccess, setShowSuccess] = useState(false)
-  const [showViral, setShowViral] = useState(false)
-  const [recentMessages, setRecentMessages] = useState<YouthMessage[]>([])
+    name: "",
+    age: "",
+    message: "",
+  });
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showViral, setShowViral] = useState(false);
+  const [recentMessages, setRecentMessages] = useState<YouthMessage[]>([]);
 
   useEffect(() => {
     // Load data from localStorage
-    const saved = localStorage.getItem('youthMentorshipData')
+    const saved = localStorage.getItem("youthMentorshipData");
     if (saved) {
-      const data = JSON.parse(saved)
-      setYouthCount(data.count || 15)
-      setRecentMessages(data.messages || [])
+      const data = JSON.parse(saved);
+      setYouthCount(data.count || 15);
+      setRecentMessages(data.messages || []);
     }
 
     // Listen for global impact events
     const handleNewYouth = () => {
-      setYouthCount(prev => {
-        const newCount = prev + 1
-        localStorage.setItem('youthMentorshipData', JSON.stringify({
-          count: newCount,
-          messages: recentMessages
-        }))
-        return newCount
-      })
-    }
+      setYouthCount((prev) => {
+        const newCount = prev + 1;
+        localStorage.setItem(
+          "youthMentorshipData",
+          JSON.stringify({
+            count: newCount,
+            messages: recentMessages,
+          }),
+        );
+        return newCount;
+      });
+    };
 
-    window.addEventListener('newYouthMessage', handleNewYouth)
-    return () => window.removeEventListener('newYouthMessage', handleNewYouth)
-  }, [recentMessages])
+    window.addEventListener("newYouthMessage", handleNewYouth);
+    return () => window.removeEventListener("newYouthMessage", handleNewYouth);
+  }, [recentMessages]);
 
   const recipients = [
-    { value: 'JAHmere', label: 'JAHmere Webb', emoji: '🌉' },
-    { value: 'Judge Ferrero', label: 'Honor Judge Ferrero', emoji: '⚖️' },
-    { value: 'Tony Dungy', label: 'Coach Tony Dungy', emoji: '🏈' },
-    { value: 'Jordan Dungy', label: 'Jordan Dungy', emoji: '⚡' }
-  ]
+    { value: "JAHmere", label: "JAHmere Webb", emoji: "🌉" },
+    { value: "Judge Ferrero", label: "Honor Judge Ferrero", emoji: "⚖️" },
+    { value: "Tony Dungy", label: "Coach Tony Dungy", emoji: "🏈" },
+    { value: "Jordan Dungy", label: "Jordan Dungy", emoji: "⚡" },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
+    e.preventDefault();
+
     // Create new message
     const newMessage: YouthMessage = {
       id: Date.now().toString(),
@@ -69,51 +83,54 @@ export default function YouthMentorship() {
       message: formData.message,
       name: formData.name,
       age: parseInt(formData.age),
-      timestamp: new Date()
-    }
+      timestamp: new Date(),
+    };
 
     // Add to recent messages
-    const updatedMessages = [newMessage, ...recentMessages.slice(0, 4)]
-    setRecentMessages(updatedMessages)
+    const updatedMessages = [newMessage, ...recentMessages.slice(0, 4)];
+    setRecentMessages(updatedMessages);
 
     // Update count and save
-    const newCount = youthCount + 1
-    setYouthCount(newCount)
-    
-    localStorage.setItem('youthMentorshipData', JSON.stringify({
-      count: newCount,
-      messages: updatedMessages
-    }))
+    const newCount = youthCount + 1;
+    setYouthCount(newCount);
+
+    localStorage.setItem(
+      "youthMentorshipData",
+      JSON.stringify({
+        count: newCount,
+        messages: updatedMessages,
+      }),
+    );
 
     // Trigger global events
-    impactEvents.addYouth()
-    window.dispatchEvent(new Event('newYouthMessage'))
+    impactEvents.addYouth();
+    window.dispatchEvent(new Event("newYouthMessage"));
 
     // Show success animation
-    setShowSuccess(true)
+    setShowSuccess(true);
     setTimeout(() => {
-      setShowSuccess(false)
-      setShowViral(true)
-    }, 2000)
+      setShowSuccess(false);
+      setShowViral(true);
+    }, 2000);
 
     // Reset form
-    setFormData({ name: '', age: '', message: '' })
-    setIsWriting(false)
-  }
+    setFormData({ name: "", age: "", message: "" });
+    setIsWriting(false);
+  };
 
   const shareMessage = () => {
-    const shareText = `I just shared my hopes & dreams with ${selectedRecipient} through The Bridge Project! Join ${youthCount} youth ready to be mentored. 🌉✨ #BridgeOverPrison`
-    
+    const shareText = `I just shared my hopes & dreams with ${selectedRecipient} through The Bridge Project! Join ${youthCount} youth ready to be mentored. 🌉✨ #BridgeOverPrison`;
+
     if (navigator.share) {
       navigator.share({
-        title: 'The Bridge Project',
+        title: "The Bridge Project",
         text: shareText,
-        url: window.location.origin
-      })
+        url: window.location.origin,
+      });
     } else {
-      navigator.clipboard.writeText(shareText)
+      navigator.clipboard.writeText(shareText);
     }
-  }
+  };
 
   return (
     <section className="bg-comfort-cream py-16">
@@ -121,16 +138,18 @@ export default function YouthMentorship() {
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-start">
           {/* Left Side - Content & Form */}
           <div>
-            <h2 className="text-gentle-charcoal text-3xl font-bold mb-6">Youth Ready to Be Mentored</h2>
+            <h2 className="text-gentle-charcoal text-3xl font-bold mb-6">
+              Youth Ready to Be Mentored
+            </h2>
             <p className="text-xl text-courage-blue mb-4">
-              Young voices speaking truth to power. Dreams waiting to be guided. 
+              Young voices speaking truth to power. Dreams waiting to be guided.
               Hope looking for direction.
             </p>
             <p className="mb-6 text-soft-shadow">
-              Write your letter of hope. Share your dreams. Tell them why mentorship 
-              matters. Your voice joins a movement of transformation.
+              Write your letter of hope. Share your dreams. Tell them why
+              mentorship matters. Your voice joins a movement of transformation.
             </p>
-            
+
             {/* Quick Write Form */}
             {!isWriting ? (
               <motion.button
@@ -155,15 +174,21 @@ export default function YouthMentorship() {
                     <button
                       key={recipient.value}
                       type="button"
-                      onClick={() => setSelectedRecipient(recipient.value as YouthMessage['to'])}
+                      onClick={() =>
+                        setSelectedRecipient(
+                          recipient.value as YouthMessage["to"],
+                        )
+                      }
                       className={`p-3 rounded-lg border-2 transition-all ${
                         selectedRecipient === recipient.value
-                          ? 'border-courage-blue bg-courage-blue/10'
-                          : 'border-quiet-stone hover:border-courage-blue/50'
+                          ? "border-courage-blue bg-courage-blue/10"
+                          : "border-quiet-stone hover:border-courage-blue/50"
                       }`}
                     >
                       <span className="text-2xl">{recipient.emoji}</span>
-                      <p className="text-sm font-medium mt-1 text-gentle-charcoal">{recipient.label}</p>
+                      <p className="text-sm font-medium mt-1 text-gentle-charcoal">
+                        {recipient.label}
+                      </p>
                     </button>
                   ))}
                 </div>
@@ -174,7 +199,9 @@ export default function YouthMentorship() {
                     type="text"
                     placeholder="Your name"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     className="px-4 py-2 border border-quiet-stone rounded-lg focus:border-courage-blue focus:outline-none"
                     required
                   />
@@ -184,7 +211,9 @@ export default function YouthMentorship() {
                     min="13"
                     max="25"
                     value={formData.age}
-                    onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, age: e.target.value })
+                    }
                     className="px-4 py-2 border border-quiet-stone rounded-lg focus:border-courage-blue focus:outline-none"
                     required
                   />
@@ -194,7 +223,9 @@ export default function YouthMentorship() {
                 <textarea
                   placeholder={`Dear ${selectedRecipient}, my hopes and dreams are...`}
                   value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, message: e.target.value })
+                  }
                   className="w-full p-4 border border-quiet-stone rounded-lg focus:border-courage-blue focus:outline-none resize-none"
                   rows={4}
                   required
@@ -228,8 +259,10 @@ export default function YouthMentorship() {
               className="mt-6 text-sm text-soft-shadow"
             >
               <p>
-                💫 Every message creates a ripple of hope<br />
-                🌟 Your voice matters in this movement<br />
+                💫 Every message creates a ripple of hope
+                <br />
+                🌟 Your voice matters in this movement
+                <br />
                 🌉 Together, we're building bridges to better futures
               </p>
             </motion.div>
@@ -244,7 +277,11 @@ export default function YouthMentorship() {
             >
               {/* Subtle Background */}
               <div className="absolute inset-0">
-                <svg className="w-full h-full" viewBox="0 0 400 300" aria-hidden="true">
+                <svg
+                  className="w-full h-full"
+                  viewBox="0 0 400 300"
+                  aria-hidden="true"
+                >
                   {[...Array(5)].map((_, i) => (
                     <motion.circle
                       key={i}
@@ -254,14 +291,14 @@ export default function YouthMentorship() {
                       fill="#F59E0B"
                       opacity="0.2"
                       initial={{ opacity: 0, scale: 0 }}
-                      animate={{ 
+                      animate={{
                         opacity: [0, 0.2, 0],
-                        scale: [0, 1, 0]
+                        scale: [0, 1, 0],
                       }}
-                      transition={{ 
+                      transition={{
                         duration: 3,
                         delay: i * 0.5,
-                        repeat: Infinity
+                        repeat: Infinity,
                       }}
                     />
                   ))}
@@ -272,7 +309,9 @@ export default function YouthMentorship() {
               <div className="relative z-10 flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <Users className="h-6 w-6 text-hope-gold" />
-                  <h3 className="text-xl font-bold text-gentle-charcoal">Young Voices Rising</h3>
+                  <h3 className="text-xl font-bold text-gentle-charcoal">
+                    Young Voices Rising
+                  </h3>
                 </div>
                 <motion.div
                   animate={{ rotate: showSuccess ? 360 : 0 }}
@@ -290,7 +329,9 @@ export default function YouthMentorship() {
                   animate={{ scale: 1, opacity: 1 }}
                   className="relative inline-block"
                 >
-                  <span className="text-6xl font-bold text-hope-gold">{youthCount}</span>
+                  <span className="text-6xl font-bold text-hope-gold">
+                    {youthCount}
+                  </span>
                   {showSuccess && (
                     <motion.div
                       initial={{ y: 0, opacity: 1 }}
@@ -302,7 +343,9 @@ export default function YouthMentorship() {
                     </motion.div>
                   )}
                 </motion.div>
-                <p className="text-lg mt-2 text-gentle-charcoal font-semibold">Youth Ready for Mentorship</p>
+                <p className="text-lg mt-2 text-gentle-charcoal font-semibold">
+                  Youth Ready for Mentorship
+                </p>
                 <p className="text-sm text-soft-shadow mt-1">
                   Each one represents a life waiting to be transformed
                 </p>
@@ -310,7 +353,9 @@ export default function YouthMentorship() {
 
               {/* Recent Messages Preview */}
               <div className="relative z-10 space-y-2 mb-4">
-                <p className="text-sm font-semibold text-hope-gold mb-2">Recent Dreams Shared:</p>
+                <p className="text-sm font-semibold text-hope-gold mb-2">
+                  Recent Dreams Shared:
+                </p>
                 <AnimatePresence>
                   {recentMessages.slice(0, 3).map((msg, index) => (
                     <motion.div
@@ -362,7 +407,9 @@ export default function YouthMentorship() {
                       ✨
                     </motion.div>
                     <p className="text-xl font-bold">Dream Received!</p>
-                    <p className="text-sm mt-1">Your hope is part of the movement!</p>
+                    <p className="text-sm mt-1">
+                      Your hope is part of the movement!
+                    </p>
                   </div>
                 </motion.div>
               )}
@@ -400,5 +447,8 @@ export default function YouthMentorship() {
         </div>
       </div>
     </section>
-  )
-} 
+  );
+}
+
+// Export with divine error boundary
+export default withDivineErrorBoundary(YouthMentorship, "lightworker");

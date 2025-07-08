@@ -1,0 +1,166 @@
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+
+const navItems = [
+  {
+    title: "The Revelation",
+    href: "/divine-revelation",
+    description: "Experience God's infinite love",
+  },
+  {
+    title: "The Way Home",
+    href: "/way-home",
+    description: "Find your path to greatness",
+  },
+  {
+    title: "Sacred Experience",
+    href: "/sacred-experience",
+    description: "Witness divine transformation",
+  },
+  {
+    title: "Divine Alignment",
+    href: "/divine-alignment",
+    description: "Discover your calling",
+  },
+];
+
+const navVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: i * 0.1,
+      duration: 0.5,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  }),
+  hover: {
+    scale: 1.05,
+    transition: {
+      duration: 0.3,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
+export function SacredNavigation() {
+  return (
+    <motion.nav
+      variants={navVariants}
+      initial="hidden"
+      animate="visible"
+      className="fixed top-0 left-0 right-0 z-50 bg-sacred/80 backdrop-blur-lg border-b border-sacred"
+    >
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2">
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="text-xl font-bold text-sacred"
+            >
+              The Bridge Project
+            </motion.div>
+          </Link>
+
+          {/* Navigation Items */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navItems.map((item, i) => (
+              <motion.div
+                key={item.href}
+                custom={i}
+                variants={itemVariants}
+                whileHover="hover"
+              >
+                <Link
+                  href={item.href}
+                  className={cn(
+                    "relative px-3 py-2 text-sm transition-colors",
+                    "text-white/80 hover:text-white",
+                    "hover:shadow-divine hover:bg-white/5",
+                    "rounded-lg",
+                  )}
+                >
+                  <span className="relative z-10">{item.title}</span>
+
+                  {/* Hover effect */}
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-hope-gold/10 to-transparent opacity-0 hover:opacity-100 transition-opacity" />
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Mobile menu button */}
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            className="md:hidden p-2 text-white/80 hover:text-white"
+          >
+            <span className="sr-only">Open menu</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </motion.button>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      <motion.div
+        initial={{ height: 0, opacity: 0 }}
+        animate={{ height: "auto", opacity: 1 }}
+        exit={{ height: 0, opacity: 0 }}
+        className="md:hidden"
+      >
+        <div className="px-2 pt-2 pb-3 space-y-1">
+          {navItems.map((item, i) => (
+            <motion.div
+              key={item.href}
+              custom={i}
+              variants={itemVariants}
+              whileHover="hover"
+            >
+              <Link
+                href={item.href}
+                className={cn(
+                  "block px-3 py-2 rounded-md text-base font-medium",
+                  "text-white/80 hover:text-white",
+                  "hover:bg-white/5",
+                )}
+              >
+                {item.title}
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </motion.nav>
+  );
+}

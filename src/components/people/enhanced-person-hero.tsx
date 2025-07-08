@@ -1,18 +1,19 @@
 "use client";
+"use client";
 
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { withErrorBoundary } from '@/components/with-error-boundary';
-import { cn } from '@/lib/utils';
-import { getPersonImageData } from '@/data/person-images';
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { withErrorBoundary } from "@/components/with-error-boundary";
+import { cn } from "@/lib/utils";
+import { getPersonImageData } from "@/data/person-images";
 
 export interface EnhancedPersonHeroProps {
   name: string;
   subtitle: string;
   description: string;
-  imageSrc: string;
+  imageSrc?: string;
   imageAlt: string;
   personId?: string;
   localImage?: boolean;
@@ -21,7 +22,7 @@ export interface EnhancedPersonHeroProps {
     text: string;
     link: string;
   };
-  variant?: 'primary' | 'secondary' | 'tertiary';
+  variant?: "primary" | "secondary" | "tertiary";
   className?: string;
 }
 
@@ -29,119 +30,123 @@ function EnhancedPersonHero({
   name,
   subtitle,
   description,
-  imageSrc,
+  imageSrc = "/images/fallbacks/default-fallback.jpg",
   imageAlt,
   personId,
   localImage = false,
-  role = 'default',
+  role = "default",
   cta,
-  variant = 'primary',
+  variant = "primary",
   className,
 }: EnhancedPersonHeroProps) {
   const [scrollY, setScrollY] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
-  
+
   // Update scroll position for parallax effect
   useEffect(() => {
     setIsMounted(true);
-    
+
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Determine background styles based on variant
   const bgStyles = {
-    primary: 'from-courage-blue to-courage-blue/80 text-white',
-    secondary: 'from-hope-gold to-hope-gold/80 text-gentle-charcoal',
-    tertiary: 'from-growth-green to-growth-green/80 text-white'
+    primary: "from-courage-blue to-courage-blue/80 text-white",
+    secondary: "from-hope-gold to-hope-gold/80 text-gentle-charcoal",
+    tertiary: "from-growth-green to-growth-green/80 text-white",
   };
-  
+
   const currentBg = bgStyles[variant];
-  
+
   // Check for local image
-  const personImageData = localImage && personId ? getPersonImageData(personId, role) : undefined;
+  const personImageData =
+    localImage && personId ? getPersonImageData(personId, role) : undefined;
   const imageSource = personImageData ? personImageData.full : imageSrc;
-  
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { 
+    visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.2,
         delayChildren: 0.3,
-      } 
+      },
     },
   };
-  
+
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
+      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
     },
   };
-  
+
   const imageVariants = {
     hidden: { opacity: 0, scale: 0.9 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
-      transition: { 
-        duration: 0.8, 
+      transition: {
+        duration: 0.8,
         ease: [0.16, 1, 0.3, 1],
         delay: 0.2,
-      }
+      },
     },
   };
-  
+
   // Generate name initials for background effect
-  const initials = name.split(' ').map(n => n[0]).join('');
+  const initials = name
+    .split(" ")
+    .map((n) => n[0])
+    .join("");
 
   return (
-    <section 
+    <section
       className={cn(
-        "relative overflow-hidden py-20 md:py-28 lg:py-32",
-        className
+        "relative overflow-hidden py-20 md:py-28 lg:py-32 w-full",
+        className,
       )}
     >
       {/* Background gradient */}
       <div className={`absolute inset-0 bg-gradient-to-b ${currentBg} z-0`} />
-      
+
       {/* Floating orbs background effect */}
       {isMounted && (
         <>
-          <div 
+          <div
             className="absolute opacity-30 blur-3xl rounded-full w-96 h-96 bg-white/20 z-0"
-            style={{ 
-              top: '10%', 
-              left: '5%', 
-              transform: `translate(${scrollY * 0.05}px, ${scrollY * -0.03}px)` 
+            style={{
+              top: "10%",
+              left: "5%",
+              transform: `translate(${scrollY * 0.05}px, ${scrollY * -0.03}px)`,
             }}
           />
-          <div 
+          <div
             className="absolute opacity-30 blur-3xl rounded-full w-72 h-72 bg-white/20 z-0"
-            style={{ 
-              bottom: '15%', 
-              right: '10%', 
-              transform: `translate(${scrollY * -0.05}px, ${scrollY * 0.02}px)` 
+            style={{
+              bottom: "15%",
+              right: "10%",
+              transform: `translate(${scrollY * -0.05}px, ${scrollY * 0.02}px)`,
             }}
           />
         </>
       )}
-      
+
       {/* Giant initials background effect */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[40rem] font-bold text-white/5 select-none pointer-events-none z-0">
         {initials}
       </div>
-      
+
       {/* Content container */}
-      <div className="container relative mx-auto px-4 z-10">
+      <div className="container-wide relative z-10">
         <motion.div
           className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
           variants={containerVariants}
@@ -155,28 +160,30 @@ function EnhancedPersonHero({
                 {name}
               </h1>
             </motion.div>
-            
+
             <motion.div variants={itemVariants}>
-              <p className="text-xl md:text-2xl mb-6 opacity-90">
-                {subtitle}
-              </p>
+              <p className="text-xl md:text-2xl mb-6 opacity-90">{subtitle}</p>
             </motion.div>
-            
+
             <motion.div variants={itemVariants}>
               <div className="mb-8 text-lg leading-relaxed opacity-80">
                 <p>{description}</p>
               </div>
             </motion.div>
-            
+
             {cta && (
               <motion.div variants={itemVariants}>
-                <Button variant={variant === 'primary' ? 'secondary' : 'primary'} size="lg" asChild>
+                <Button
+                  variant={variant === "primary" ? "secondary" : "primary"}
+                  size="lg"
+                  asChild
+                >
                   <a href={cta.link}>{cta.text}</a>
                 </Button>
               </motion.div>
             )}
           </motion.div>
-          
+
           {/* Image with glow effect */}
           <motion.div
             variants={imageVariants}
@@ -185,7 +192,7 @@ function EnhancedPersonHero({
             <div className="relative h-80 w-80 md:h-96 md:w-96 rounded-full overflow-hidden border-4 border-white/30 shadow-2xl">
               {/* Glow effect behind image */}
               <div className="absolute -inset-4 bg-white/30 rounded-full blur-xl z-0" />
-              
+
               {/* Person image */}
               <div className="relative h-full w-full rounded-full overflow-hidden z-10">
                 <Image
@@ -193,42 +200,42 @@ function EnhancedPersonHero({
                   alt={imageAlt}
                   fill
                   sizes="(max-width: 768px) 320px, 384px"
-                  style={{ objectFit: 'cover' }}
+                  style={{ objectFit: "cover" }}
                   priority
                   className="z-10"
                   placeholder={personImageData?.blurDataURL ? "blur" : "empty"}
                   blurDataURL={personImageData?.blurDataURL}
                 />
               </div>
-              
+
               {/* Circular border with gradient */}
               <div className="absolute inset-0 rounded-full border-4 border-white/40 z-20" />
             </div>
-            
+
             {/* Decorative elements */}
-            <motion.div 
+            <motion.div
               className="absolute w-20 h-20 rounded-full bg-white/10 backdrop-blur-md -bottom-6 -left-6 z-20"
-              animate={{ 
-                y: [0, -10, 0], 
-                opacity: [0.5, 0.8, 0.5]
+              animate={{
+                y: [0, -10, 0],
+                opacity: [0.5, 0.8, 0.5],
               }}
-              transition={{ 
-                duration: 4, 
-                repeat: Infinity, 
-                ease: "easeInOut" 
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
               }}
             />
-            <motion.div 
+            <motion.div
               className="absolute w-12 h-12 rounded-full bg-white/10 backdrop-blur-md top-10 -right-4 z-20"
-              animate={{ 
-                y: [0, 10, 0], 
-                opacity: [0.3, 0.6, 0.3]
+              animate={{
+                y: [0, 10, 0],
+                opacity: [0.3, 0.6, 0.3],
               }}
-              transition={{ 
-                duration: 3.5, 
+              transition={{
+                duration: 3.5,
                 delay: 0.5,
-                repeat: Infinity, 
-                ease: "easeInOut" 
+                repeat: Infinity,
+                ease: "easeInOut",
               }}
             />
           </motion.div>
@@ -239,6 +246,6 @@ function EnhancedPersonHero({
 }
 
 export default withErrorBoundary(EnhancedPersonHero, {
-  componentName: 'EnhancedPersonHero',
-  id: 'enhanced-person-hero'
-}); 
+  componentName: "EnhancedPersonHero",
+  id: "enhanced-person-hero",
+});

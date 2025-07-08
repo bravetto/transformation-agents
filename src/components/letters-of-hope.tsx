@@ -1,120 +1,146 @@
-"use client"
+"use client";
+"use client";
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { FileText, Send, Sparkles, TrendingUp } from "lucide-react"
-import { impactEvents } from "./impact-dashboard"
-import DivineParticles from "./divine-particles"
-import { SacredReveal, MagneticButton, FloatingElement } from "./sacred-animations"
-import { AutoAnimateList } from "./auto-animate-wrapper"
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FileText, Send, Sparkles, TrendingUp } from "lucide-react";
+import { impactEvents } from "./impact-dashboard";
+import { DivineParticles } from "./divine-particles";
+import {
+  SacredReveal,
+  MagneticButton,
+  FloatingElement,
+} from "./sacred-animations";
+import { AutoAnimateList } from "./auto-animate-wrapper";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 interface LetterData {
-  id: number
-  name: string
-  location: string
-  preview: string
-  timestamp: Date
+  id: number;
+  name: string;
+  location: string;
+  preview: string;
+  timestamp: Date;
 }
 
-export default function LettersOfHope() {
-  const [letterCount, setLetterCount] = useState(89)
-  const [isWriting, setIsWriting] = useState(false)
-  const [showSuccess, setShowSuccess] = useState(false)
-  const [recentLetters, setRecentLetters] = useState<LetterData[]>([])
-  const [letterForm, setLetterForm] = useState({ name: '', location: '', message: '' })
-  const [showImpactBurst, setShowImpactBurst] = useState(false)
+function LettersOfHope() {
+  const [letterCount, setLetterCount] = useState(89);
+  const [isWriting, setIsWriting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [recentLetters, setRecentLetters] = useState<LetterData[]>([]);
+  const [letterForm, setLetterForm] = useState({
+    name: "",
+    location: "",
+    message: "",
+  });
+  const [showImpactBurst, setShowImpactBurst] = useState(false);
 
   // Load saved count
   useEffect(() => {
-    const saved = localStorage.getItem('bridge-metrics')
+    const saved = localStorage.getItem("bridge-metrics");
     if (saved) {
-      const parsed = JSON.parse(saved)
-      if (parsed.letters) setLetterCount(parsed.letters)
+      const parsed = JSON.parse(saved);
+      if (parsed.letters) setLetterCount(parsed.letters);
     }
-  }, [])
+  }, []);
 
   // Listen for letter updates from other components
   useEffect(() => {
     const handleImpact = (e: CustomEvent) => {
-      if (e.detail.type === 'letter') {
-        setLetterCount(prev => prev + 1)
-        setShowImpactBurst(true)
-        setTimeout(() => setShowImpactBurst(false), 2000)
+      if (e.detail.type === "letter") {
+        setLetterCount((prev) => prev + 1);
+        setShowImpactBurst(true);
+        setTimeout(() => setShowImpactBurst(false), 2000);
       }
-    }
+    };
 
-    window.addEventListener('impact-update', handleImpact as EventListener)
-    return () => window.removeEventListener('impact-update', handleImpact as EventListener)
-  }, [])
+    window.addEventListener("impact-update", handleImpact as EventListener);
+    return () =>
+      window.removeEventListener(
+        "impact-update",
+        handleImpact as EventListener,
+      );
+  }, []);
 
   const handleSubmitLetter = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
+    e.preventDefault();
+
     // Validate form
-    if (!letterForm.name || !letterForm.location || !letterForm.message) return
+    if (!letterForm.name || !letterForm.location || !letterForm.message) return;
 
     // Create immediate visual feedback
-    setShowSuccess(true)
-    
+    setShowSuccess(true);
+
     // Add to recent letters
     const newLetter: LetterData = {
       id: Date.now(),
       name: letterForm.name,
       location: letterForm.location,
-      preview: letterForm.message.slice(0, 50) + '...',
-      timestamp: new Date()
-    }
-    
-    setRecentLetters(prev => [newLetter, ...prev].slice(0, 3))
-    
+      preview: letterForm.message.slice(0, 50) + "...",
+      timestamp: new Date(),
+    };
+
+    setRecentLetters((prev) => [newLetter, ...prev].slice(0, 3));
+
     // Update global count
-    impactEvents.addLetter()
-    
+    impactEvents.addLetter();
+
     // Show impact animation
-    setShowImpactBurst(true)
-    
+    setShowImpactBurst(true);
+
     // Reset form after delay
     setTimeout(() => {
-      setLetterForm({ name: '', location: '', message: '' })
-      setIsWriting(false)
-      setShowSuccess(false)
-      setShowImpactBurst(false)
-    }, 3000)
-  }
+      setLetterForm({ name: "", location: "", message: "" });
+      setIsWriting(false);
+      setShowSuccess(false);
+      setShowImpactBurst(false);
+    }, 3000);
+  };
 
   return (
     <section className="bg-comfort-cream relative overflow-hidden py-20">
       {/* Subtle background pattern */}
       <div className="absolute inset-0">
-        <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <svg
+          className="w-full h-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
           <defs>
-            <pattern id="dots" width="10" height="10" patternUnits="userSpaceOnUse">
-              <circle cx="2" cy="2" r="1" fill="#F59E0B" opacity="0.1"/>
+            <pattern
+              id="dots"
+              width="10"
+              height="10"
+              patternUnits="userSpaceOnUse"
+            >
+              <circle cx="2" cy="2" r="1" fill="#F59E0B" opacity="0.1" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#dots)" />
         </svg>
       </div>
-      
+
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-start">
           {/* Left Side - Content & Form */}
           <div>
             <div>
-              <h2 className="text-4xl font-bold text-hope-gold mb-6">Letters of Hope</h2>
+              <h2 className="text-4xl font-bold text-hope-gold mb-6">
+                Letters of Hope
+              </h2>
               <p className="text-xl text-gentle-charcoal mb-4">
-                Every letter to Judge Ferrero is a voice for transformation. 
+                Every letter to Judge Ferrero is a voice for transformation.
                 Watch your words join the chorus in real-time.
               </p>
               <p className="text-soft-shadow mb-6">
-                When you write, you're not just sending a letter—you're casting a vote 
-                for healing over harm, purpose over punishment.
+                When you write, you're not just sending a letter—you're casting
+                a vote for healing over harm, purpose over punishment.
               </p>
             </div>
-            
+
             {/* Quick Letter Form */}
             {!isWriting ? (
-              <button 
+              <button
                 onClick={() => setIsWriting(true)}
                 className="bg-hope-gold text-gentle-charcoal px-6 py-3 rounded-lg font-bold hover:bg-courage-blue hover:text-white transition-colors flex items-center gap-2 inline-flex"
               >
@@ -133,7 +159,9 @@ export default function LettersOfHope() {
                     type="text"
                     placeholder="Your Name"
                     value={letterForm.name}
-                    onChange={(e) => setLetterForm({ ...letterForm, name: e.target.value })}
+                    onChange={(e) =>
+                      setLetterForm({ ...letterForm, name: e.target.value })
+                    }
                     className="bg-soft-cloud border border-moon-glow rounded px-4 py-2 text-gentle-charcoal placeholder-soft-shadow"
                     required
                   />
@@ -141,7 +169,9 @@ export default function LettersOfHope() {
                     type="text"
                     placeholder="Your City"
                     value={letterForm.location}
-                    onChange={(e) => setLetterForm({ ...letterForm, location: e.target.value })}
+                    onChange={(e) =>
+                      setLetterForm({ ...letterForm, location: e.target.value })
+                    }
                     className="bg-soft-cloud border border-moon-glow rounded px-4 py-2 text-gentle-charcoal placeholder-soft-shadow"
                     required
                   />
@@ -149,7 +179,9 @@ export default function LettersOfHope() {
                 <textarea
                   placeholder="Your message to Judge Ferrero (even a few words matter)..."
                   value={letterForm.message}
-                  onChange={(e) => setLetterForm({ ...letterForm, message: e.target.value })}
+                  onChange={(e) =>
+                    setLetterForm({ ...letterForm, message: e.target.value })
+                  }
                   className="w-full bg-soft-cloud border border-moon-glow rounded px-4 py-2 text-gentle-charcoal placeholder-soft-shadow min-h-[100px]"
                   required
                 />
@@ -188,7 +220,11 @@ export default function LettersOfHope() {
             >
               {/* Animated Background */}
               <div className="absolute inset-0">
-                <svg className="w-full h-full" viewBox="0 0 400 300" aria-hidden="true">
+                <svg
+                  className="w-full h-full"
+                  viewBox="0 0 400 300"
+                  aria-hidden="true"
+                >
                   {[...Array(5)].map((_, i) => (
                     <motion.path
                       key={i}
@@ -199,11 +235,11 @@ export default function LettersOfHope() {
                       opacity="0.1"
                       initial={{ pathLength: 0 }}
                       animate={{ pathLength: 1 }}
-                      transition={{ 
+                      transition={{
                         duration: 3,
                         delay: i * 0.5,
                         repeat: Infinity,
-                        repeatType: "reverse"
+                        repeatType: "reverse",
                       }}
                     />
                   ))}
@@ -214,7 +250,9 @@ export default function LettersOfHope() {
               <div className="relative z-10 flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <FileText className="h-6 w-6 text-hope-gold" />
-                  <h3 className="text-xl font-bold text-gentle-charcoal">Letters to Honor Judge Ferrero</h3>
+                  <h3 className="text-xl font-bold text-gentle-charcoal">
+                    Letters to Honor Judge Ferrero
+                  </h3>
                 </div>
                 <motion.div
                   animate={{ rotate: showImpactBurst ? 360 : 0 }}
@@ -239,14 +277,16 @@ export default function LettersOfHope() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-                
+
                 <motion.div
                   key={letterCount}
                   initial={{ scale: 1.5, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   className="relative inline-block"
                 >
-                  <span className="text-6xl font-bold text-hope-gold">{letterCount}</span>
+                  <span className="text-6xl font-bold text-hope-gold">
+                    {letterCount}
+                  </span>
                   {showSuccess && (
                     <motion.div
                       initial={{ y: 0, opacity: 1 }}
@@ -258,7 +298,9 @@ export default function LettersOfHope() {
                     </motion.div>
                   )}
                 </motion.div>
-                <p className="text-lg mt-2 text-gentle-charcoal font-medium">Voices for Transformation</p>
+                <p className="text-lg mt-2 text-gentle-charcoal font-medium">
+                  Voices for Transformation
+                </p>
               </div>
 
               {/* Visual Letter Stream */}
@@ -273,7 +315,9 @@ export default function LettersOfHope() {
                       className="absolute inset-0 flex items-center justify-center"
                     >
                       <div className="bg-soft-cloud rounded-lg p-4 border border-hope-gold">
-                        <p className="text-sm font-bold text-gentle-charcoal">Your letter is on its way! ✉️</p>
+                        <p className="text-sm font-bold text-gentle-charcoal">
+                          Your letter is on its way! ✉️
+                        </p>
                         <div className="mt-2 flex items-center justify-center">
                           <motion.div
                             animate={{ x: [0, 100] }}
@@ -285,7 +329,7 @@ export default function LettersOfHope() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-                
+
                 {/* Floating Letters Animation */}
                 <div className="absolute inset-0">
                   {[...Array(3)].map((_, i) => (
@@ -293,15 +337,15 @@ export default function LettersOfHope() {
                       key={i}
                       className="absolute text-4xl"
                       initial={{ x: -50, y: Math.random() * 100 }}
-                      animate={{ 
+                      animate={{
                         x: 400,
-                        y: Math.random() * 100
+                        y: Math.random() * 100,
                       }}
                       transition={{
                         duration: 10 + i * 2,
                         repeat: Infinity,
                         delay: i * 3,
-                        ease: "linear"
+                        ease: "linear",
                       }}
                     >
                       ✉️
@@ -313,10 +357,12 @@ export default function LettersOfHope() {
               {/* Recent Letters */}
               <div className="relative z-10 space-y-2">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-sm text-hope-gold font-semibold">Latest Letters:</p>
+                  <p className="text-sm text-hope-gold font-semibold">
+                    Latest Letters:
+                  </p>
                   <TrendingUp className="h-4 w-4 text-growth-green" />
                 </div>
-                
+
                 {recentLetters.length > 0 ? (
                   <AutoAnimateList
                     items={recentLetters}
@@ -324,8 +370,12 @@ export default function LettersOfHope() {
                       <div className="flex items-start gap-2 text-sm bg-soft-cloud rounded-lg px-3 py-2">
                         <FileText className="h-4 w-4 text-hope-gold flex-shrink-0 mt-0.5" />
                         <div className="flex-1">
-                          <p className="font-semibold text-gentle-charcoal">{letter.name} from {letter.location}</p>
-                          <p className="text-sm text-soft-shadow">{letter.preview}</p>
+                          <p className="font-semibold text-gentle-charcoal">
+                            {letter.name} from {letter.location}
+                          </p>
+                          <p className="text-sm text-soft-shadow">
+                            {letter.preview}
+                          </p>
                         </div>
                       </div>
                     )}
@@ -334,8 +384,12 @@ export default function LettersOfHope() {
                   />
                 ) : (
                   <div className="text-center py-4 text-sm text-soft-shadow">
-                    <p className="font-medium text-gentle-charcoal">Be the first to write today!</p>
-                    <p className="text-sm mt-1 text-soft-shadow">Your words matter.</p>
+                    <p className="font-medium text-gentle-charcoal">
+                      Be the first to write today!
+                    </p>
+                    <p className="text-sm mt-1 text-soft-shadow">
+                      Your words matter.
+                    </p>
                   </div>
                 )}
               </div>
@@ -347,7 +401,9 @@ export default function LettersOfHope() {
                 className="relative z-10 text-center text-sm mt-4 text-soft-shadow"
               >
                 <p>Every letter updates the live counter →</p>
-                <p className="text-hope-gold font-semibold">Watch your impact in real-time!</p>
+                <p className="text-hope-gold font-semibold">
+                  Watch your impact in real-time!
+                </p>
               </motion.div>
             </motion.div>
 
@@ -378,5 +434,8 @@ export default function LettersOfHope() {
         </div>
       </div>
     </section>
-  )
-} 
+  );
+}
+
+// Export with divine error boundary
+export default withDivineErrorBoundary(LettersOfHope, "messenger");

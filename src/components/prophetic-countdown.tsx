@@ -1,4 +1,5 @@
 "use client";
+"use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,7 +11,7 @@ import {
   CheckCircle,
   ChevronRight,
 } from "lucide-react";
-import DivineParticles from "./divine-particles";
+import { DivineParticles } from "./divine-particles";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { cn } from "@/lib/utils";
 

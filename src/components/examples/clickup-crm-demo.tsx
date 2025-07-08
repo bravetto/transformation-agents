@@ -1,0 +1,349 @@
+"use client";
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
+import { Container, Heading, Text } from "@/components/ui";
+import { toast } from "@/components/ui/toast";
+
+/**
+ * Example component demonstrating ClickUp CRM integration
+ * This shows how to create contacts, search, and view analytics
+ */
+export default function ClickUpCRMDemo() {
+  const [loading, setLoading] = useState(false);
+  const [contacts, setContacts] = useState<any[]>([]);
+  const [analytics, setAnalytics] = useState<any>(null);
+
+  // Form state
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    relationship: "Friend",
+    connectionStrength: "Moderate",
+    engagementLevel: "medium" as "high" | "medium" | "low",
+  });
+
+  // Create a new contact in ClickUp
+  const createContact = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/crm/contacts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast("Contact created successfully!", "success");
+        // Reset form
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          relationship: "Friend",
+          connectionStrength: "Moderate",
+          engagementLevel: "medium",
+        });
+        // Refresh contacts list
+        await searchContacts();
+      } else {
+        toast(result.error || "Failed to create contact", "error");
+      }
+    } catch (error) {
+      toast("Network error. Please try again.", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Search contacts in ClickUp
+  const searchContacts = async (query?: string) => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (query) params.set("query", query);
+      params.set("limit", "10");
+
+      const response = await fetch(`/api/crm/contacts?${params}`);
+      const result = await response.json();
+
+      if (result.success) {
+        setContacts(result.data);
+      }
+    } catch (error) {
+      toast("Failed to fetch contacts", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch CRM analytics
+  const fetchAnalytics = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/crm/analytics");
+      const result = await response.json();
+
+      if (result.success) {
+        setAnalytics(result.data);
+      }
+    } catch (error) {
+      toast("Failed to fetch analytics", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Bulk import example
+  const bulkImportExample = async () => {
+    const sampleContacts = [
+      {
+        firstName: "Jane",
+        lastName: "Smith",
+        email: "jane@example.com",
+        relationship: "Mentor",
+        connectionStrength: "Strong",
+        engagementLevel: "high" as const,
+      },
+      {
+        firstName: "Bob",
+        lastName: "Johnson",
+        email: "bob@example.com",
+        relationship: "Community Leader",
+        connectionStrength: "Moderate",
+        engagementLevel: "medium" as const,
+      },
+    ];
+
+    setLoading(true);
+    try {
+      const response = await fetch("/api/crm/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mode: "import",
+          contacts: sampleContacts,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast(
+          `Imported ${result.data.succeeded} contacts successfully!`,
+          "success",
+        );
+        await searchContacts();
+      }
+    } catch (error) {
+      toast("Bulk import failed", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Container className="py-12">
+      <Heading size="h1" className="mb-8">
+        ClickUp CRM Integration Demo
+      </Heading>
+
+      {/* Create Contact Form */}
+      <Card className="mb-8 p-6">
+        <Heading size="h2" className="mb-4">
+          Create New Contact
+        </Heading>
+
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <Input
+            placeholder="First Name"
+            value={formData.firstName}
+            onChange={(e) =>
+              setFormData({ ...formData, firstName: e.target.value })
+            }
+          />
+          <Input
+            placeholder="Last Name"
+            value={formData.lastName}
+            onChange={(e) =>
+              setFormData({ ...formData, lastName: e.target.value })
+            }
+          />
+          <Input
+            type="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+          />
+          <Input
+            placeholder="Phone"
+            value={formData.phone}
+            onChange={(e) =>
+              setFormData({ ...formData, phone: e.target.value })
+            }
+          />
+          <Select
+            value={formData.relationship}
+            onValueChange={(value) =>
+              setFormData({ ...formData, relationship: value })
+            }
+          >
+            <option value="Friend">Friend</option>
+            <option value="Mentor">Mentor</option>
+            <option value="Youth I Helped">Youth I Helped</option>
+            <option value="Community Leader">Community Leader</option>
+          </Select>
+          <Select
+            value={formData.engagementLevel}
+            onValueChange={(value) =>
+              setFormData({
+                ...formData,
+                engagementLevel: value as "high" | "medium" | "low",
+              })
+            }
+          >
+            <option value="high">High Engagement</option>
+            <option value="medium">Medium Engagement</option>
+            <option value="low">Low Engagement</option>
+          </Select>
+        </div>
+
+        <Button
+          onClick={createContact}
+          disabled={loading || !formData.firstName || !formData.email}
+        >
+          Create Contact in ClickUp
+        </Button>
+      </Card>
+
+      {/* Analytics */}
+      <Card className="mb-8 p-6">
+        <div className="flex justify-between items-center mb-4">
+          <Heading size="h2">CRM Analytics</Heading>
+          <Button onClick={fetchAnalytics} disabled={loading}>
+            Refresh Analytics
+          </Button>
+        </div>
+
+        {analytics && (
+          <div className="grid grid-cols-3 gap-4">
+            <div className="text-center">
+              <Text size="3xl" className="font-bold">
+                {analytics.totalContacts}
+              </Text>
+              <Text>Total Contacts</Text>
+            </div>
+            <div className="text-center">
+              <Text size="3xl" className="font-bold">
+                {analytics.letterConversionRate
+                  ? `${(analytics.letterConversionRate * 100).toFixed(1)}%`
+                  : "0%"}
+              </Text>
+              <Text>Letter Conversion</Text>
+            </div>
+            <div className="text-center">
+              <Text size="3xl" className="font-bold">
+                {analytics.volunteerConversionRate
+                  ? `${(analytics.volunteerConversionRate * 100).toFixed(1)}%`
+                  : "0%"}
+              </Text>
+              <Text>Volunteer Rate</Text>
+            </div>
+          </div>
+        )}
+      </Card>
+
+      {/* Contact List */}
+      <Card className="mb-8 p-6">
+        <div className="flex justify-between items-center mb-4">
+          <Heading size="h2">Recent Contacts</Heading>
+          <div className="flex gap-2">
+            <Button onClick={() => searchContacts()} disabled={loading}>
+              Refresh
+            </Button>
+            <Button
+              onClick={bulkImportExample}
+              variant="outline"
+              disabled={loading}
+            >
+              Import Sample Data
+            </Button>
+          </div>
+        </div>
+
+        {contacts.length > 0 ? (
+          <div className="space-y-2">
+            {contacts.map((contact) => (
+              <div key={contact.id} className="p-3 border rounded-lg">
+                <div className="flex justify-between">
+                  <div>
+                    <Text className="font-semibold">
+                      {contact.firstName} {contact.lastName}
+                    </Text>
+                    <Text size="sm" className="text-gray-600">
+                      {contact.email} • {contact.engagementLevel} engagement
+                    </Text>
+                  </div>
+                  <a
+                    href={`https://app.clickup.com/t/${contact.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    View in ClickUp →
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <Text className="text-gray-500">
+            No contacts found. Create one above!
+          </Text>
+        )}
+      </Card>
+
+      {/* Integration Status */}
+      <Card className="p-6">
+        <Heading size="h2" className="mb-4">
+          Integration Status
+        </Heading>
+        <div className="space-y-2">
+          <div className="flex justify-between">
+            <Text>ClickUp API Key</Text>
+            <Text
+              className={
+                process.env.NEXT_PUBLIC_CLICKUP_CONFIGURED
+                  ? "text-green-600"
+                  : "text-red-600"
+              }
+            >
+              {process.env.NEXT_PUBLIC_CLICKUP_CONFIGURED
+                ? "✓ Configured"
+                : "✗ Not Set"}
+            </Text>
+          </div>
+          <div className="flex justify-between">
+            <Text>List ID</Text>
+            <Text>9011549512</Text>
+          </div>
+          <div className="flex justify-between">
+            <Text>Rate Limit</Text>
+            <Text>10 requests/minute</Text>
+          </div>
+        </div>
+      </Card>
+    </Container>
+  );
+}

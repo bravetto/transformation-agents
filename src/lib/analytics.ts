@@ -1,9 +1,11 @@
+"use client";
+
 /**
  * Analytics and Web Vitals Reporting
  */
-import type { Metric } from 'web-vitals';
+import type { Metric } from "web-vitals";
 
-const ANALYTICS_URL = process.env.NEXT_PUBLIC_ANALYTICS_URL || '';
+const ANALYTICS_URL = process.env.NEXT_PUBLIC_ANALYTICS_URL || "";
 
 /**
  * Send metrics to analytics endpoint
@@ -12,8 +14,8 @@ export function sendMetric(metric: Metric) {
   // Check if analytics URL is configured
   if (!ANALYTICS_URL) {
     // In development, log metrics to console
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Web Vital:', metric);
+    if (process.env.NODE_ENV === "development") {
+      console.log("Web Vital:", metric);
     }
     return;
   }
@@ -21,8 +23,8 @@ export function sendMetric(metric: Metric) {
   // Add project info to the metric
   const body = JSON.stringify({
     ...metric,
-    project: 'the-bridge',
-    environment: process.env.NODE_ENV || 'production',
+    project: "the-bridge",
+    environment: process.env.NODE_ENV || "production",
     timestamp: Date.now(),
   });
 
@@ -33,13 +35,13 @@ export function sendMetric(metric: Metric) {
     // Fall back to fetch API
     fetch(ANALYTICS_URL, {
       body,
-      method: 'POST',
+      method: "POST",
       keepalive: true,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-    }).catch(error => {
-      console.error('Error reporting web vital:', error);
+    }).catch((error) => {
+      console.error("Error reporting web vital:", error);
     });
   }
 }
@@ -49,30 +51,30 @@ export function sendMetric(metric: Metric) {
  */
 export function sendPageView(url: string) {
   if (!ANALYTICS_URL) {
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Page View:', url);
+    if (process.env.NODE_ENV === "development") {
+      console.log("Page View:", url);
     }
     return;
   }
 
   const body = JSON.stringify({
-    type: 'pageview',
+    type: "pageview",
     url,
-    project: 'the-bridge',
-    environment: process.env.NODE_ENV || 'production',
+    project: "the-bridge",
+    environment: process.env.NODE_ENV || "production",
     timestamp: Date.now(),
   });
 
   // Use fetch API for page views
   fetch(`${ANALYTICS_URL}/pageview`, {
     body,
-    method: 'POST',
+    method: "POST",
     keepalive: true,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
-  }).catch(error => {
-    console.error('Error reporting page view:', error);
+  }).catch((error) => {
+    console.error("Error reporting page view:", error);
   });
 }
 
@@ -81,8 +83,8 @@ export function sendPageView(url: string) {
  */
 export function reportError(error: Error, context?: Record<string, unknown>) {
   if (!ANALYTICS_URL) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Error:', error, context);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error:", error, context);
     }
     return;
   }
@@ -92,20 +94,20 @@ export function reportError(error: Error, context?: Record<string, unknown>) {
     message: error.message,
     stack: error.stack,
     context,
-    project: 'the-bridge',
-    environment: process.env.NODE_ENV || 'production',
+    project: "the-bridge",
+    environment: process.env.NODE_ENV || "production",
     timestamp: Date.now(),
   });
 
   // Use fetch API with keepalive for errors
   fetch(`${ANALYTICS_URL}/error`, {
     body,
-    method: 'POST',
+    method: "POST",
     keepalive: true,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
-  }).catch(reportingError => {
-    console.error('Error reporting error:', reportingError);
+  }).catch((reportingError) => {
+    console.error("Error reporting error:", reportingError);
   });
-} 
+}

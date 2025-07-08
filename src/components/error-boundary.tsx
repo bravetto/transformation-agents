@@ -1,4 +1,5 @@
 "use client";
+"use client";
 
 import React, { ErrorInfo, ReactNode } from "react";
 import { Button } from "@/components/ui";
@@ -15,12 +16,15 @@ interface ErrorBoundaryState {
   error: Error | null;
 }
 
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
       hasError: false,
-      error: null
+      error: null,
     };
   }
 
@@ -28,14 +32,14 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     // Update state so the next render will show the fallback UI
     return {
       hasError: true,
-      error
+      error,
     };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     // Log the error to an error reporting service
     console.error("Error caught by ErrorBoundary:", error, errorInfo);
-    
+
     // Call the onError callback if provided
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
@@ -45,16 +49,13 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   resetErrorBoundary = (): void => {
     this.setState({
       hasError: false,
-      error: null
+      error: null,
     });
   };
 
   componentDidUpdate(prevProps: ErrorBoundaryProps): void {
     // If resetKey changes, reset the error boundary
-    if (
-      this.state.hasError &&
-      prevProps.resetKey !== this.props.resetKey
-    ) {
+    if (this.state.hasError && prevProps.resetKey !== this.props.resetKey) {
       this.resetErrorBoundary();
     }
   }
@@ -76,10 +77,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
             {this.state.error?.message || "An unexpected error occurred"}
           </p>
           <div className="mt-4">
-            <Button 
-              variant="primary" 
-              onClick={this.resetErrorBoundary}
-            >
+            <Button variant="primary" onClick={this.resetErrorBoundary}>
               Try again
             </Button>
           </div>
@@ -94,17 +92,17 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 // Higher-order component to wrap components with error boundary
 export function withErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
-  errorBoundaryProps: Omit<ErrorBoundaryProps, "children"> = {}
+  errorBoundaryProps: Omit<ErrorBoundaryProps, "children"> = {},
 ): React.ComponentType<P> {
   const WithErrorBoundary = (props: P) => (
     <ErrorBoundary {...errorBoundaryProps}>
       <Component {...props} />
     </ErrorBoundary>
   );
-  
+
   // Set display name for the wrapped component
   const displayName = Component.displayName || Component.name || "Component";
   WithErrorBoundary.displayName = `WithErrorBoundary(${displayName})`;
-  
+
   return WithErrorBoundary;
-} 
+}

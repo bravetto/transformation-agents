@@ -1,96 +1,98 @@
-'use client';
+"use client";
 
-import React, { ReactNode, forwardRef } from 'react';
-import { Container, Heading, Text } from '@/components/ui';
-import { cn } from '@/lib/utils';
-import { RevealOnScroll } from '@/components/ui/page-transition';
+import { cn } from "@/lib/utils";
+import { ReactNode } from "react";
 
 interface SectionProps {
-  id?: string;
+  variant?:
+    | "default"
+    | "hero"
+    | "feature"
+    | "cta"
+    | "subtle"
+    | "light"
+    | "divine"
+    | "gradient";
+  className?: string;
+  children: ReactNode;
+  container?: boolean;
   title?: string;
   subtitle?: string;
-  children: ReactNode;
-  className?: string;
-  variant?: 'default' | 'light' | 'gradient' | 'dark' | 'subtle' | 'transparent';
-  container?: boolean;
-  fullWidth?: boolean;
-  padding?: 'none' | 'small' | 'medium' | 'large';
   centered?: boolean;
+  padding?: "small" | "medium" | "large";
+  id?: string;
 }
 
-const Section = forwardRef<HTMLElement, SectionProps>(({
-  id,
+function Section({
+  variant = "default",
+  className,
+  children,
+  container = true,
   title,
   subtitle,
-  children,
-  className,
-  variant = 'default',
-  container = true,
-  fullWidth = false,
-  padding = 'large',
   centered = false,
-}, ref) => {
-  const paddingClasses = {
-    none: '',
-    small: 'py-8',
-    medium: 'py-12 md:py-16',
-    large: 'py-16 md:py-20'
-  }
+  padding = "medium",
+  id,
+}: SectionProps) {
+  const baseStyles = "relative w-full";
 
-  const variantClasses = {
-    default: 'bg-white text-gentle-charcoal',
-    light: 'bg-comfort-cream text-gentle-charcoal',
-    gradient: 'bg-soft-cloud text-gentle-charcoal',
-    dark: 'bg-moon-glow text-gentle-charcoal',
-    subtle: 'bg-soft-cloud/50 text-gentle-charcoal',
-    transparent: 'bg-transparent text-gentle-charcoal',
-  }
+  const variantStyles = {
+    default: "bg-white",
+    hero: "bg-soft-cloud",
+    feature: "bg-comfort-cream",
+    cta: "bg-gradient-to-r from-hope-gold to-courage-blue text-white",
+    subtle: "bg-soft-cloud",
+    light: "bg-comfort-cream",
+    divine: "bg-gradient-to-br from-hope-gold/10 to-courage-blue/10",
+    gradient: "bg-gradient-to-r from-courage-blue to-hope-gold text-white",
+  };
+
+  const paddingStyles = {
+    small: "py-8 md:py-12",
+    medium: "py-16 md:py-24",
+    large: "py-20 md:py-28 lg:py-32",
+  };
 
   return (
     <section
       id={id}
-      ref={ref}
       className={cn(
-        'relative',
-        paddingClasses[padding],
-        variantClasses[variant],
-        className
+        baseStyles,
+        variantStyles[variant],
+        paddingStyles[padding],
+        className,
       )}
     >
       {container ? (
-        <div className={cn(
-          'container mx-auto px-4',
-          fullWidth ? 'max-w-none' : ''
-        )}>
+        <div className="container mx-auto px-4">
           {(title || subtitle) && (
-            <div className={cn('mb-8 md:mb-12', centered && 'text-center')}>
+            <div className={cn("mb-12", centered && "text-center")}>
               {title && (
-                <RevealOnScroll>
-                  <Heading as="h2" size="h2" className="mb-4">
-                    {title}
-                  </Heading>
-                </RevealOnScroll>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
               )}
-              
-              {subtitle && (
-                <RevealOnScroll delay={0.2}>
-                  <Text size="xl" textColor="accent" className="font-medium">
-                    {subtitle}
-                  </Text>
-                </RevealOnScroll>
-              )}
+              {subtitle && <p className="text-lg text-gray-600">{subtitle}</p>}
             </div>
           )}
-          
           {children}
         </div>
       ) : (
-        children
+        <>
+          {(title || subtitle) && (
+            <div className={cn("mb-12 px-4", centered && "text-center")}>
+              {title && (
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
+              )}
+              {subtitle && <p className="text-lg text-gray-600">{subtitle}</p>}
+            </div>
+          )}
+          {children}
+        </>
       )}
     </section>
   );
-});
+}
 
-Section.displayName = 'Section';
+Section.displayName = "Section";
 
-export default Section; 
+// Single export at the end
+export default Section;

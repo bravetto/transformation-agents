@@ -1,46 +1,56 @@
-"use client"
+"use client";
+"use client";
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import Link from "next/link"
-import { Heart, FileText, Users, ArrowRight, Clock, AlertCircle } from "lucide-react"
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import {
+  Heart,
+  FileText,
+  Users,
+  ArrowRight,
+  Clock,
+  AlertCircle,
+} from "lucide-react";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 interface SmartCTAProps {
-  userType?: 'judge' | 'supporter' | 'visitor'
+  userType?: "visitor" | "judge" | "attorney" | "advocate";
 }
 
-export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
-  const [scrollProgress, setScrollProgress] = useState(0)
-  const [timeOnSite, setTimeOnSite] = useState(0)
-  const [hasInteracted, setHasInteracted] = useState(false)
-  const [currentCTA, setCurrentCTA] = useState(0)
+function SmartCTA({ userType = "visitor" }: SmartCTAProps) {
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [timeOnSite, setTimeOnSite] = useState(0);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [currentCTA, setCurrentCTA] = useState(0);
 
   // Track scroll progress
   useEffect(() => {
     const handleScroll = () => {
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
-      const scrolled = window.scrollY
-      const progress = (scrolled / scrollHeight) * 100
-      setScrollProgress(progress)
-    }
+      const scrollHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = window.scrollY;
+      const progress = (scrolled / scrollHeight) * 100;
+      setScrollProgress(progress);
+    };
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Track time on site
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeOnSite(prev => prev + 1)
-    }, 1000)
+      setTimeOnSite((prev) => prev + 1);
+    }, 1000);
 
-    return () => clearInterval(timer)
-  }, [])
+    return () => clearInterval(timer);
+  }, []);
 
   // Smart CTA Logic
   const getCTAConfig = () => {
     // For Judge Ferrero
-    if (userType === 'judge') {
+    if (userType === "judge") {
       if (scrollProgress > 80) {
         return {
           title: "Ready to Transform Justice?",
@@ -49,8 +59,8 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
           link: "/dashboard/judge",
           icon: <AlertCircle className="h-5 w-5" />,
           bgColor: "bg-courage-blue",
-          textColor: "text-white"
-        }
+          textColor: "text-white",
+        };
       }
       return {
         title: "See the Evidence",
@@ -59,8 +69,8 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
         link: "/dashboard/judge",
         icon: <AlertCircle className="h-5 w-5" />,
         bgColor: "bg-hope-gold",
-        textColor: "text-gentle-charcoal"
-      }
+        textColor: "text-gentle-charcoal",
+      };
     }
 
     // Time-based CTAs
@@ -72,8 +82,8 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
         link: "/contact",
         icon: <FileText className="h-5 w-5" />,
         bgColor: "bg-hope-gold",
-        textColor: "text-gentle-charcoal"
-      }
+        textColor: "text-gentle-charcoal",
+      };
     }
 
     // Scroll-based CTAs
@@ -85,8 +95,8 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
         link: "/contact",
         icon: <Users className="h-5 w-5" />,
         bgColor: "bg-courage-blue",
-        textColor: "text-white"
-      }
+        textColor: "text-white",
+      };
     }
 
     if (scrollProgress > 50) {
@@ -97,8 +107,8 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
         link: "/contact",
         icon: <Heart className="h-5 w-5" />,
         bgColor: "bg-growth-green",
-        textColor: "text-white"
-      }
+        textColor: "text-white",
+      };
     }
 
     // Default CTA
@@ -109,20 +119,20 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
       link: "/contact",
       icon: <Clock className="h-5 w-5" />,
       bgColor: "bg-courage-blue",
-      textColor: "text-white"
-    }
-  }
+      textColor: "text-white",
+    };
+  };
 
-  const config = getCTAConfig()
+  const config = getCTAConfig();
 
   // Rotation for variety
   useEffect(() => {
     const rotateTimer = setInterval(() => {
-      setCurrentCTA(prev => (prev + 1) % 3)
-    }, 15000)
+      setCurrentCTA((prev) => (prev + 1) % 3);
+    }, 15000);
 
-    return () => clearInterval(rotateTimer)
-  }, [])
+    return () => clearInterval(rotateTimer);
+  }, []);
 
   return (
     <>
@@ -133,7 +143,7 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 100 }}
-            className="fixed bottom-4 left-4 z-30 max-w-sm"
+            className="fixed-bottom-left max-w-sm"
           >
             <motion.div
               whileHover={{ scale: 1.02 }}
@@ -150,15 +160,23 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
 
               {/* Content */}
               <div className="flex items-start gap-4">
-                <div className={`flex-shrink-0 ${config.textColor === 'text-white' ? 'bg-white/20' : 'bg-gentle-charcoal/10'} rounded-lg p-3`}>
+                <div
+                  className={`flex-shrink-0 ${config.textColor === "text-white" ? "bg-white/20" : "bg-gentle-charcoal/10"} rounded-lg p-3`}
+                >
                   {config.icon}
                 </div>
                 <div className="flex-1">
-                  <h3 className={`font-bold text-lg mb-1 ${config.textColor}`}>{config.title}</h3>
-                  <p className={`text-sm mb-3 ${config.textColor === 'text-white' ? 'text-white' : 'text-soft-shadow'}`}>{config.subtitle}</p>
+                  <h3 className={`font-bold text-lg mb-1 ${config.textColor}`}>
+                    {config.title}
+                  </h3>
+                  <p
+                    className={`text-sm mb-3 ${config.textColor === "text-white" ? "text-white" : "text-soft-shadow"}`}
+                  >
+                    {config.subtitle}
+                  </p>
                   <Link
                     href={config.link}
-                    className={`inline-flex items-center gap-2 ${config.textColor === 'text-white' ? 'bg-white/20 hover:bg-white/30 text-white' : 'bg-gentle-charcoal/10 hover:bg-gentle-charcoal/20 text-gentle-charcoal'} px-4 py-2 rounded-lg font-semibold transition-colors`}
+                    className={`inline-flex items-center gap-2 ${config.textColor === "text-white" ? "bg-white/20 hover:bg-white/30 text-white" : "bg-gentle-charcoal/10 hover:bg-gentle-charcoal/20 text-gentle-charcoal"} px-4 py-2 rounded-lg font-semibold transition-colors`}
                   >
                     {config.action}
                     <ArrowRight className="h-4 w-4" />
@@ -167,9 +185,11 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
               </div>
 
               {/* Progress Indicator */}
-              <div className={`mt-4 ${config.textColor === 'text-white' ? 'bg-white/10' : 'bg-gentle-charcoal/10'} rounded-full h-1 overflow-hidden`}>
+              <div
+                className={`mt-4 ${config.textColor === "text-white" ? "bg-white/10" : "bg-gentle-charcoal/10"} rounded-full h-1 overflow-hidden`}
+              >
                 <motion.div
-                  className={`h-full ${config.textColor === 'text-white' ? 'bg-white/50' : 'bg-gentle-charcoal/30'}`}
+                  className={`h-full ${config.textColor === "text-white" ? "bg-white/50" : "bg-gentle-charcoal/30"}`}
                   initial={{ width: "0%" }}
                   animate={{ width: `${scrollProgress}%` }}
                 />
@@ -185,10 +205,10 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           onClick={() => {
-            setHasInteracted(true)
-            window.location.href = "/contact"
+            setHasInteracted(true);
+            window.location.href = "/contact";
           }}
-          className="fixed bottom-20 right-4 z-30"
+          className="fixed bottom-20 right-4 z-fixed"
         >
           <motion.div
             animate={{
@@ -196,8 +216,8 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
               boxShadow: [
                 "0 0 0 0 rgba(245, 158, 11, 0)",
                 "0 0 0 20px rgba(245, 158, 11, 0.2)",
-                "0 0 0 0 rgba(245, 158, 11, 0)"
-              ]
+                "0 0 0 0 rgba(245, 158, 11, 0)",
+              ],
             }}
             transition={{ duration: 2, repeat: Infinity }}
             className="bg-hope-gold text-gentle-charcoal rounded-full p-4 shadow-lg"
@@ -214,7 +234,7 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -100 }}
-            className="fixed top-0 left-0 right-0 z-50 bg-courage-blue text-white p-4 shadow-2xl"
+            className="fixed-top-full bg-courage-blue text-white p-4 shadow-2xl"
           >
             <div className="container mx-auto flex items-center justify-between">
               <p className="font-bold text-white text-lg">
@@ -231,5 +251,8 @@ export default function SmartCTA({ userType = 'visitor' }: SmartCTAProps) {
         )}
       </AnimatePresence>
     </>
-  )
-} 
+  );
+}
+
+// Export with divine error boundary
+export default withDivineErrorBoundary(SmartCTA, "lightworker");

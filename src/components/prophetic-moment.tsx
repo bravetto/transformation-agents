@@ -1,102 +1,116 @@
-"use client"
+"use client";
+"use client";
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
-import { motion, AnimatePresence } from "framer-motion"
-import { Volume2, VolumeX, ChevronRight } from "lucide-react"
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Volume2, VolumeX, ChevronRight } from "lucide-react";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 interface PropheticMomentProps {
-  onComplete?: () => void
-  trigger?: boolean
+  onComplete?: () => void;
+  trigger?: boolean;
 }
 
-export default function PropheticMoment({ onComplete, trigger = false }: PropheticMomentProps) {
-  const [isActive, setIsActive] = useState(false)
-  const [hasBeenShown, setHasBeenShown] = useState(false)
-  const [audioEnabled, setAudioEnabled] = useState(false)
-  const [currentPhase, setCurrentPhase] = useState(0)
-  const timer = useRef<NodeJS.Timeout | null>(null)
+function PropheticMoment({
+  onComplete,
+  trigger = false,
+}: PropheticMomentProps) {
+  const [isActive, setIsActive] = useState(false);
+  const [hasBeenShown, setHasBeenShown] = useState(false);
+  const [audioEnabled, setAudioEnabled] = useState(false);
+  const [currentPhase, setCurrentPhase] = useState(0);
+  const timer = useRef<NodeJS.Timeout | null>(null);
 
   // Use useMemo to prevent the phases array from changing on every render
-  const phases = useMemo(() => [
-    {
-      text: "I can't feel physical pain.",
-      subtext: "But I feel everything else.",
-      duration: 3000,
-      particles: "⚡",
-    },
-    {
-      text: "When you can't feel your own pain...",
-      subtext: "You become hyperaware of everyone else's.",
-      duration: 4000,
-      particles: "💔",
-    },
-    {
-      text: "I see JAHmere Webb",
-      subtext: "And I see pain that no one's treating.",
-      duration: 4000,
-      particles: "👁️",
-    },
-    {
-      text: "He's not asking to escape consequences.",
-      subtext: "He's asking to transform them.",
-      duration: 4000,
-      particles: "🌟",
-    },
-    {
-      text: "The man who can't feel pain",
-      subtext: "Vouching for the man who felt too much.",
-      duration: 5000,
-      particles: "⚡🌟",
-    },
-    {
-      text: "Welcome to The Bridge Project",
-      subtext: "Where truth builds bridges. Where transparency transforms.",
-      duration: 5000,
-      particles: "🌉✨",
-    }
-  ], [])
+  const phases = useMemo(
+    () => [
+      {
+        text: "I can't feel physical pain.",
+        subtext: "But I feel everything else.",
+        duration: 3000,
+        particles: "⚡",
+      },
+      {
+        text: "When you can't feel your own pain...",
+        subtext: "You become hyperaware of everyone else's.",
+        duration: 4000,
+        particles: "💔",
+      },
+      {
+        text: "I see JAHmere Webb",
+        subtext: "And I see pain that no one's treating.",
+        duration: 4000,
+        particles: "👁️",
+      },
+      {
+        text: "He's not asking to escape consequences.",
+        subtext: "He's asking to transform them.",
+        duration: 4000,
+        particles: "🌟",
+      },
+      {
+        text: "The man who can't feel pain",
+        subtext: "Vouching for the man who felt too much.",
+        duration: 5000,
+        particles: "⚡🌟",
+      },
+      {
+        text: "Welcome to The Bridge Project",
+        subtext: "Where truth builds bridges. Where transparency transforms.",
+        duration: 5000,
+        particles: "🌉✨",
+      },
+    ],
+    [],
+  );
 
   // Use useCallback to prevent handleComplete from changing on every render
   const handleComplete = useCallback(() => {
     // Store that user has seen the prophetic moment
-    sessionStorage.setItem('hasSeenHomePagePropheticMoment', 'true')
-    if (onComplete) onComplete()
-    setIsActive(false)
-  }, [onComplete])
+    sessionStorage.setItem("hasSeenHomePagePropheticMoment", "true");
+    if (onComplete) onComplete();
+    setIsActive(false);
+  }, [onComplete]);
 
   useEffect(() => {
     // Check if already shown in this session
-    const shown = sessionStorage.getItem('prophetic-moment-shown')
+    const shown = sessionStorage.getItem("prophetic-moment-shown");
     if (!shown && trigger && !hasBeenShown) {
-      setIsActive(true)
-      setHasBeenShown(true)
-      sessionStorage.setItem('prophetic-moment-shown', 'true')
+      setIsActive(true);
+      setHasBeenShown(true);
+      sessionStorage.setItem("prophetic-moment-shown", "true");
     }
-  }, [trigger, hasBeenShown])
+  }, [trigger, hasBeenShown]);
 
   useEffect(() => {
     if (isActive && currentPhase < phases.length) {
       const timer = setTimeout(() => {
         if (currentPhase < phases.length - 1) {
-          setCurrentPhase(currentPhase + 1)
+          setCurrentPhase(currentPhase + 1);
         } else {
           // Complete the experience
           setTimeout(() => {
-            handleComplete()
-          }, 2000)
+            handleComplete();
+          }, 2000);
         }
-      }, phases[currentPhase].duration)
+      }, phases[currentPhase].duration);
 
-      return () => clearTimeout(timer)
+      return () => clearTimeout(timer);
     }
-  }, [isActive, currentPhase, phases, handleComplete])
+  }, [isActive, currentPhase, phases, handleComplete]);
 
   const handleSkip = () => {
-    setIsActive(false)
-    if (onComplete) onComplete()
-  }
+    setIsActive(false);
+    if (onComplete) onComplete();
+  };
 
-  if (!isActive) return null
+  if (!isActive) return null;
 
   return (
     <AnimatePresence>
@@ -112,20 +126,20 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
             <motion.div
               key={i}
               className="absolute text-4xl"
-              initial={{ 
+              initial={{
                 x: Math.random() * window.innerWidth,
                 y: Math.random() * window.innerHeight,
-                opacity: 0
+                opacity: 0,
               }}
-              animate={{ 
+              animate={{
                 x: Math.random() * window.innerWidth,
                 y: -100,
-                opacity: [0, 0.5, 0]
+                opacity: [0, 0.5, 0],
               }}
               transition={{
                 duration: 10 + Math.random() * 10,
                 repeat: Infinity,
-                delay: Math.random() * 5
+                delay: Math.random() * 5,
               }}
             >
               {phases[currentPhase].particles.charAt(0)}
@@ -140,8 +154,8 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
             background: [
               "radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.1) 0%, transparent 50%)",
               "radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.2) 0%, transparent 70%)",
-              "radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.1) 0%, transparent 50%)"
-            ]
+              "radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.1) 0%, transparent 50%)",
+            ],
           }}
           transition={{ duration: 3, repeat: Infinity }}
         />
@@ -155,7 +169,11 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
             onClick={() => setAudioEnabled(!audioEnabled)}
             className="absolute top-8 right-8 text-pure-white hover:text-hope-gold transition-colors"
           >
-            {audioEnabled ? <Volume2 className="h-6 w-6" /> : <VolumeX className="h-6 w-6" />}
+            {audioEnabled ? (
+              <Volume2 className="h-6 w-6" />
+            ) : (
+              <VolumeX className="h-6 w-6" />
+            )}
           </motion.button>
 
           {/* Jordan's Identity */}
@@ -165,7 +183,7 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
             transition={{ duration: 1, ease: "easeOut" }}
             className="mb-12"
           >
-            <motion.p 
+            <motion.p
               className="text-hope-gold text-lg mb-2"
               animate={{
                 opacity: [0.5, 1, 0.5],
@@ -188,21 +206,21 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="space-y-6"
             >
-              <motion.h1 
+              <motion.h1
                 className="text-5xl md:text-7xl font-bold text-pure-white leading-tight"
                 animate={{
                   textShadow: [
                     "0 0 20px rgba(245, 158, 11, 0.5)",
                     "0 0 60px rgba(245, 158, 11, 0.8)",
-                    "0 0 20px rgba(245, 158, 11, 0.5)"
-                  ]
+                    "0 0 20px rgba(245, 158, 11, 0.5)",
+                  ],
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
                 {phases[currentPhase].text}
               </motion.h1>
-              
-              <motion.p 
+
+              <motion.p
                 className="text-2xl md:text-3xl text-hope-gold font-semibold"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -212,7 +230,7 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
               </motion.p>
 
               {/* Particle Emoji */}
-              <motion.div 
+              <motion.div
                 className="text-6xl"
                 initial={{ scale: 0 }}
                 animate={{ scale: [0, 1.2, 1] }}
@@ -265,13 +283,17 @@ export default function PropheticMoment({ onComplete, trigger = false }: Prophet
         <motion.div
           className="absolute inset-0 pointer-events-none"
           animate={{
-            background: currentPhase === phases.length - 1 
-              ? "radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.3) 0%, transparent 50%)"
-              : "none"
+            background:
+              currentPhase === phases.length - 1
+                ? "radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.3) 0%, transparent 50%)"
+                : "none",
           }}
           transition={{ duration: 2 }}
         />
       </motion.div>
     </AnimatePresence>
-  )
-} 
+  );
+}
+
+// Export with divine error boundary
+export default withDivineErrorBoundary(PropheticMoment, "messenger");

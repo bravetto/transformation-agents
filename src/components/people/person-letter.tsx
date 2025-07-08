@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import { motion } from 'framer-motion'
-import Image from 'next/image'
-import { withErrorBoundary } from '@/components/with-error-boundary'
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 
 export interface PersonLetterProps {
-  title: string
-  body: string
-  date?: string
-  signature?: string
-  className?: string
+  title: string;
+  body: string;
+  date?: string;
+  signature?: string;
+  className?: string;
 }
 
 function PersonLetter({
@@ -17,11 +17,11 @@ function PersonLetter({
   body,
   date,
   signature,
-  className = ""
+  className = "",
 }: PersonLetterProps) {
   return (
-    <section className={`py-16 md:py-24 bg-comfort-cream ${className}`}>
-      <div className="container mx-auto px-4">
+    <section className={`py-16 md:py-24 bg-comfort-cream w-full ${className}`}>
+      <div className="container-wide">
         <div className="max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -34,18 +34,14 @@ function PersonLetter({
               <h2 className="text-3xl md:text-4xl font-bold mb-2 text-gentle-charcoal">
                 {title}
               </h2>
-              
-              {date && (
-                <p className="text-soft-shadow">
-                  {date}
-                </p>
-              )}
+
+              {date && <p className="text-soft-shadow">{date}</p>}
             </div>
-            
+
             <div className="prose prose-lg max-w-none mb-8 text-gentle-charcoal whitespace-pre-line">
               {body}
             </div>
-            
+
             {signature && (
               <div className="mt-10 flex justify-end">
                 <div className="w-48 h-16 relative">
@@ -53,7 +49,7 @@ function PersonLetter({
                     src={signature}
                     alt="Signature"
                     fill
-                    style={{ objectFit: 'contain', objectPosition: 'right' }}
+                    style={{ objectFit: "contain", objectPosition: "right" }}
                   />
                 </div>
               </div>
@@ -62,10 +58,10 @@ function PersonLetter({
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 export default withErrorBoundary(PersonLetter, {
-  componentName: 'PersonLetter',
-  id: 'person-letter'
-}) 
+  componentName: "PersonLetter",
+  id: "person-letter",
+});

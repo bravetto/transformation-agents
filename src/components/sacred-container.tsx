@@ -1,0 +1,103 @@
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import type { DivineRole } from "@/lib/design-system";
+
+interface SacredContainerProps {
+  role?: DivineRole;
+  children: React.ReactNode;
+  className?: string;
+  title?: string;
+  subtitle?: string;
+}
+
+const containerVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.9,
+      ease: [0.16, 1, 0.3, 1],
+      staggerChildren: 0.1,
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    transition: {
+      duration: 0.7,
+    },
+  },
+};
+
+const childVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
+export function SacredContainer({
+  role = "default",
+  children,
+  className,
+  title,
+  subtitle,
+}: SacredContainerProps) {
+  return (
+    <motion.section
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className={cn(
+        "relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800",
+        className,
+      )}
+    >
+      {/* Sacred header */}
+      {(title || subtitle) && (
+        <motion.div
+          variants={childVariants}
+          className="content-center relative z-10 py-12 text-center"
+        >
+          {title && (
+            <motion.h1
+              variants={childVariants}
+              className="hero-heading text-responsive-hero font-cinzel bg-gradient-to-r from-white via-hope-gold to-white bg-clip-text text-transparent drop-shadow-lg"
+            >
+              {title}
+            </motion.h1>
+          )}
+          {subtitle && (
+            <motion.p
+              variants={childVariants}
+              className="hero-subheading text-responsive-sub text-white/90 mt-4"
+            >
+              {subtitle}
+            </motion.p>
+          )}
+        </motion.div>
+      )}
+
+      {/* Sacred content */}
+      <motion.div
+        variants={childVariants}
+        className="relative z-10 container mx-auto px-4 py-8"
+      >
+        {children}
+      </motion.div>
+
+      {/* Sacred background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30" />
+    </motion.section>
+  );
+}

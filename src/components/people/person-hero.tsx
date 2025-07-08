@@ -1,25 +1,25 @@
-"use client"
+"use client";
 
-import { motion } from 'framer-motion'
-import Image from 'next/image'
-import { Button } from '@/components/ui'
-import { withErrorBoundary } from '@/components/with-error-boundary'
-import { getPersonImageData } from '@/data/person-images'
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { Button } from "@/components/ui";
+import { withErrorBoundary } from "@/components/with-error-boundary";
+import { getPersonImageData } from "@/data/person-images";
 
 export interface PersonHeroProps {
-  name: string
-  subtitle: string
-  description: string
-  imageSrc: string
-  imageAlt: string
-  personId?: string
-  localImage?: boolean
-  role?: string
+  name: string;
+  subtitle: string;
+  description: string;
+  imageSrc: string;
+  imageAlt: string;
+  personId?: string;
+  localImage?: boolean;
+  role?: string;
   cta?: {
-    text: string
-    link: string
-  }
-  variant?: 'primary' | 'secondary' | 'tertiary'
+    text: string;
+    link: string;
+  };
+  variant?: "primary" | "secondary" | "tertiary";
 }
 
 function PersonHero({
@@ -30,28 +30,31 @@ function PersonHero({
   imageAlt,
   personId,
   localImage = false,
-  role = 'default',
+  role = "default",
   cta,
-  variant = 'primary'
+  variant = "primary",
 }: PersonHeroProps) {
   // Determine background styles based on variant
   const bgStyles = {
-    primary: 'bg-courage-blue text-white',
-    secondary: 'bg-hope-gold text-gentle-charcoal',
-    tertiary: 'bg-growth-green text-white'
-  }
-  
-  const currentBg = bgStyles[variant]
-  
+    primary: "bg-courage-blue text-white",
+    secondary: "bg-hope-gold text-gentle-charcoal",
+    tertiary: "bg-growth-green text-white",
+  };
+
+  const currentBg = bgStyles[variant];
+
   // Check for local image
-  const personImageData = localImage && personId ? getPersonImageData(personId, role) : undefined;
+  const personImageData =
+    localImage && personId ? getPersonImageData(personId, role) : undefined;
   const imageSource = personImageData ? personImageData.full : imageSrc;
-  
+
   return (
-    <section className={`relative overflow-hidden ${currentBg} py-16 md:py-24`}>
+    <section
+      className={`relative overflow-hidden ${currentBg} py-16 md:py-24 w-full`}
+    >
       {/* Background particle effect could be added here */}
-      
-      <div className="container mx-auto px-4">
+
+      <div className="container-wide">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Text Content */}
           <motion.div
@@ -63,22 +66,24 @@ function PersonHero({
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
               {name}
             </h1>
-            
-            <p className="text-xl md:text-2xl mb-6 opacity-90">
-              {subtitle}
-            </p>
-            
+
+            <p className="text-xl md:text-2xl mb-6 opacity-90">{subtitle}</p>
+
             <div className="mb-8 text-lg leading-relaxed">
               <p>{description}</p>
             </div>
-            
+
             {cta && (
-              <Button variant={variant === 'primary' ? 'secondary' : 'primary'} size="lg" asChild>
+              <Button
+                variant={variant === "primary" ? "secondary" : "primary"}
+                size="lg"
+                asChild
+              >
                 <a href={cta.link}>{cta.text}</a>
               </Button>
             )}
           </motion.div>
-          
+
           {/* Image */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -92,7 +97,7 @@ function PersonHero({
                 alt={imageAlt}
                 fill
                 sizes="(max-width: 768px) 320px, 384px"
-                style={{ objectFit: 'cover' }}
+                style={{ objectFit: "cover" }}
                 priority
                 placeholder={personImageData?.blurDataURL ? "blur" : "empty"}
                 blurDataURL={personImageData?.blurDataURL}
@@ -102,10 +107,10 @@ function PersonHero({
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 export default withErrorBoundary(PersonHero, {
-  componentName: 'PersonHero',
-  id: 'person-hero'
-}) 
+  componentName: "PersonHero",
+  id: "person-hero",
+});

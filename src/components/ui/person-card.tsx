@@ -1,125 +1,12 @@
 "use client";
+"use client";
 
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
-import { withErrorBoundary } from '@/components/with-error-boundary';
-import { getPersonImageData, staticBlurPlaceholders } from '@/data/person-images';
-
-// Role type for the fallback images
-export type PersonRole = 'lightworker' | 'messenger' | 'witness' | 'guardian' | 'default';
-
-// Function to determine fallback image based on role
-const getFallbackImage = (role: PersonRole = 'default') => {
-  switch (role) {
-    case 'lightworker':
-      return '/images/fallbacks/lightworker-fallback.jpg';
-    case 'messenger':
-      return '/images/fallbacks/messenger-fallback.jpg';
-    case 'witness':
-      return '/images/fallbacks/witness-fallback.jpg';
-    case 'guardian':
-      return '/images/fallbacks/guardian-fallback.jpg';
-    default:
-      return '/images/fallbacks/default-fallback.jpg';
-  }
-};
-
-// Generate initials from name
-const getInitials = (name: string) => {
-  return name
-    .split(' ')
-    .map(n => n[0])
-    .join('')
-    .toUpperCase();
-};
-
-// Role-based colors for divine effects
-const roleColors: Record<PersonRole, {
-  primary: string;
-  glow: string;
-  gradient: string;
-  glowClass: string;
-}> = {
-  lightworker: {
-    primary: 'var(--lightworker-primary)',
-    glow: 'var(--lightworker-glow)',
-    gradient: 'from-amber-600 to-orange-500',
-    glowClass: 'glow-lightworker'
-  },
-  messenger: {
-    primary: 'var(--messenger-primary)',
-    glow: 'var(--messenger-glow)',
-    gradient: 'from-blue-600 to-sky-500',
-    glowClass: 'glow-messenger'
-  },
-  witness: {
-    primary: 'var(--witness-primary)',
-    glow: 'var(--witness-glow)',
-    gradient: 'from-emerald-600 to-teal-500',
-    glowClass: 'glow-witness'
-  },
-  guardian: {
-    primary: 'var(--guardian-primary)',
-    glow: 'var(--guardian-glow)',
-    gradient: 'from-amber-600 to-orange-500',
-    glowClass: 'glow-guardian'
-  },
-  default: {
-    primary: 'var(--courage-blue)',
-    glow: 'var(--hope-gold)',
-    gradient: 'from-blue-500 to-indigo-600',
-    glowClass: 'glow-messenger'
-  }
-};
-
-// Floating particles animation component
-const FloatingParticles = ({ role, isHovered }: { role: PersonRole, isHovered: boolean }) => {
-  const prefersReducedMotion = 
-    typeof window !== 'undefined' ? 
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
-  
-  if (prefersReducedMotion) return null;
-  
-  // Get divine accent colors for the given role
-  const getGlowColor = (roleType: PersonRole): string => {
-    return roleType === 'lightworker' ? 'var(--lightworker-glow)' : 
-           roleType === 'messenger' ? 'var(--messenger-glow)' : 
-           roleType === 'witness' ? 'var(--witness-glow)' : 
-           roleType === 'guardian' ? 'var(--guardian-glow)' : 'var(--hope-gold)';
-  };
-  
-  const color = getGlowColor(role);
-  const particleCount = 20; // Increased from 12
-  
-  return (
-    <div className={cn(
-      "absolute inset-0 overflow-hidden pointer-events-none transition-opacity duration-500",
-      isHovered ? "opacity-100" : "opacity-0"
-    )}>
-      {[...Array(particleCount)].map((_, i) => (
-        <div
-          key={`particle-${i}`}
-          className="absolute rounded-full blur-[1px] opacity-0"
-          style={{
-            width: isHovered ? `${Math.random() * 2 + 1}px` : '1.5px',
-            height: isHovered ? `${Math.random() * 2 + 1}px` : '1.5px',
-            left: `${Math.random() * 100}%`,
-            bottom: `-5%`,
-            opacity: isHovered ? 0.9 : 0, // Increased opacity
-            backgroundColor: color,
-            animation: isHovered ? 
-              `floatUp ${2 + Math.random() * 3}s ease-out ${Math.random() * 2}s infinite` : 
-              'none',
-            filter: isHovered ? 'blur(1.5px)' : 'blur(1px)'
-          }}
-        />
-      ))}
-    </div>
-  );
-};
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { PersonRole } from "@/types/person";
+import { cn } from "@/lib/utils";
 
 export interface PersonCardProps {
   id: string;
@@ -130,9 +17,68 @@ export interface PersonCardProps {
   imageSrc?: string;
   localImage?: boolean;
   role?: PersonRole;
-  size?: 'small' | 'medium' | 'large' | 'featured';
+  size?: "small" | "medium" | "large" | "featured";
   className?: string;
 }
+
+// Role-based styling configurations
+const roleStyles: Record<
+  PersonRole,
+  { bg: string; accent: string; text: string }
+> = {
+  lightworker: {
+    bg: "bg-gradient-to-br from-amber-500/80 via-yellow-500/70 to-orange-400/80",
+    accent: "border-amber-300",
+    text: "text-amber-100",
+  },
+  messenger: {
+    bg: "bg-gradient-to-br from-blue-500/80 via-indigo-500/70 to-violet-500/80",
+    accent: "border-blue-300",
+    text: "text-blue-100",
+  },
+  witness: {
+    bg: "bg-gradient-to-br from-emerald-500/80 via-teal-500/70 to-green-500/80",
+    accent: "border-emerald-300",
+    text: "text-emerald-100",
+  },
+  guardian: {
+    bg: "bg-gradient-to-br from-purple-500/80 via-pink-500/70 to-fuchsia-500/80",
+    accent: "border-purple-300",
+    text: "text-purple-100",
+  },
+};
+
+// Size-based configuration
+const sizeConfig = {
+  small: {
+    card: "h-60",
+    imageContainer: "h-32",
+    title: "text-sm",
+    name: "text-lg",
+    description: "line-clamp-2 text-xs",
+  },
+  medium: {
+    card: "h-80",
+    imageContainer: "h-40",
+    title: "text-sm",
+    name: "text-xl",
+    description: "line-clamp-3 text-sm",
+  },
+  large: {
+    card: "h-96",
+    imageContainer: "h-48",
+    title: "text-base",
+    name: "text-2xl",
+    description: "line-clamp-4 text-base",
+  },
+  featured: {
+    card: "h-auto md:h-96 md:max-h-[28rem]",
+    imageContainer: "h-48 md:h-56",
+    title: "text-base md:text-lg",
+    name: "text-2xl md:text-3xl",
+    description: "line-clamp-4 md:line-clamp-6 text-base md:text-lg",
+  },
+};
 
 function PersonCard({
   id,
@@ -141,279 +87,151 @@ function PersonCard({
   title,
   description,
   imageSrc,
-  localImage = false,
-  role = 'default',
-  size = 'medium',
+  localImage = true,
+  role = "lightworker",
+  size = "medium",
   className,
 }: PersonCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [imageError, setImageError] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  
-  // Get the person's local image data if available
-  const personImageData = localImage && id ? getPersonImageData(id, role) : undefined;
-  
-  // Check for reduced motion preference
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-    
-    const handleChange = () => setPrefersReducedMotion(mediaQuery.matches);
-    mediaQuery.addEventListener('change', handleChange);
-    
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
-  
-  // Define size-specific styles
-  const sizeStyles = {
-    small: {
-      container: 'h-60',
-      image: 'h-28 w-28',
-      title: 'text-lg',
-      content: 'p-4',
-      description: 'line-clamp-2 text-xs',
-    },
-    medium: {
-      container: 'h-80',
-      image: 'h-36 w-36',
-      title: 'text-xl',
-      content: 'p-5',
-      description: 'line-clamp-3 text-sm',
-    },
-    large: {
-      container: 'h-96',
-      image: 'h-48 w-48',
-      title: 'text-2xl',
-      content: 'p-6',
-      description: 'line-clamp-4',
-    },
-    featured: {
-      container: 'h-96 md:h-[32rem] col-span-2',
-      image: 'h-48 w-48 md:h-64 md:w-64',
-      title: 'text-3xl',
-      content: 'p-6 md:p-8',
-      description: 'md:line-clamp-6 text-base',
-    },
-  };
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
-  // Role-based colors for fallback avatars
-  const roleColors = {
-    lightworker: 'bg-amber-600 text-white',
-    messenger: 'bg-blue-600 text-white',
-    witness: 'bg-emerald-600 text-white',
-    guardian: 'bg-amber-600 text-white',
-    default: 'bg-courage-blue text-white',
-  };
+  // Get role-specific styling
+  const style = useMemo(() => roleStyles[role], [role]);
 
-  // Motion variants for animations with divine easing
-  const divineEasing = [0.16, 1, 0.3, 1]; // cubic-bezier(0.16, 1, 0.3, 1)
-  
-  const cardVariants = {
-    initial: { 
-      y: 20,
-      opacity: 0 
-    },
-    animate: { 
-      y: 0, 
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: divineEasing
-      }
-    },
-    hover: {
-      y: -10, // Increased lift
-      scale: prefersReducedMotion ? 1 : 1.05, // Increased from 1.03
-      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 255, 255, 0.3)', // Stronger shadow
-      transition: {
-        duration: 0.4,
-        ease: divineEasing
-      }
+  // Get size-specific styling
+  const sizeStyle = useMemo(() => sizeConfig[size], [size]);
+
+  // Generate the appropriate image path
+  const getImagePath = useCallback(() => {
+    if (!imageSrc) {
+      // Fallback to role-specific default image
+      return `/images/fallbacks/${role}-fallback.jpg`;
     }
-  };
 
-  const imageVariants = {
-    initial: {
-      scale: 1,
-    },
-    hover: {
-      scale: prefersReducedMotion ? 1 : 1.1, // Increased from 1.08
-      transition: {
-        duration: 0.5,
-        ease: divineEasing
-      }
-    }
-  };
-
-  // Determine the image sources in order of priority
-  const getImageSource = () => {
-    // First check for local image data
-    if (personImageData) {
-      // Use the display size by default or full size for featured cards
-      return size === 'featured' ? personImageData.full : personImageData.display;
-    }
-    
-    // Next check for remote image URL
-    if (!imageError && imageSrc) {
+    if (!localImage) {
+      // External image
       return imageSrc;
     }
-    
-    // Finally, use role-based fallback
-    return getFallbackImage(role);
-  };
-  
-  // Get the JPG fallback image source
-  const getJpgFallbackSource = () => {
-    if (personImageData) {
-      // Use the display size by default or full size for featured cards
-      return size === 'featured' ? personImageData.fullJpg : personImageData.displayJpg;
-    }
-    
-    // Use role-based fallback if no personImageData
-    return getFallbackImage(role);
-  };
-  
-  // Get the appropriate blur data URL
-  const getBlurDataURL = () => {
-    if (personImageData?.blurDataURL) {
-      return personImageData.blurDataURL;
-    }
-    
-    // Use static placeholders based on role if no specific blur data
-    return staticBlurPlaceholders[role] || staticBlurPlaceholders.default;
-  };
-  
-  // Determine if we should use placeholder blur
-  const shouldUseBlur = !!personImageData?.blurDataURL;
-  
-  // Determine the image source based on availability
-  const imageSource = getImageSource();
-  const jpgFallbackSource = getJpgFallbackSource();
-    
-  // Get role-specific colors
-  const roleColor = roleColors[role] || roleColors.default;
-  const divineColors = role in roleColors ? roleColors[role] : roleColors.default;
 
-  // Get divine accent colors
-  const divineAccent = {
-    glowClass: role === 'lightworker' ? 'glow-lightworker' : 
-              role === 'messenger' ? 'glow-messenger' : 
-              role === 'witness' ? 'glow-witness' : 
-              role === 'guardian' ? 'glow-guardian' : 'glow-messenger',
-    gradient: role === 'lightworker' ? 'from-amber-600 to-orange-500' : 
-             role === 'messenger' ? 'from-blue-600 to-sky-500' : 
-             role === 'witness' ? 'from-emerald-600 to-teal-500' : 
-             role === 'guardian' ? 'from-amber-600 to-orange-500' : 'from-blue-500 to-indigo-600',
-    glow: role === 'lightworker' ? 'var(--lightworker-glow)' : 
-         role === 'messenger' ? 'var(--messenger-glow)' : 
-         role === 'witness' ? 'var(--witness-glow)' : 
-         role === 'guardian' ? 'var(--guardian-glow)' : 'var(--hope-gold)'
-  };
+    // Local image - handle both relative and absolute paths
+    if (imageSrc.startsWith("/")) {
+      return imageSrc;
+    }
+
+    return `/images/people/thumbnails/${imageSrc}`;
+  }, [imageSrc, localImage, role]);
+
+  // Memoize the image path to prevent recalculation
+  const imagePath = useMemo(() => getImagePath(), [getImagePath]);
+
+  // Handle image load
+  const handleImageLoad = useCallback(() => {
+    setIsLoaded(true);
+  }, []);
+
+  // Handle image error
+  const handleImageError = useCallback(() => {
+    setHasError(true);
+    // Still mark as loaded to show fallback content
+    setIsLoaded(true);
+  }, []);
 
   return (
-    <motion.div
-      initial="initial"
-      animate="animate"
-      whileHover="hover"
-      variants={cardVariants}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      className={cn(
-        "relative overflow-hidden rounded-xl glass transition-all ease-divine transform-gpu will-change-transform",
-        sizeStyles[size].container,
-        isHovered ? divineAccent.glowClass : "",
-        className
-      )}
-    >
-      <Link href={`/people/${slug}`} className="block h-full">
-        {/* Divine glow overlay */}
-        <div 
+    <Link href={`/people/${slug}`} passHref>
+      <motion.article
+        className={cn(
+          "flex flex-col overflow-hidden rounded-2xl shadow-lg transition-shadow",
+          "hover:shadow-xl focus-within:shadow-xl",
+          "backdrop-blur-sm bg-black/20",
+          style.bg,
+          sizeStyle.card,
+          "border-2 border-transparent",
+          style.accent,
+          className,
+        )}
+        whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+        whileTap={{ scale: 0.98 }}
+      >
+        {/* Image Container */}
+        <div
           className={cn(
-            "absolute inset-0 opacity-70 z-0 transition-opacity duration-500 ease-divine",
-            `bg-gradient-to-br ${divineAccent.gradient}`
+            "relative w-full overflow-hidden",
+            sizeStyle.imageContainer,
           )}
-          style={{
-            opacity: isHovered ? 0.9 : 0.7,
-            filter: isHovered ? 'brightness(1.2)' : 'brightness(1)',
-          }}
-        />
-
-        {/* Floating particles effect */}
-        <FloatingParticles role={role} isHovered={isHovered} />
-        
-        {/* Gradient overlay - changed to only cover bottom 30% */}
-        <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-t from-black to-transparent rounded-b-xl" />
-        
-        {/* Background Image */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden">
-          <motion.div
-            variants={imageVariants}
-            className="w-full h-full"
-          >
-            {!imageError && (personImageData || imageSrc) ? (
-              <>
-                <picture>
-                  {/* WebP source - primary format */}
-                  <source srcSet={imageSource} type="image/webp" />
-                  
-                  {/* JPG fallback for browsers without WebP support */}
-                  <source srcSet={jpgFallbackSource} type="image/jpeg" />
-                  
-                  {/* Image with all required props */}
-                  <Image
-                    src={imageSource}
-                    alt={name}
-                    fill
-                    sizes={
-                      size === 'small' 
-                        ? '(max-width: 640px) 100vw, 150px' 
-                        : size === 'medium' 
-                          ? '(max-width: 768px) 100vw, 300px' 
-                          : size === 'large' 
-                            ? '(max-width: 1024px) 100vw, 450px' 
-                            : '(max-width: 1280px) 100vw, 600px'
-                    }
-                    style={{ objectFit: 'cover' }}
-                    className="opacity-90"
-                    onError={() => setImageError(true)}
-                    priority={size === 'featured'}
-                    placeholder={shouldUseBlur ? "blur" : "empty"}
-                    blurDataURL={shouldUseBlur ? getBlurDataURL() : undefined}
-                  />
-                </picture>
-              </>
-            ) : (
-              <div className={cn(
-                "w-full h-full flex items-center justify-center",
-                roleColors[role]
-              )}>
-                <span className="text-6xl font-bold">{getInitials(name)}</span>
-              </div>
+        >
+          <div
+            className={cn(
+              "absolute inset-0 bg-gray-800/20 backdrop-blur-[2px] transition-opacity duration-700",
+              isLoaded ? "opacity-0" : "opacity-100",
             )}
-          </motion.div>
+          />
+
+          <Image
+            src={imagePath}
+            alt={name}
+            fill
+            sizes={
+              size === "featured"
+                ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            }
+            className={cn(
+              "object-cover transition-all duration-700",
+              isLoaded ? "opacity-100 scale-100" : "opacity-0 scale-105",
+            )}
+            onLoad={handleImageLoad}
+            onError={handleImageError}
+            loading="lazy"
+            quality={80}
+          />
+
+          {/* Role indicator */}
+          <div className="absolute bottom-2 right-2 px-2 py-1 text-xs font-medium bg-black/30 backdrop-blur-md rounded-full">
+            {role}
+          </div>
         </div>
-        
-        {/* Content Overlay - moved to bottom */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 p-4">
-          {/* Title */}
-          <h3 className="text-lg font-bold text-white" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.9)' }}>
+
+        {/* Content */}
+        <div className="flex flex-col flex-grow p-4 md:p-6">
+          <div
+            className={cn("text-white/80 font-medium mb-1", sizeStyle.title)}
+          >
+            {title}
+          </div>
+
+          <h3 className={cn("font-bold text-white mb-2", sizeStyle.name)}>
             {name}
           </h3>
-          
-          {/* Subtitle */}
-          <p className="text-sm" style={{ 
-            color: divineAccent.glow, 
-            textShadow: '0 2px 6px rgba(0,0,0,0.9)'
-          }}>
-            {title}
-          </p>
+
+          {description && (
+            <p className={cn("text-white/90 mt-auto", sizeStyle.description)}>
+              {description}
+            </p>
+          )}
+
+          <div className="mt-auto pt-3">
+            <span className="inline-flex items-center text-sm font-medium text-white/90">
+              View Profile
+              <svg
+                className="ml-1 h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </span>
+          </div>
         </div>
-      </Link>
-    </motion.div>
+      </motion.article>
+    </Link>
   );
 }
 
-export default withErrorBoundary(PersonCard, {
-  componentName: 'PersonCard',
-  id: 'person-card'
-}); 
+// Wrap with React.memo to prevent unnecessary re-renders
+export default React.memo(PersonCard);

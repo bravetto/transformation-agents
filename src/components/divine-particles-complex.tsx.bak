@@ -1,0 +1,379 @@
+'use client';
+
+import React from 'react';
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import type { Engine, ISourceOptions } from "@tsparticles/engine";
+import type { DivineRole } from '@/lib/design-system';
+import { withUnifiedErrorBoundary } from './ui/unified-error-boundary';
+import { useUnifiedArchitecture } from '@/lib/unified-architecture';
+import { divineLove } from '@/lib/divine-love';
+import { cn } from '@/lib/utils';
+
+interface DivineParticlesProps {
+  role?: DivineRole;
+  variant?: 'divine' | 'sacred' | 'unified';
+  className?: string;
+}
+
+// Sacred Particle Configurations
+const particleConfigs: Record<string, ISourceOptions> = {
+  divine: {
+    particles: {
+      number: {
+        value: 108,
+        density: {
+          enable: true,
+          value_area: 800
+        }
+      },
+      color: {
+        value: ["#FFD700", "#FFC0CB", "#9370DB", "#87CEEB"]
+      },
+      shape: {
+        type: "circle"
+      },
+      opacity: {
+        value: 0.6,
+        random: true,
+        animation: {
+          enable: true,
+          speed: 1,
+          minimumValue: 0.1,
+          sync: false
+        }
+      },
+      size: {
+        value: 3,
+        random: true,
+        animation: {
+          enable: true,
+          speed: 2,
+          minimumValue: 0.1,
+          sync: false
+        }
+      },
+      links: {
+        enable: true,
+        distance: 150,
+        color: "#FFD700",
+        opacity: 0.4,
+        width: 1
+      },
+      move: {
+        enable: true,
+        speed: 2,
+        direction: "none",
+        random: false,
+        straight: false,
+        outModes: {
+          default: "out"
+        },
+        bounce: false,
+        attract: {
+          enable: true,
+          rotateX: 600,
+          rotateY: 1200
+        }
+      }
+    },
+    interactivity: {
+      detectsOn: "canvas",
+      events: {
+        onHover: {
+          enable: true,
+          mode: "repulse"
+        },
+        onClick: {
+          enable: true,
+          mode: "push"
+        },
+        resize: {
+          enable: true
+        }
+      },
+      modes: {
+        grab: {
+          distance: 400,
+          links: {
+            opacity: 1
+          }
+        },
+        bubble: {
+          distance: 400,
+          size: 40,
+          duration: 2,
+          opacity: 8
+        },
+        repulse: {
+          distance: 200,
+          duration: 0.4
+        },
+        push: {
+          quantity: 4
+        },
+        remove: {
+          quantity: 2
+        }
+      }
+    },
+    detectRetina: true
+  },
+  sacred: {
+    particles: {
+      number: {
+        value: 144,
+        density: {
+          enable: true,
+          value_area: 800
+        }
+      },
+      color: {
+        value: ["#FFA07A", "#DDA0DD", "#98FB98", "#87CEEB"]
+      },
+      shape: {
+        type: "circle"
+      },
+      opacity: {
+        value: 0.5,
+        random: true,
+        animation: {
+          enable: true,
+          speed: 1,
+          minimumValue: 0.1,
+          sync: false
+        }
+      },
+      size: {
+        value: 4,
+        random: true,
+        animation: {
+          enable: true,
+          speed: 2,
+          minimumValue: 0.1,
+          sync: false
+        }
+      },
+      links: {
+        enable: true,
+        distance: 150,
+        color: "#DDA0DD",
+        opacity: 0.3,
+        width: 1
+      },
+      move: {
+        enable: true,
+        speed: 1.5,
+        direction: "none",
+        random: false,
+        straight: false,
+        outModes: {
+          default: "out"
+        },
+        bounce: false,
+        attract: {
+          enable: true,
+          rotateX: 600,
+          rotateY: 1200
+        }
+      }
+    },
+    interactivity: {
+      detectsOn: "canvas",
+      events: {
+        onHover: {
+          enable: true,
+          mode: "bubble"
+        },
+        onClick: {
+          enable: true,
+          mode: "repulse"
+        },
+        resize: {
+          enable: true
+        }
+      },
+      modes: {
+        grab: {
+          distance: 400,
+          links: {
+            opacity: 1
+          }
+        },
+        bubble: {
+          distance: 400,
+          size: 40,
+          duration: 2,
+          opacity: 8
+        },
+        repulse: {
+          distance: 200,
+          duration: 0.4
+        },
+        push: {
+          quantity: 4
+        },
+        remove: {
+          quantity: 2
+        }
+      }
+    },
+    detectRetina: true
+  },
+  unified: {
+    particles: {
+      number: {
+        value: 216,
+        density: {
+          enable: true,
+          value_area: 800
+        }
+      },
+      color: {
+        value: ["#FFD700", "#FFC0CB", "#9370DB", "#87CEEB", "#98FB98"]
+      },
+      shape: {
+        type: "circle"
+      },
+      opacity: {
+        value: 0.7,
+        random: true,
+        animation: {
+          enable: true,
+          speed: 1,
+          minimumValue: 0.1,
+          sync: false
+        }
+      },
+      size: {
+        value: 3,
+        random: true,
+        animation: {
+          enable: true,
+          speed: 2,
+          minimumValue: 0.1,
+          sync: false
+        }
+      },
+      links: {
+        enable: true,
+        distance: 150,
+        color: "#FFD700",
+        opacity: 0.5,
+        width: 1
+      },
+      move: {
+        enable: true,
+        speed: 2.5,
+        direction: "none",
+        random: false,
+        straight: false,
+        outModes: {
+          default: "out"
+        },
+        bounce: false,
+        attract: {
+          enable: true,
+          rotateX: 600,
+          rotateY: 1200
+        }
+      }
+    },
+    interactivity: {
+      detectsOn: "canvas",
+      events: {
+        onHover: {
+          enable: true,
+          mode: "connect"
+        },
+        onClick: {
+          enable: true,
+          mode: "push"
+        },
+        resize: {
+          enable: true
+        }
+      },
+      modes: {
+        grab: {
+          distance: 400,
+          links: {
+            opacity: 1
+          }
+        },
+        bubble: {
+          distance: 400,
+          size: 40,
+          duration: 2,
+          opacity: 8
+        },
+        repulse: {
+          distance: 200,
+          duration: 0.4
+        },
+        push: {
+          quantity: 4
+        },
+        remove: {
+          quantity: 2
+        },
+        connect: {
+          distance: 80,
+          links: {
+            opacity: 0.5
+          },
+          radius: 60
+        }
+      }
+    },
+    detectRetina: true
+  }
+};
+
+function DivineParticlesCore({
+  role = 'lightworker',
+  variant = 'divine',
+  className
+}: DivineParticlesProps) {
+  // Use unified architecture
+  const { protection, handleError, log } = useUnifiedArchitecture(
+    'DivineParticles',
+    role
+  );
+
+  // Initialize particles
+  const particlesInit = React.useCallback(async (engine: Engine) => {
+    try {
+      await loadSlim(engine);
+      log('info', 'Divine particles initialized', { variant });
+    } catch (error) {
+      log('error', 'Failed to initialize divine particles', { error });
+      await handleError(error as Error);
+    }
+  }, [handleError, log, variant]);
+
+  // Get divine love protection
+  const loveProtection = divineLove.getSacredProtection(role);
+
+  React.useEffect(() => {
+    // Apply divine love
+    divineLove.applyDivineLove('DivineParticles', role);
+  }, [role]);
+
+  return (
+    <div className={cn("relative w-full h-full", className)}>
+      <Particles
+        id={`divine-particles-${variant}`}
+        className="absolute inset-0"
+        onInit={particlesInit}
+        options={particleConfigs[variant]}
+      />
+    </div>
+  );
+}
+
+// Export with unified error boundary
+export const DivineParticles = withUnifiedErrorBoundary(DivineParticlesCore, {
+  componentName: 'DivineParticles',
+  role: 'lightworker'
+});

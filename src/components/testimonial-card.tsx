@@ -1,47 +1,62 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Card, Text, Quote } from '@/components/ui';
-import { RevealOnScroll } from '@/components/ui/page-transition';
-import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { Card, Text, Quote } from "@/components/ui";
+import { RevealOnScroll } from "@/components/ui/page-transition";
+import { cn } from "@/lib/utils";
 
 interface TestimonialCardProps {
   quote: string;
   author: string;
   role?: string;
-  variant?: 'default' | 'outline' | 'light' | 'primary' | 'secondary' | 'ghost' | 'divine' | 'glow' | 'accent' | 'subtle';
+  variant?:
+    | "default"
+    | "outline"
+    | "light"
+    | "primary"
+    | "secondary"
+    | "ghost"
+    | "divine"
+    | "glow"
+    | "accent"
+    | "subtle";
   className?: string;
   delay?: number;
+  minHeight?: boolean;
 }
 
 export default function TestimonialCard({
   quote,
   author,
   role,
-  variant = 'default',
+  variant = "default",
   className,
   delay = 0,
+  minHeight = true,
 }: TestimonialCardProps) {
   return (
     <RevealOnScroll delay={delay}>
-      <Card 
+      <Card
         variant={variant}
-        padding="lg"
-        className={cn('h-full', className)}
+        padding="large"
+        className={cn(
+          "h-full flex flex-col",
+          minHeight && "min-h-[240px]",
+          className,
+        )}
       >
-        <Quote size="lg" className="mb-4">
+        <Quote size="lg" className="mb-6 flex-grow">
           {quote}
         </Quote>
-        
-        <div className="mt-4 flex items-center">
-          <div className="ml-2">
-            <Text weight="bold" color="accent" className="text-sm">
+
+        <div className="mt-auto pt-4 flex items-center">
+          <div>
+            <Text weight="bold" textColor="accent" className="text-sm mb-1">
               {author}
             </Text>
-            
+
             {role && (
-              <Text size="sm" color="muted">
+              <Text size="sm" textColor="muted">
                 {role}
               </Text>
             )}
@@ -50,4 +65,4 @@ export default function TestimonialCard({
       </Card>
     </RevealOnScroll>
   );
-} 
+}
