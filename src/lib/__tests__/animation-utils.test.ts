@@ -112,7 +112,9 @@ describe("Animation Utilities", () => {
     it("tracks page visibility", () => {
       const { result } = renderHook(() => usePageVisibility());
 
-      expect(result.current.isVisible).toBe(true);
+      // The hook returns a boolean directly
+      expect(typeof result.current).toBe("boolean");
+      expect(result.current).toBe(true);
 
       // Simulate visibility change
       act(() => {
@@ -123,7 +125,8 @@ describe("Animation Utilities", () => {
         document.dispatchEvent(new Event("visibilitychange"));
       });
 
-      expect(result.current.isVisible).toBe(false);
+      // After changing visibility state, it should be false
+      expect(result.current).toBe(false);
     });
   });
 
