@@ -17,7 +17,6 @@ import {
   Video,
   Download,
   ArrowRight,
-} from "lucide-react";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import Section from "@/components/section";
 import { Card } from "@/components/ui/card";

@@ -9,7 +9,6 @@ import {
   useChain,
   useSpringRef,
   config,
-} from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
 interface SacredRevealProps {

@@ -3,13 +3,9 @@
 import React from "react";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { AlertTriangle } from "lucide-react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Button } from "@/components/ui";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { cn } from "@/lib/utils";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import type { DivineRole } from "./ui/divine-error-boundary";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 
 /**
  * Role configuration mapping for styling error fallbacks
@@ -73,7 +69,7 @@ interface ErrorFallbackProps {
  * Reusable error fallback component for error boundaries
  * Shows a user-friendly error message with reset option and role-based styling
  */
-export default function ErrorFallback({
+function ErrorFallbackExported({
   error,
   resetErrorBoundary,
   componentName = "component",

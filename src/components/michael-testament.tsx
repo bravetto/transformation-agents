@@ -3,11 +3,9 @@
 import { useState, useRef } from "react";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, useInView } from "framer-motion";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Heart, Briefcase, Shield, Star, ArrowRight } from "lucide-react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 
-export default function MichaelTestament() {
+function MichaelTestamentExported() {
   const [isExpanded, setIsExpanded] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true });

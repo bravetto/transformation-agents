@@ -19,7 +19,6 @@ import {
   BarChart3,
   Clock,
   CheckCircle2,
-} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Metric {

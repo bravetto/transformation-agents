@@ -3,11 +3,8 @@
 import React from "react";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Card, Text, Quote } from "@/components/ui";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { RevealOnScroll } from "@/components/ui/page-transition";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { cn } from "@/lib/utils";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 
 interface TestimonialCardProps {
   quote: string;
@@ -29,7 +26,7 @@ interface TestimonialCardProps {
   minHeight?: boolean;
 }
 
-export default function TestimonialCard({
+function TestimonialCardExported({
   quote,
   author,
   role,

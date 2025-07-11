@@ -22,7 +22,6 @@ import {
   MessageSquare,
   FileText,
   Phone,
-} from "lucide-react";
 
 function EmergencyResponseCore() {
   return (

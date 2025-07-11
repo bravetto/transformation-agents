@@ -23,7 +23,7 @@ const HOPE_WORDS = [
   "Future",
 ];
 
-export default function CursorTrail() {
+function CursorTrailExported() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
   const mousePos = useRef({ x: 0, y: 0 });

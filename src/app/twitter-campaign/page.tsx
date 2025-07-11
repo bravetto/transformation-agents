@@ -10,7 +10,6 @@ import {
   Users,
   TrendingUp,
   Calendar,
-} from "lucide-react";
 import { Container, Heading, Text, Button, Card } from "@/components/ui";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { cn } from "@/lib/utils";

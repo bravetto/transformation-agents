@@ -3,13 +3,10 @@
 import { useState, useEffect } from "react";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Heart, X, Trophy } from "lucide-react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import Link from "next/link";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 
-export default function FloatingCTA() {
+function FloatingCTAExported() {
   const [isVisible, setIsVisible] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);

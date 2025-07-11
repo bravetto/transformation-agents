@@ -2,7 +2,6 @@ import {
   PromptTemplateConfig,
   ConversationContext,
   UserProfile,
-} from "@/types/prompts";
 
 /**
  * Base template for The Bridge Project AI interactions

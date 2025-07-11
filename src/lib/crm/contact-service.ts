@@ -4,22 +4,17 @@ import {
   ContactCreateResult,
   UpdateContactRequest,
   SearchContactsParams,
-} from "@/types/crm";
-import {
   createClickUpContact,
   updateClickUpContact,
   getClickUpContact,
   searchClickUpContacts,
   deleteClickUpContact,
   type ClickUpContact,
-} from "./clickup-service";
-import {
   CLICKUP_FIELD_IDS,
   BUSINESS_CATEGORIES,
   type BusinessCategory,
   mapClickUpTaskToContact,
   mapContactToClickUpTask,
-} from "./clickup-field-mapping";
 
 // Cache for contact search results
 let contactCache: {

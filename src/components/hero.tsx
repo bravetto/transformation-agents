@@ -9,10 +9,11 @@ import {
   Text,
   Button,
   Stack,
-  Badge,
-} from "@/components/ui";
+  Badge,,
+} from "PLACEHOLDER";
 import Link from "next/link";
-import { ArrowRight, Calendar, Shield, ChevronDown, Users } from "lucide-react";
+import { ArrowRight, Calendar, Shield, ChevronDown, Users } from "lucide-react";,
+} from "PLACEHOLDER";
 import Section from "./section";
 
 function Hero() {

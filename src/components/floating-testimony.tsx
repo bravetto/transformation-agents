@@ -3,9 +3,7 @@
 import { useEffect, useState } from "react";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Quote, X, ChevronLeft, ChevronRight } from "lucide-react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 
 const testimonies = [
   {
@@ -60,7 +58,7 @@ const testimonies = [
   },
 ];
 
-export default function FloatingTestimony() {
+function FloatingTestimonyExported() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);

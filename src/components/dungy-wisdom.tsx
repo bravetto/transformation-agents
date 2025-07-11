@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { BookOpen, Heart, ArrowRight } from "lucide-react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 
 const books = [
   {
@@ -35,7 +34,7 @@ const books = [
   },
 ];
 
-export default function DungyWisdom() {
+function DungyWisdomExported() {
   const [activeBook, setActiveBook] = useState(0);
 
   return (

@@ -3,7 +3,6 @@
 import { cn } from "@/lib/utils";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { ReactNode } from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 
 interface SectionProps {
   variant?:

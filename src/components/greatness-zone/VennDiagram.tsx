@@ -3,9 +3,7 @@
 import React from "react";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion } from "framer-motion";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { cn } from "@/lib/utils";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 
 interface VennDiagramProps {
   className?: string;

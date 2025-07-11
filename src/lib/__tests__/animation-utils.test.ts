@@ -7,7 +7,6 @@ import {
   useInViewAnimation,
   getDivineAnimationPreset,
   divineEase,
-} from "../animation-utils";
 import { renderHook, act } from "@testing-library/react";
 
 // Mock framer-motion

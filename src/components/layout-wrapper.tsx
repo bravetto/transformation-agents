@@ -49,7 +49,7 @@ const PropheticCountdown = dynamic(
 // Independence Day 2025 (July 4, 2025)
 const independenceDay = new Date("2025-07-04T00:00:00");
 
-export default function LayoutWrapper({
+function LayoutWrapperExported({
   children,
 }: {
   children: React.ReactNode;

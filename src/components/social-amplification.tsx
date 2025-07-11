@@ -11,7 +11,6 @@ import {
   Users,
   TrendingUp,
   Heart,
-} from "lucide-react";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 interface ShareStats {

@@ -1,17 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion } from "framer-motion";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Container, Text } from "@/components/ui";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Heart, Mail, Calendar, Github } from "lucide-react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { getBuildInfo } from "@/lib/build-config";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 
-export default function Footer() {
+function Footer() {
   const currentYear = new Date().getFullYear();
   const daysSinceLaunch = Math.ceil(
     (new Date().getTime() - new Date("2024-12-26").getTime()) /
@@ -163,7 +159,7 @@ export default function Footer() {
 }
 
 // Export with error boundary
-export default withErrorBoundary(FooterExported, {
-  componentName: "footer",
+export default withErrorBoundary(Footer, {
+  componentName: "Footer",
   id: "footer",
 });

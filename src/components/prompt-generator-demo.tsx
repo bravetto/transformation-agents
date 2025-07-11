@@ -1,19 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Card } from "@/components/ui/card";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Button } from "@/components/ui/button";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Textarea } from "@/components/ui/textarea";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Label } from "@/components/ui/label";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Select } from "@/components/ui/select";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Input } from "@/components/ui/input";
-import { withErrorBoundary } from "@/components/with-error-boundary";
 import { ConversationContext, UserProfile } from "@/types/prompts";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 
@@ -40,7 +33,7 @@ const defaultUserProfile: UserProfile = {
   preferredCommunicationStyle: "direct",
 };
 
-export default function PromptGeneratorDemo() {
+function PromptGeneratorDemo() {
   const [selectedTemplate, setSelectedTemplate] = useState("bridge-base");
   const [selectedPersonality, setSelectedPersonality] = useState("coach-dungy");
   const [context, setContext] = useState<string>(
@@ -189,7 +182,7 @@ export default function PromptGeneratorDemo() {
 }
 
 // Export with error boundary
-export default withErrorBoundary(PromptGeneratorDemoExported, {
-  componentName: "prompt-generator-demo",
+export default withErrorBoundary(PromptGeneratorDemo, {
+  componentName: "PromptGeneratorDemo",
   id: "prompt-generator-demo",
 });

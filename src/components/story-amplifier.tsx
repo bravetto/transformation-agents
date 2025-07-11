@@ -6,8 +6,8 @@ import {
   motion,
   useScroll,
   useTransform,
-  AnimatePresence,
-} from "framer-motion";
+  AnimatePresence,,
+} from "PLACEHOLDER";
 import Image from "next/image";
 import {
   Share2,
@@ -31,7 +31,6 @@ import {
   Bookmark,
   Calendar,
   X,
-} from "lucide-react";
 import { withDivineErrorBoundary } from "./ui/divine-error-boundary";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";

@@ -117,3 +117,6 @@ const BaseCard = withDivineErrorBoundary(BaseCardComponent, {
 export default withSafeUI(BaseCard, {
   componentName: "BaseCard",
 });
+
+// Export BaseCard as a named export
+export { BaseCard };

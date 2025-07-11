@@ -29,15 +29,21 @@
  */
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { withDivineErrorBoundary } from "../ui/divine-error-boundary";
 import { DivineParticles } from "../divine-particles";
 import { cn } from "@/lib/utils";
-import { LetterFormProvider } from "./context";
+import { LetterFormProvider, useLetterForm } from "./context";
 import { DivineLetterFormProps, FormStep } from "./types";
 import { ProgressIndicator } from "./components/progress-indicator";
 import { FormNavigation } from "./components/form-navigation";
 import { AutoSaveIndicator } from "./components/auto-save-indicator";
+import LetterPreview from "./components/letter-preview";
+import PersonalInfo from "./components/form-steps/personal-info";
+import Relationship from "./components/form-steps/relationship";
+import Examples from "./components/form-steps/examples";
+import LetterContent from "./components/form-steps/letter-content";
+import Review from "./components/form-steps/review";
 
 // Main component wrapper
 function DivineLetterForm({
@@ -55,7 +61,7 @@ function DivineLetterForm({
             className="h-full w-full opacity-10"
           />
         </div>
-
+        
         {/* Form container */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -66,31 +72,60 @@ function DivineLetterForm({
           <h1 className="text-3xl font-bold text-center mb-6">
             Divine Letter of Support
           </h1>
-
+          
           <p className="text-center text-gray-600 mb-8">
-            Your letter will help the court understand JAHmere's character and
-            impact. Each step will guide you to create a powerful, legally
-            effective letter.
+            Your letter will help the court understand JAHmere's character and impact.
+            Each step will guide you to create a powerful, legally effective letter.
           </p>
-
+          
           {/* Progress indicator */}
           <ProgressIndicator />
-
+          
           {/* Auto-save indicator */}
           <div className="flex justify-end mb-4">
             <AutoSaveIndicator />
           </div>
-
-          {/* Form content - will be implemented in Phase 2 */}
-          <div className="text-center text-gray-500 p-8 min-h-[300px] border border-dashed border-gray-300 rounded-lg">
-            Form step components will be implemented in Phase 2
-          </div>
-
+          
+          {/* Form content */}
+          <FormContent />
+          
           {/* Form navigation */}
           <FormNavigation />
         </motion.div>
       </div>
     </LetterFormProvider>
+  );
+}
+
+/**
+ * FormContent component
+ * Renders the appropriate form step based on the current step
+ */
+function FormContent() {
+  const { currentStep, isPreviewMode } = useLetterForm();
+  
+  // If in preview mode, show the letter preview
+  if (isPreviewMode) {
+    return <LetterPreview />;
+  }
+  
+  // Otherwise show the current step
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={currentStep}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="min-h-[400px]"
+      >
+        {currentStep === FormStep.PersonalInfo && <PersonalInfo />}
+        {currentStep === FormStep.Relationship && <Relationship />}
+        {currentStep === FormStep.Examples && <Examples />}
+        {currentStep === FormStep.LetterContent && <LetterContent />}
+        {currentStep === FormStep.Review && <Review />}
+      </motion.div>
+    </AnimatePresence>
   );
 }
 

@@ -1,0 +1,256 @@
+[
+  {
+    "file": "src/lib/asset-manager.ts",
+    "duplicates": [
+      {
+        "line": 4,
+        "text": "import { getRoleColors } from \"@/lib/design-system\";",
+        "firstOccurrence": 3
+      }
+    ],
+    "importMap": {}
+  },
+  {
+    "file": "src/components/testimonial-card.tsx",
+    "duplicates": [
+      {
+        "line": 6,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 8,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 10,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      }
+    ],
+    "importMap": {}
+  },
+  {
+    "file": "src/components/section.tsx",
+    "duplicates": [
+      {
+        "line": 6,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      }
+    ],
+    "importMap": {}
+  },
+  {
+    "file": "src/components/michael-testament.tsx",
+    "duplicates": [
+      {
+        "line": 6,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 8,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      }
+    ],
+    "importMap": {}
+  },
+  {
+    "file": "src/components/heartbeat-monitor.tsx",
+    "duplicates": [
+      {
+        "line": 6,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 8,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 10,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      }
+    ],
+    "importMap": {}
+  },
+  {
+    "file": "src/components/floating-testimony.tsx",
+    "duplicates": [
+      {
+        "line": 6,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 8,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      }
+    ],
+    "importMap": {}
+  },
+  {
+    "file": "src/components/floating-cta.tsx",
+    "duplicates": [
+      {
+        "line": 6,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 8,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 10,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      }
+    ],
+    "importMap": {}
+  },
+  {
+    "file": "src/components/feature-card.tsx",
+    "duplicates": [
+      {
+        "line": 6,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 8,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 10,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 12,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      }
+    ],
+    "importMap": {}
+  },
+  {
+    "file": "src/components/error-fallback.tsx",
+    "duplicates": [
+      {
+        "line": 6,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 8,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 10,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 12,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      }
+    ],
+    "importMap": {}
+  },
+  {
+    "file": "src/components/dungy-wisdom.tsx",
+    "duplicates": [
+      {
+        "line": 6,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      }
+    ],
+    "importMap": {}
+  },
+  {
+    "file": "src/components/ui/divine-image.tsx",
+    "duplicates": [
+      {
+        "line": 9,
+        "text": "import { withDivineErrorBoundary } from \"@/components/ui/divine-error-boundary\";",
+        "firstOccurrence": 6
+      }
+    ],
+    "importMap": {}
+  },
+  {
+    "file": "src/components/ui/button.tsx",
+    "duplicates": [
+      {
+        "line": 7,
+        "text": "import { getRoleColorClasses } from \"@/lib/utils\";",
+        "firstOccurrence": 5
+      }
+    ],
+    "importMap": {}
+  },
+  {
+    "file": "src/components/greatness-zone/VennDiagram.tsx",
+    "duplicates": [
+      {
+        "line": 6,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 8,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      }
+    ],
+    "importMap": {}
+  },
+  {
+    "file": "src/components/examples/clickup-crm-demo.tsx",
+    "duplicates": [
+      {
+        "line": 6,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 8,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 10,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 12,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 14,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      },
+      {
+        "line": 16,
+        "text": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+        "firstOccurrence": 4
+      }
+    ],
+    "importMap": {}
+  }
+]

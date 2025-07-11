@@ -6,7 +6,6 @@ import {
   CardTitle,
   CardDescription,
   CardFooter,
-} from "../card";
 
 describe("Card Component", () => {
   it("renders with basic content", () => {

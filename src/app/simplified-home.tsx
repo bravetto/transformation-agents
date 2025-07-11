@@ -4,7 +4,6 @@ import {
   SimplifiedHero,
   SimplifiedStats,
   WhatHappensNext,
-} from "@/components/simplified-hero";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Quote } from "@/components/ui/typography";

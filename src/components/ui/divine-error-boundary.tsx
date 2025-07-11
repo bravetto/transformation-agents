@@ -88,8 +88,10 @@ function withDivineErrorBoundary<P extends object>(
   return WithErrorBoundary;
 }
 
-export default DivineErrorBoundary;
-
+// Export the wrapped version as default
 export default withSafeUI(withDivineErrorBoundary, {
   componentName: "withDivineErrorBoundary",
 });
+
+// Export the withDivineErrorBoundary function as a named export
+export { withDivineErrorBoundary };

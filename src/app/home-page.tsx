@@ -16,7 +16,6 @@ import { UrgencyBanner } from "@/components/ui/urgency-banner";
 import {
   SupporterCount,
   LiveSupporterCount,
-} from "@/components/ui/supporter-count";
 import { QuickNav } from "@/components/ui/quick-nav";
 import { ExploreNav } from "@/components/ui/explore-nav";
 import { MicroCommitments } from "@/components/micro-commitments";
@@ -124,7 +123,6 @@ const TestimonialCard = dynamic(() => import("@/components/testimonial-card"), {
   ssr: true,
 });
 
-import {
   Container,
   Card,
   Heading,
@@ -133,7 +131,6 @@ import {
   Stack,
   Badge,
   Quote,
-} from "@/components/ui";
 const RevealOnScroll = dynamic(
   () =>
     import("@/components/ui/page-transition").then((mod) => mod.RevealOnScroll),

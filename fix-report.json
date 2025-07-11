@@ -1,0 +1,266 @@
+[
+  {
+    "file": "src/lib/prompts/legacy-adapter.ts",
+    "line": 8,
+    "removed": "import {",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/lib/crm/contact-service.ts",
+    "line": 8,
+    "removed": "import {",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/lib/crm/contact-service.ts",
+    "line": 16,
+    "removed": "import {",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/testimonial-card.tsx",
+    "line": 6,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/testimonial-card.tsx",
+    "line": 8,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/testimonial-card.tsx",
+    "line": 10,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/story-amplifier.tsx",
+    "line": 12,
+    "removed": "import {",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/section.tsx",
+    "line": 6,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/navigation.tsx",
+    "line": 19,
+    "removed": "import {",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/michael-testament.tsx",
+    "line": 6,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/michael-testament.tsx",
+    "line": 8,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/heartbeat-monitor.tsx",
+    "line": 6,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/heartbeat-monitor.tsx",
+    "line": 8,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/heartbeat-monitor.tsx",
+    "line": 10,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/floating-testimony.tsx",
+    "line": 6,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/floating-testimony.tsx",
+    "line": 8,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/floating-cta.tsx",
+    "line": 6,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/floating-cta.tsx",
+    "line": 8,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/floating-cta.tsx",
+    "line": 10,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/feature-card.tsx",
+    "line": 6,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/feature-card.tsx",
+    "line": 8,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/feature-card.tsx",
+    "line": 10,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/feature-card.tsx",
+    "line": 12,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/error-fallback.tsx",
+    "line": 6,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/error-fallback.tsx",
+    "line": 8,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/error-fallback.tsx",
+    "line": 10,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/error-fallback.tsx",
+    "line": 12,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/dungy-wisdom.tsx",
+    "line": 6,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/divine-impact-dashboard.tsx",
+    "line": 22,
+    "removed": "import {",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/ui/page-transition.tsx",
+    "line": 15,
+    "removed": "import {",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/people/interactive-person-grid.tsx",
+    "line": 15,
+    "removed": "import {",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/people/FilterBar.tsx",
+    "line": 11,
+    "removed": "import {",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/greatness-zone/VennDiagram.tsx",
+    "line": 6,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/greatness-zone/VennDiagram.tsx",
+    "line": 8,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/examples/clickup-crm-demo.tsx",
+    "line": 6,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/examples/clickup-crm-demo.tsx",
+    "line": 8,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/examples/clickup-crm-demo.tsx",
+    "line": 10,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/examples/clickup-crm-demo.tsx",
+    "line": 12,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/examples/clickup-crm-demo.tsx",
+    "line": 14,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/components/examples/clickup-crm-demo.tsx",
+    "line": 16,
+    "removed": "import { withErrorBoundary } from \"@/components/with-error-boundary\";",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/app/home-page.tsx",
+    "line": 127,
+    "removed": "import {",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/app/api/crm/contacts/route.ts",
+    "line": 11,
+    "removed": "import {",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/app/api/ai/generate-prompt/route.ts",
+    "line": 8,
+    "removed": "import {",
+    "reason": "Exact duplicate"
+  },
+  {
+    "file": "src/app/api/ai/doppelganger/route.ts",
+    "line": 10,
+    "removed": "import {",
+    "reason": "Exact duplicate"
+  }
+]

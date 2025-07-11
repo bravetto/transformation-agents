@@ -12,7 +12,6 @@ import {
   AlertCircle,
   Heart,
   Scale,
-} from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 

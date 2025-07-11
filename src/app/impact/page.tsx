@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";,
+} from "PLACEHOLDER";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -12,9 +13,9 @@ import {
   BarChart3,
   Activity,
   Target,
-} from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+} from "PLACEHOLDER";
 import CoalitionMap from "@/components/coalition-map";
 
 // Mock data - replace with real API calls

@@ -13,7 +13,6 @@ import {
   Globe,
   Sparkles,
   Shield,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ConvergenceNode {

@@ -10,7 +10,6 @@ import {
   ArrowRight,
   Clock,
   AlertCircle,
-} from "lucide-react";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 interface SmartCTAProps {

@@ -1,7 +1,7 @@
 "use client";
-"use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";,
+} from "PLACEHOLDER";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -9,19 +9,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
   X,
-  Heart,
-  FileText,
+  ChevronRight,
   Users,
+  FileText,
+  Heart,
   Home,
   ChevronDown,
   BarChart,
-} from "lucide-react";
 import {
   Button,
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from "@/components/ui";
 import { Container } from "@/components/ui/container";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { MiniCountdown } from "@/components/ui/mini-countdown";

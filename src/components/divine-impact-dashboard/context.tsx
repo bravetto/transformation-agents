@@ -6,13 +6,11 @@ import React, {
   useState,
   useEffect,
   useCallback,
-} from "react";
 import { generateMockData } from "./mock-data";
 import type {
   DashboardContextType,
   DashboardProviderProps,
   MetricCard,
-} from "./types";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 
 // Create the context with a default value

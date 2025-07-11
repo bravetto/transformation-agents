@@ -12,7 +12,6 @@ import {
   Users,
   DollarSign,
   RefreshCw,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Consequence {
