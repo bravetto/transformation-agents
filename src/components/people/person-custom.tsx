@@ -11,9 +11,7 @@ const TimelineComponent = dynamic(
   {
     ssr: true,
     loading: () => (
-      <div className="h-80 flex items-center justify-center">
-        Loading timeline...
-      </div>
+      <div className="min-h-[200px] animate-pulse bg-gray-100/10 rounded-md"></div>
     ),
   },
 );
@@ -23,9 +21,7 @@ const SynchronicityMap = dynamic(
   {
     ssr: true,
     loading: () => (
-      <div className="h-80 flex items-center justify-center">
-        Loading synchronicity map...
-      </div>
+      <div className="min-h-[200px] animate-pulse bg-gray-100/10 rounded-md"></div>
     ),
   },
 );
@@ -35,9 +31,7 @@ const AssessmentAlignment = dynamic(
   {
     ssr: true,
     loading: () => (
-      <div className="h-80 flex items-center justify-center">
-        Loading assessment alignment...
-      </div>
+      <div className="min-h-[200px] animate-pulse bg-gray-100/10 rounded-md"></div>
     ),
   },
 );
@@ -50,9 +44,7 @@ const JayForteTestimony = dynamic(
   {
     ssr: true,
     loading: () => (
-      <div className="h-80 flex items-center justify-center">
-        Loading testimony...
-      </div>
+      <div className="min-h-[200px] animate-pulse bg-gray-100/10 rounded-md"></div>
     ),
   },
 );

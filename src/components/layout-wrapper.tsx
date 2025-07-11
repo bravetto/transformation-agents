@@ -5,24 +5,32 @@ import dynamic from "next/dynamic";
 // Dynamic imports for client components
 const Navigation = dynamic(() => import("@/components/navigation"), {
   ssr: false,
-  loading: () => <div className="h-16 bg-comfort-cream" />,
+  loading: () => (
+    <div className="min-h-[60px] animate-pulse bg-gray-100/10 rounded-md"></div>
+  ),
 });
 
 const Footer = dynamic(() => import("@/components/footer"), {
   ssr: false,
-  loading: () => null,
+  loading: () => (
+    <div className="min-h-[100px] animate-pulse bg-gray-100/10 rounded-md"></div>
+  ),
 });
 
 const ImpactDashboard = dynamic(() => import("@/components/impact-dashboard"), {
   ssr: false,
-  loading: () => null,
+  loading: () => (
+    <div className="min-h-[100px] animate-pulse bg-gray-100/10 rounded-md"></div>
+  ),
 });
 
 const SocialAmplification = dynamic(
   () => import("@/components/social-amplification"),
   {
     ssr: false,
-    loading: () => null,
+    loading: () => (
+      <div className="min-h-[100px] animate-pulse bg-gray-100/10 rounded-md"></div>
+    ),
   },
 );
 
@@ -31,7 +39,9 @@ const PropheticCountdown = dynamic(
   () => import("@/components/prophetic-countdown"),
   {
     ssr: false,
-    loading: () => null,
+    loading: () => (
+      <div className="min-h-[100px] animate-pulse bg-gray-100/10 rounded-md"></div>
+    ),
   },
 );
 

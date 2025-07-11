@@ -7,6 +7,9 @@ import dynamic from "next/dynamic";
 // Dynamic import for PropheticMoment
 const PropheticMoment = dynamic(() => import("@/components/prophetic-moment"), {
   ssr: false,
+  loading: () => (
+    <div className="min-h-[100px] animate-pulse bg-gray-100/10 rounded-md"></div>
+  ),
 });
 
 export default function JordanLetterPage() {

@@ -10,7 +10,9 @@ const ParticlesEngine = dynamic(
   () => import("@tsparticles/react").then((mod) => mod.default),
   {
     ssr: false,
-    loading: () => <div className="particles-loading" />,
+    loading: () => (
+      <div className="min-h-[100px] animate-pulse bg-gray-100/10 rounded-md"></div>
+    ),
   },
 );
 

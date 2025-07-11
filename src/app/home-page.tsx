@@ -43,16 +43,23 @@ const Hero = dynamic(() => import("@/components/hero"), {
 // Dynamic imports with lazy loading for below-the-fold content
 const DivineParticles = dynamic(() => import("@/components/divine-particles"), {
   ssr: false,
-  loading: () => <div className="min-h-20"></div>, // Minimal height to prevent layout shift
+  loading: () => (
+    <div className="min-h-[100px] animate-pulse bg-gray-100/10 rounded-md"></div>
+  ),
 });
 
 const DungyWisdom = dynamic(() => import("@/components/dungy-wisdom"), {
   ssr: false,
-  loading: () => <div className="min-h-[300px] bg-soft-cloud/10"></div>,
+  loading: () => (
+    <div className="min-h-[300px] animate-pulse bg-gray-100/10 rounded-md"></div>
+  ),
 });
 
 const PropheticMoment = dynamic(() => import("@/components/prophetic-moment"), {
   ssr: false,
+  loading: () => (
+    <div className="min-h-[100px] animate-pulse bg-gray-100/10 rounded-md"></div>
+  ),
 });
 
 const DecisionCountdown = dynamic(
