@@ -4,12 +4,13 @@ import { useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { onCLS, onFCP, onLCP, onTTFB, Metric } from "web-vitals";
 import { sendMetric, sendPageView } from "@/lib/analytics";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 /**
  * Analytics component that should be placed in the app layout
  * Handles reporting of web vitals and page views
  */
-export function Analytics() {
+function AnalyticsBase() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -40,3 +41,9 @@ export function Analytics() {
   // No actual UI is rendered
   return null;
 }
+
+// Export with divine error boundary for production safety
+export const Analytics = withDivineErrorBoundary(AnalyticsBase, {
+  componentName: "Analytics",
+  role: "guardian", // Analytics is critical for monitoring, so guardian role is appropriate
+});

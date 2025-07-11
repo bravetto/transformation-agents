@@ -10,6 +10,7 @@ import React, {
 } from "react";
 import { useReducedMotion } from "framer-motion";
 import type { DeviceTier } from "@/lib/animation-utils";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 /**
  * Animation Context Interface
@@ -71,7 +72,7 @@ interface FPSMonitor {
  *
  * Provides centralized animation preferences and performance monitoring
  */
-export function AnimationProvider({
+function AnimationProviderBase({
   children,
   initialParticleIntensity = "auto",
 }: AnimationProviderProps) {
@@ -355,6 +356,15 @@ export function AnimationProvider({
     </AnimationContext.Provider>
   );
 }
+
+// Wrap with divine error boundary for production safety
+export const AnimationProvider = withDivineErrorBoundary(
+  AnimationProviderBase,
+  {
+    componentName: "AnimationProvider",
+    role: "guardian",
+  },
+);
 
 /**
  * Hook to use the Animation Context
