@@ -1,11 +1,7 @@
-export default function LetterFormTestLayout({
+export default function GodsJusticeConduitLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
-      {children}
-    </div>
-  );
+  return <div className="min-h-screen">{children}</div>;
 }
