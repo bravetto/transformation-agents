@@ -2,24 +2,24 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    default: "The Bridge Project",
-    template: "%s | The Bridge Project",
+    default: "Divine Grace | The Bridge Project",
+    template: "%s | Divine Grace",
   },
   description:
-    "Building justice from day one through community-driven rehabilitation.",
+    "Where God's Justice flows through divine grace - building transformation from day one through community-driven rehabilitation.",
   metadataBase: new URL("https://bridgeproject.org"),
   openGraph: {
-    title: "The Bridge Project",
+    title: "Divine Grace | The Bridge Project",
     description:
-      "Building justice from day one through community-driven rehabilitation.",
+      "Where God's Justice flows through divine grace - building transformation from day one through community-driven rehabilitation.",
     url: "https://bridgeproject.org",
-    siteName: "The Bridge Project",
+    siteName: "Divine Grace",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "The Bridge Project",
+        alt: "Divine Grace - The Bridge Project",
       },
     ],
     locale: "en_US",
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Bridge Project",
+    title: "Divine Grace | The Bridge Project",
     description:
-      "Building justice from day one through community-driven rehabilitation.",
+      "Where God's Justice flows through divine grace - building transformation from day one through community-driven rehabilitation.",
     images: ["/og-image.png"],
   },
   icons: {
@@ -43,9 +43,12 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   keywords: [
+    "divine grace",
+    "God's justice",
     "rehabilitation",
     "justice reform",
     "community support",
     "mentorship",
+    "divine intervention",
   ],
 };

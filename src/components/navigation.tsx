@@ -203,16 +203,16 @@ function Navigation() {
                 transition={{ duration: 3, repeat: Infinity }}
                 className="relative"
               >
-                <div className="h-8 w-8 bg-hope-gold rounded-full flex items-center justify-center">
-                  <span className="text-pure-white font-bold text-lg">B</span>
+                <div className="h-8 w-8 bg-gradient-to-br from-elite-divine-amber to-elite-justice-indigo rounded-full flex items-center justify-center shadow-lg">
+                  <span className="text-pure-white font-bold text-lg">✨</span>
                 </div>
               </motion.div>
               <div>
                 <span className="text-gentle-charcoal font-bold text-base">
-                  THE BRIDGE
+                  DIVINE GRACE
                 </span>
                 <div className="text-[10px] text-soft-shadow">
-                  Building from Day 1
+                  God's Justice Flows
                 </div>
               </div>
             </Link>

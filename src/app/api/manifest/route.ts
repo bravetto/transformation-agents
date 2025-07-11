@@ -6,13 +6,14 @@ import { NextRequest, NextResponse } from "next/server";
  */
 export async function GET(request: NextRequest) {
   const manifest = {
-    name: "The Bridge Project",
-    short_name: "Bridge",
-    description: "Transforming justice through divine connection",
+    name: "Divine Grace | The Bridge Project",
+    short_name: "Divine Grace",
+    description:
+      "Where God's Justice flows through divine grace - transforming lives through divine connection",
     start_url: "/",
     display: "standalone",
     background_color: "#FFFBF5",
-    theme_color: "#F59E0B",
+    theme_color: "#FF6B35",
     icons: [
       {
         src: "/favicon.ico",
