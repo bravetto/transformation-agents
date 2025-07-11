@@ -91,7 +91,6 @@ export function DivineAlignment({
       {/* Divine particles background */}
       <div className="fixed inset-0 pointer-events-none">
         <DivineParticles
-          role={role}
           variant="divine"
           className="h-full w-full opacity-20"
         />

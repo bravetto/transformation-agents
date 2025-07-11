@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import { useState, useEffect } from "react";
 import Image, { ImageProps } from "next/image";
@@ -198,4 +197,7 @@ function DivineImageComponent({
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(DivineImageComponent, "lightworker");
+export default withDivineErrorBoundary(DivineImageComponent, {
+  componentName: "DivineImageComponent",
+  role: "lightworker",
+});

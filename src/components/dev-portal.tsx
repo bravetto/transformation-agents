@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import React, {
   createContext,
@@ -20,7 +19,7 @@ import {
   X,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { withErrorBoundary } from "./with-error-boundary";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 // Developer routes registry
 const DEV_ROUTES = {
@@ -397,10 +396,13 @@ function DevPortalProviderComponent({ children }: DevPortalProviderProps) {
   );
 }
 
-export const DevPortalProvider = withErrorBoundary(DevPortalProviderComponent, {
-  componentName: "DevPortalProvider",
-  fallback: <div>Loading DevPortal...</div>,
-});
+export const DevPortalProvider = withDivineErrorBoundary(
+  DevPortalProviderComponent,
+  {
+    componentName: "DevPortalProvider",
+    fallback: <div>Loading DevPortal...</div>,
+  },
+);
 
 interface DevPortalUIProps {
   isFirstUnlock?: boolean;

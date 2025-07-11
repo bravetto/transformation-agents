@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import {
   useState,
@@ -433,4 +432,7 @@ function FilterBar({
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(FilterBar, "guardian");
+export default withDivineErrorBoundary(FilterBar, {
+  componentName: "FilterBar",
+  role: "guardian",
+});

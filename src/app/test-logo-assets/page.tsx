@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 function TestLogoAssetsPage() {
   const logos = [
@@ -63,7 +63,7 @@ function TestLogoAssetsPage() {
   );
 }
 
-export default withErrorBoundary(TestLogoAssetsPage, {
+export default withDivineErrorBoundary(TestLogoAssetsPage, {
   componentName: "TestLogoAssetsPage",
   fallback: (
     <div className="min-h-screen p-8 bg-gray-900 text-white">

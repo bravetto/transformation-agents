@@ -2,9 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
 
-  // Fix for framer-motion and other large dependency chunk errors
+  // Webpack configuration for better chunk handling
   webpack: (config, { dev, isServer }) => {
-    // Optimize chunk splitting to prevent vendor chunk errors
+    // Optimize chunk splitting
     config.optimization = {
       ...config.optimization,
       splitChunks: {
@@ -28,55 +28,49 @@ const nextConfig = {
             priority: 30,
             enforce: true,
           },
-          // Other large libraries
-          lib: {
-            test(module) {
-              return (
-                module.size() > 160000 &&
-                /node_modules[/\\]/.test(module.identifier())
-              );
-            },
-            name(module) {
-              const hash = require("crypto").createHash("sha1");
-              hash.update(module.identifier());
-              return hash.digest("hex").substring(0, 8);
-            },
-            priority: 20,
-            minChunks: 1,
-            reuseExistingChunk: true,
-          },
-          // Commons chunk
+          // Commons chunk for shared code
           commons: {
             name: "commons",
             minChunks: 2,
-            priority: 10,
+            priority: 20,
             reuseExistingChunk: true,
           },
-          // Shared modules
+          // Shared vendor chunks
           shared: {
-            name(module, chunks) {
-              return "shared";
+            name: (module, chunks) => {
+              const hash = require("crypto")
+                .createHash("sha1")
+                .update(module.context)
+                .digest("hex");
+              return `shared-${hash.substring(0, 8)}`;
             },
-            priority: 10,
             test: /[\\/]node_modules[\\/]/,
             minChunks: 2,
+            priority: 10,
             reuseExistingChunk: true,
           },
         },
       },
     };
 
-    // Fix file system watching issues
+    // Improve module resolution and caching
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        module: false,
+      };
+    }
+
+    // Optimize development experience
     if (dev) {
       config.watchOptions = {
         poll: 1000,
         aggregateTimeout: 300,
         ignored: /node_modules/,
       };
-    }
 
-    // Disable filesystem cache in development to prevent ENOENT errors
-    if (dev && !isServer) {
+      // Use memory cache in development
       config.cache = {
         type: "memory",
       };
@@ -85,22 +79,19 @@ const nextConfig = {
     return config;
   },
 
-  // Experimental features
+  // Experimental features for better performance
   experimental: {
-    // Enable CSS optimization
     optimizeCss: true,
-    // Improve module resolution
     esmExternals: true,
-    // Better error handling in development
     webpackBuildWorker: true,
   },
 
   // Disable source maps in production for smaller builds
   productionBrowserSourceMaps: false,
 
-  // Image optimization
+  // Image optimization settings
   images: {
-    domains: ["localhost", "transformation-agents-jahmere-bridge.vercel.app"],
+    domains: ["localhost"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ["image/avif", "image/webp"],
@@ -131,12 +122,17 @@ const nextConfig = {
     ];
   },
 
-  // Redirects for common errors
+  // Redirects for service worker and manifest
   async redirects() {
     return [
       {
         source: "/manifest.json",
         destination: "/api/manifest",
+        permanent: false,
+      },
+      {
+        source: "/service-worker.js",
+        destination: "/_next/static/service-worker.js",
         permanent: false,
       },
     ];

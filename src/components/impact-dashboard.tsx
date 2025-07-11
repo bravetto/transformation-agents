@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -311,4 +310,7 @@ function ImpactDashboard() {
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(ImpactDashboard, "messenger");
+export default withDivineErrorBoundary(ImpactDashboard, {
+  componentName: "ImpactDashboard",
+  role: "messenger",
+});

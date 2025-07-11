@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -490,4 +489,7 @@ function PropheticCountdown({
 }
 
 // Export with divine error boundary for production safety
-export default withDivineErrorBoundary(PropheticCountdown, "messenger");
+export default withDivineErrorBoundary(PropheticCountdown, {
+  componentName: "PropheticCountdown",
+  role: "messenger",
+});

@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { format } from 'date-fns';
-import { Calendar as CalendarIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import * as React from "react";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { DateRange } from 'react-day-picker';
+} from "@/components/ui/popover";
+import { DateRange } from "react-day-picker";
 
 interface DatePickerProps {
   date: Date | undefined;
@@ -25,7 +25,7 @@ export function DatePicker({
   date,
   setDate,
   className,
-  placeholder = 'Select date',
+  placeholder = "Select date",
   disabled,
 }: DatePickerProps) {
   return (
@@ -34,14 +34,14 @@ export function DatePicker({
         <Button
           variant="outline"
           className={cn(
-            'w-full justify-start text-left font-normal',
-            !date && 'text-white/50',
-            className
+            "w-full justify-start text-left font-normal",
+            !date && "text-white/50",
+            className,
           )}
           disabled={disabled}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, 'PPP') : placeholder}
+          {date ? format(date, "PPP") : placeholder}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
@@ -73,7 +73,7 @@ export function DateRangePicker({
   dateRange,
   setDateRange,
   className,
-  placeholder = 'Select date range',
+  placeholder = "Select date range",
   disabled,
 }: DateRangePickerProps) {
   const { from, to } = dateRange;
@@ -93,9 +93,9 @@ export function DateRangePicker({
         <Button
           variant="outline"
           className={cn(
-            'w-full justify-start text-left font-normal',
-            !from && 'text-white/50',
-            className
+            "w-full justify-start text-left font-normal",
+            !from && "text-white/50",
+            className,
           )}
           disabled={disabled}
         >
@@ -103,10 +103,10 @@ export function DateRangePicker({
           {from ? (
             to ? (
               <>
-                {format(from, 'PPP')} - {format(to, 'PPP')}
+                {format(from, "PPP")} - {format(to, "PPP")}
               </>
             ) : (
-              format(from, 'PPP')
+              format(from, "PPP")
             )
           ) : (
             placeholder
@@ -124,4 +124,4 @@ export function DateRangePicker({
       </PopoverContent>
     </Popover>
   );
-} 
+}

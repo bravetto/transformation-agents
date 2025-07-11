@@ -1,6 +1,8 @@
 "use client";
 
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { useEffect } from "react";
+import { useDivineLove } from "@/lib/divine-love";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +12,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Save, Shield, Bell, Database, Globe, Mail } from "lucide-react";
 
 function SystemSettingsPage() {
+  const divineLove = useDivineLove("SystemSettings");
+
+  useEffect(() => {
+    divineLove.manifest();
+  }, [divineLove]);
+
   return (
     <div className="min-h-screen p-8 bg-gray-900">
       <h1 className="text-3xl font-bold mb-8 text-white">System Settings</h1>
@@ -194,11 +202,15 @@ function SystemSettingsPage() {
   );
 }
 
-export default withErrorBoundary(SystemSettingsPage, {
-  componentName: "SystemSettingsPage",
+export default withDivineErrorBoundary(SystemSettingsPage, {
+  componentName: "SystemSettings",
+  role: "guardian",
   fallback: (
     <div className="min-h-screen p-8 bg-gray-900 text-white">
-      Error loading system settings
+      <h1 className="text-2xl font-bold mb-4">System Settings Error</h1>
+      <p>
+        There was an error loading the system settings. Please try again later.
+      </p>
     </div>
   ),
 });

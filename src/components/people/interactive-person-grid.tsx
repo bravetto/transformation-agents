@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -43,7 +42,7 @@ const determinePersonRole = (person: PersonData): PersonRole => {
   }
 
   // Check for role in custom sections
-  const roleSection = person.sections.find(
+  const roleSection = person.sections?.find(
     (section) =>
       section.type === "custom" && section.content.component === "role",
   );
@@ -94,7 +93,7 @@ const determinePersonRole = (person: PersonData): PersonRole => {
 // Function to determine a person's journey stage
 const determineJourneyStage = (person: PersonData): JourneyStage => {
   // Check for role in custom sections
-  const stageSection = person.sections.find(
+  const stageSection = person.sections?.find(
     (section) =>
       section.type === "custom" && section.content.component === "journeyStage",
   );
@@ -139,7 +138,7 @@ const determinePersonThemes = (person: PersonData): PersonTheme[] => {
   }
 
   // Check sections for theme information
-  const themeSection = person.sections.find(
+  const themeSection = person.sections?.find(
     (section) =>
       section.type === "custom" && section.content.component === "theme",
   );
@@ -190,7 +189,7 @@ const determinePersonImpactLevel = (person: PersonData): PersonImpactLevel => {
   }
 
   // Check sections for impact level information
-  const impactSection = person.sections.find(
+  const impactSection = person.sections?.find(
     (section) =>
       section.type === "custom" && section.content.component === "impact",
   );
@@ -719,4 +718,7 @@ const getInitials = (name: string) => {
 };
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(InteractivePersonGrid, "guardian");
+export default withDivineErrorBoundary(InteractivePersonGrid, {
+  componentName: "InteractivePersonGrid",
+  role: "guardian",
+});

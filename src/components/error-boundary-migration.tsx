@@ -9,8 +9,8 @@ import React from "react";
 import {
   DivineErrorBoundary,
   withDivineErrorBoundary,
-  type DivineRole,
 } from "./ui/divine-error-boundary";
+import type { DivineRole } from "@/lib/design-system";
 
 /**
  * Re-export the new error boundary components for backward compatibility
@@ -42,7 +42,14 @@ export function withErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
   options: ErrorBoundaryOptions = {},
 ): React.ComponentType<P> {
-  return withDivineErrorBoundary(Component, options);
+  // Convert old options format to new format
+  const newOptions = {
+    componentName: options.componentName || "UnnamedComponent",
+    role: options.role,
+    fallback: options.fallback,
+  };
+
+  return withDivineErrorBoundary(Component, newOptions);
 }
 
 /**
@@ -58,11 +65,9 @@ export function ErrorBoundaryWrapper({
 }: React.PropsWithChildren<ErrorBoundaryOptions>) {
   return (
     <DivineErrorBoundary
-      componentName={componentName}
+      componentName={componentName || "UnnamedComponent"}
       fallback={fallback}
-      id={id}
-      role={role}
-      onError={onError}
+      role={role || "default"}
     >
       {children}
     </DivineErrorBoundary>

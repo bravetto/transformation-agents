@@ -2,9 +2,10 @@ import { PersonData } from "@/types/person";
 
 export const paul: PersonData = {
   id: "paul",
+  slug: "paul",
   name: "Paul",
   title: "Kingdom Infrastructure Builder",
-  role: "Witness to Time and Money",
+  role: "witness",
   bio: `Paul moves with divine velocity, speaking mental clarity through primal hunger. A witness to the rhythm of time and movement of money, he sees beyond horizons while remaining committed to the present. Through his ACGX Fund, he pours the concrete and lays the pipes of God's Kingdom on Earth.`,
 
   extendedBio: `Paul embodies the paradox of speed and stillness, moving fast while remaining eternally present. He sees what he doesn't always understand, yet listens and waits with the patience of mountains. His gift is translating complex divine visions into direct, neutral language that builds real infrastructure.
@@ -93,10 +94,14 @@ Paul is HERE. He is NOW in all things. While his vision extends beyond the horiz
   ],
 
   impact: {
-    infrastructure_built: "$500M+",
-    innovations_ignited: "200+",
-    foundations_laid: "Countless",
-    kingdom_manifested: "Ongoing",
+    title: "Kingdom Infrastructure",
+    description: "Building the foundations for divine manifestation on Earth",
+    stats: [
+      { label: "Infrastructure Built", value: "$500M+" },
+      { label: "Innovations Ignited", value: "200+" },
+      { label: "Foundations Laid", value: "Countless" },
+      { label: "Kingdom Manifested", value: "Ongoing" },
+    ],
   },
 
   media: [],
@@ -109,6 +114,8 @@ Paul is HERE. He is NOW in all things. While his vision extends beyond the horiz
   social: {},
 
   metadata: {
+    title: "Paul - Kingdom Infrastructure Builder",
+    description: "Building the foundations for divine manifestation on Earth",
     featured: true,
     order: 15,
     category: "lightworker",

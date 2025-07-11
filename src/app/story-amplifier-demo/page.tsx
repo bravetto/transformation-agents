@@ -298,4 +298,7 @@ const StoryAmplifierDemo = () => {
   );
 };
 
-export default withDivineErrorBoundary(StoryAmplifierDemo);
+export default withDivineErrorBoundary(StoryAmplifierDemo, {
+  componentName: "StoryAmplifierDemo",
+  role: "default",
+});

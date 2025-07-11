@@ -17,12 +17,12 @@ import {
   BarChart,
 } from "lucide-react";
 import {
-  Container,
   Button,
   Popover,
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui";
+import { Container } from "@/components/ui/container";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { MiniCountdown } from "@/components/ui/mini-countdown";
 
@@ -499,4 +499,7 @@ function Navigation() {
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(Navigation, "guardian");
+export default withDivineErrorBoundary(Navigation, {
+  componentName: "Navigation",
+  role: "guardian",
+});

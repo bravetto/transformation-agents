@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -438,4 +437,7 @@ function LettersOfHope() {
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(LettersOfHope, "messenger");
+export default withDivineErrorBoundary(LettersOfHope, {
+  componentName: "LettersOfHope",
+  role: "messenger",
+});

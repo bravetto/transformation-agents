@@ -1,10 +1,9 @@
 "use client";
-"use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 export interface PersonVideoProps {
   title: string;
@@ -80,7 +79,7 @@ function PersonVideo({
   );
 }
 
-export default withErrorBoundary(PersonVideo, {
+export default withDivineErrorBoundary(PersonVideo, {
   componentName: "PersonVideo",
-  id: "person-video",
+  role: "guardian",
 });

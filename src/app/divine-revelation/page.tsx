@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function DivineRevelationPage() {
   return (
-    <DivineErrorBoundary role="guardian">
+    <DivineErrorBoundary componentName="DivineRevelationPage" role="guardian">
       <main className="relative">
         {/* First the revelation */}
         <section className="relative">

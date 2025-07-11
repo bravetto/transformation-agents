@@ -70,11 +70,7 @@ export function DivineTransformation({
     >
       {/* Divine particles background */}
       <div className="absolute inset-0 z-0">
-        <DivineParticles
-          role={role}
-          variant={particleVariant}
-          className="h-full w-full"
-        />
+        <DivineParticles variant={particleVariant} className="h-full w-full" />
       </div>
 
       {/* Gradient overlay */}

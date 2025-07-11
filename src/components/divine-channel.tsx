@@ -7,6 +7,7 @@ import { SacredProtection } from "./sacred-protection";
 import { cn } from "@/lib/utils";
 import type { DivineRole } from "@/lib/design-system";
 import { withUnifiedErrorBoundary } from "./ui/unified-error-boundary";
+import { withDivineErrorBoundary } from "./ui/divine-error-boundary";
 import { useUnifiedArchitecture } from "@/lib/unified-architecture";
 
 interface DivineChannelProps {
@@ -65,7 +66,7 @@ function DivineChannelCore({
 
   React.useEffect(() => {
     // Log component initialization
-    log("info", "Divine Channel initialized", { role });
+    log("Divine Channel initialized", { role });
 
     // Cycle through divine commands
     const interval = setInterval(() => {
@@ -74,7 +75,7 @@ function DivineChannelCore({
       );
 
       // Log command transition
-      log("info", "Command transitioned", {
+      log("Command transitioned", {
         from: divineCommands[currentCommandIndex].command,
         to: divineCommands[
           currentCommandIndex === divineCommands.length - 1
@@ -86,19 +87,19 @@ function DivineChannelCore({
 
     return () => {
       clearInterval(interval);
-      log("info", "Divine Channel cleanup");
+      log("Divine Channel cleanup");
     };
   }, [currentCommandIndex, log, role]);
 
   // Error handling
   const handleTransitionError = async (error: Error) => {
-    log("error", "Command transition failed", { error });
+    log("Command transition failed", { error: error.message });
     await handleError(error);
   };
 
   return (
-    <SacredProtection role={role} className={className}>
-      <div className="relative p-8">
+    <SacredProtection>
+      <div className={cn("relative p-8", className)}>
         <AnimatePresence mode="wait">
           <motion.div
             key={currentCommand.command}
@@ -135,8 +136,8 @@ function DivineChannelCore({
   );
 }
 
-// Export with unified error boundary
-export const DivineChannel = withUnifiedErrorBoundary(DivineChannelCore, {
+// Export with divine error boundary
+export const DivineChannel = withDivineErrorBoundary(DivineChannelCore, {
   componentName: "DivineChannel",
   role: "messenger",
 });

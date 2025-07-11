@@ -40,4 +40,7 @@ function Banner() {
   );
 }
 
-export default withDivineErrorBoundary(Banner, "guardian");
+export default withDivineErrorBoundary(Banner, {
+  componentName: "Banner",
+  role: "guardian",
+});

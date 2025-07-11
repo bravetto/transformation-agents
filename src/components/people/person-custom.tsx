@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import React from "react";
 
 // Import custom components dynamically
@@ -124,7 +124,7 @@ function PersonCustom({
   );
 }
 
-export default withErrorBoundary(PersonCustom, {
+export default withDivineErrorBoundary(PersonCustom, {
   componentName: "PersonCustom",
-  id: "person-custom",
+  role: "guardian",
 });

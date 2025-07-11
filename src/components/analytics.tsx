@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
-import { onCLS, onFCP, onLCP, onTTFB, Metric } from 'web-vitals';
-import { sendMetric, sendPageView } from '@/lib/analytics';
+import { useEffect } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { onCLS, onFCP, onLCP, onTTFB, Metric } from "web-vitals";
+import { sendMetric, sendPageView } from "@/lib/analytics";
 
 /**
  * Analytics component that should be placed in the app layout
@@ -12,16 +12,18 @@ import { sendMetric, sendPageView } from '@/lib/analytics';
 export function Analytics() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  
+
   // Track page views
   useEffect(() => {
     // Report page view on route change
-    const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
-    
+    const url =
+      pathname +
+      (searchParams?.toString() ? `?${searchParams.toString()}` : "");
+
     // Send page view
     sendPageView(url);
   }, [pathname, searchParams]);
-  
+
   // Set up web vitals reporting
   useEffect(() => {
     // Core Web Vitals
@@ -29,12 +31,12 @@ export function Analytics() {
     onFCP(sendMetric);
     onLCP(sendMetric);
     onTTFB(sendMetric);
-    
+
     // Note: FID is not included in the main exports of web-vitals in this version
     // We would need to update to the latest version to use onFID directly
     // For now, we're using the core metrics that are available
   }, []);
-  
+
   // No actual UI is rendered
   return null;
-} 
+}

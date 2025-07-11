@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -255,4 +254,7 @@ function SmartCTA({ userType = "visitor" }: SmartCTAProps) {
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(SmartCTA, "lightworker");
+export default withDivineErrorBoundary(SmartCTA, {
+  componentName: "SmartCTA",
+  role: "lightworker",
+});

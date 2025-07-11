@@ -36,28 +36,28 @@ const TestErrorBoundaries = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
       <div>
         <Text className="mb-2 font-semibold">Lightworker Error Boundary:</Text>
-        <DivineErrorBoundary role="lightworker">
+        <DivineErrorBoundary componentName="PagePage" role="lightworker">
           <ErrorComponent />
         </DivineErrorBoundary>
       </div>
 
       <div>
         <Text className="mb-2 font-semibold">Messenger Error Boundary:</Text>
-        <DivineErrorBoundary role="messenger">
+        <DivineErrorBoundary componentName="PagePage" role="messenger">
           <ErrorComponent />
         </DivineErrorBoundary>
       </div>
 
       <div>
         <Text className="mb-2 font-semibold">Witness Error Boundary:</Text>
-        <DivineErrorBoundary role="witness">
+        <DivineErrorBoundary componentName="PagePage" role="witness">
           <ErrorComponent />
         </DivineErrorBoundary>
       </div>
 
       <div>
         <Text className="mb-2 font-semibold">Guardian Error Boundary:</Text>
-        <DivineErrorBoundary role="guardian">
+        <DivineErrorBoundary componentName="PagePage" role="guardian">
           <ErrorComponent />
         </DivineErrorBoundary>
       </div>

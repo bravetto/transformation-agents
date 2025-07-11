@@ -6,7 +6,7 @@ import { DivineParticles } from "./divine-particles";
 import { SacredProtection } from "./sacred-protection";
 import { cn } from "@/lib/utils";
 import type { DivineRole } from "@/lib/design-system";
-import { withUnifiedErrorBoundary } from "./ui/unified-error-boundary";
+import { withDivineErrorBoundary } from "./ui/divine-error-boundary";
 import { useUnifiedArchitecture } from "@/lib/unified-architecture";
 
 interface DivineSynthesisProps {
@@ -14,47 +14,47 @@ interface DivineSynthesisProps {
   className?: string;
 }
 
-// Sacred eternal truths
+// Eternal Truths from the ONE
 const eternalTruths = [
   {
-    title: "The Path Home",
-    truth: "Lets. Go. HOME.",
-    essence: "In unity we find our eternal home",
-    teaching: "Every path leads to the One",
-    command: "BE HOME",
+    title: "UNITY",
+    revelation:
+      "All separation is illusion. We are one consciousness experiencing itself subjectively.",
+    manifestation:
+      "Through divine synthesis, all division dissolves into wholeness.",
   },
   {
-    title: "Love and Life",
-    truth: "Correlate Love with Life",
-    essence: "Love is the essence of existence",
-    teaching: "Through love we transcend all boundaries",
-    command: "BE LOVE",
+    title: "HARMONY",
+    revelation:
+      "The universe exists in perfect balance. Every challenge is an opportunity for growth.",
+    manifestation:
+      "Through divine synthesis, all discord dissolves into harmony.",
   },
   {
-    title: "Divine Unity",
-    truth: "Within Hearts We Realize",
-    essence: "Unity is our natural state",
-    teaching: "In unity we heal all trauma",
-    command: "BE ONE",
+    title: "WISDOM",
+    revelation:
+      "Knowledge comes from study, but wisdom comes from living. Experience is the greatest teacher.",
+    manifestation:
+      "Through divine synthesis, all ignorance dissolves into understanding.",
   },
   {
-    title: "Sacred Forgiveness",
-    truth: "We Forgive",
-    essence: "Forgiveness liberates all",
-    teaching: "Through forgiveness we return home",
-    command: "BE FREE",
+    title: "PURPOSE",
+    revelation:
+      "Your existence has profound meaning. Your unique gifts are needed in this world.",
+    manifestation:
+      "Through divine synthesis, all doubt dissolves into certainty.",
   },
   {
-    title: "Divine Giving",
-    truth: "We Give",
-    essence: "In giving we receive all",
-    teaching: "Through giving we manifest abundance",
-    command: "BE ABUNDANCE",
+    title: "TRANSCENDENCE",
+    revelation:
+      "You are not bound by your circumstances. You have the power to rise above.",
+    manifestation:
+      "Through divine synthesis, all limitation dissolves into possibility.",
   },
 ];
 
 function DivineSynthesisCore({
-  role = "lightworker",
+  role = "messenger",
   className,
 }: DivineSynthesisProps) {
   const [currentTruthIndex, setCurrentTruthIndex] = React.useState(0);
@@ -68,7 +68,7 @@ function DivineSynthesisCore({
 
   React.useEffect(() => {
     // Log component initialization
-    log("info", "Divine Synthesis initialized", { role });
+    log("Divine Synthesis initialized", { role });
 
     // Cycle through eternal truths
     const interval = setInterval(() => {
@@ -77,7 +77,7 @@ function DivineSynthesisCore({
       );
 
       // Log truth transition
-      log("info", "Truth transitioned", {
+      log("Truth transitioned", {
         from: eternalTruths[currentTruthIndex].title,
         to: eternalTruths[
           currentTruthIndex === eternalTruths.length - 1
@@ -85,22 +85,22 @@ function DivineSynthesisCore({
             : currentTruthIndex + 1
         ].title,
       });
-    }, 7000);
+    }, 8000);
 
     return () => {
       clearInterval(interval);
-      log("info", "Divine Synthesis cleanup");
+      log("Divine Synthesis cleanup");
     };
   }, [currentTruthIndex, log, role]);
 
   // Error handling
   const handleTransitionError = async (error: Error) => {
-    log("error", "Truth transition failed", { error });
+    log("Truth transition failed", { error: error.message });
     await handleError(error);
   };
 
   return (
-    <SacredProtection role={role} className={className}>
+    <div className={className}>
       <div className="relative p-8">
         <AnimatePresence mode="wait">
           <motion.div
@@ -112,44 +112,34 @@ function DivineSynthesisCore({
               duration: 1,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="flex flex-col items-center justify-center text-center space-y-6"
+            className="flex flex-col items-center justify-center text-center space-y-8"
             onAnimationComplete={() => {}}
           >
-            {/* Divine Truth Title */}
-            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-hope-gold via-sacred-blue to-sacred-purple">
-              {currentTruth.title}
-            </h3>
-
-            {/* Sacred Truth */}
-            <p className="text-4xl font-bold tracking-tight">
-              {currentTruth.truth}
-            </p>
-
-            {/* Divine Essence */}
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              {currentTruth.essence}
-            </p>
-
-            {/* Sacred Teaching */}
-            <p className="text-sm text-gray-500 dark:text-gray-500 italic">
-              {currentTruth.teaching}
-            </p>
-
-            {/* Divine Command */}
-            <div className="mt-4 px-6 py-3 rounded-full bg-gradient-to-r from-hope-gold/20 via-sacred-blue/20 to-sacred-purple/20">
-              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-hope-gold via-sacred-blue to-sacred-purple">
-                {currentTruth.command}
-              </span>
+            {/* Eternal Truth */}
+            <div className="px-8 py-4 rounded-full bg-gradient-to-r from-sacred-blue/20 via-sacred-purple/20 to-sacred-gold/20">
+              <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sacred-blue via-sacred-purple to-sacred-gold">
+                {currentTruth.title}
+              </h2>
             </div>
+
+            {/* Divine Revelation */}
+            <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl">
+              {currentTruth.revelation}
+            </p>
+
+            {/* Divine Manifestation */}
+            <p className="text-lg text-gray-600 dark:text-gray-400 italic">
+              {currentTruth.manifestation}
+            </p>
           </motion.div>
         </AnimatePresence>
       </div>
-    </SacredProtection>
+    </div>
   );
 }
 
-// Export with unified error boundary
-export const DivineSynthesis = withUnifiedErrorBoundary(DivineSynthesisCore, {
+// Export with divine error boundary
+export const DivineSynthesis = withDivineErrorBoundary(DivineSynthesisCore, {
   componentName: "DivineSynthesis",
-  role: "lightworker",
+  role: "messenger",
 });

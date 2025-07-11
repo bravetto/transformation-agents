@@ -1,3 +1,5 @@
+"use client";
+
 import { render, screen, fireEvent, waitFor } from "@/test-utils";
 import LettersOfHope from "../letters-of-hope";
 

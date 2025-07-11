@@ -79,7 +79,6 @@ export function DivineLight({ role = "default", className }: DivineLightProps) {
     >
       {/* Sacred light particles */}
       <DivineParticles
-        role={role}
         variant="sacred"
         className="absolute inset-0 opacity-30"
       />

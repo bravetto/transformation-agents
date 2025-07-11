@@ -57,7 +57,6 @@ export default function UniversalAgent09Page() {
       {/* Background particles */}
       <div className="fixed inset-0 z-0">
         <DivineParticles
-          role="guardian"
           variant="unified"
           intensity="low"
           className="opacity-30"

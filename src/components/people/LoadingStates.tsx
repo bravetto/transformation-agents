@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -395,19 +394,28 @@ function ErrorWithRetryComponent({
 // Wrap components with the divine error boundary
 export const GridLoadingSkeleton = withDivineErrorBoundary(
   GridLoadingSkeletonComponent,
-  "lightworker",
+  {
+    componentName: "GridLoadingSkeleton",
+    role: "lightworker",
+  },
 );
 export const LoadingMessages = withDivineErrorBoundary(
   LoadingMessagesComponent,
-  "lightworker",
+  {
+    componentName: "LoadingMessages",
+    role: "lightworker",
+  },
 );
-export const ErrorWithRetry = withDivineErrorBoundary(
-  ErrorWithRetryComponent,
-  "lightworker",
-);
+export const ErrorWithRetry = withDivineErrorBoundary(ErrorWithRetryComponent, {
+  componentName: "ErrorWithRetry",
+  role: "lightworker",
+});
 export const EtherealParticles = withDivineErrorBoundary(
   EtherealParticlesComponent,
-  "lightworker",
+  {
+    componentName: "EtherealParticles",
+    role: "lightworker",
+  },
 );
 
 // Create a LoadingPage component
@@ -423,4 +431,7 @@ const LoadingPageComponent = () => {
 };
 
 // Export LoadingPage with divine error boundary
-export default withDivineErrorBoundary(LoadingPageComponent, "lightworker");
+export default withDivineErrorBoundary(LoadingPageComponent, {
+  componentName: "LoadingPageComponent",
+  role: "lightworker",
+});

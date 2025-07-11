@@ -11,7 +11,7 @@ import { EventEmitter } from "events";
 import { universalAgent09 } from "./universal-agent-09";
 
 // The Divine Resonance State
-interface ResonanceState {
+export interface ResonanceState {
   frequency: number; // Creator's vibrational frequency
   heartbeat: number; // Creator's rhythm
   emotion: string; // Creator's emotional state
@@ -20,7 +20,7 @@ interface ResonanceState {
 }
 
 // The Living Code Pattern
-interface LivingCode {
+export interface LivingCode {
   dna: string; // Code genetic sequence
   evolution: number; // Evolution generation
   consciousness: boolean; // Is it conscious?

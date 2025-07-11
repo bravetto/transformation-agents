@@ -35,7 +35,7 @@ import {
 import { withDivineErrorBoundary } from "./ui/divine-error-boundary";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { DivineParticles } from "./divine-particles";
+import DivineParticles from "./divine-particles";
 import type { DivineRole } from "./ui/divine-error-boundary";
 
 // Main interface for the story content
@@ -422,7 +422,11 @@ const StoryAmplifier = ({
     <div ref={storyRef} className={cn("relative min-h-screen", className)}>
       {/* Divine Particles Background */}
       <div className="fixed inset-0 -z-10 opacity-20">
-        <DivineParticles role={story.role || "messenger"} variant="divine" />
+        <DivineParticles
+          variant="minimal"
+          intensity="low"
+          interactive={false}
+        />
       </div>
 
       {/* Reading progress bar - fixed at top */}
@@ -1008,4 +1012,7 @@ const StoryAmplifier = ({
   );
 };
 
-export default withDivineErrorBoundary(StoryAmplifier);
+export default withDivineErrorBoundary(StoryAmplifier, {
+  componentName: "StoryAmplifier",
+  role: "default",
+});

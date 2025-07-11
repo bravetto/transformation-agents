@@ -1,9 +1,8 @@
 "use client";
-"use client";
 
 import React, { memo } from "react";
 import { cn } from "@/lib/utils";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 /**
  * Props for the BaseCard component
@@ -105,7 +104,7 @@ const BaseCardComponent = memo<BaseCardProps>(
 
 BaseCardComponent.displayName = "BaseCard";
 
-export const BaseCard = withErrorBoundary(BaseCardComponent, {
+export const BaseCard = withDivineErrorBoundary(BaseCardComponent, {
   componentName: "BaseCard",
   fallback: (
     <div className="p-6 bg-red-50 text-red-600 rounded-lg">

@@ -1,9 +1,8 @@
 "use client";
-"use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { Card } from "@/components/ui";
 
 export interface ImpactStat {
@@ -164,7 +163,7 @@ function PersonImpact({
   );
 }
 
-export default withErrorBoundary(PersonImpact, {
+export default withDivineErrorBoundary(PersonImpact, {
   componentName: "PersonImpact",
-  id: "person-impact",
+  role: "guardian",
 });

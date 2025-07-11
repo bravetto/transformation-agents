@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import React, {
   useState,
@@ -296,4 +295,7 @@ function PropheticMoment({
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(PropheticMoment, "messenger");
+export default withDivineErrorBoundary(PropheticMoment, {
+  componentName: "PropheticMoment",
+  role: "messenger",
+});

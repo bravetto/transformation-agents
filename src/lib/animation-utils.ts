@@ -57,7 +57,7 @@ export function useDeviceCapabilities() {
     batteryCharging: undefined,
   });
 
-  // FPS monitor for performance tracking
+  // Create refs to track performance
   const fpsMonitor = useRef<FPSMonitor>({
     fps: 60,
     samples: [],
@@ -66,7 +66,7 @@ export function useDeviceCapabilities() {
     measuring: false,
   });
 
-  // Detect device capabilities on mount
+  // Monitor device capabilities
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -149,88 +149,76 @@ export function useDeviceCapabilities() {
       reducedMotion: Boolean(prefersReducedMotion),
     }));
 
+    // FPS monitoring functions
     // Start monitoring FPS if supported
     if (typeof window.requestAnimationFrame === "function") {
-      startFPSMonitoring();
+      // Reset FPS monitor
+      fpsMonitor.current = {
+        fps: 60,
+        samples: [],
+        lastTime: performance.now(),
+        sampleCount: 0,
+        measuring: true,
+      };
+
+      const measureFPS = () => {
+        if (!fpsMonitor.current.measuring) return;
+
+        const now = performance.now();
+        const elapsed = now - fpsMonitor.current.lastTime;
+
+        if (elapsed >= 1000) {
+          // Calculate FPS
+          const currentFPS = Math.round(
+            (fpsMonitor.current.sampleCount * 1000) / elapsed,
+          );
+
+          // Add to samples
+          fpsMonitor.current.samples.push(currentFPS);
+
+          // Keep only the last 5 samples
+          if (fpsMonitor.current.samples.length > 5) {
+            fpsMonitor.current.samples.shift();
+          }
+
+          // Calculate average FPS
+          const avgFPS =
+            fpsMonitor.current.samples.reduce((sum, fps) => sum + fps, 0) /
+            fpsMonitor.current.samples.length;
+
+          fpsMonitor.current.fps = Math.round(avgFPS);
+          fpsMonitor.current.sampleCount = 0;
+          fpsMonitor.current.lastTime = now;
+
+          // Update metrics with current FPS
+          setMetrics((prev) => ({
+            ...prev,
+            fps: fpsMonitor.current.fps,
+            // Adjust device tier based on FPS
+            deviceTier:
+              fpsMonitor.current.fps < 30
+                ? "low"
+                : fpsMonitor.current.fps < 50
+                  ? "medium"
+                  : prev.deviceTier,
+          }));
+        } else {
+          fpsMonitor.current.sampleCount++;
+        }
+
+        // Continue measuring
+        requestAnimationFrame(measureFPS);
+      };
+
+      // Start the FPS measurement
+      requestAnimationFrame(measureFPS);
     }
 
     return () => {
-      stopFPSMonitoring();
+      // Stop FPS monitoring on cleanup
+      fpsMonitor.current.measuring = false;
     };
-  }, [prefersReducedMotion, startFPSMonitoring, stopFPSMonitoring]);
-
-  /**
-   * Start monitoring FPS
-   */
-  const startFPSMonitoring = useCallback(() => {
-    if (fpsMonitor.current.measuring) return;
-
-    fpsMonitor.current = {
-      fps: 60,
-      samples: [],
-      lastTime: performance.now(),
-      sampleCount: 0,
-      measuring: true,
-    };
-
-    const measureFPS = () => {
-      if (!fpsMonitor.current.measuring) return;
-
-      const now = performance.now();
-      const elapsed = now - fpsMonitor.current.lastTime;
-
-      if (elapsed >= 1000) {
-        // Calculate FPS
-        const currentFPS = Math.round(
-          (fpsMonitor.current.sampleCount * 1000) / elapsed,
-        );
-
-        // Add to samples
-        fpsMonitor.current.samples.push(currentFPS);
-
-        // Keep only the last 5 samples
-        if (fpsMonitor.current.samples.length > 5) {
-          fpsMonitor.current.samples.shift();
-        }
-
-        // Calculate average FPS
-        const avgFPS =
-          fpsMonitor.current.samples.reduce((sum, fps) => sum + fps, 0) /
-          fpsMonitor.current.samples.length;
-
-        fpsMonitor.current.fps = Math.round(avgFPS);
-        fpsMonitor.current.sampleCount = 0;
-        fpsMonitor.current.lastTime = now;
-
-        // Update metrics with current FPS
-        setMetrics((prev) => ({
-          ...prev,
-          fps: fpsMonitor.current.fps,
-          // Adjust device tier based on FPS
-          deviceTier:
-            fpsMonitor.current.fps < 30
-              ? "low"
-              : fpsMonitor.current.fps < 50
-                ? "medium"
-                : prev.deviceTier,
-        }));
-      } else {
-        fpsMonitor.current.sampleCount++;
-      }
-
-      // Continue measuring
-      requestAnimationFrame(measureFPS);
-    };
-
-    requestAnimationFrame(measureFPS);
-  }, []);
-
-  /**
-   * Stop monitoring FPS
-   */
-  const stopFPSMonitoring = useCallback(() => {
-    fpsMonitor.current.measuring = false;
-  }, []);
+  }, [prefersReducedMotion]);
 
   // Additional helper properties
   const isLowPerformance = metrics.deviceTier === "low" || metrics.fps < 30;

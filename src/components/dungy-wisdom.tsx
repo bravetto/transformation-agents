@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import { useState } from "react";
 import { BookOpen, Heart, ArrowRight } from "lucide-react";

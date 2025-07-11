@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -451,4 +450,7 @@ function YouthMentorship() {
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(YouthMentorship, "lightworker");
+export default withDivineErrorBoundary(YouthMentorship, {
+  componentName: "YouthMentorship",
+  role: "lightworker",
+});

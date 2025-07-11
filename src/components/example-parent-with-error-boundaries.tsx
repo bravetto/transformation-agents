@@ -1,54 +1,54 @@
 "use client";
 
-import { ErrorBoundary } from './error-boundary';
-import ErrorBoundaryWrapper from './error-boundary-wrapper';
-import { withErrorBoundary } from './with-error-boundary';
-import Section from './section';
-import { Card } from './ui/card';
-import { Heading, Text } from './ui/typography';
-import { Button } from './ui/button';
+import { ErrorBoundary } from "@/components/error-boundary";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
-// Example component that throws an error
-const BrokenComponent = () => {
-  throw new Error('This component intentionally throws an error');
-};
+// Example component that might throw an error
+function ErrorProneComponent() {
+  const shouldThrow = Math.random() > 0.5;
 
-export default function ExampleParentWithErrorBoundaries() {
+  if (shouldThrow) {
+    throw new Error("Random error for demonstration");
+  }
+
+  return <div>Component rendered successfully!</div>;
+}
+
+// Example 1: Direct usage of ErrorBoundary
+export function DirectUsageExample() {
   return (
-    <Section padding="large" className="bg-comfort-cream">
-      <Heading size="h1">Error Boundary Examples</Heading>
-      
-      <div className="grid gap-8 mt-8">
-        {/* Example 1: Direct ErrorBoundary usage */}
-        <Card className="p-6">
-          <Heading size="h2" className="mb-4">Direct Usage</Heading>
-          <ErrorBoundary fallback={<div className="text-red-500">Something went wrong!</div>}>
-            <BrokenComponent />
-          </ErrorBoundary>
-        </Card>
-
-        {/* Example 2: Using ErrorBoundaryWrapper */}
-        <Card className="p-6">
-          <Heading size="h2" className="mb-4">With Wrapper</Heading>
-          <ErrorBoundaryWrapper
-            fallback={<div className="text-red-500 p-4 border border-red-300 rounded">Error caught by wrapper!</div>}
-          >
-            <BrokenComponent />
-          </ErrorBoundaryWrapper>
-        </Card>
-
-        {/* Example 3: Using HOC pattern */}
-        <Card className="p-6">
-          <Heading size="h2" className="mb-4">HOC Pattern</Heading>
-          <EnhancedBrokenComponent />
-        </Card>
-      </div>
-    </Section>
+    <ErrorBoundary
+      componentName="ErrorProneComponent"
+      fallback={<div>Something went wrong in ErrorProneComponent</div>}
+    >
+      <ErrorProneComponent />
+    </ErrorBoundary>
   );
 }
 
-// Example of using the HOC pattern
-const EnhancedBrokenComponent = withErrorBoundary(BrokenComponent, {
-  componentName: 'BrokenComponent',
-  fallback: <div className="text-red-500 font-bold">Error handled by HOC!</div>
-}); 
+// Example 2: Using the HOC pattern
+const SafeComponent = withDivineErrorBoundary(ErrorProneComponent, {
+  componentName: "ErrorProneComponent",
+  role: "lightworker",
+});
+
+export function HOCExample() {
+  return <SafeComponent />;
+}
+
+// Example 3: Nested error boundaries
+export function NestedExample() {
+  return (
+    <ErrorBoundary componentName="OuterComponent">
+      <div>
+        <h2>Outer Component</h2>
+        <ErrorBoundary componentName="InnerComponent">
+          <div>
+            <h3>Inner Component</h3>
+            <ErrorProneComponent />
+          </div>
+        </ErrorBoundary>
+      </div>
+    </ErrorBoundary>
+  );
+}

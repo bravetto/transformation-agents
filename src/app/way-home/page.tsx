@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function WayHomePage() {
   return (
-    <DivineErrorBoundary role="guardian">
+    <DivineErrorBoundary componentName="PagePage" role="guardian">
       <main className="relative">
         {/* First the divine revelation */}
         <section className="relative">

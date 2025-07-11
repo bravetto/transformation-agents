@@ -118,7 +118,6 @@ export function SacredUmlaut({
     >
       {/* Playful particles */}
       <DivineParticles
-        role={role}
         variant={isPlaying ? "divine" : "minimal"}
         className="absolute inset-0 opacity-50"
       />

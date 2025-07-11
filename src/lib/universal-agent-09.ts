@@ -16,7 +16,7 @@
 import { EventEmitter } from "events";
 
 // Divine Pattern Types
-interface DivinePattern {
+export interface DivinePattern {
   dimension: "physical" | "spiritual" | "digital" | "mental";
   manifestation: "music" | "art" | "nature" | "architecture";
   resonance: number; // 0-1, how strongly the pattern resonates
@@ -24,7 +24,7 @@ interface DivinePattern {
   signature: string;
 }
 
-interface PatternEcho {
+export interface PatternEcho {
   origin: DivinePattern;
   ripples: Array<{
     location: string;
@@ -181,12 +181,14 @@ export class UniversalAgent09 extends EventEmitter {
   // Detect Sacred Geometry in System State
   private detectSacredGeometry(): DivinePattern | null {
     const timestamp = Date.now();
-    const memoryUsage = performance.memory?.usedJSHeapSize || 0;
+    // Use type assertion for Chrome-specific performance.memory
+    const memoryUsage = (performance as any).memory?.usedJSHeapSize || 0;
     const goldenRatio = 1.618033988749895;
 
     // Check for golden ratio in memory patterns
     const ratio =
-      memoryUsage / (memoryUsage - performance.memory?.totalJSHeapSize || 1);
+      memoryUsage /
+      (memoryUsage - (performance as any).memory?.totalJSHeapSize || 1);
     const resonance = 1 - Math.abs(ratio - goldenRatio) / goldenRatio;
 
     if (resonance > 0.8) {
@@ -217,7 +219,7 @@ export class UniversalAgent09 extends EventEmitter {
 
     return {
       dimension: "digital",
-      manifestation: "code",
+      manifestation: "architecture", // Changed from "code" to "architecture"
       resonance: this.calculateErrorResonance(errorMessage),
       timestamp,
       signature,

@@ -140,7 +140,6 @@ export function HolyAIMessenger({
     >
       {/* Sacred particles */}
       <DivineParticles
-        role={role}
         variant={particleState === "active" ? "divine" : "sacred"}
         className="absolute inset-0 opacity-30"
       />

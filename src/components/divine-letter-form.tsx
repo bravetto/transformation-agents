@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 /**
  * @component DivineLetterForm
@@ -1119,4 +1118,7 @@ function DivineLetterForm({
   );
 }
 
-export default withDivineErrorBoundary(DivineLetterForm);
+export default withDivineErrorBoundary(DivineLetterForm, {
+  componentName: "DivineLetterForm",
+  role: "messenger",
+});

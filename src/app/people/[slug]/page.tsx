@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getPersonBySlug, getAllPeople } from "@/data/people";
 import type { PersonData } from "@/types/person";
-import { ErrorBoundary } from "@/components/error-boundary";
+import { DivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import Link from "next/link";
 
 // Import enhanced components for rendering different section types
 import EnhancedPersonHero from "@/components/people/enhanced-person-hero";
@@ -216,10 +217,17 @@ export default async function PersonPage({ params }: PersonPageParams) {
   );
 
   return (
-    <ErrorBoundary
+    <DivineErrorBoundary
+      componentName="PersonPage"
+      role="guardian"
       fallback={
         <div className="p-8 text-center">
           Sorry, something went wrong loading this person's profile.
+          <div className="mt-4">
+            <Link href="/people" className="text-blue-500 hover:underline">
+              Return to People Directory
+            </Link>
+          </div>
         </div>
       }
     >
@@ -244,22 +252,24 @@ export default async function PersonPage({ params }: PersonPageParams) {
                 key={`section-${section.type}-${section.id || Math.random().toString(36).substring(7)}`}
                 className="section-spacing"
               >
-                <ErrorBoundary
+                <DivineErrorBoundary
+                  componentName="PersonSection"
+                  role="messenger"
                   fallback={
                     <div className="container-wide p-6 bg-gray-100 rounded-lg">
                       <h3 className="text-lg font-semibold">
-                        Error loading {section.type} section
+                        Unable to load section
                       </h3>
-                      <p>This content could not be displayed.</p>
+                      <p>This section encountered an error while loading.</p>
                     </div>
                   }
                 >
                   {renderSection(section, person)}
-                </ErrorBoundary>
+                </DivineErrorBoundary>
               </section>
             ))}
         </Suspense>
       </main>
-    </ErrorBoundary>
+    </DivineErrorBoundary>
   );
 }

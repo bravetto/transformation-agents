@@ -86,7 +86,6 @@ export function WayHome({ role = "default", className }: WayHomeProps) {
     >
       {/* Sacred particles */}
       <DivineParticles
-        role={role}
         variant="divine"
         className="absolute inset-0 opacity-30"
       />

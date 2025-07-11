@@ -19,9 +19,11 @@ import {
   Activity,
   RefreshCw,
 } from "lucide-react";
-import { withDivineErrorBoundary } from "./ui/divine-error-boundary";
-import { type DivineRole } from "@/lib/design-system";
-import { DivineParticles } from "./divine-particles";
+import {
+  withDivineErrorBoundary,
+  DivineRole,
+} from "./ui/divine-error-boundary";
+import DivineParticles from "./divine-particles";
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
 
@@ -102,7 +104,11 @@ const MetricCard = React.memo(function MetricCard({
     >
       {/* Background particles */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <DivineParticles role={metric.role} variant="divine" />
+        <DivineParticles
+          variant="minimal"
+          intensity="low"
+          interactive={false}
+        />
       </div>
 
       {/* Content container */}
@@ -202,79 +208,125 @@ MetricCard.displayName = "MetricCard";
 const generateMockData = (): MetricCard[] => {
   return [
     {
-      id: "tony-reach",
-      title: "Tony's Reach",
-      value: 950000,
-      suffix: "followers",
-      icon: Users,
-      gradient: "from-amber-500 to-orange-600",
-      description: "NFL legend Tony Dungy's active followers",
+      id: "letters",
+      title: "Letters Submitted",
+      value: 427,
+      icon: Mail,
+      gradient: "from-blue-500 to-indigo-600",
+      description: "Character reference letters submitted to Judge Ferrero",
       trend: {
-        value: 15.2,
+        value: 12.8,
         direction: "up",
-        timeframe: "since announcement",
+        timeframe: "since last week",
       },
+      goal: 500,
       role: "messenger",
     },
     {
-      id: "bravetto-investment",
-      title: "Bravëtto Investment",
-      value: 2500000,
-      suffix: "$",
-      icon: BarChart2,
+      id: "volunteers",
+      title: "Volunteers Registered",
+      value: 189,
+      icon: Users,
       gradient: "from-emerald-500 to-teal-600",
-      description: "Personal commitment from Michael Mataluni",
+      description: "Active volunteers supporting The Bridge Project",
       trend: {
-        value: 100,
+        value: 8.3,
         direction: "up",
-        timeframe: "committed",
+        timeframe: "since last month",
+      },
+      goal: 250,
+      role: "witness",
+    },
+    {
+      id: "views",
+      title: "Page Views",
+      value: 24691,
+      icon: Eye,
+      gradient: "from-violet-500 to-purple-600",
+      description: "Total visitors to JAHmere's story",
+      trend: {
+        value: 35.2,
+        direction: "up",
+        timeframe: "since campaign launch",
       },
       role: "guardian",
     },
     {
-      id: "greatness-assessments",
-      title: "Greatness Zone Matches",
-      value: 127,
-      icon: Star,
-      gradient: "from-blue-500 to-indigo-600",
-      description: "Youth matched to their ideal roles",
+      id: "reach",
+      title: "Geographic Reach",
+      value: 42,
+      suffix: "states",
+      icon: Globe,
+      gradient: "from-amber-500 to-orange-600",
+      description: "US states with registered supporters",
       trend: {
-        value: 23.5,
+        value: 3,
         direction: "up",
-        timeframe: "this week",
+        timeframe: "in the last 30 days",
       },
-      goal: 500,
+      goal: 50,
       role: "lightworker",
     },
     {
-      id: "churches-united",
-      title: "Churches United",
-      value: 312,
-      icon: Heart,
-      gradient: "from-violet-500 to-purple-600",
-      description: "Congregations actively praying and supporting",
+      id: "shares",
+      title: "Social Shares",
+      value: 3872,
+      icon: Share2,
+      gradient: "from-pink-500 to-rose-600",
+      description: "Shares across social media platforms",
       trend: {
-        value: 45.8,
+        value: 18.7,
         direction: "up",
-        timeframe: "since launch",
+        timeframe: "since last week",
       },
-      goal: 1000,
+      role: "messenger",
+    },
+    {
+      id: "time",
+      title: "Avg. Reading Time",
+      value: 5.3,
+      suffix: "min",
+      icon: Clock,
+      gradient: "from-cyan-500 to-blue-600",
+      description: "Average time spent reading JAHmere's story",
+      trend: {
+        value: 0.8,
+        direction: "up",
+        timeframe: "since last month",
+      },
       role: "witness",
     },
     {
-      id: "letters-submitted",
-      title: "Letters to Judge",
-      value: 51247,
-      icon: Mail,
-      gradient: "from-pink-500 to-rose-600",
-      description: "Support letters submitted and counting",
+      id: "score",
+      title: "Letter Quality Score",
+      value: 87.2,
+      suffix: "%",
+      icon: Star,
+      gradient: "from-amber-500 to-yellow-600",
+      description: "Average impact score of submitted letters",
       trend: {
-        value: 312.7,
+        value: 2.4,
         direction: "up",
-        timeframe: "last 24 hours",
+        timeframe: "since guided form launch",
       },
-      goal: 100000,
-      role: "messenger",
+      goal: 95,
+      role: "lightworker",
+    },
+    {
+      id: "engagement",
+      title: "Story Engagement",
+      value: 68.9,
+      suffix: "%",
+      icon: Heart,
+      gradient: "from-red-500 to-rose-600",
+      description: "Percentage of visitors who engage with content",
+      trend: {
+        value: 5.2,
+        direction: "up",
+        timeframe: "in the last 14 days",
+      },
+      goal: 75,
+      role: "guardian",
     },
   ];
 };
@@ -432,17 +484,21 @@ function DivineImpactDashboard({
     <div className={cn("relative", className)}>
       {/* Background particles */}
       <div className="absolute inset-0 -z-10">
-        <DivineParticles role={defaultRole} variant="divine" />
+        <DivineParticles
+          variant="minimal"
+          intensity="low"
+          interactive={false}
+        />
       </div>
 
       {/* Dashboard header */}
       <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center">
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-orange-600">
-            DIVINE ALLIANCE IMPACT CENTER
+          <h2 className="text-2xl md:text-3xl font-bold">
+            The Bridge Project Impact
           </h2>
           <p className="text-gray-600 dark:text-gray-400">
-            Real-time metrics showing our movement's unstoppable momentum
+            Real-time metrics showing our growing community influence
           </p>
         </div>
 

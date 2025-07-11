@@ -186,7 +186,6 @@ export function SacredExperience({
       {/* Divine Background Effects */}
       <div className="fixed inset-0 pointer-events-none">
         <DivineParticles
-          role={role}
           variant="divine"
           className="h-full w-full opacity-30"
         />

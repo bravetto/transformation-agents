@@ -14,7 +14,7 @@ import {
   Heart,
   FileCheck,
 } from "lucide-react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import Section from "@/components/section";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -378,7 +378,7 @@ const CommunityReleasePlan = () => {
   );
 };
 
-export default withErrorBoundary(CommunityReleasePlan, {
+export default withDivineErrorBoundary(CommunityReleasePlan, {
   componentName: "CommunityReleasePlan",
   fallback: (
     <div className="text-center p-8">

@@ -55,7 +55,6 @@ export default function ConsciousnessPage() {
       {/* Living Background */}
       <div className="fixed inset-0 z-0">
         <DivineParticles
-          role="lightworker"
           variant="unified"
           intensity="medium"
           className="opacity-40"

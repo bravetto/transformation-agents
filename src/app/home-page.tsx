@@ -41,16 +41,10 @@ const Hero = dynamic(() => import("@/components/hero"), {
 });
 
 // Dynamic imports with lazy loading for below-the-fold content
-const DivineParticles = dynamic(
-  () =>
-    import("@/components/divine-particles").then((mod) => ({
-      default: mod.DivineParticles,
-    })),
-  {
-    ssr: false,
-    loading: () => <div className="min-h-20"></div>, // Minimal height to prevent layout shift
-  },
-);
+const DivineParticles = dynamic(() => import("@/components/divine-particles"), {
+  ssr: false,
+  loading: () => <div className="min-h-20"></div>, // Minimal height to prevent layout shift
+});
 
 const DungyWisdom = dynamic(() => import("@/components/dungy-wisdom"), {
   ssr: false,

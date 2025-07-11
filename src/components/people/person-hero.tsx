@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/ui";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { getPersonImageData } from "@/data/person-images";
 
 export interface PersonHeroProps {
@@ -110,7 +110,7 @@ function PersonHero({
   );
 }
 
-export default withErrorBoundary(PersonHero, {
+export default withDivineErrorBoundary(PersonHero, {
   componentName: "PersonHero",
-  id: "person-hero",
+  role: "guardian",
 });

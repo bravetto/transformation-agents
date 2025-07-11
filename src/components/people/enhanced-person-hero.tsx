@@ -1,11 +1,10 @@
 "use client";
-"use client";
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { cn } from "@/lib/utils";
 import { getPersonImageData } from "@/data/person-images";
 
@@ -245,7 +244,7 @@ function EnhancedPersonHero({
   );
 }
 
-export default withErrorBoundary(EnhancedPersonHero, {
+export default withDivineErrorBoundary(EnhancedPersonHero, {
   componentName: "EnhancedPersonHero",
-  id: "enhanced-person-hero",
+  role: "guardian",
 });

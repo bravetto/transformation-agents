@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { ErrorBoundary } from '@/components/error-boundary';
-import { reportError } from '@/lib/analytics';
+import React from "react";
+import { DivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { reportError } from "@/lib/analytics";
 
 interface ErrorBoundaryWrapperProps {
   children: React.ReactNode;
@@ -17,26 +17,41 @@ interface ErrorBoundaryWrapperProps {
 export default function ErrorBoundaryWrapper({
   children,
   fallback,
-  id = 'unknown'
+  id = "unknown",
 }: ErrorBoundaryWrapperProps) {
-  const handleError = (error: Error, errorInfo: React.ErrorInfo) => {
-    // Log error to console
-    console.error('Error caught by ErrorBoundary:', error, errorInfo);
-    
-    // Report to analytics
-    reportError(error, {
-      componentStack: errorInfo.componentStack,
-      boundaryId: id,
-      location: typeof window !== 'undefined' ? window.location.href : null,
-    });
-  };
-  
+  const handleError = React.useCallback(
+    (error: Error, errorInfo: React.ErrorInfo) => {
+      // Log error to console
+      console.error("Error caught by ErrorBoundary:", error, errorInfo);
+
+      // Report to analytics
+      reportError(error, {
+        componentStack: errorInfo.componentStack,
+        boundaryId: id,
+        location: typeof window !== "undefined" ? window.location.href : null,
+      });
+    },
+    [id],
+  );
+
+  // Set up error handler for the component
+  React.useEffect(() => {
+    // Set up global error handler
+    const errorHandler = (event: ErrorEvent) => {
+      handleError(event.error, { componentStack: "" });
+    };
+
+    window.addEventListener("error", errorHandler);
+    return () => window.removeEventListener("error", errorHandler);
+  }, [handleError]);
+
   return (
-    <ErrorBoundary
-      onError={handleError}
+    <DivineErrorBoundary
+      componentName={`ErrorBoundary-${id}`}
+      role="guardian"
       fallback={fallback}
     >
       {children}
-    </ErrorBoundary>
+    </DivineErrorBoundary>
   );
-} 
+}

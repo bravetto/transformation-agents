@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { useState } from "react";
 
 function TestAnimationsPage() {
@@ -130,7 +130,7 @@ function TestAnimationsPage() {
   );
 }
 
-export default withErrorBoundary(TestAnimationsPage, {
+export default withDivineErrorBoundary(TestAnimationsPage, {
   componentName: "TestAnimationsPage",
   fallback: (
     <div className="min-h-screen p-8 bg-gray-900 text-white">

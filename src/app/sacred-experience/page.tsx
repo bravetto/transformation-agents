@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function SacredExperiencePage() {
   return (
-    <DivineErrorBoundary role="guardian">
+    <DivineErrorBoundary componentName="PagePage" role="guardian">
       <SacredExperience />
     </DivineErrorBoundary>
   );

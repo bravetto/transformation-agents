@@ -1,35 +1,36 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/lib/utils';
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
 const inputVariants = cva(
   [
-    'flex w-full rounded-md border border-shadow/30 bg-white/5 px-3 py-2 text-sm',
-    'ring-offset-midnight placeholder:text-white/30',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2',
-    'disabled:cursor-not-allowed disabled:opacity-50',
-    'transition-colors duration-200'
-  ].join(' '),
+    "flex w-full rounded-md border border-shadow/30 bg-white/5 px-3 py-2 text-sm",
+    "ring-offset-midnight placeholder:text-white/30",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
+    "disabled:cursor-not-allowed disabled:opacity-50",
+    "transition-colors duration-200",
+  ].join(" "),
   {
     variants: {
       variant: {
-        default: 'text-white',
-        accent: 'border-gold/50 text-gold focus-visible:ring-gold',
-        error: 'border-error text-error placeholder:text-error/50 focus-visible:ring-error',
+        default: "text-white",
+        accent: "border-gold/50 text-gold focus-visible:ring-gold",
+        error:
+          "border-error text-error placeholder:text-error/50 focus-visible:ring-error",
       },
       inputSize: {
-        default: 'h-10',
-        sm: 'h-9 px-2 py-1 text-xs',
-        lg: 'h-11 px-4 py-3 text-base',
+        default: "h-10",
+        sm: "h-9 px-2 py-1 text-xs",
+        lg: "h-11 px-4 py-3 text-base",
       },
     },
     defaultVariants: {
-      variant: 'default',
-      inputSize: 'default',
+      variant: "default",
+      inputSize: "default",
     },
-  }
+  },
 );
 
 export interface InputProps
@@ -52,8 +53,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           type={type}
           className={cn(
             inputVariants({ variant, inputSize, className }),
-            icon && 'pl-10',
-            suffix && 'pr-10'
+            icon && "pl-10",
+            suffix && "pr-10",
           )}
           ref={ref}
           {...props}
@@ -65,8 +66,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
       </div>
     );
-  }
+  },
 );
-Input.displayName = 'Input';
+Input.displayName = "Input";
 
-export { Input, inputVariants }; 
+export { Input, inputVariants };

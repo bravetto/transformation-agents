@@ -4,11 +4,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
-import { DivineParticles } from "@/components/divine-particles";
+import DivineParticles from "@/components/divine-particles";
 import { type DivineRole } from "@/lib/design-system";
 
 // Updated variants to match the DivineParticles component
-type ParticleVariant = "divine" | "sacred" | "unified";
+type ParticleVariant = "sacred" | "flame" | "starfield" | "minimal" | "rain";
 type ParticleIntensity = "high" | "medium" | "low" | "auto";
 
 export default function ParticlesTestPage() {
@@ -29,7 +29,13 @@ export default function ParticlesTestPage() {
     "default",
   ];
 
-  const variants: ParticleVariant[] = ["divine", "sacred", "unified"];
+  const variants: ParticleVariant[] = [
+    "sacred",
+    "flame",
+    "starfield",
+    "minimal",
+    "rain",
+  ];
 
   const intensities: ParticleIntensity[] = ["high", "medium", "low", "auto"];
 
@@ -109,7 +115,11 @@ export default function ParticlesTestPage() {
         {/* Particle Display */}
         <Card className="relative overflow-hidden h-[50vh] w-full">
           <div className="absolute inset-0">
-            <DivineParticles role={selectedRole} variant={selectedVariant} />
+            <DivineParticles
+              variant={selectedVariant}
+              intensity={selectedIntensity}
+              interactive={isInteractive}
+            />
           </div>
           <div className="absolute bottom-4 right-4 bg-white/80 dark:bg-gray-900/80 p-2 rounded-lg text-xs font-mono">
             role: {selectedRole}, variant: {selectedVariant}, intensity:{" "}
@@ -152,8 +162,8 @@ export default function ParticlesTestPage() {
             {`<DivineParticles
   role="lightworker"  // Divine role for color theme
   variant="sacred"    // Animation style
-// Performance setting
-// Enable hover/click effects
+  intensity="medium"  // Performance setting
+  interactive={true}  // Enable hover/click effects
 />`}
           </pre>
         </div>

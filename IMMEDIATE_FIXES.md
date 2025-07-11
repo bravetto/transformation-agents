@@ -1,299 +1,376 @@
-# 🚨 IMMEDIATE FIXES - The Bridge Project
+# IMMEDIATE FIXES
 
-This document outlines critical fixes that should be addressed immediately to ensure the codebase is stable and production-ready.
+This document outlines the exact code changes needed to fix the critical TypeScript errors preventing the build from passing.
 
-## 1. Fix TypeScript Errors in Tests
+## 1. Error Boundary Implementation Fix
 
-**Issue**: The test file `src/components/ui/__tests__/button.test.tsx` has 16 TypeScript errors related to missing Jest matchers.
+The main issue is that the `withDivineErrorBoundary` function requires a `role` parameter, but many components are calling it without this parameter.
 
-**Fix**:
-
-```typescript
-// src/setupTests.ts - Ensure this file is properly set up
-import '@testing-library/jest-dom';
-import { expect } from 'vitest';
-import * as matchers from '@testing-library/jest-dom/matchers';
-
-expect.extend(matchers);
-```
-
-Also ensure that `jest.config.js` properly imports the setup file:
-
-```javascript
-// jest.config.js
-module.exports = {
-  testEnvironment: 'jest-environment-jsdom',
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
-  // ... other config
-};
-```
-
-## 2. Add Null Checks to Components
-
-### SynchronicityMap Component
-
-**Issue**: The component doesn't properly check for null/undefined values before accessing array elements.
-
-**Fix**:
+### Fix for divine-error-boundary.tsx
 
 ```typescript
-// src/components/people/synchronicity-map.tsx
-function SynchronicityMap({ title, description, timeline = [], formula }: SynchronicityMapProps) {
-  return (
-    <div className="py-16">
-      <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">{title}</h2>
-      <p className="text-lg text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-        {description}
-      </p>
-      
-      <div className="relative max-w-4xl mx-auto">
-        {/* Vertical line - Only show if timeline exists and has items */}
-        {timeline && timeline.length > 0 && (
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-primary/20 via-primary to-primary/20" />
-        )}
-        
-        {/* Timeline events */}
-        <div className="space-y-12">
-          {/* Improved null check and empty state handling */}
-          {timeline && timeline.length > 0 ? timeline.map((item, index) => (
-            <motion.div
-              key={item.year || index}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`flex ${index % 2 === 0 ? 'justify-start' : 'justify-end'} relative`}
-            >
-              <div className={`w-5/12 ${index % 2 === 0 ? 'text-right pr-8' : 'text-left pl-8'}`}>
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-                  <h3 className="text-2xl font-bold text-primary mb-2">{item.year}</h3>
-                  <p className="text-gray-600 dark:text-gray-400">{item.event}</p>
-                </div>
-              </div>
-              
-              {/* Center dot */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full" />
-            </motion.div>
-          )) : (
-            <div className="text-center text-muted-foreground">No timeline data available</div>
-          )}
-        </div>
-        
-        {/* Formula - Only render if formula exists */}
-        {formula && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-16 text-center"
-          >
-            <div className="bg-primary/10 dark:bg-primary/20 p-8 rounded-lg inline-block">
-              <p className="text-xl font-bold text-primary">{formula}</p>
-            </div>
-          </motion.div>
-        )}
-      </div>
-    </div>
-  );
-}
-```
+// src/components/ui/divine-error-boundary.tsx
+// Make role parameter optional with default value
 
-### AssessmentAlignment Component
-
-**Issue**: Similar null check issues.
-
-**Fix**:
-
-```typescript
-// src/components/people/assessment-alignment.tsx
-function AssessmentAlignment({ title, description, alignments = [], message }: AssessmentAlignmentProps) {
-  return (
-    <div className="py-16 bg-gradient-to-br from-primary/5 to-primary/10">
-      <div className="max-w-4xl mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">{title}</h2>
-        <p className="text-lg text-center text-muted-foreground mb-12">{description}</p>
-        
-        <div className="space-y-6">
-          {alignments && alignments.length > 0 ? alignments.map((alignment, index) => (
-            <motion.div
-              key={alignment.trait || index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg"
-            >
-              <h3 className="text-xl font-bold mb-4">{alignment.trait}</h3>
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="text-center">
-                  <p className="text-sm text-muted-foreground">Jay</p>
-                  <p className="text-2xl font-bold text-primary">{alignment.person1Score}</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-sm text-muted-foreground">JAHmere</p>
-                  <p className="text-2xl font-bold text-primary">{alignment.person2Score}</p>
-                </div>
-              </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 italic">{alignment.meaning}</p>
-            </motion.div>
-          )) : (
-            <div className="text-center text-muted-foreground">No alignment data available</div>
-          )}
-        </div>
-        
-        {/* Only render if message exists */}
-        {message && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-12 text-center"
-          >
-            <p className="text-lg font-medium text-primary">{message}</p>
-          </motion.div>
-        )}
-      </div>
-    </div>
-  );
-}
-```
-
-## 3. Fix PersonData Type Definition
-
-**Issue**: The `sections` array in the `PersonData` interface is missing the `hero` type which is used in the data files.
-
-**Fix**:
-
-```typescript
-// src/types/person.ts
-export interface PersonData {
-  id: string;
-  slug: string;
-  name: string;
-  title: string;
-  heroImage: string;
-  
-  // Primary testimony
-  testimony: {
-    quote: string;
-    context: string;
-    date: string;
-  };
-  
-  // Impact metrics
-  impact: ImpactData;
-  
-  // Sections for the person's page
-  sections: Array<{
-    id?: string;
-    type: 'hero' | 'testimony' | 'impact' | 'letter' | 'video' | 'custom';
-    content: any; // Content varies based on type
-  }>;
-  
-  // Metadata for SEO
-  metadata?: {
-    title: string;
-    description: string;
-    ogImage?: string;
-  };
-}
-```
-
-## 4. Remove console.log Statements
-
-**Issue**: There are console.log statements in production code.
-
-**Fix**:
-
-```typescript
-// src/app/contact/page.tsx
-// Replace:
-console.log('Form submitted:', formData);
-
-// With:
-// Use a proper logging solution or remove entirely for production
-```
-
-```typescript
-// src/app/letter-to-dungy/page.tsx
-// Replace:
-console.log('Letter sent to Tony Dungy');
-
-// With:
-// Use a proper logging solution or remove entirely for production
-```
-
-## 5. Update next.config.js
-
-**Issue**: The next.config.js file has TODO comments and is ignoring TypeScript and ESLint errors.
-
-**Fix**:
-
-```javascript
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  // Remove these for production after fixing errors
-  // typescript: {
-  //   ignoreBuildErrors: true,
-  // },
-  // eslint: {
-  //   ignoreDuringBuilds: true,
-  // },
-  images: {
-    domains: ['images.unsplash.com', 'thebridgeproject.org'],
-  },
-  // Production optimizations
-  swcMinify: true,
-  poweredByHeader: false,
-  compress: true,
-  generateEtags: true,
-  
-  // Security headers are in vercel.json
-};
-
-module.exports = nextConfig;
-```
-
-## 6. Add Missing Optional Chaining
-
-**Issue**: Several components access properties without checking if the parent object exists.
-
-**Fix**:
-
-```typescript
-// Throughout codebase, use optional chaining:
 // Before:
-const description = person.metadata.description;
+export function withDivineErrorBoundary<P extends object>(
+  Component: React.ComponentType<P>,
+  options: {
+    componentName: string;
+    role: DivineRole;
+    fallback?: ReactNode;
+  }
+): React.FC<P> {
+  const WithErrorBoundary: React.FC<P> = (props) => (
+    <DivineErrorBoundary {...options}>
+      <Component {...props} />
+    </DivineErrorBoundary>
+  );
 
 // After:
-const description = person?.metadata?.description;
+export function withDivineErrorBoundary<P extends object>(
+  Component: React.ComponentType<P>,
+  options: {
+    componentName: string;
+    role?: DivineRole;  // Make role optional
+    fallback?: ReactNode;
+  }
+): React.FC<P> {
+  const WithErrorBoundary: React.FC<P> = (props) => (
+    <DivineErrorBoundary 
+      componentName={options.componentName}
+      role={options.role || "default"}  // Provide default value
+      fallback={options.fallback}
+    >
+      <Component {...props} />
+    </DivineErrorBoundary>
+  );
 ```
 
-## 7. Fix Test Configuration
+### Fix for unified-error-boundary.tsx
 
-**Issue**: Jest configuration is incomplete.
+```typescript
+// src/components/ui/unified-error-boundary.tsx
+// Make role parameter optional with default value
 
-**Fix**:
+// Before:
+export function withUnifiedErrorBoundary<P extends object>(
+  Component: React.ComponentType<P>,
+  options: {
+    componentName: string;
+    role: DivineRole;
+    fallback?: ReactNode;
+  }
+): React.FC<P> {
+  const WithErrorBoundary: React.FC<P> = (props) => (
+    <UnifiedErrorBoundaryBase {...options}>
+      <Component {...props} />
+    </UnifiedErrorBoundaryBase>
+  );
 
-```javascript
-// jest.config.js
-module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'jest-environment-jsdom',
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+// After:
+export function withUnifiedErrorBoundary<P extends object>(
+  Component: React.ComponentType<P>,
+  options: {
+    componentName: string;
+    role?: DivineRole;  // Make role optional
+    fallback?: ReactNode;
+  }
+): React.FC<P> {
+  const WithErrorBoundary: React.FC<P> = (props) => (
+    <UnifiedErrorBoundaryBase 
+      componentName={options.componentName}
+      role={options.role || "default"}  // Provide default value
+      fallback={options.fallback}
+    >
+      <Component {...props} />
+    </UnifiedErrorBoundaryBase>
+  );
+```
+
+### Fix for error-boundary-migration.tsx
+
+```typescript
+// src/components/error-boundary-migration.tsx
+// Fix the DivineRole import and update the ErrorBoundaryWrapper component
+
+// Before:
+import {
+  DivineErrorBoundary,
+  withDivineErrorBoundary,
+  type DivineRole,
+} from "./ui/divine-error-boundary";
+
+// After:
+import {
+  DivineErrorBoundary,
+  withDivineErrorBoundary,
+} from "./ui/divine-error-boundary";
+import type { DivineRole } from "@/lib/design-system";
+
+// Before:
+export function withErrorBoundary<P extends object>(
+  Component: React.ComponentType<P>,
+  options: ErrorBoundaryOptions = {},
+): React.ComponentType<P> {
+  return withDivineErrorBoundary(Component, options);
+}
+
+// After:
+export function withErrorBoundary<P extends object>(
+  Component: React.ComponentType<P>,
+  options: ErrorBoundaryOptions = {},
+): React.ComponentType<P> {
+  // Convert old options format to new format
+  const newOptions = {
+    componentName: options.componentName || "UnnamedComponent",
+    role: options.role,
+    fallback: options.fallback
+  };
+  
+  return withDivineErrorBoundary(Component, newOptions);
+}
+
+// Before:
+export function ErrorBoundaryWrapper({
+  children,
+  componentName,
+  fallback,
+  id,
+  role,
+  onError,
+}: React.PropsWithChildren<DivineErrorBoundaryOptions>) {
+  return (
+    <DivineErrorBoundary
+      componentName={componentName}
+      fallback={fallback}
+      id={id}
+      role={role}
+      onError={onError}
+    >
+      {children}
+    </DivineErrorBoundary>
+  );
+}
+
+// After:
+export function ErrorBoundaryWrapper({
+  children,
+  componentName,
+  fallback,
+  id,
+  role,
+  onError,
+}: React.PropsWithChildren<ErrorBoundaryOptions>) {
+  return (
+    <DivineErrorBoundary
+      componentName={componentName || "UnnamedComponent"}
+      fallback={fallback}
+      role={role || "default"}
+    >
+      {children}
+    </DivineErrorBoundary>
+  );
+}
+```
+
+## 2. Fix DivineParticles Component
+
+The `DivineParticles` component has several issues with variant types and is missing the required error boundary options.
+
+```typescript
+// src/components/divine-particles.tsx
+
+// Before:
+interface DivineParticlesProps {
+  variant?: 'light' | 'dark' | 'sacred';
+  density?: 'low' | 'medium' | 'high';
+  interactive?: boolean;
+}
+
+// After:
+interface DivineParticlesProps {
+  variant?: 'light' | 'dark' | 'sacred' | 'divine' | 'minimal' | 'flame' | 'starfield' | 'rain';
+  density?: 'low' | 'medium' | 'high';
+  interactive?: boolean;
+  intensity?: 'low' | 'medium' | 'high';
+  className?: string;
+}
+
+// Add missing color variants
+const colors = useMemo(() => ({
+  light: {
+    background: '#FFFBF5',
+    particles: ['#4C1D95', '#6D28D9', '#7C3AED']
   },
-  transform: {
-    '^.+\\.(ts|tsx)$': ['ts-jest', {
-      tsconfig: 'tsconfig.json',
-    }],
+  dark: {
+    background: '#1F2937',
+    particles: ['#9333EA', '#A855F7', '#C084FC']
   },
-  collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/**/*.stories.{ts,tsx}',
-    '!src/types/**/*',
-  ],
-};
-``` 
+  sacred: {
+    background: '#FAF5FF',
+    particles: ['#6D28D9', '#7C3AED', '#8B5CF6']
+  },
+  divine: {
+    background: '#FAF5FF',
+    particles: ['#FFD700', '#FFA500', '#FF8C00']
+  },
+  minimal: {
+    background: '#FFFFFF',
+    particles: ['#E2E8F0', '#CBD5E1', '#94A3B8']
+  },
+  flame: {
+    background: '#FEF2F2',
+    particles: ['#DC2626', '#EF4444', '#F87171']
+  },
+  starfield: {
+    background: '#030712',
+    particles: ['#FFFFFF', '#E2E8F0', '#CBD5E1']
+  },
+  rain: {
+    background: '#F0F9FF',
+    particles: ['#0EA5E9', '#38BDF8', '#7DD3FC']
+  }
+}), []);
+
+// Add safe variant handling
+const safeVariant = variant in colors ? variant : 'light';
+
+// Before:
+export const DivineParticles = withDivineErrorBoundary(DivineParticlesBase);
+
+// After:
+export const DivineParticles = withDivineErrorBoundary(DivineParticlesBase, {
+  componentName: "DivineParticles",
+  role: "guardian"
+});
+```
+
+## 3. Fix Component Usage of withDivineErrorBoundary
+
+Update components that are using string literals instead of objects for the second parameter:
+
+```typescript
+// Before (examples of incorrect usage):
+export default withDivineErrorBoundary(Navigation, 'guardian');
+export default withDivineErrorBoundary(SmartCTA, "lightworker");
+export default withDivineErrorBoundary(ImpactDashboard, "messenger");
+
+// After (correct usage):
+export default withDivineErrorBoundary(Navigation, {
+  componentName: "Navigation",
+  role: "guardian"
+});
+
+export default withDivineErrorBoundary(SmartCTA, {
+  componentName: "SmartCTA",
+  role: "lightworker"
+});
+
+export default withDivineErrorBoundary(ImpactDashboard, {
+  componentName: "ImpactDashboard",
+  role: "messenger"
+});
+```
+
+## 4. Fix Components Missing Second Parameter
+
+```typescript
+// Before:
+export default withDivineErrorBoundary(DivineLetterForm);
+export default withDivineErrorBoundary(StoryAmplifier);
+
+// After:
+export default withDivineErrorBoundary(DivineLetterForm, {
+  componentName: "DivineLetterForm",
+  role: "messenger"
+});
+
+export default withDivineErrorBoundary(StoryAmplifier, {
+  componentName: "StoryAmplifier",
+  role: "messenger"
+});
+```
+
+## 5. Fix Direct Usage of DivineErrorBoundary Component
+
+```typescript
+// Before:
+<DivineErrorBoundary role="guardian">
+  <YourComponent />
+</DivineErrorBoundary>
+
+// After:
+<DivineErrorBoundary 
+  componentName="YourComponentName"
+  role="guardian"
+>
+  <YourComponent />
+</DivineErrorBoundary>
+```
+
+## 6. Create .env.example File
+
+```
+# API Keys
+CLICKUP_API_KEY=your_clickup_api_key
+CLICKUP_LIST_ID=your_clickup_list_id
+
+# Public URLs
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_ANALYTICS_ID=your_analytics_id
+
+# Authentication
+AUTH_SECRET=your_auth_secret
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_nextauth_secret
+
+# Database
+DATABASE_URL=your_database_url
+
+# External Services
+SUPABASE_URL=your_supabase_url
+SUPABASE_KEY=your_supabase_key
+
+# Feature Flags
+ENABLE_DIVINE_PARTICLES=true
+ENABLE_ADVANCED_ANALYTICS=false
+ENABLE_ERROR_MONITORING=true
+
+# Performance Settings
+OPTIMIZE_IMAGES=true
+CACHE_DURATION=3600
+```
+
+## Implementation Strategy
+
+1. First, fix the core error boundary components:
+   - src/components/ui/divine-error-boundary.tsx
+   - src/components/ui/unified-error-boundary.tsx
+   - src/components/error-boundary-migration.tsx
+
+2. Then fix the DivineParticles component:
+   - src/components/divine-particles.tsx
+
+3. Fix components that are missing the required parameters:
+   - src/components/divine-letter-form.tsx
+   - src/components/story-amplifier.tsx
+   - And others identified in the type-check output
+
+4. Fix components that are using string literals instead of objects:
+   - src/components/navigation.tsx
+   - src/components/smart-cta.tsx
+   - src/components/impact-dashboard.tsx
+   - And others identified in the type-check output
+
+5. Fix direct usage of DivineErrorBoundary component:
+   - src/app/divine-revelation/page.tsx
+   - src/app/sacred-experience/page.tsx
+   - src/app/way-home/page.tsx
+   - src/app/test-recovery/page.tsx
+   - And others identified in the type-check output
+
+6. Create the .env.example file in the root directory
+
+By implementing these fixes, we should be able to resolve the most critical TypeScript errors and get the build passing. 

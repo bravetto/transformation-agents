@@ -90,7 +90,6 @@ export function DivineRevelation({
         className="absolute inset-0"
       >
         <DivineParticles
-          role={role}
           variant="sacred"
           className="h-full w-full opacity-40"
         />

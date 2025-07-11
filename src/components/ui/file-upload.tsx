@@ -1,39 +1,46 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { UploadCloud, X, FileIcon, Image as ImageIcon, File, AlertCircle } from 'lucide-react';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/lib/utils';
-import { Button } from './button';
+import * as React from "react";
+import {
+  UploadCloud,
+  X,
+  FileIcon,
+  Image as ImageIcon,
+  File,
+  AlertCircle,
+} from "lucide-react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+import { Button } from "./button";
 
 const fileUploadVariants = cva(
   [
-    'relative flex flex-col items-center justify-center w-full rounded-md',
-    'border-2 border-dashed border-white/20',
-    'transition-colors duration-200 ease-in-out',
-    'focus-within:outline-none focus-within:ring-2 focus-within:ring-gold focus-within:ring-offset-2 focus-within:ring-offset-midnight',
-  ].join(' '),
+    "relative flex flex-col items-center justify-center w-full rounded-md",
+    "border-2 border-dashed border-white/20",
+    "transition-colors duration-200 ease-in-out",
+    "focus-within:outline-none focus-within:ring-2 focus-within:ring-gold focus-within:ring-offset-2 focus-within:ring-offset-midnight",
+  ].join(" "),
   {
     variants: {
       variant: {
-        default: 'bg-white/5 hover:bg-white/10',
-        error: 'bg-error/5 border-error/30 hover:bg-error/10',
+        default: "bg-white/5 hover:bg-white/10",
+        error: "bg-error/5 border-error/30 hover:bg-error/10",
       },
       size: {
-        default: 'p-6',
-        sm: 'p-4',
-        lg: 'p-8',
+        default: "p-6",
+        sm: "p-4",
+        lg: "p-8",
       },
     },
     defaultVariants: {
-      variant: 'default',
-      size: 'default',
+      variant: "default",
+      size: "default",
     },
-  }
+  },
 );
 
-export interface FileUploadProps 
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
+export interface FileUploadProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
     VariantProps<typeof fileUploadVariants> {
   onFilesSelected?: (files: File[]) => void;
   maxFiles?: number;
@@ -49,23 +56,26 @@ export interface FileUploadProps
 }
 
 const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
-  ({ 
-    className, 
-    variant, 
-    size, 
-    onFilesSelected,
-    maxFiles = 1,
-    maxSizeMB = 5,
-    acceptedFileTypes,
-    label = 'Drop files here or click to upload',
-    description,
-    icon,
-    error,
-    files = [],
-    onRemoveFile,
-    showPreview = true,
-    ...props 
-  }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      onFilesSelected,
+      maxFiles = 1,
+      maxSizeMB = 5,
+      acceptedFileTypes,
+      label = "Drop files here or click to upload",
+      description,
+      icon,
+      error,
+      files = [],
+      onRemoveFile,
+      showPreview = true,
+      ...props
+    },
+    ref,
+  ) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
     const [isDragging, setIsDragging] = React.useState(false);
     const [dragError, setDragError] = React.useState<string | null>(null);
@@ -76,21 +86,21 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
 
     const isFileTypeAccepted = (file: File): boolean => {
       if (!acceptedFileTypes || acceptedFileTypes.length === 0) return true;
-      
+
       // Convert MIME types to extensions for easier comparison
       const mimeToExt: Record<string, string[]> = {
-        'image/jpeg': ['.jpg', '.jpeg'],
-        'image/png': ['.png'],
-        'image/gif': ['.gif'],
-        'application/pdf': ['.pdf'],
-        'text/plain': ['.txt'],
+        "image/jpeg": [".jpg", ".jpeg"],
+        "image/png": [".png"],
+        "image/gif": [".gif"],
+        "application/pdf": [".pdf"],
+        "text/plain": [".txt"],
         // Add more as needed
       };
-      
+
       // Check if the file type matches any accepted type
-      return acceptedFileTypes.some(type => {
+      return acceptedFileTypes.some((type) => {
         // If it's a MIME type
-        if (type.includes('/')) {
+        if (type.includes("/")) {
           return file.type === type;
         }
         // If it's an extension
@@ -99,56 +109,64 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
           if (file.name.toLowerCase().endsWith(type.toLowerCase())) {
             return true;
           }
-          
+
           // Check if the file's MIME type maps to an accepted extension
           const extensions = mimeToExt[file.type];
           if (extensions) {
-            return extensions.some(ext => type.toLowerCase() === ext.toLowerCase());
+            return extensions.some(
+              (ext) => type.toLowerCase() === ext.toLowerCase(),
+            );
           }
-          
+
           return false;
         }
       });
     };
 
-    const validateFiles = (fileList: FileList | null): { valid: File[], errors: string[] } => {
+    const validateFiles = (
+      fileList: FileList | null,
+    ): { valid: File[]; errors: string[] } => {
       if (!fileList) return { valid: [], errors: [] };
-      
+
       const errors: string[] = [];
       const validFiles: File[] = [];
-      
+
       // Check max files
       if (fileList.length + files.length > maxFiles) {
-        errors.push(`Maximum ${maxFiles} file${maxFiles > 1 ? 's' : ''} allowed`);
+        errors.push(
+          `Maximum ${maxFiles} file${maxFiles > 1 ? "s" : ""} allowed`,
+        );
         return { valid: validFiles, errors };
       }
-      
+
       // Validate each file
-      Array.from(fileList).forEach(file => {
+      Array.from(fileList).forEach((file) => {
         if (isFileTooLarge(file)) {
-          errors.push(`File "${file.name}" exceeds the maximum size of ${maxSizeMB}MB`);
+          errors.push(
+            `File "${file.name}" exceeds the maximum size of ${maxSizeMB}MB`,
+          );
         } else if (!isFileTypeAccepted(file)) {
           errors.push(`File type of "${file.name}" is not accepted`);
         } else {
           validFiles.push(file);
         }
       });
-      
+
       return { valid: validFiles, errors };
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { valid, errors } = validateFiles(e.target.files);
-      
+
       if (errors.length > 0) {
         setDragError(errors[0]);
       } else if (valid.length > 0 && onFilesSelected) {
         onFilesSelected(valid);
       }
-      
+
       // Reset input value to allow selecting the same file again
       if (inputRef.current) {
-        inputRef.current.value = '';
+        inputRef.current.value = "";
       }
     };
 
@@ -167,9 +185,9 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
       e.preventDefault();
       setIsDragging(false);
       setDragError(null);
-      
+
       const { valid, errors } = validateFiles(e.dataTransfer.files);
-      
+
       if (errors.length > 0) {
         setDragError(errors[0]);
       } else if (valid.length > 0 && onFilesSelected) {
@@ -185,9 +203,9 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
 
     // Determine file icon based on mime type
     const getFileIcon = (file: File) => {
-      if (file.type.startsWith('image/')) {
+      if (file.type.startsWith("image/")) {
         return <ImageIcon className="h-5 w-5" />;
-      } else if (file.type === 'application/pdf') {
+      } else if (file.type === "application/pdf") {
         return <FileIcon className="h-5 w-5" />;
       } else {
         return <File className="h-5 w-5" />;
@@ -200,12 +218,12 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
       <div className="w-full space-y-2">
         <div
           className={cn(
-            fileUploadVariants({ 
-              variant: hasError ? 'error' : variant, 
-              size, 
-              className 
+            fileUploadVariants({
+              variant: hasError ? "error" : variant,
+              size,
+              className,
             }),
-            isDragging && 'border-gold bg-white/10'
+            isDragging && "border-gold bg-white/10",
           )}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -218,7 +236,7 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
               // Connect both refs
               if (el) {
                 (inputRef as any).current = el;
-                if (typeof ref === 'function') {
+                if (typeof ref === "function") {
                   ref(el);
                 } else if (ref) {
                   ref.current = el;
@@ -227,10 +245,10 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
             }}
             onChange={handleChange}
             multiple={maxFiles > 1}
-            accept={acceptedFileTypes?.join(',')}
+            accept={acceptedFileTypes?.join(",")}
             {...props}
           />
-          
+
           <div className="flex flex-col items-center justify-center text-center p-4 space-y-3">
             {icon || <UploadCloud className="h-10 w-10 text-white/50" />}
             <div className="space-y-1">
@@ -239,24 +257,24 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
                 <p className="text-xs text-white/60">{description}</p>
               )}
             </div>
-            <Button 
-              type="button" 
+            <Button
+              type="button"
               onClick={handleButtonClick}
               variant="outline"
               size="sm"
             >
-              Select File{maxFiles > 1 ? 's' : ''}
+              Select File{maxFiles > 1 ? "s" : ""}
             </Button>
           </div>
         </div>
-        
+
         {hasError && (
           <div className="flex items-center text-error text-sm mt-1.5">
             <AlertCircle className="h-4 w-4 mr-1.5" />
             <span>{error || dragError}</span>
           </div>
         )}
-        
+
         {showPreview && files.length > 0 && (
           <div className="mt-4 space-y-2">
             {files.map((file, index) => (
@@ -288,8 +306,8 @@ const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
         )}
       </div>
     );
-  }
+  },
 );
-FileUpload.displayName = 'FileUpload';
+FileUpload.displayName = "FileUpload";
 
-export { FileUpload }; 
+export { FileUpload };

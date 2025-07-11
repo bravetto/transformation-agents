@@ -111,7 +111,9 @@ function UniversalAgentMonitorCore({
               <span
                 className={cn(
                   "font-semibold",
-                  healthColors[systemHealth.status],
+                  healthColors[
+                    systemHealth.status as keyof typeof healthColors
+                  ],
                 )}
               >
                 {systemHealth.score.toFixed(0)}%
@@ -192,7 +194,7 @@ function UniversalAgentMonitorCore({
                   className="p-3 rounded-lg border border-destructive/50 bg-destructive/10"
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <Badge variant="destructive" className="text-xs">
+                    <Badge variant="error" className="text-xs">
                       {echo.cascade ? "Cascade Risk" : "Echo Detected"}
                     </Badge>
                     <span className="text-xs text-muted-foreground">

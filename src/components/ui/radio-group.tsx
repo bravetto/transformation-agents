@@ -1,30 +1,31 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
-import { Circle } from 'lucide-react';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/lib/utils';
+import * as React from "react";
+import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
+import { Circle } from "lucide-react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
 const radioGroupItemVariants = cva(
   [
-    'peer h-4 w-4 shrink-0 rounded-full border border-shadow/30 text-gold',
-    'ring-offset-midnight focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2',
-    'disabled:cursor-not-allowed disabled:opacity-50',
-    'transition-colors duration-200'
-  ].join(' '),
+    "peer h-4 w-4 shrink-0 rounded-full border border-shadow/30 text-gold",
+    "ring-offset-midnight focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
+    "disabled:cursor-not-allowed disabled:opacity-50",
+    "transition-colors duration-200",
+  ].join(" "),
   {
     variants: {
       variant: {
-        default: 'border-shadow/30 data-[state=checked]:border-gold',
-        accent: 'border-gold/30 data-[state=checked]:border-gold',
-        purple: 'border-purple/30 data-[state=checked]:border-purple text-purple',
+        default: "border-shadow/30 data-[state=checked]:border-gold",
+        accent: "border-gold/30 data-[state=checked]:border-gold",
+        purple:
+          "border-purple/30 data-[state=checked]:border-purple text-purple",
       },
     },
     defaultVariants: {
-      variant: 'default',
+      variant: "default",
     },
-  }
+  },
 );
 
 const RadioGroup = React.forwardRef<
@@ -33,7 +34,7 @@ const RadioGroup = React.forwardRef<
 >(({ className, ...props }, ref) => {
   return (
     <RadioGroupPrimitive.Root
-      className={cn('grid gap-2', className)}
+      className={cn("grid gap-2", className)}
       {...props}
       ref={ref}
     />
@@ -74,9 +75,7 @@ const RadioGroupItem = React.forwardRef<
             </label>
           )}
           {description && (
-            <p className="text-sm text-white/60">
-              {description}
-            </p>
+            <p className="text-sm text-white/60">{description}</p>
           )}
         </div>
       )}
@@ -85,4 +84,4 @@ const RadioGroupItem = React.forwardRef<
 });
 RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
 
-export { RadioGroup, RadioGroupItem }; 
+export { RadioGroup, RadioGroupItem };

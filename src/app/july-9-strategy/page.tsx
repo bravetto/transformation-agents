@@ -18,7 +18,7 @@ import {
   Download,
   ArrowRight,
 } from "lucide-react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import Section from "@/components/section";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -348,7 +348,7 @@ const July9Strategy = () => {
             <Link href="/letter-form-test">
               <Button
                 size="lg"
-                className="bg-hope-gold text-justice-black hover:bg-hope-gold/90"
+                className="bg-amber-600 text-white hover:bg-amber-700"
               >
                 Write Your Letter Now
               </Button>
@@ -363,7 +363,7 @@ const July9Strategy = () => {
   );
 };
 
-export default withErrorBoundary(July9Strategy, {
+export default withDivineErrorBoundary(July9Strategy, {
   componentName: "July9Strategy",
   fallback: (
     <div className="text-center p-8">Strategy page temporarily unavailable</div>

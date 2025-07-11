@@ -1,166 +1,260 @@
 "use client";
 
-import React, { useEffect } from "react";
-import type { DivineRole } from "@/lib/design-system";
-import { withUnifiedErrorBoundary } from "./ui/unified-error-boundary";
-import { useUnifiedArchitecture } from "@/lib/unified-architecture";
-import { divineLove } from "@/lib/divine-love";
-import { cn } from "@/lib/utils";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import dynamic from "next/dynamic";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import type { ISourceOptions, InteractivityDetect } from "@tsparticles/engine";
+
+// Lazy load the actual particles to prevent SSR issues
+const ParticlesEngine = dynamic(
+  () => import("@tsparticles/react").then((mod) => mod.default),
+  {
+    ssr: false,
+    loading: () => <div className="particles-loading" />,
+  },
+);
 
 interface DivineParticlesProps {
-  role?: DivineRole;
   variant?:
-    | "divine"
+    | "light"
+    | "dark"
     | "sacred"
-    | "unified"
+    | "divine"
+    | "minimal"
     | "flame"
     | "starfield"
-    | "minimal"
     | "rain"
     | "hope"
-    | "transformation";
-  intensity?: "low" | "medium" | "high";
+    | "rage"
+    | "unified";
+  density?: "low" | "medium" | "high";
+  interactive?: boolean;
+  intensity?: "low" | "medium" | "high" | "auto";
   className?: string;
 }
 
-function DivineParticlesCore({
-  role = "lightworker",
-  variant = "divine",
-  intensity = "medium",
+const DivineParticlesBase = ({
+  variant = "light",
+  density = "medium",
+  interactive = true,
+  intensity,
   className,
-}: DivineParticlesProps) {
-  // Use unified architecture
-  const { protection, handleError, log } = useUnifiedArchitecture(
-    "DivineParticles",
-    role,
+}: DivineParticlesProps) => {
+  const [isWebGLSupported, setIsWebGLSupported] = useState(true);
+  const [particleCount, setParticleCount] = useState(50);
+
+  // Get particle count based on device capabilities
+  const getParticleCount = useCallback((density: "low" | "medium" | "high") => {
+    const cores = navigator.hardwareConcurrency || 4;
+    const memory = (performance as any).memory?.jsHeapSizeLimit || 0;
+
+    const baseCounts = {
+      low: 30,
+      medium: 50,
+      high: 100,
+    };
+
+    let multiplier = 1;
+    if (cores <= 2 || memory < 1000000000) {
+      multiplier = 0.5; // Low-end devices
+    } else if (cores >= 8 && memory > 4000000000) {
+      multiplier = 2; // High-end devices
+    }
+
+    return Math.floor(baseCounts[density] * multiplier);
+  }, []);
+
+  // Detect device capabilities and set particle count
+  const detectDeviceCapabilities = useCallback(() => {
+    const count = getParticleCount(density);
+    setParticleCount(count);
+  }, [density, getParticleCount]);
+
+  // Check WebGL support and device capabilities on mount
+  useEffect(() => {
+    // Check WebGL support
+    const canvas = document.createElement("canvas");
+    const gl =
+      canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+    setIsWebGLSupported(!!gl);
+
+    // Detect device capabilities
+    detectDeviceCapabilities();
+  }, [detectDeviceCapabilities]);
+
+  // Color schemes based on variant
+  const colors = useMemo(
+    () => ({
+      light: {
+        background: "#FFFBF5",
+        particles: ["#4C1D95", "#6D28D9", "#7C3AED"],
+      },
+      dark: {
+        background: "#1F2937",
+        particles: ["#9333EA", "#A855F7", "#C084FC"],
+      },
+      sacred: {
+        background: "#FAF5FF",
+        particles: ["#6D28D9", "#7C3AED", "#8B5CF6"],
+      },
+      divine: {
+        background: "#FAF5FF",
+        particles: ["#FFD700", "#FFA500", "#FF8C00"],
+      },
+      minimal: {
+        background: "#FFFFFF",
+        particles: ["#E2E8F0", "#CBD5E1", "#94A3B8"],
+      },
+      flame: {
+        background: "#FEF2F2",
+        particles: ["#DC2626", "#EF4444", "#F87171"],
+      },
+      starfield: {
+        background: "#030712",
+        particles: ["#FFFFFF", "#E2E8F0", "#CBD5E1"],
+      },
+      rain: {
+        background: "#F0F9FF",
+        particles: ["#0EA5E9", "#38BDF8", "#7DD3FC"],
+      },
+      hope: {
+        background: "#ECFDF5",
+        particles: ["#10B981", "#34D399", "#6EE7B7"],
+      },
+      rage: {
+        background: "#FEF2F2",
+        particles: ["#B91C1C", "#EF4444", "#FCA5A5"],
+      },
+      unified: {
+        background: "#F5F3FF",
+        particles: ["#8B5CF6", "#A78BFA", "#C4B5FD"],
+      },
+    }),
+    [],
   );
 
-  useEffect(() => {
-    // Apply divine love
-    divineLove.applyDivineLove("DivineParticles", role);
-    log("info", "Divine particles initialized", { variant, intensity });
-  }, [role, variant, intensity, log]);
+  // Use the variant or fallback to light if not found
+  const safeVariant = variant in colors ? variant : "light";
 
-  // Generate particles based on variant and intensity
-  const getParticleConfig = () => {
-    const baseConfig = {
-      low: {
-        count: 10,
-        size: { min: 1, max: 3 },
-        duration: { min: 20, max: 30 },
+  // Particle configuration
+  const options = useMemo<ISourceOptions>(
+    () => ({
+      background: {
+        color: colors[safeVariant].background,
       },
-      medium: {
-        count: 20,
-        size: { min: 2, max: 4 },
-        duration: { min: 15, max: 25 },
+      particles: {
+        number: {
+          value: particleCount,
+          density: {
+            enable: true,
+            area: 800,
+          },
+        },
+        color: {
+          value: colors[safeVariant].particles,
+        },
+        shape: {
+          type: "circle",
+        },
+        opacity: {
+          value: 0.6,
+          random: true,
+          animation: {
+            enable: true,
+            speed: 0.5,
+            minimumValue: 0.3,
+            sync: false,
+          },
+        },
+        size: {
+          value: 3,
+          random: true,
+          animation: {
+            enable: true,
+            speed: 2,
+            minimumValue: 1,
+            sync: false,
+          },
+        },
+        links: {
+          enable: interactive,
+          distance: 150,
+          color: colors[safeVariant].particles[0],
+          opacity: 0.4,
+          width: 1,
+        },
+        move: {
+          enable: true,
+          speed: 2,
+          direction: "none",
+          random: false,
+          straight: false,
+          outModes: {
+            default: "out",
+          },
+          attract: {
+            enable: interactive,
+            rotateX: 600,
+            rotateY: 1200,
+          },
+        },
       },
-      high: {
-        count: 30,
-        size: { min: 2, max: 6 },
-        duration: { min: 10, max: 20 },
-      },
-    }[intensity];
+      interactivity: interactive
+        ? {
+            detectsOn: "window" as InteractivityDetect,
+            events: {
+              onHover: {
+                enable: true,
+                mode: "grab",
+              },
+              onClick: {
+                enable: true,
+                mode: "push",
+              },
+              resize: {
+                enable: true,
+                delay: 0.5,
+              },
+            },
+            modes: {
+              grab: {
+                distance: 140,
+                links: {
+                  opacity: 0.8,
+                },
+              },
+              push: {
+                quantity: 4,
+              },
+            },
+          }
+        : undefined,
+    }),
+    [safeVariant, particleCount, interactive, colors],
+  );
 
-    switch (variant) {
-      case "unified":
-        return {
-          ...baseConfig,
-          colors: ["#FFD700", "#FFC0CB", "#9370DB", "#87CEEB"],
-        };
-      case "sacred":
-        return {
-          ...baseConfig,
-          colors: ["#FFA07A", "#DDA0DD", "#98FB98", "#87CEEB"],
-        };
-      case "flame":
-        return {
-          ...baseConfig,
-          colors: ["#FF4500", "#FF8C00", "#FFD700"],
-        };
-      case "starfield":
-        return {
-          ...baseConfig,
-          count: baseConfig.count * 1.5,
-          colors: ["#FFFFFF", "#FFFAFA", "#F0F8FF"],
-        };
-      case "minimal":
-        return {
-          ...baseConfig,
-          count: Math.floor(baseConfig.count * 0.7),
-          colors: ["#808080", "#A9A9A9", "#D3D3D3"],
-        };
-      case "rain":
-        return {
-          ...baseConfig,
-          count: baseConfig.count * 1.2,
-          colors: ["#87CEEB", "#B0E0E6", "#ADD8E6"],
-        };
-      case "hope":
-        return {
-          ...baseConfig,
-          colors: ["#FFD700", "#FFA500", "#FF8C00"],
-        };
-      case "transformation":
-        return {
-          ...baseConfig,
-          colors: ["#9370DB", "#8A2BE2", "#9400D3"],
-        };
-      default:
-        return {
-          ...baseConfig,
-          colors: ["#FFD700", "#FFC0CB", "#9370DB", "#87CEEB"],
-        };
-    }
-  };
-
-  const config = getParticleConfig();
-  const particles = Array.from({ length: config.count }, (_, i) => i);
+  if (!isWebGLSupported) {
+    return (
+      <div
+        className={`fixed inset-0 -z-10 ${className || ""}`}
+        style={{ backgroundColor: colors[safeVariant].background }}
+      />
+    );
+  }
 
   return (
-    <div className={cn("relative w-full h-full overflow-hidden", className)}>
-      <div className="absolute inset-0">
-        {particles.map((i) => {
-          const delay = Math.random() * 10;
-          const duration =
-            config.duration.min +
-            Math.random() * (config.duration.max - config.duration.min);
-          const size =
-            config.size.min +
-            Math.random() * (config.size.max - config.size.min);
-          const color =
-            config.colors[Math.floor(Math.random() * config.colors.length)];
-          const x = Math.random() * 100;
-          const y = variant === "rain" ? -10 : Math.random() * 100;
-
-          const animation =
-            variant === "rain"
-              ? `divineRain ${duration}s ${delay}s linear infinite`
-              : `divineFloat ${duration}s ${delay}s linear infinite`;
-
-          return (
-            <div
-              key={i}
-              className="absolute opacity-60"
-              style={{
-                left: `${x}%`,
-                top: `${y}%`,
-                width: `${size}px`,
-                height: `${size}px`,
-                backgroundColor: color,
-                borderRadius: "50%",
-                boxShadow: `0 0 ${size * 2}px ${color}40`,
-                animation,
-              }}
-            />
-          );
-        })}
-      </div>
-    </div>
+    <ParticlesEngine
+      className={`fixed inset-0 -z-10 ${className || ""}`}
+      options={options}
+    />
   );
-}
+};
 
-// Export with unified error boundary
-export const DivineParticles = withUnifiedErrorBoundary(DivineParticlesCore, {
+// Export the wrapped component
+export const DivineParticles = withDivineErrorBoundary(DivineParticlesBase, {
   componentName: "DivineParticles",
-  role: "lightworker",
+  role: "guardian",
 });
+
+// Default export for backward compatibility
+export default DivineParticles;

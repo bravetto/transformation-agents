@@ -1,9 +1,8 @@
 "use client";
-"use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { QuoteIcon } from "lucide-react";
 
 export interface Testimony {
@@ -111,7 +110,7 @@ function PersonTestimony({
   );
 }
 
-export default withErrorBoundary(PersonTestimony, {
+export default withDivineErrorBoundary(PersonTestimony, {
   componentName: "PersonTestimony",
-  id: "person-testimony",
+  role: "guardian",
 });

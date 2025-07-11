@@ -1,6 +1,6 @@
 "use client";
 
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -228,7 +228,7 @@ function ErrorLogViewerPage() {
   );
 }
 
-export default withErrorBoundary(ErrorLogViewerPage, {
+export default withDivineErrorBoundary(ErrorLogViewerPage, {
   componentName: "ErrorLogViewerPage",
   fallback: (
     <div className="min-h-screen p-8 bg-gray-900 text-white">

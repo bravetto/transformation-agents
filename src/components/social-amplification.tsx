@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -348,4 +347,7 @@ Read the full story and consider adding your support: ${shareUrl}
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(SocialAmplification, "messenger");
+export default withDivineErrorBoundary(SocialAmplification, {
+  componentName: "SocialAmplification",
+  role: "messenger",
+});

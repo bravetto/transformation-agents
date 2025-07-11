@@ -2,6 +2,7 @@ import { PersonData } from "@/types/person";
 
 export const jacob: PersonData = {
   id: "jacob",
+  slug: "jacob",
   name: "Jacob",
   title: "Sacred Architect of Play",
   role: "witness",

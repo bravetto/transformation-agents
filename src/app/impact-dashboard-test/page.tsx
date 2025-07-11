@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { DivineImpactDashboard } from "@/components/divine-impact-dashboard";
-import TestimonialFeed from "@/components/testimonial-feed";
+import DivineParticles from "@/components/divine-particles";
 import { type DivineRole } from "@/lib/design-system";
 import { Container } from "@/components/ui/container";
 import { Heading, Text } from "@/components/ui/typography";
@@ -15,13 +16,12 @@ export default function ImpactDashboardTest() {
     <Container className="py-10">
       <div className="mb-8 text-center">
         <Heading size="h1" className="mb-4">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-orange-600">
-            THE BRIDGE PROJECT
-          </span>
+          Divine Impact Dashboard
         </Heading>
         <Text className="max-w-3xl mx-auto">
-          Where Tony & Lauren Dungy Lead a Nation Back to Justice, Powered by
-          Bravëtto
+          Real-time visualization of The Bridge Project's community impact and
+          growth metrics. This dashboard showcases the project's reach,
+          engagement, and momentum in supporting JAHmere.
         </Text>
       </div>
 
@@ -71,15 +71,36 @@ export default function ImpactDashboardTest() {
         defaultRole={role}
         refreshInterval={refreshInterval}
         autoRefresh={true}
-        className="mb-8"
       />
 
-      {/* Testimonial feed */}
-      <TestimonialFeed refreshInterval={7000} className="max-w-2xl mx-auto" />
-
-      {/* Footer with attribution */}
-      <div className="mt-8 text-center text-sm text-gray-500">
-        Powered by Bravëtto | Methodology by The Greatness Zone®
+      <div className="mt-12 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+        <Heading size="h3" className="mb-4">
+          About This Dashboard
+        </Heading>
+        <Text className="mb-3">
+          This dashboard visualizes real-time metrics showing the growing
+          influence and community support for The Bridge Project. It displays
+          key indicators of engagement, reach, and impact.
+        </Text>
+        <Text className="mb-3">
+          <strong>Features:</strong>
+        </Text>
+        <ul className="list-disc pl-5 space-y-2 mb-4">
+          <li>Real-time data updates with smooth animations</li>
+          <li>
+            Role-based filtering (Lightworker, Messenger, Witness, Guardian)
+          </li>
+          <li>Progress tracking with goals visualization</li>
+          <li>Trend indicators showing growth direction</li>
+          <li>Divine particles background effects matched to metric roles</li>
+        </ul>
+        <Text>
+          <em>
+            Note: For demonstration purposes, the "Refresh" button and
+            auto-refresh intervals generate random data changes to simulate
+            real-time updates.
+          </em>
+        </Text>
       </div>
     </Container>
   );

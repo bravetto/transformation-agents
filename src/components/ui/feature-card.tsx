@@ -1,11 +1,10 @@
 "use client";
-"use client";
 
 import React, { memo } from "react";
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BaseCard } from "./base-card";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 /**
  * Props for the FeatureCard component
@@ -133,7 +132,7 @@ const FeatureCardComponent = memo<FeatureCardProps>(
 
 FeatureCardComponent.displayName = "FeatureCard";
 
-export const FeatureCard = withErrorBoundary(FeatureCardComponent, {
+export const FeatureCard = withDivineErrorBoundary(FeatureCardComponent, {
   componentName: "FeatureCard",
   fallback: (
     <div className="p-6 bg-red-50 text-red-600 rounded-lg">
