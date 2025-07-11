@@ -41,17 +41,20 @@ function EnhancedPersonHero({
   const [scrollY, setScrollY] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
 
-  // Update scroll position for parallax effect
+  // Update scroll position for parallax effect - only if needed
   useEffect(() => {
     setIsMounted(true);
 
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
+    // Skip scroll listener for better performance
+    if (variant === "primary") {
+      const handleScroll = () => {
+        setScrollY(window.scrollY);
+      };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      return () => window.removeEventListener("scroll", handleScroll);
+    }
+  }, [variant]);
 
   // Determine background styles based on variant
   const bgStyles = {
@@ -67,36 +70,36 @@ function EnhancedPersonHero({
     localImage && personId ? getPersonImageData(personId, role) : undefined;
   const imageSource = personImageData ? personImageData.full : imageSrc;
 
-  // Animation variants
+  // Simplified animation variants for better performance
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
+        staggerChildren: 0.1,
+        delayChildren: 0.1,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 10 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+      transition: { duration: 0.4, ease: "easeOut" },
     },
   };
 
   const imageVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
+    hidden: { opacity: 0, scale: 0.95 },
     visible: {
       opacity: 1,
       scale: 1,
       transition: {
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1],
-        delay: 0.2,
+        duration: 0.5,
+        ease: "easeOut",
+        delay: 0.1,
       },
     },
   };
@@ -117,23 +120,23 @@ function EnhancedPersonHero({
       {/* Background gradient */}
       <div className={`absolute inset-0 bg-gradient-to-b ${currentBg} z-0`} />
 
-      {/* Floating orbs background effect */}
-      {isMounted && (
+      {/* Simplified floating orbs background effect - only for primary variant */}
+      {isMounted && variant === "primary" && (
         <>
           <div
-            className="absolute opacity-30 blur-3xl rounded-full w-96 h-96 bg-white/20 z-0"
+            className="absolute opacity-20 blur-2xl rounded-full w-64 h-64 bg-white/10 z-0"
             style={{
               top: "10%",
               left: "5%",
-              transform: `translate(${scrollY * 0.05}px, ${scrollY * -0.03}px)`,
+              transform: `translate(${scrollY * 0.02}px, ${scrollY * -0.01}px)`,
             }}
           />
           <div
-            className="absolute opacity-30 blur-3xl rounded-full w-72 h-72 bg-white/20 z-0"
+            className="absolute opacity-20 blur-2xl rounded-full w-48 h-48 bg-white/10 z-0"
             style={{
               bottom: "15%",
               right: "10%",
-              transform: `translate(${scrollY * -0.05}px, ${scrollY * 0.02}px)`,
+              transform: `translate(${scrollY * -0.02}px, ${scrollY * 0.01}px)`,
             }}
           />
         </>

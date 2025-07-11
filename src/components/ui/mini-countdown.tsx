@@ -73,6 +73,9 @@ function MiniCountdown({
   );
 }
 
+// Export both named and default for compatibility
+export { MiniCountdown };
+
 export default withSafeUI(MiniCountdown, {
   componentName: "MiniCountdown",
 });

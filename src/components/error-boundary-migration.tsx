@@ -8,8 +8,8 @@
 import React from "react";
 import {
   DivineErrorBoundary,
-  withDivineErrorBoundary,,
-} from "PLACEHOLDER";
+  withDivineErrorBoundary,
+} from "@/components/ui/divine-error-boundary";
 import type { DivineRole } from "@/lib/design-system";
 
 /**

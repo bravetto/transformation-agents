@@ -12,8 +12,8 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,,
-} from "PLACEHOLDER";
+  SelectValue,
+} from "@/components/ui/select";
 import TestimonialCard from "@/components/testimonial-card";
 
 function TestComponentsPage() {

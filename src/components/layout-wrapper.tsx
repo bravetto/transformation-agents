@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { withErrorBoundary } from "@/components/with-error-boundary";
+import { DivineFAB } from "@/components/ui/floating-cta";
 
 // Dynamic imports for client components
 const Navigation = dynamic(() => import("@/components/navigation"), {
@@ -49,11 +50,7 @@ const PropheticCountdown = dynamic(
 // Independence Day 2025 (July 4, 2025)
 const independenceDay = new Date("2025-07-04T00:00:00");
 
-function LayoutWrapperExported({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function LayoutWrapperExported({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Navigation />
@@ -65,6 +62,9 @@ function LayoutWrapperExported({
 
       {/* Floating Social Share */}
       <SocialAmplification />
+
+      {/* Divine FAB for Mobile Letter Writing */}
+      <DivineFAB />
 
       {/* PropheticCountdown for Independence Day */}
       <div className="fixed bottom-4 left-4 z-40 max-w-xs">

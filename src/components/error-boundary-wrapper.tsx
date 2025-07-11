@@ -21,24 +21,56 @@ export default function ErrorBoundaryWrapper({
 }: ErrorBoundaryWrapperProps) {
   const handleError = React.useCallback(
     (error: Error, errorInfo: React.ErrorInfo) => {
-      // Log error to console
-      console.error("Error caught by ErrorBoundary:", error, errorInfo);
+      // Prevent infinite loops by checking error type
+      if (
+        error.message?.includes("ErrorBoundary") ||
+        error.message?.includes("Cannot read properties of undefined")
+      ) {
+        return; // Silent fail to prevent loops
+      }
 
-      // Report to analytics
-      reportError(error, {
-        componentStack: errorInfo.componentStack,
-        boundaryId: id,
-        location: typeof window !== "undefined" ? window.location.href : null,
-      });
+      // Safe error logging
+      try {
+        console.error("Error caught by ErrorBoundary:", {
+          message: error.message,
+          name: error.name,
+          boundaryId: id,
+        });
+
+        // Only report to analytics if function exists and error is meaningful
+        if (typeof reportError === "function" && error.message && error.name) {
+          reportError(error, {
+            componentStack: errorInfo.componentStack,
+            boundaryId: id,
+            location:
+              typeof window !== "undefined" ? window.location.href : null,
+          });
+        }
+      } catch (reportingError) {
+        // Fail silently if reporting fails
+        if (process.env.NODE_ENV === "development") {
+          console.warn("Failed to report error:", reportingError);
+        }
+      }
     },
     [id],
   );
 
   // Set up error handler for the component
   React.useEffect(() => {
+    // Only set up global error handler in browser environment
+    if (typeof window === "undefined") return;
+
     // Set up global error handler
     const errorHandler = (event: ErrorEvent) => {
-      handleError(event.error, { componentStack: "" });
+      // Prevent handling of error boundary errors
+      if (event.error?.message?.includes("ErrorBoundary")) {
+        return;
+      }
+
+      if (event.error && typeof event.error === "object") {
+        handleError(event.error, { componentStack: "" });
+      }
     };
 
     window.addEventListener("error", errorHandler);

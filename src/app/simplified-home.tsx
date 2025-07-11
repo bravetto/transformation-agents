@@ -1,9 +1,5 @@
 "use client";
 
-import {
-  SimplifiedHero,
-  SimplifiedStats,
-  WhatHappensNext,
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Quote } from "@/components/ui/typography";
@@ -13,10 +9,37 @@ export default function SimplifiedHomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section - Clear Focus */}
-      <SimplifiedHero />
+      <section className="py-20 bg-gradient-to-br from-amber-50 to-orange-50">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            JAHmere's Freedom Countdown
+          </h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+            Every moment counts. Every voice matters. Join the movement for
+            transformation over incarceration.
+          </p>
+        </div>
+      </section>
 
       {/* Simple Stats - Build Trust */}
-      <SimplifiedStats />
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <h3 className="text-3xl font-bold text-amber-600">3 Years</h3>
+              <p className="text-gray-600">Under Tony Dungy's Mentorship</p>
+            </div>
+            <div>
+              <h3 className="text-3xl font-bold text-amber-600">500+</h3>
+              <p className="text-gray-600">Youth Ready for Mentorship</p>
+            </div>
+            <div>
+              <h3 className="text-3xl font-bold text-amber-600">$0</h3>
+              <p className="text-gray-600">Cost to Taxpayers</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Tony Dungy Quote - Authority */}
       <section className="py-16 bg-gray-50">
@@ -58,7 +81,36 @@ export default function SimplifiedHomePage() {
       </section>
 
       {/* What Happens Next - Set Expectations */}
-      <WhatHappensNext />
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-8">What Happens Next</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-6">
+              <div className="text-4xl mb-4">📝</div>
+              <h3 className="text-xl font-semibold mb-2">
+                1. Write Your Letter
+              </h3>
+              <p className="text-gray-600">
+                Share your support directly with Judge Ferrero
+              </p>
+            </div>
+            <div className="p-6">
+              <div className="text-4xl mb-4">⚖️</div>
+              <h3 className="text-xl font-semibold mb-2">2. Judge Reviews</h3>
+              <p className="text-gray-600">
+                Community voices influence the decision
+              </p>
+            </div>
+            <div className="p-6">
+              <div className="text-4xl mb-4">🌉</div>
+              <h3 className="text-xl font-semibold mb-2">
+                3. Transformation Begins
+              </h3>
+              <p className="text-gray-600">JAHmere mentors at-risk youth</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Final CTA - Repeat for Action */}
       <section className="py-20 bg-gradient-to-br from-amber-50 to-orange-50">

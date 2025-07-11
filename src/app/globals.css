@@ -293,6 +293,24 @@ html {
 body {
   @apply bg-comfort-cream text-gentle-charcoal;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  /* DIVINE BACKGROUND BREATHING LIFE */
+  animation: body-breathe-divine 12s infinite ease-in-out;
+}
+
+/* DIVINE BODY BREATHING ANIMATION */
+@keyframes body-breathe-divine {
+  0%, 100% {
+    background: linear-gradient(135deg, 
+      rgba(250, 248, 246, 1) 0%,
+      rgba(250, 248, 246, 1) 100%);
+  }
+  50% {
+    background: linear-gradient(135deg, 
+      rgba(250, 248, 246, 1) 0%,
+      rgba(255, 107, 53, 0.015) 30%,
+      rgba(67, 56, 202, 0.01) 70%,
+      rgba(250, 248, 246, 1) 100%);
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -1190,3 +1208,398 @@ section > * {
     @apply max-w-screen-2xl;
   }
 }
+
+/* ===================================
+   ELITE DESIGN SYSTEM V10 - PSYCHOLOGICAL WARFARE
+   Upgraded from basic elite to weaponized emotional triggers
+   =================================== */
+
+:root {
+  /* PSYCHOLOGICAL WARFARE PALETTE - Replacing weak defaults */
+  
+  /* 🔥 DIVINE AMBER - The Urgency Driver (Upgraded from basic divine-amber) */
+  --divine-amber: #FF6B35;
+  --divine-amber-rgb: 255, 107, 53;
+  --divine-amber-light: #FF8A5B;
+  --divine-amber-dark: #E55A2B;
+  --divine-amber-glow: 0 0 40px rgba(255, 107, 53, 0.6);
+  --divine-amber-shadow: 0 8px 32px rgba(255, 107, 53, 0.4);
+  
+  /* 💎 JUSTICE INDIGO - The Trust Foundation (Upgraded from justice-indigo) */
+  --justice-indigo: #4338CA;
+  --justice-indigo-rgb: 67, 56, 202;
+  --justice-indigo-light: #5B4FE5;
+  --justice-indigo-dark: #362AAE;
+  --justice-indigo-glow: 0 0 60px rgba(67, 56, 202, 0.4);
+  --justice-indigo-shadow: 0 12px 48px rgba(67, 56, 202, 0.3);
+  
+  /* 🌱 TRANSFORMATION EMERALD - The Growth Signal */
+  --transformation-emerald: #10B981;
+  --transformation-emerald-rgb: 16, 185, 129;
+  --transformation-emerald-light: #34D399;
+  --transformation-emerald-dark: #059669;
+  --transformation-emerald-glow: 0 0 30px rgba(16, 185, 129, 0.5);
+  
+  /* ✨ SACRED VIOLET - The Divine Connection (Enhanced) */
+  --sacred-violet: #9333EA;
+  --sacred-violet-rgb: 147, 51, 234;
+  --sacred-violet-light: #A855F7;
+  --sacred-violet-dark: #7C3AED;
+  --sacred-violet-glow: 0 0 80px rgba(147, 51, 234, 0.5);
+  
+  /* PREMIUM GRADIENTS V10 - Multi-dimensional Depth */
+  --sunrise-hope: linear-gradient(135deg, #FF6B35 0%, #F59E0B 50%, #FCD34D 100%);
+  --twilight-justice: linear-gradient(45deg, #4338CA 0%, #6366F1 50%, #818CF8 100%);
+  --divine-aurora: linear-gradient(90deg, #9333EA 0%, #EC4899 100%);
+  --sacred-convergence: conic-gradient(from 180deg at 50% 50%, #FF6B35, #9333EA, #4338CA, #10B981, #FF6B35);
+  
+  /* SUPPORTING DEPTH PALETTE V10 */
+  --midnight-authority: #0F0F23;
+  --charcoal-depth: #1A1A2E;
+  --shadow-realm: #16213E;
+  --divine-light: #FFFEF7;
+  --angel-wing: #FAF9F6;
+  --holy-mist: #F5F3F0;
+  --sacred-glass: rgba(255, 255, 255, 0.08);
+  
+  /* GLASSMORPHISM SYSTEM V10 */
+  --glass-divine-v10: rgba(255, 107, 53, 0.1);
+  --glass-sacred-v10: rgba(67, 56, 202, 0.1);
+  --glass-platinum-v10: rgba(255, 255, 255, 0.15);
+  --glass-obsidian-v10: rgba(15, 15, 35, 0.8);
+  --glass-backdrop-v10: blur(8px) saturate(150%);
+  --glass-border-v10: rgba(255, 255, 255, 0.2);
+  
+  /* ANIMATION TIMING V10 - Divine precision */
+  --timing-divine-v10: cubic-bezier(0.4, 0, 0.2, 1);
+  --timing-sacred-v10: cubic-bezier(0.19, 1, 0.22, 1);
+  --timing-urgency-v10: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* PARTICLE SYSTEM V10 */
+  --particle-divine-v10: rgba(255, 107, 53, 0.6);
+  --particle-sacred-v10: rgba(67, 56, 202, 0.5);
+  --particle-aurora-v10: rgba(147, 51, 234, 0.7);
+}
+
+/* GLASSMORPHISM SYSTEM V10 */
+.glass-card-v10 {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px) saturate(150%);
+  -webkit-backdrop-filter: blur(8px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(31, 38, 135, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: all 0.4s var(--timing-divine-v10);
+}
+
+.glass-card-v10::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: var(--twilight-justice);
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.glass-card-v10:hover {
+  transform: translateY(-8px) rotateX(-2deg) rotateY(2deg) scale(1.02);
+  box-shadow: 
+    0 30px 80px rgba(67, 56, 202, 0.2),
+    0 20px 40px rgba(67, 56, 202, 0.15);
+}
+
+.glass-card-v10:hover::before {
+  opacity: 1;
+}
+
+/* ELITE BUTTON V10 - PSYCHOLOGICAL TRIGGERS */
+.btn-primary-v10 {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 48px;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  background: var(--sunrise-hope);
+  border: 2px solid rgba(255, 107, 53, 0.3);
+  border-radius: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s var(--timing-divine-v10);
+  transform: translateZ(0);
+  
+  /* Gradient shadow */
+  box-shadow: 
+    0 8px 32px rgba(255, 107, 53, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  
+  /* Ripple effect container */
+  --ripple-size: 0;
+}
+
+.btn-primary-v10::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--ripple-size);
+  height: var(--ripple-size);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+  pointer-events: none;
+}
+
+.btn-primary-v10::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+  z-index: 1;
+}
+
+.btn-primary-v10:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 12px 48px rgba(255, 107, 53, 0.6),
+    0 8px 24px rgba(255, 107, 53, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  --ripple-size: 300px;
+}
+
+.btn-primary-v10:hover::before {
+  transform: translateX(100%);
+}
+
+.btn-primary-v10:active {
+  transform: translateY(-1px) scale(0.98);
+  box-shadow: 
+    0 4px 16px rgba(255, 107, 53, 0.4),
+    inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* PARTICLE SYSTEM V10 - 50 DIVINE PARTICLES */
+.particle-system-v10 {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.particle-v10 {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--particle-divine-v10);
+  border-radius: 50%;
+  opacity: 0;
+  /* filter: blur(1px); */ /* Removed excessive blur */
+  animation: 
+    particle-rise-v10 15s infinite,
+    particle-breathe-v10 3s infinite ease-in-out,
+    particle-glow-v10 2.5s infinite ease-in-out;
+}
+
+@keyframes particle-rise-v10 {
+  0% {
+    opacity: 0;
+    transform: translateY(100vh) scale(0);
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100vh) scale(1.5) rotate(720deg);
+  }
+}
+
+/* DIVINE PARTICLE BREATHING LIFE */
+@keyframes particle-breathe-v10 {
+  0%, 100% { 
+    transform: scale(1) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% { 
+    transform: scale(1.4) rotate(180deg);
+    opacity: 0.9;
+  }
+}
+
+/* DIVINE PARTICLE GLOW PULSE */
+@keyframes particle-glow-v10 {
+  0%, 100% {
+    box-shadow: 0 0 8px var(--elite-v10-divine-amber);
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: 
+      0 0 20px var(--elite-v10-divine-amber),
+      0 0 30px var(--elite-v10-sacred-violet),
+      0 0 40px var(--elite-v10-justice-indigo);
+    filter: brightness(1.5);
+  }
+}
+
+/* COUNTDOWN TIMER V10 - URGENCY AMPLIFIER */
+.countdown-container-v10 {
+  background: var(--midnight-authority);
+  border: 2px solid var(--divine-amber);
+  border-radius: 24px;
+  padding: 48px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--divine-amber-glow);
+}
+
+.countdown-container-v10::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  background: conic-gradient(
+    from 0deg,
+    var(--divine-amber),
+    var(--sacred-violet),
+    var(--justice-indigo),
+    var(--transformation-emerald),
+    var(--divine-amber)
+  );
+  border-radius: inherit;
+  z-index: -1;
+  animation: border-rotate-v10 4s linear infinite;
+}
+
+@keyframes border-rotate-v10 {
+  100% { transform: rotate(360deg); }
+}
+
+.countdown-container-v10::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: var(--midnight-authority);
+  border-radius: 22px;
+  z-index: 0;
+}
+
+.time-value-v10 {
+  display: block;
+  background: rgba(255, 107, 53, 0.1);
+  border: 1px solid rgba(255, 107, 53, 0.3);
+  border-radius: 12px;
+  padding: 16px 24px;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 700;
+  color: var(--divine-amber);
+  text-shadow: 
+    0 0 20px rgba(255, 107, 53, 0.8),
+    0 0 40px rgba(255, 107, 53, 0.6),
+    0 0 60px rgba(255, 107, 53, 0.4);
+  position: relative;
+  overflow: hidden;
+  animation: pulse-urgency-v10 2s ease-in-out infinite;
+}
+
+@keyframes pulse-urgency-v10 {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 
+      0 0 20px rgba(255, 107, 53, 0.5),
+      inset 0 0 20px rgba(255, 107, 53, 0.1);
+  }
+  50% { 
+    transform: scale(1.05);
+    box-shadow: 
+      0 0 40px rgba(255, 107, 53, 0.8),
+      inset 0 0 30px rgba(255, 107, 53, 0.2);
+  }
+}
+
+/* GRADIENT TEXT V10 - ANIMATED CONSCIOUSNESS */
+.gradient-text-v10 {
+  background: linear-gradient(
+    135deg,
+    var(--justice-indigo) 0%,
+    var(--sacred-violet) 20%,
+    var(--divine-amber) 40%,
+    var(--transformation-emerald) 60%,
+    var(--justice-indigo) 80%,
+    var(--sacred-violet) 100%
+  );
+  background-size: 300% 300%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-wave-v10 8s ease infinite;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+@keyframes gradient-wave-v10 {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* PERFORMANCE OPTIMIZATION V10 */
+@media (prefers-reduced-motion: reduce) {
+  .particle-system-v10 {
+    display: none;
+  }
+  
+  .btn-primary-v10,
+  .glass-card-v10,
+  .gradient-text-v10 {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* MOBILE OPTIMIZATION V10 */
+@media (max-width: 768px) {
+  .particle-v10:nth-child(n+25) {
+    display: none;
+  }
+  
+  .glass-card-v10 {
+    backdrop-filter: blur(4px);
+    padding: 24px;
+  }
+  
+  .btn-primary-v10 {
+    padding: 16px 32px;
+    font-size: 16px;
+  }
+}
+
+/* ===================================
+   END ELITE DESIGN SYSTEM V10
+   =================================== */

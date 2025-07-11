@@ -35,13 +35,36 @@ export class DivineErrorBoundary extends Component<
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     const { componentName, role } = this.props;
 
-    // Log error
-    console.error(`[${componentName}] Error:`, {
-      error,
-      errorInfo,
-      componentName,
-      role,
-    });
+    // Prevent infinite loops by checking if this is an error boundary error
+    if (
+      error.message?.includes("ErrorBoundary") ||
+      componentName?.includes("ErrorBoundary")
+    ) {
+      // Silent logging for error boundary errors to prevent loops
+      if (process.env.NODE_ENV === "development") {
+        console.warn(
+          `[${componentName}] Boundary caught error - preventing loop:`,
+          error.message,
+        );
+      }
+      return;
+    }
+
+    // Safe logging that won't trigger error boundaries
+    try {
+      console.error(`[${componentName}] Error:`, {
+        message: error.message,
+        name: error.name,
+        componentStack: errorInfo.componentStack,
+        componentName,
+        role,
+      });
+    } catch (loggingError) {
+      // If even logging fails, fail silently in production
+      if (process.env.NODE_ENV === "development") {
+        console.warn("Failed to log error:", loggingError);
+      }
+    }
   }
 
   render() {
@@ -88,10 +111,10 @@ function withDivineErrorBoundary<P extends object>(
   return WithErrorBoundary;
 }
 
+// Export the withDivineErrorBoundary function directly as named export
+export { withDivineErrorBoundary };
+
 // Export the wrapped version as default
 export default withSafeUI(withDivineErrorBoundary, {
   componentName: "withDivineErrorBoundary",
 });
-
-// Export the withDivineErrorBoundary function as a named export
-export { withDivineErrorBoundary };

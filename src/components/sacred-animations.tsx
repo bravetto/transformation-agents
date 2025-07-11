@@ -9,6 +9,7 @@ import {
   useChain,
   useSpringRef,
   config,
+} from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
 interface SacredRevealProps {
@@ -58,6 +59,9 @@ function SacredReveal({
     </animated.div>
   );
 }
+
+// Export the SacredReveal component
+export { SacredReveal };
 
 interface FloatingElementProps {
   children: React.ReactNode;

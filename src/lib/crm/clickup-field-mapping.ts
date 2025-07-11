@@ -3,6 +3,84 @@
  * Maps ClickUp custom fields to internal data structures
  */
 
+// Export types needed by contact-service
+export interface ContactData {
+  id?: string;
+  name: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  relationship?: string;
+  letterSubmitted?: boolean;
+  volunteerSignup?: boolean;
+  willingToTestify?: boolean;
+  leadScore?: number;
+  lastEngagement?: string;
+  pagesVisited?: string[];
+  storiesRead?: string[];
+  timeOnSite?: number;
+  connectionStrength?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface CreateContactRequest {
+  name: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  relationship?: string;
+  message?: string;
+}
+
+export interface ContactCreateResult {
+  success: boolean;
+  contactId?: string;
+  error?: string;
+}
+
+export interface UpdateContactRequest {
+  name?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  relationship?: string;
+  letterSubmitted?: boolean;
+  volunteerSignup?: boolean;
+  willingToTestify?: boolean;
+  leadScore?: number;
+  lastEngagement?: string;
+  pagesVisited?: string[];
+  storiesRead?: string[];
+  timeOnSite?: number;
+  connectionStrength?: string;
+}
+
+export interface SearchContactsParams {
+  email?: string;
+  name?: string;
+  hasSubmittedLetter?: boolean;
+  isVolunteer?: boolean;
+  willingToTestify?: boolean;
+  minLeadScore?: number;
+  relationship?: string;
+  limit?: number;
+  offset?: number;
+}
+
+export interface ClickUpContact {
+  id: string;
+  name: string;
+  status: string;
+  custom_fields: Array<{
+    id: string;
+    name: string;
+    value: any;
+  }>;
+  date_created: string;
+  date_updated: string;
+}
+
 export interface ClickUpCustomFieldIds {
   companyLogo: string;
   contactPerson: string;
@@ -253,4 +331,46 @@ export function mapContactToClickUpTask(contact: any): any {
     name: contact.name || contact.contactPerson || "New Contact",
     custom_fields: customFields,
   };
+}
+
+// Placeholder functions for contact-service.ts compatibility
+export async function createClickUpContact(
+  data: CreateContactRequest,
+): Promise<ContactCreateResult> {
+  // This would implement the actual ClickUp API call
+  console.warn("createClickUpContact not implemented");
+  return { success: false, error: "Not implemented" };
+}
+
+export async function updateClickUpContact(
+  id: string,
+  data: UpdateContactRequest,
+): Promise<ContactCreateResult> {
+  // This would implement the actual ClickUp API call
+  console.warn("updateClickUpContact not implemented");
+  return { success: false, error: "Not implemented" };
+}
+
+export async function getClickUpContact(
+  id: string,
+): Promise<ContactData | null> {
+  // This would implement the actual ClickUp API call
+  console.warn("getClickUpContact not implemented");
+  return null;
+}
+
+export async function searchClickUpContacts(
+  params: SearchContactsParams,
+): Promise<{ contacts: ContactData[]; total: number }> {
+  // This would implement the actual ClickUp API call
+  console.warn("searchClickUpContacts not implemented");
+  return { contacts: [], total: 0 };
+}
+
+export async function deleteClickUpContact(
+  id: string,
+): Promise<{ success: boolean; error?: string }> {
+  // This would implement the actual ClickUp API call
+  console.warn("deleteClickUpContact not implemented");
+  return { success: false, error: "Not implemented" };
 }

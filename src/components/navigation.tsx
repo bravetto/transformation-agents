@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";,
-} from "PLACEHOLDER";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -16,14 +15,17 @@ import {
   Home,
   ChevronDown,
   BarChart,
+  Target,
+} from "lucide-react";
 import {
   Button,
   Popover,
   PopoverTrigger,
   PopoverContent,
+} from "@/components/ui";
 import { Container } from "@/components/ui/container";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
-import { MiniCountdown } from "@/components/ui/mini-countdown";
+import MiniCountdown from "@/components/ui/mini-countdown";
 
 interface NavItem {
   href: string;
@@ -32,32 +34,26 @@ interface NavItem {
   children?: NavItem[];
 }
 
-// Update the navItems array to include the new pages
+// Update the navItems array to better support the campaign user journeys
 const navItems: NavItem[] = [
   { href: "/", label: "Home", icon: <Home className="h-4 w-4" /> },
+
+  // TIER 1: Core Campaign Journey
   {
     href: "/the-case",
     label: "The Case",
     icon: <FileText className="h-4 w-4" />,
   },
   {
-    href: "/july-9-strategy",
-    label: "July 9 Strategy 🔥",
-    icon: <FileText className="h-4 w-4" />,
+    href: "/july-28-strategy",
+    label: "July 28 Strategy 🔥",
+    icon: <Target className="h-4 w-4" />,
   },
-  {
-    href: "/community-release-plan",
-    label: "Release Plan",
-    icon: <FileText className="h-4 w-4" />,
-  },
-  {
-    href: "/impact",
-    label: "Impact Dashboard",
-    icon: <BarChart className="h-4 w-4" />,
-  },
+
+  // TIER 2: Character Witnesses & Stories
   {
     href: "/people",
-    label: "People",
+    label: "Character Witnesses",
     icon: <Users className="h-4 w-4" />,
     children: [
       {
@@ -66,23 +62,23 @@ const navItems: NavItem[] = [
         icon: <Users className="h-4 w-4" />,
       },
       {
-        href: "/people/martha-henderson",
-        label: "Martha Henderson",
-        icon: <Users className="h-4 w-4" />,
-      },
-      {
         href: "/people/jordan-dungy",
         label: "Jordan Dungy",
         icon: <Users className="h-4 w-4" />,
       },
       {
-        href: "/people/michael-mataluni",
-        label: "Michael Mataluni",
+        href: "/people/coach-dungy",
+        label: "Coach Tony Dungy",
         icon: <Users className="h-4 w-4" />,
       },
       {
-        href: "/people/coach-dungy",
-        label: "Coach Dungy",
+        href: "/people/martha-henderson",
+        label: "Martha Henderson",
+        icon: <Users className="h-4 w-4" />,
+      },
+      {
+        href: "/people/michael-mataluni",
+        label: "Michael Mataluni",
         icon: <Users className="h-4 w-4" />,
       },
       {
@@ -92,22 +88,36 @@ const navItems: NavItem[] = [
       },
     ],
   },
+
+  // TIER 3: Action & Community
   {
     href: "/campaign",
-    label: "Campaign",
+    label: "Take Action",
     icon: <Heart className="h-4 w-4" />,
     children: [
       {
+        href: "/letter-form-test",
+        label: "📝 Write Letter to Judge",
+        icon: <FileText className="h-4 w-4" />,
+      },
+      {
         href: "/twitter-campaign",
-        label: "Twitter Kit",
+        label: "📱 Social Media Kit",
         icon: <Heart className="h-4 w-4" />,
       },
       {
         href: "/contact",
-        label: "Write to Judge",
+        label: "💬 Contact & Support",
         icon: <Heart className="h-4 w-4" />,
       },
     ],
+  },
+
+  // TIER 4: Progress & Transparency
+  {
+    href: "/impact",
+    label: "Impact Dashboard",
+    icon: <BarChart className="h-4 w-4" />,
   },
 ];
 

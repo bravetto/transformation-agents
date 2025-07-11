@@ -15,8 +15,8 @@ export default function HomePage() {
   });
 
   useEffect(() => {
-    // July 9th, 2025 at 9:00 AM EST (Florida time)
-    const courtDate = new Date("2025-07-09T09:00:00-04:00");
+    // July 28th, 2025 at 9:00 AM EST (Florida time)
+    const courtDate = new Date("2025-07-28T09:00:00-04:00");
 
     const timer = setInterval(() => {
       const now = new Date();
@@ -177,7 +177,7 @@ export default function HomePage() {
         <div className="container-wide">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-4xl font-bold text-center mb-16">
-              Your Championship Moment: July 9th
+              Your Championship Moment: July 28th
             </h2>
 
             <div className="space-y-10">
@@ -252,13 +252,13 @@ export default function HomePage() {
             </div>
 
             <div className="text-center mt-16">
-              <Link href="/july-9-strategy">
+              <Link href="/letter-form-test">
                 <Button
                   variant="outline"
                   size="lg"
                   className="border-2 border-amber-600 text-amber-600 hover:bg-amber-50"
                 >
-                  See the Full Vision →
+                  Write Your Letter of Support →
                 </Button>
               </Link>
             </div>

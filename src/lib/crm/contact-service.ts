@@ -15,6 +15,7 @@ import {
   type BusinessCategory,
   mapClickUpTaskToContact,
   mapContactToClickUpTask,
+} from "./clickup-field-mapping";
 
 // Cache for contact search results
 let contactCache: {

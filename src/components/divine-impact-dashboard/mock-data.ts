@@ -7,8 +7,8 @@ import {
   Clock,
   Star,
   Heart,
-  Activity,,
-} from "PLACEHOLDER";
+  Activity,
+} from "lucide-react";
 import type { MetricCard } from "./types";
 
 /**

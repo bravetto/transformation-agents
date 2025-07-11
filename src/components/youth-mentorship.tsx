@@ -10,6 +10,7 @@ import {
   TrendingUp,
   Users,
   Star,
+} from "lucide-react";
 import { impactEvents } from "./impact-dashboard";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 

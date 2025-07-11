@@ -10,6 +10,7 @@ import {
   CLICKUP_FIELD_IDS,
   BusinessCategory,
   BUSINESS_CATEGORIES,
+} from "./clickup-field-mapping";
 
 // Environment validation
 const CLICKUP_API_KEY = process.env.CLICKUP_API_KEY;

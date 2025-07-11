@@ -305,6 +305,9 @@ function JordanFullTestimony() {
   );
 }
 
+// Export both named and default for compatibility
+export { JordanFullTestimony };
+
 export default withErrorBoundary(JordanFullTestimony, {
   componentName: "JordanFullTestimony",
   id: "jordanfulltestimony",

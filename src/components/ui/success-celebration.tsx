@@ -159,7 +159,7 @@ function SuccessCelebration({
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 mt-0.5">✓</span>
                   <span>
-                    We'll deliver all letters to Judge Ferrero before July 9th
+                    We'll deliver all letters to Judge Ferrero before July 28th
                   </span>
                 </li>
                 <li className="flex items-start gap-2">

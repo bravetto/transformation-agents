@@ -3,10 +3,11 @@ import {
   DoppelgangerRequest,
   PersonalityConfig,
   convertToAIPersonality,
-import { promptTemplateService, BridgePromptTemplate } from "@/lib/prompts";
   AIPersonality,
   ConversationContext,
   UserProfile,
+} from "@/types/personality";
+import { promptTemplateService, BridgePromptTemplate } from "@/lib/prompts";
 
 /**
  * Adapts the doppelganger context to the new prompt system context

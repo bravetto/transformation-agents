@@ -68,14 +68,13 @@
     "prepare-deployment": "chmod +x ./prepare-deployment.sh && ./prepare-deployment.sh",
     "prepare-vercel": "chmod +x ./prepare-vercel-deployment.sh && ./prepare-vercel-deployment.sh",
     "postinstall": "node scripts/clean-build-cache.js",
-    "clean:cache": "rm -rf .next && rm -rf node_modules/.cache",
-    "dev:clean": "npm run clean:cache && next dev",
-    "build:clean": "npm run clean:cache && next build",
-    "progress": "node scripts/check-progress.js",
     "docs:watch": "node scripts/watch-ux-docs.js",
     "docs:update": "node scripts/update-ux-documentation.js",
     "backlog:watch": "ts-node scripts/backlog/init.ts",
-    "backlog:init": "ts-node scripts/backlog/init.ts"
+    "backlog:init": "ts-node scripts/backlog/init.ts",
+    "cascade:check": "node scripts/detect-cascade-risk.js",
+    "safe:build": "npm run cascade:check && npm run build",
+    "safe:dev": "npm run cascade:check && npm run dev"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",

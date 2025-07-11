@@ -61,7 +61,7 @@ function DivineLetterForm({
             className="h-full w-full opacity-10"
           />
         </div>
-        
+
         {/* Form container */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -72,23 +72,24 @@ function DivineLetterForm({
           <h1 className="text-3xl font-bold text-center mb-6">
             Divine Letter of Support
           </h1>
-          
+
           <p className="text-center text-gray-600 mb-8">
-            Your letter will help the court understand JAHmere's character and impact.
-            Each step will guide you to create a powerful, legally effective letter.
+            Your letter will help the court understand JAHmere's character and
+            impact. Each step will guide you to create a powerful, legally
+            effective letter.
           </p>
-          
+
           {/* Progress indicator */}
           <ProgressIndicator />
-          
+
           {/* Auto-save indicator */}
           <div className="flex justify-end mb-4">
             <AutoSaveIndicator />
           </div>
-          
+
           {/* Form content */}
           <FormContent />
-          
+
           {/* Form navigation */}
           <FormNavigation />
         </motion.div>
@@ -103,12 +104,12 @@ function DivineLetterForm({
  */
 function FormContent() {
   const { currentStep, isPreviewMode } = useLetterForm();
-  
+
   // If in preview mode, show the letter preview
   if (isPreviewMode) {
     return <LetterPreview />;
   }
-  
+
   // Otherwise show the current step
   return (
     <AnimatePresence mode="wait">
@@ -130,7 +131,10 @@ function FormContent() {
 }
 
 // Export with error boundary
-export default withDivineErrorBoundary(DivineLetterForm);
+export default withDivineErrorBoundary(DivineLetterForm, {
+  componentName: "DivineLetterForm",
+  role: "lightworker",
+});
 
 // Re-export types
 export * from "./types";

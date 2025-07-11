@@ -82,6 +82,34 @@ module.exports = {
         "guardian-primary": "#8B5CF6",
         "guardian-accent": "#C4B5FD",
 
+        // ELITE DESIGN SYSTEM - Chromatic Justice
+        elite: {
+          "divine-amber": "var(--divine-amber)",
+          "justice-indigo": "var(--justice-indigo)",
+          "sacred-violet": "var(--sacred-violet)",
+          "crimson-urgency": "var(--crimson-urgency)",
+          "platinum-truth": "var(--platinum-truth)",
+          "obsidian-depth": "var(--obsidian-depth)",
+          "aurora-gold": "var(--aurora-gold)",
+          "midnight-navy": "var(--midnight-navy)",
+        },
+
+        // Elite Glass Colors
+        glass: {
+          divine: "var(--glass-divine)",
+          sacred: "var(--glass-sacred)",
+          platinum: "var(--glass-platinum)",
+          obsidian: "var(--glass-obsidian)",
+          border: "var(--glass-border)",
+        },
+
+        // Elite Particles
+        particle: {
+          divine: "var(--particle-divine)",
+          sacred: "var(--particle-sacred)",
+          aurora: "var(--particle-aurora)",
+        },
+
         white: {
           DEFAULT: "#FFFFFF",
           15: "rgba(255, 255, 255, 0.15)",
@@ -151,6 +179,12 @@ module.exports = {
           "0 0 30px rgba(16, 185, 129, 0.5), 0 0 60px rgba(94, 234, 212, 0.3)",
         guardian:
           "0 0 30px rgba(139, 92, 246, 0.5), 0 0 60px rgba(249, 168, 212, 0.3)",
+
+        // ELITE SHADOWS - Chromatic Justice
+        "elite-divine": "var(--shadow-divine)",
+        "elite-sacred": "var(--shadow-sacred)",
+        "elite-crimson": "var(--shadow-crimson)",
+        "elite-aurora": "var(--shadow-aurora)",
       },
 
       transitionProperty: {
@@ -256,6 +290,56 @@ module.exports = {
           "radial-gradient(circle at center, #5EEAD4 0%, rgba(94, 234, 212, 0) 70%)",
         "radial-guardian":
           "radial-gradient(circle at center, #F9A8D4 0%, rgba(249, 168, 212, 0) 70%)",
+
+        // ELITE GRADIENTS - Chromatic Justice
+        "gradient-divine-authority": "var(--gradient-divine-authority)",
+        "gradient-sacred-fire": "var(--gradient-sacred-fire)",
+        "gradient-platinum-depth": "var(--gradient-platinum-depth)",
+        "gradient-justice-wave": "var(--gradient-justice-wave)",
+
+        // ELITE GRADIENTS V10 - Psychological Warfare
+        "sunrise-hope": "var(--sunrise-hope)",
+        "twilight-justice": "var(--twilight-justice)",
+        "divine-aurora": "var(--divine-aurora)",
+        "sacred-convergence": "var(--sacred-convergence)",
+      },
+
+      // ELITE DESIGN SYSTEM V10 - Psychological Warfare
+      "elite-v10": {
+        "divine-amber": "var(--divine-amber)",
+        "divine-amber-light": "var(--divine-amber-light)",
+        "divine-amber-dark": "var(--divine-amber-dark)",
+        "justice-indigo": "var(--justice-indigo)",
+        "justice-indigo-light": "var(--justice-indigo-light)",
+        "justice-indigo-dark": "var(--justice-indigo-dark)",
+        "sacred-violet": "var(--sacred-violet)",
+        "sacred-violet-light": "var(--sacred-violet-light)",
+        "sacred-violet-dark": "var(--sacred-violet-dark)",
+        "transformation-emerald": "var(--transformation-emerald)",
+        "transformation-emerald-light": "var(--transformation-emerald-light)",
+        "transformation-emerald-dark": "var(--transformation-emerald-dark)",
+        "midnight-authority": "var(--midnight-authority)",
+        "charcoal-depth": "var(--charcoal-depth)",
+        "shadow-realm": "var(--shadow-realm)",
+        "divine-light": "var(--divine-light)",
+        "angel-wing": "var(--angel-wing)",
+        "holy-mist": "var(--holy-mist)",
+      },
+
+      // V10 Glass Colors
+      "glass-v10": {
+        divine: "var(--glass-divine-v10)",
+        sacred: "var(--glass-sacred-v10)",
+        platinum: "var(--glass-platinum-v10)",
+        obsidian: "var(--glass-obsidian-v10)",
+        border: "var(--glass-border-v10)",
+      },
+
+      // V10 Particles
+      "particle-v10": {
+        divine: "var(--particle-divine-v10)",
+        sacred: "var(--particle-sacred-v10)",
+        aurora: "var(--particle-aurora-v10)",
       },
     },
   },

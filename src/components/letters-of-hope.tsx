@@ -9,6 +9,7 @@ import {
   SacredReveal,
   MagneticButton,
   FloatingElement,
+} from "./sacred-animations";
 import { AutoAnimateList } from "./auto-animate-wrapper";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 

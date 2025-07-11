@@ -6,6 +6,7 @@ import React, {
   useState,
   useCallback,
   useEffect,
+} from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -14,6 +15,7 @@ import {
   FormStep,
   ImpactScore,
   AutoSaveStatus,
+} from "./types";
 import { letterImpactSchema } from "./schema";
 
 // Create context with default values
@@ -218,9 +220,8 @@ export const LetterFormProvider: React.FC<LetterFormProviderProps> = ({
           calculateImpactScore();
           if (onSubmit) {
             onSubmit(data);
-            return true;
           }
-          return false;
+          return true;
         })();
     }
 
@@ -250,9 +251,8 @@ export const LetterFormProvider: React.FC<LetterFormProviderProps> = ({
     return rhfHandleSubmit(async (data) => {
       if (onSubmit) {
         onSubmit(data);
-        return true;
       }
-      return false;
+      return true;
     })();
   };
 

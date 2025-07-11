@@ -3,49 +3,91 @@
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
-import React from "react";
+import React, { Suspense } from "react";
 
-// Import custom components dynamically
+// Improved loading component
+const LoadingComponent = () => (
+  <div className="min-h-[200px] flex items-center justify-center">
+    <div className="animate-pulse bg-gray-100/10 rounded-md w-full h-48 flex items-center justify-center">
+      <div className="text-gray-500">Loading sacred component...</div>
+    </div>
+  </div>
+);
+
+// Error fallback component
+const ErrorFallback = ({ componentName }: { componentName: string }) => (
+  <div className="min-h-[200px] flex items-center justify-center">
+    <div className="bg-red-50 border border-red-200 rounded-md p-6 text-center">
+      <h3 className="text-lg font-semibold text-red-800 mb-2">
+        Component Error
+      </h3>
+      <p className="text-sm text-red-600">
+        The {componentName} component could not be loaded.
+      </p>
+    </div>
+  </div>
+);
+
+// Import custom components dynamically with better error handling
 const TimelineComponent = dynamic(
-  () => import("@/components/people/sections/timeline"),
+  () =>
+    import("@/components/people/sections/timeline")
+      .then((mod) => (mod.default ? { default: mod.default } : mod))
+      .catch((error) => {
+        console.error("Failed to load TimelineComponent:", error);
+        return { default: () => <ErrorFallback componentName="Timeline" /> };
+      }),
   {
-    ssr: true,
-    loading: () => (
-      <div className="min-h-[200px] animate-pulse bg-gray-100/10 rounded-md"></div>
-    ),
+    ssr: false, // Disable SSR for faster initial load
+    loading: LoadingComponent,
   },
 );
 
 const SynchronicityMap = dynamic(
-  () => import("@/components/people/synchronicity-map"),
+  () =>
+    import("@/components/people/synchronicity-map")
+      .then((mod) => (mod.default ? { default: mod.default } : mod))
+      .catch((error) => {
+        console.error("Failed to load SynchronicityMap:", error);
+        return {
+          default: () => <ErrorFallback componentName="SynchronicityMap" />,
+        };
+      }),
   {
-    ssr: true,
-    loading: () => (
-      <div className="min-h-[200px] animate-pulse bg-gray-100/10 rounded-md"></div>
-    ),
+    ssr: false, // Disable SSR for faster initial load
+    loading: LoadingComponent,
   },
 );
 
 const AssessmentAlignment = dynamic(
-  () => import("@/components/people/assessment-alignment"),
+  () =>
+    import("@/components/people/assessment-alignment")
+      .then((mod) => (mod.default ? { default: mod.default } : mod))
+      .catch((error) => {
+        console.error("Failed to load AssessmentAlignment:", error);
+        return {
+          default: () => <ErrorFallback componentName="AssessmentAlignment" />,
+        };
+      }),
   {
-    ssr: true,
-    loading: () => (
-      <div className="min-h-[200px] animate-pulse bg-gray-100/10 rounded-md"></div>
-    ),
+    ssr: false, // Disable SSR for faster initial load
+    loading: LoadingComponent,
   },
 );
 
 const JayForteTestimony = dynamic(
   () =>
-    import("@/components/people/jay-forte-testimony").then((mod) => ({
-      default: mod.JayForteTestimony,
-    })),
+    import("@/components/people/jay-forte-testimony")
+      .then((mod) => (mod.default ? { default: mod.default } : mod))
+      .catch((error) => {
+        console.error("Failed to load JayForteTestimony:", error);
+        return {
+          default: () => <ErrorFallback componentName="JayForteTestimony" />,
+        };
+      }),
   {
-    ssr: true,
-    loading: () => (
-      <div className="min-h-[200px] animate-pulse bg-gray-100/10 rounded-md"></div>
-    ),
+    ssr: false, // Disable SSR for faster initial load
+    loading: LoadingComponent,
   },
 );
 
@@ -79,13 +121,33 @@ function PersonCustom({
   props = {},
   className = "",
 }: PersonCustomProps) {
-  // Get the requested component with proper typing
+  // Get the requested component with proper typing and validation
   const CustomComponent = COMPONENT_MAP[component];
 
-  // If component not found, show a warning
+  // If component not found, show a warning and fallback
   if (!CustomComponent) {
     console.warn(`Custom component "${component}" not found in COMPONENT_MAP`);
-    return null;
+    return (
+      <section
+        className={`py-16 md:py-24 bg-comfort-cream w-full ${className}`}
+      >
+        <div className="container-wide">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gentle-charcoal">
+              {title}
+            </h2>
+            <div className="bg-yellow-50 border border-yellow-200 rounded-md p-6">
+              <h3 className="text-lg font-semibold text-yellow-800 mb-2">
+                Component Not Available
+              </h3>
+              <p className="text-sm text-yellow-600">
+                The requested component "{component}" is not available.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   return (
@@ -102,15 +164,17 @@ function PersonCustom({
           )}
         </div>
 
-        {/* Dynamic component */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-        >
-          <CustomComponent {...props} />
-        </motion.div>
+        {/* Dynamic component with Suspense wrapper */}
+        <Suspense fallback={<LoadingComponent />}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+          >
+            <CustomComponent {...props} />
+          </motion.div>
+        </Suspense>
       </div>
     </section>
   );
@@ -119,4 +183,21 @@ function PersonCustom({
 export default withDivineErrorBoundary(PersonCustom, {
   componentName: "PersonCustom",
   role: "guardian",
+  fallback: (
+    <section className="py-16 md:py-24 bg-comfort-cream w-full">
+      <div className="container-wide">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="bg-red-50 border border-red-200 rounded-md p-6">
+            <h3 className="text-lg font-semibold text-red-800 mb-2">
+              Custom Section Error
+            </h3>
+            <p className="text-sm text-red-600">
+              This custom section could not be loaded. Please try refreshing the
+              page.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  ),
 });

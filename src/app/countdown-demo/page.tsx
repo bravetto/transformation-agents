@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Container, Heading, Text, Button, Stack } from "@/components/ui";
 import DecisionCountdown from "@/components/decision-countdown";
-import { MiniCountdown } from "@/components/ui/mini-countdown";
+import MiniCountdown from "@/components/ui/mini-countdown";
 
 export default function CountdownDemo() {
   const [showModal, setShowModal] = useState(false);

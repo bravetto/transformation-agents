@@ -6,6 +6,7 @@ import type {
   StoryContent,
   RelatedStory,
   Quote,
+} from "@/components/story-amplifier";
 import { Button } from "@/components/ui/button";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 

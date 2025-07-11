@@ -7,6 +7,7 @@ import {
   PromptTemplateConfig,
   PromptTemplateVersion,
   ABTestResult,
+} from "../types";
 import { promptTemplateService } from "../template-service";
 
 /**

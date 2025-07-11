@@ -15,6 +15,7 @@ import {
   AlertTriangle,
   Zap,
   Heart,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CoalitionAlertProps {

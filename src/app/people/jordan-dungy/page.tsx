@@ -17,7 +17,7 @@ export const metadata: Metadata = {
       "Jordan Dungy shares his connection to JAHmere and why he believes in second chances",
     images: [
       {
-        url: "/images/people/display/coach-dungy.jpg",
+        url: "/images/people/display/jordan-dungy.jpg",
         width: 1200,
         height: 630,
         alt: "Jordan Dungy - The Bridge Project",
@@ -49,7 +49,7 @@ export default function JordanDungyPage() {
     subtitle: "Son of NFL Hall of Famer Tony Dungy",
     description:
       "Advocate for second chances and believer in the power of mentorship",
-    imageSrc: "/images/people/display/coach-dungy.jpg",
+    imageSrc: "/images/people/display/jordan-dungy.jpg",
     imageAlt: "Jordan Dungy profile photo",
     personId: "jordan-dungy",
     localImage: true,
@@ -89,9 +89,10 @@ export default function JordanDungyPage() {
             <div className="md:w-1/2 flex justify-center md:justify-end">
               <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-xl">
                 <Image
-                  src="/images/people/display/coach-dungy.jpg"
+                  src="/images/people/display/jordan-dungy.jpg"
                   alt="Jordan Dungy"
                   fill
+                  sizes="(max-width: 768px) 256px, 320px"
                   style={{ objectFit: "cover" }}
                   priority
                 />

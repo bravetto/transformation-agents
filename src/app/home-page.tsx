@@ -13,9 +13,7 @@ import { TrustBanner } from "@/components/ui/trust-banner";
 import { TrustBar } from "@/components/ui/trust-bar";
 import { CaseStatus } from "@/components/ui/case-status";
 import { UrgencyBanner } from "@/components/ui/urgency-banner";
-import {
-  SupporterCount,
-  LiveSupporterCount,
+import { LiveSupporterCount as SupporterCount } from "@/components/ui/supporter-count";
 import { QuickNav } from "@/components/ui/quick-nav";
 import { ExploreNav } from "@/components/ui/explore-nav";
 import { MicroCommitments } from "@/components/micro-commitments";
@@ -113,7 +111,7 @@ const Section = dynamic(() => import("@/components/section"), {
 
 // Changed from feature-card to ui/feature-card
 const FeatureCard = dynamic(
-  () => import("@/components/ui/feature-card").then((mod) => mod.FeatureCard),
+  () => import("@/components/ui/feature-card").then((mod) => mod.default),
   {
     ssr: true,
   },
@@ -123,6 +121,7 @@ const TestimonialCard = dynamic(() => import("@/components/testimonial-card"), {
   ssr: true,
 });
 
+import {
   Container,
   Card,
   Heading,
@@ -131,6 +130,8 @@ const TestimonialCard = dynamic(() => import("@/components/testimonial-card"), {
   Stack,
   Badge,
   Quote,
+} from "@/components/ui";
+
 const RevealOnScroll = dynamic(
   () =>
     import("@/components/ui/page-transition").then((mod) => mod.RevealOnScroll),
@@ -210,13 +211,13 @@ export default function HomePage() {
       <div className="page-container">
         {/* Floating CTA - Shows after scroll on desktop */}
         <FloatingCTA
-          text="🔥 July 9th Strategy: Community Release Plan"
-          href="/july-9-strategy"
+          text="✍️ Write Letter to Judge Ferrero - 1,050 Goal!"
+          href="/letter-form-test"
           showAfterScroll={300}
         />
 
         {/* Mobile sticky bar - Always visible on mobile */}
-        <MobileStickyBar text="🔥 July 9 Strategy" href="/july-9-strategy" />
+        <MobileStickyBar text="✍️ Write Letter Now!" href="/letter-form-test" />
 
         {/* Prophetic Moment - First Thing Users See */}
         {triggerProphetic && (
@@ -620,7 +621,7 @@ export default function HomePage() {
               {/* Social Proof Counter */}
               <RevealOnScroll>
                 <div className="mb-12">
-                  <LiveSupporterCount
+                  <SupporterCount
                     current={1247}
                     goal={5000}
                     variant="hero"

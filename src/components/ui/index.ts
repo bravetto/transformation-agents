@@ -20,7 +20,7 @@ export * from "./container";
 export * from "./date-picker";
 export * from "./divine-error-boundary";
 export * from "./divine-image";
-export * from "./feature-card"; // This exports the FeatureCard as a named export, not default
+export { default as FeatureCard } from "./feature-card";
 export * from "./file-upload";
 export * from "./floating-cta";
 export * from "./form";

@@ -3,6 +3,7 @@ export {
   BridgePromptTemplate,
   PromptTemplateService,
   promptTemplateService,
+} from "./template-service";
 
 // Template exports
 import baseTemplate from "./templates/base";

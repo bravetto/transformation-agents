@@ -12,6 +12,7 @@ import {
   BarChart3,
   Lock,
   Eye,
+} from "lucide-react";
 
 interface RiskData {
   concern: string;

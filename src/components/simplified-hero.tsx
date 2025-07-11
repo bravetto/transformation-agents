@@ -17,7 +17,7 @@ function SimplifiedHero() {
 
   useEffect(() => {
     const updateTimer = () => {
-      const courtDate = new Date("2025-07-09T09:00:00-04:00");
+      const courtDate = new Date("2025-07-28T09:00:00-04:00");
       const now = new Date();
       const diff = courtDate.getTime() - now.getTime();
 
@@ -103,7 +103,7 @@ function SimplifiedHero() {
             transition={{ delay: 0.3 }}
             className="pt-4"
           >
-            <Link href="/july-9-strategy">
+            <Link href="/july-28-strategy">
               <Button
                 size="lg"
                 className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
@@ -174,7 +174,7 @@ export function WhatHappensNext() {
             animate={{ opacity: 1, y: 0 }}
             className="text-3xl font-bold text-center mb-8"
           >
-            What Happens July 9th?
+            What Happens July 28th?
           </motion.h2>
 
           <div className="space-y-6">

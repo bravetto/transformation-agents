@@ -5,6 +5,7 @@ import {
   UserProfile,
   TemplateSection,
   PromptTemplateConfig,
+} from "./types";
 
 /**
  * Implementation of the PromptTemplate interface for The Bridge Project

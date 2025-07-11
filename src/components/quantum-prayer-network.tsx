@@ -14,6 +14,7 @@ import {
   Circle,
   Activity,
   Sparkles,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface PrayerNode {

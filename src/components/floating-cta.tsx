@@ -109,13 +109,13 @@ function FloatingCTAExported() {
                   </motion.button>
                 </Link>
 
-                <Link href="/july-9-strategy" className="flex-1">
+                <Link href="/july-28-strategy" className="flex-1">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="w-full bg-white/20 backdrop-blur text-white font-semibold py-3 px-4 rounded-lg border border-white/30 hover:bg-white/30 transition-all text-sm"
                   >
-                    July 9th
+                    July 28th
                   </motion.button>
                 </Link>
               </div>

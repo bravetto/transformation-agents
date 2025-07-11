@@ -60,6 +60,17 @@ function ImpactDashboard() {
   const [isExpanded, setIsExpanded] = useState(true);
   const [daysUntilIndependence, setDaysUntilIndependence] = useState(0);
 
+  // Add new state for recent activity
+  const [recentActivity, setRecentActivity] = useState<
+    Array<{
+      id: string;
+      type: "letter" | "heart" | "youth";
+      name: string;
+      location: string;
+      timestamp: Date;
+    }>
+  >([]);
+
   useEffect(() => {
     // Only run in browser environment
     if (typeof window === "undefined") return;
@@ -163,12 +174,54 @@ function ImpactDashboard() {
     // Update countdown every minute to catch day changes
     const interval = setInterval(updateCountdown, 60000);
 
+    // Simulate real-time activity updates
+    const activityTimer = setInterval(() => {
+      if (Math.random() > 0.7) {
+        // 30% chance every 10 seconds
+        const activities = [
+          { type: "letter" as const, name: "Sarah M.", location: "Miami, FL" },
+          {
+            type: "letter" as const,
+            name: "Michael R.",
+            location: "Tampa, FL",
+          },
+          {
+            type: "heart" as const,
+            name: "Jennifer K.",
+            location: "Orlando, FL",
+          },
+          {
+            type: "youth" as const,
+            name: "Alex P.",
+            location: "Jacksonville, FL",
+          },
+          {
+            type: "letter" as const,
+            name: "David L.",
+            location: "Atlanta, GA",
+          },
+          { type: "heart" as const, name: "Maria S.", location: "Houston, TX" },
+        ];
+
+        const randomActivity =
+          activities[Math.floor(Math.random() * activities.length)];
+        const newActivity = {
+          id: Date.now().toString(),
+          ...randomActivity,
+          timestamp: new Date(),
+        };
+
+        setRecentActivity((prev) => [newActivity, ...prev.slice(0, 4)]); // Keep only 5 most recent
+      }
+    }, 10000); // Every 10 seconds
+
     return () => {
       window.removeEventListener(
         "impact-update",
         handleImpact as EventListener,
       );
       clearInterval(interval);
+      clearInterval(activityTimer);
     };
   }, []);
 
@@ -273,6 +326,38 @@ function ImpactDashboard() {
                 No Simulations • No Fakes
               </p>
             </div>
+
+            {/* Recent Activity */}
+            {recentActivity.length > 0 && (
+              <div className="mt-4 pt-4 border-t border-quiet-stone">
+                <h4 className="text-xs font-semibold text-soft-shadow mb-2 text-center">
+                  Recent Activity
+                </h4>
+                <div className="space-y-2 max-h-24 overflow-y-auto">
+                  {recentActivity.map((activity) => (
+                    <motion.div
+                      key={activity.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="text-xs text-soft-shadow flex items-center gap-2"
+                    >
+                      {activity.type === "letter" && (
+                        <Mail className="h-3 w-3 text-courage-blue flex-shrink-0" />
+                      )}
+                      {activity.type === "heart" && (
+                        <Heart className="h-3 w-3 text-hope-gold flex-shrink-0" />
+                      )}
+                      {activity.type === "youth" && (
+                        <Users className="h-3 w-3 text-growth-green flex-shrink-0" />
+                      )}
+                      <span className="truncate">
+                        {activity.name} from {activity.location}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Your Impact */}
             <motion.button

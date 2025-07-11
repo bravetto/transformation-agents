@@ -10,6 +10,7 @@ import {
   Wifi,
   AlertTriangle,
   CheckCircle,
+} from "lucide-react";
 
 function PerformanceMonitorPage() {
   const [metrics, setMetrics] = useState({

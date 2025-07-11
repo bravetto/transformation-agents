@@ -15,6 +15,7 @@ import {
   Shield,
   Zap,
   MessageSquare,
+} from "lucide-react";
 
 function DungyOneTweetCore() {
   const [reachCount, setReachCount] = useState(0);
