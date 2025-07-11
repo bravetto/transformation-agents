@@ -6,6 +6,7 @@ import { Check, Share2, Twitter, Facebook, Copy } from "lucide-react";
 import { Button } from "./button";
 import { cn } from "@/lib/utils";
 import confetti from "canvas-confetti";
+import { withSafeUI } from "./with-safe-ui";
 
 interface SuccessCelebrationProps {
   show: boolean;
@@ -17,7 +18,7 @@ interface SuccessCelebrationProps {
   className?: string;
 }
 
-export function SuccessCelebration({
+function SuccessCelebration({
   show,
   onClose,
   supporterNumber = 1248,
@@ -230,3 +231,7 @@ export function SuccessCelebration({
     </AnimatePresence>
   );
 }
+
+export default withSafeUI(SuccessCelebration, {
+  componentName: "SuccessCelebration",
+});

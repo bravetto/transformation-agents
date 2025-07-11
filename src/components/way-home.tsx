@@ -1,9 +1,13 @@
 "use client";
 
 import React from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
+
 import { DivineParticles } from "./divine-particles";
+
 import { cn } from "@/lib/utils";
+
 import type { DivineRole } from "@/lib/design-system";
 
 interface WayHomeProps {
@@ -76,7 +80,7 @@ const containerVariants = {
   },
 };
 
-export function WayHome({ role = "default", className }: WayHomeProps) {
+function WayHome({ role = "default", className }: WayHomeProps) {
   return (
     <div
       className={cn(
@@ -180,3 +184,8 @@ export function WayHome({ role = "default", className }: WayHomeProps) {
     </div>
   );
 }
+
+export default withErrorBoundary(WayHome, {
+  componentName: "WayHome",
+  id: "wayhome",
+});

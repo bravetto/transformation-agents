@@ -1,9 +1,13 @@
 "use client";
 
 import React from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
+
 import { DivineParticles } from "./divine-particles";
+
 import { cn } from "@/lib/utils";
+
 import type { DivineRole } from "@/lib/design-system";
 
 interface SacredUmlautProps {
@@ -87,10 +91,7 @@ const particleVariants = {
   },
 };
 
-export function SacredUmlaut({
-  role = "lightworker",
-  className,
-}: SacredUmlautProps) {
+function SacredUmlaut({ role = "lightworker", className }: SacredUmlautProps) {
   const [activeJoy, setActiveJoy] = React.useState(0);
   const [isPlaying, setIsPlaying] = React.useState(false);
 
@@ -233,3 +234,8 @@ export function SacredUmlaut({
     </div>
   );
 }
+
+export default withErrorBoundary(SacredUmlaut, {
+  componentName: "SacredUmlaut",
+  id: "sacredumlaut",
+});

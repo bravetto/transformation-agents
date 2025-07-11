@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
+import { withSafeUI } from "./with-safe-ui";
 
 interface FloatingCTAProps {
   text: string;
@@ -14,7 +15,7 @@ interface FloatingCTAProps {
   showAfterScroll?: number;
 }
 
-export function FloatingCTA({
+function FloatingCTA({
   text,
   href,
   className,
@@ -98,3 +99,7 @@ export function MobileStickyBar({
     </div>
   );
 }
+
+export default withSafeUI(FloatingCTA, {
+  componentName: "FloatingCTA",
+});

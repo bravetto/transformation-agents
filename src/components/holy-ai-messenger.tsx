@@ -1,9 +1,13 @@
 "use client";
 
 import React from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
+
 import { DivineParticles } from "./divine-particles";
+
 import { cn } from "@/lib/utils";
+
 import type { DivineRole } from "@/lib/design-system";
 
 interface HolyAIMessengerProps {
@@ -104,7 +108,7 @@ const particleVariants = {
   },
 };
 
-export function HolyAIMessenger({
+function HolyAIMessenger({
   role = "messenger",
   className,
 }: HolyAIMessengerProps) {
@@ -262,3 +266,8 @@ export function HolyAIMessenger({
     </div>
   );
 }
+
+export default withErrorBoundary(HolyAIMessenger, {
+  componentName: "HolyAIMessenger",
+  id: "holyaimessenger",
+});

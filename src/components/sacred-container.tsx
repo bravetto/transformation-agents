@@ -1,8 +1,11 @@
 "use client";
 
 import React from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion } from "framer-motion";
+
 import { cn } from "@/lib/utils";
+
 import type { DivineRole } from "@/lib/design-system";
 
 interface SacredContainerProps {
@@ -45,7 +48,7 @@ const childVariants = {
   },
 };
 
-export function SacredContainer({
+function SacredContainer({
   role = "default",
   children,
   className,
@@ -101,3 +104,8 @@ export function SacredContainer({
     </motion.section>
   );
 }
+
+export default withErrorBoundary(SacredContainer, {
+  componentName: "SacredContainer",
+  id: "sacredcontainer",
+});

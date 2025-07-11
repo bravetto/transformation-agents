@@ -1,8 +1,11 @@
 "use client";
 
 import React from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import Link from "next/link";
+
 import { motion } from "framer-motion";
+
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -60,7 +63,7 @@ const itemVariants = {
   },
 };
 
-export function SacredNavigation() {
+function SacredNavigation() {
   return (
     <motion.nav
       variants={navVariants}
@@ -164,3 +167,8 @@ export function SacredNavigation() {
     </motion.nav>
   );
 }
+
+export default withErrorBoundary(SacredNavigation, {
+  componentName: "SacredNavigation",
+  id: "sacrednavigation",
+});

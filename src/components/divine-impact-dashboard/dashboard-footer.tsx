@@ -1,0 +1,106 @@
+"use client";
+
+import React from "react";
+import { Download, Share2 } from "lucide-react";
+import { useDashboard } from "./context";
+import { withErrorBoundary } from "@/components/with-error-boundary";
+
+/**
+ * Dashboard Footer Component
+ * Displays action buttons and additional information at the bottom of the dashboard
+ */
+function DashboardFooter() {
+  const { metrics } = useDashboard();
+
+  const handleExport = () => {
+    try {
+      // Create CSV data
+      const headers = ["Metric", "Value", "Trend", "Description"];
+      const rows = metrics.map((metric) => [
+        metric.title,
+        `${metric.value}${metric.suffix || ""}`,
+        metric.trend
+          ? `${metric.trend.value}% ${metric.trend.direction}`
+          : "N/A",
+        metric.description,
+      ]);
+
+      const csvContent = [
+        headers.join(","),
+        ...rows.map((row) => row.join(",")),
+      ].join("\n");
+
+      // Create a blob and download link
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute(
+        "download",
+        `divine-impact-dashboard-${new Date().toISOString().split("T")[0]}.csv`,
+      );
+      link.style.display = "none";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error exporting data:", error);
+    }
+  };
+
+  const handleShare = () => {
+    try {
+      // Create shareable text
+      const shareText = `Check out the Divine Impact Dashboard for The Bridge Project!\n\nKey metrics:\n${metrics
+        .slice(0, 3)
+        .map((m) => `- ${m.title}: ${m.value}${m.suffix || ""}`)
+        .join("\n")}\n\nView the full dashboard at: ${window.location.href}`;
+
+      // Use Web Share API if available
+      if (navigator.share) {
+        navigator.share({
+          title: "Divine Impact Dashboard",
+          text: shareText,
+          url: window.location.href,
+        });
+      } else {
+        // Fallback to clipboard
+        navigator.clipboard.writeText(shareText);
+        alert("Dashboard information copied to clipboard!");
+      }
+    } catch (error) {
+      console.error("Error sharing data:", error);
+    }
+  };
+
+  return (
+    <div className="flex flex-col sm:flex-row justify-between items-center mt-6 pt-4 border-t border-gray-200 dark:border-gray-800">
+      <div className="text-sm text-gray-500 dark:text-gray-400 mb-4 sm:mb-0">
+        Showing {metrics.length} impact metrics
+      </div>
+
+      <div className="flex space-x-3">
+        <button
+          onClick={handleExport}
+          className="flex items-center px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded transition-colors"
+        >
+          <Download className="h-4 w-4 mr-1.5" />
+          Export
+        </button>
+
+        <button
+          onClick={handleShare}
+          className="flex items-center px-3 py-1.5 text-sm bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded transition-colors"
+        >
+          <Share2 className="h-4 w-4 mr-1.5" />
+          Share
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default withErrorBoundary(DashboardFooter, {
+  componentName: "DashboardFooter",
+  id: "dashboardfooter",
+});

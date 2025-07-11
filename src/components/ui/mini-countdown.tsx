@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { withSafeUI } from "./with-safe-ui";
 
 interface MiniCountdownProps {
   targetDate: Date;
@@ -11,7 +12,7 @@ interface MiniCountdownProps {
   linkHref?: string;
 }
 
-export function MiniCountdown({
+function MiniCountdown({
   targetDate,
   className,
   linkHref = "/the-case",
@@ -71,3 +72,7 @@ export function MiniCountdown({
     </Link>
   );
 }
+
+export default withSafeUI(MiniCountdown, {
+  componentName: "MiniCountdown",
+});

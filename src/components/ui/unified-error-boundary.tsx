@@ -2,6 +2,7 @@
 
 import { Component, ReactNode } from "react";
 import type { DivineRole } from "@/lib/design-system";
+import { withSafeUI } from "./with-safe-ui";
 
 interface UnifiedErrorBoundaryProps {
   children: ReactNode;
@@ -61,7 +62,7 @@ class UnifiedErrorBoundaryBase extends Component<
 }
 
 // Higher-order component for wrapping components with unified error boundary
-export function withUnifiedErrorBoundary<P extends object>(
+function withUnifiedErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
   options: {
     componentName: string;
@@ -85,3 +86,7 @@ export function withUnifiedErrorBoundary<P extends object>(
 }
 
 export default UnifiedErrorBoundaryBase;
+
+export default withSafeUI(withUnifiedErrorBoundary, {
+  componentName: "withUnifiedErrorBoundary",
+});

@@ -5,6 +5,7 @@ import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BaseCard } from "./base-card";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withSafeUI } from "./with-safe-ui";
 
 /**
  * Props for the FeatureCard component
@@ -132,11 +133,15 @@ const FeatureCardComponent = memo<FeatureCardProps>(
 
 FeatureCardComponent.displayName = "FeatureCard";
 
-export const FeatureCard = withDivineErrorBoundary(FeatureCardComponent, {
+const FeatureCard = withDivineErrorBoundary(FeatureCardComponent, {
   componentName: "FeatureCard",
   fallback: (
     <div className="p-6 bg-red-50 text-red-600 rounded-lg">
       Feature card failed to load
     </div>
   ),
+});
+
+export default withSafeUI(FeatureCard, {
+  componentName: "FeatureCard",
 });

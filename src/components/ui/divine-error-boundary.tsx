@@ -2,6 +2,7 @@
 
 import { Component, ReactNode } from "react";
 import type { DivineRole } from "@/lib/design-system";
+import { withSafeUI } from "./with-safe-ui";
 
 // Re-export the DivineRole type for backward compatibility
 export type { DivineRole } from "@/lib/design-system";
@@ -64,7 +65,7 @@ export class DivineErrorBoundary extends Component<
 }
 
 // Higher-order component for wrapping components with divine error boundary
-export function withDivineErrorBoundary<P extends object>(
+function withDivineErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
   options: {
     componentName: string;
@@ -88,3 +89,7 @@ export function withDivineErrorBoundary<P extends object>(
 }
 
 export default DivineErrorBoundary;
+
+export default withSafeUI(withDivineErrorBoundary, {
+  componentName: "withDivineErrorBoundary",
+});

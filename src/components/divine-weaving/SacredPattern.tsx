@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { cn } from "@/lib/utils";
 
 interface SacredNode {
@@ -93,7 +94,7 @@ const sacredNodes: SacredNode[] = [
   },
 ];
 
-export function SacredPattern({ className }: SacredPatternProps) {
+function SacredPattern({ className }: SacredPatternProps) {
   return (
     <div
       className={cn(
@@ -212,3 +213,8 @@ export function SacredPattern({ className }: SacredPatternProps) {
     </div>
   );
 }
+
+export default withErrorBoundary(SacredPattern, {
+  componentName: "SacredPattern",
+  id: "sacredpattern",
+});

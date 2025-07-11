@@ -1,9 +1,13 @@
 "use client";
 
 import React from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
+
 import { DivineParticles } from "./divine-particles";
+
 import { cn } from "@/lib/utils";
+
 import type { DivineRole } from "@/lib/design-system";
 
 interface DivineRevelationProps {
@@ -60,7 +64,7 @@ const particleVariants = {
   },
 };
 
-export function DivineRevelation({
+function DivineRevelation({
   role = "default",
   className,
 }: DivineRevelationProps) {
@@ -151,3 +155,8 @@ export function DivineRevelation({
     </div>
   );
 }
+
+export default withErrorBoundary(DivineRevelation, {
+  componentName: "DivineRevelation",
+  id: "divinerevelation",
+});

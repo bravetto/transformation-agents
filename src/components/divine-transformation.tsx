@@ -1,10 +1,15 @@
 "use client";
 
 import React from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
+
 import { DivineParticles } from "./divine-particles";
+
 import DivineImage from "./ui/divine-image";
+
 import { cn } from "@/lib/utils";
+
 import type { DivineRole } from "@/lib/design-system";
 
 interface DivineTransformationProps {
@@ -47,7 +52,7 @@ const roleConfig = {
   },
 };
 
-export function DivineTransformation({
+function DivineTransformation({
   role = "default",
   children,
   className,
@@ -88,3 +93,8 @@ export function DivineTransformation({
     </motion.div>
   );
 }
+
+export default withErrorBoundary(DivineTransformation, {
+  componentName: "DivineTransformation",
+  id: "divinetransformation",
+});

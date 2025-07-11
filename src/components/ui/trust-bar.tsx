@@ -3,16 +3,14 @@
 import { motion } from "framer-motion";
 import { Shield, Award, Users, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { withSafeUI } from "./with-safe-ui";
 
 interface TrustBarProps {
   className?: string;
   variant?: "default" | "minimal";
 }
 
-export function TrustBar({
-  className = "",
-  variant = "default",
-}: TrustBarProps) {
+function TrustBar({ className = "", variant = "default" }: TrustBarProps) {
   const trustItems = [
     {
       icon: <Award className="w-4 h-4" />,
@@ -91,3 +89,7 @@ export function TrustBar({
     </div>
   );
 }
+
+export default withSafeUI(TrustBar, {
+  componentName: "TrustBar",
+});

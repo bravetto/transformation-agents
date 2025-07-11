@@ -1,12 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Button } from "@/components/ui/button";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Card } from "@/components/ui/card";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Input } from "@/components/ui/input";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Select } from "@/components/ui/select";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Container, Heading, Text } from "@/components/ui";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { toast } from "@/components/ui/toast";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 
 /**
  * Example component demonstrating ClickUp CRM integration
@@ -346,3 +353,9 @@ export default function ClickUpCRMDemo() {
     </Container>
   );
 }
+
+// Export with error boundary
+export default withErrorBoundary(ClickUpCRMDemoExported, {
+  componentName: "clickup-crm-demo",
+  id: "clickup-crm-demo",
+});

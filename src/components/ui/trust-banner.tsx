@@ -3,16 +3,14 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Check, Shield, DollarSign, Users } from "lucide-react";
+import { withSafeUI } from "./with-safe-ui";
 
 interface TrustBannerProps {
   className?: string;
   variant?: "default" | "minimal" | "detailed";
 }
 
-export function TrustBanner({
-  className,
-  variant = "default",
-}: TrustBannerProps) {
+function TrustBanner({ className, variant = "default" }: TrustBannerProps) {
   const items = [
     { icon: Users, text: "Endorsed by Tony Dungy", key: "dungy" },
     { icon: Shield, text: "Pending Judge Ferrero Review", key: "judge" },
@@ -160,3 +158,7 @@ export function AnimatedTrustBanner({ className }: TrustBannerProps) {
     </div>
   );
 }
+
+export default withSafeUI(TrustBanner, {
+  componentName: "TrustBanner",
+});

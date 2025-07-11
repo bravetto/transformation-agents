@@ -1,10 +1,15 @@
 "use client";
 
 import React from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Card, Text, Heading } from "@/components/ui";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { RevealOnScroll } from "@/components/ui/page-transition";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { cn } from "@/lib/utils";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { ArrowRight } from "lucide-react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 
 interface FeatureCardProps {
   title: string;
@@ -162,3 +167,9 @@ export default function FeatureCard({
     </RevealOnScroll>
   );
 }
+
+// Export with error boundary
+export default withErrorBoundary(FeatureCardExported, {
+  componentName: "feature-card",
+  id: "feature-card",
+});

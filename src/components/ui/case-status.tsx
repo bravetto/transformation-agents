@@ -4,13 +4,14 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Check, Clock, Target, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { withSafeUI } from "./with-safe-ui";
 
 interface CaseStatusProps {
   className?: string;
   variant?: "inline" | "detailed" | "timeline";
 }
 
-export function CaseStatus({ className, variant = "inline" }: CaseStatusProps) {
+function CaseStatus({ className, variant = "inline" }: CaseStatusProps) {
   const steps = [
     {
       status: "complete",
@@ -179,3 +180,7 @@ export function CaseStatus({ className, variant = "inline" }: CaseStatusProps) {
     </div>
   );
 }
+
+export default withSafeUI(CaseStatus, {
+  componentName: "CaseStatus",
+});

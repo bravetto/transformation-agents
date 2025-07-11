@@ -1,0 +1,154 @@
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { DivineParticles } from "@/components/divine-particles";
+import { cn } from "@/lib/utils";
+import type { MetricCardProps } from "./types";
+import { withErrorBoundary } from "@/components/with-error-boundary";
+
+/**
+ * Metric Card Component
+ * Displays a single metric with animations and trend indicators
+ */
+function MetricCard({
+  metric,
+  animate = false,
+  className = "",
+}: MetricCardProps) {
+  const Icon = metric.icon;
+  const TrendIcon =
+    metric.trend?.direction === "up"
+      ? TrendingUp
+      : metric.trend?.direction === "down"
+        ? TrendingDown
+        : Minus;
+
+  const trendColorClass =
+    metric.trend?.direction === "up"
+      ? "text-green-500"
+      : metric.trend?.direction === "down"
+        ? "text-red-500"
+        : "text-gray-400";
+
+  // Calculate progress percentage if goal exists
+  const progressPercentage = metric.goal
+    ? Math.min(100, (metric.value / metric.goal) * 100)
+    : null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className={cn(
+        "relative overflow-hidden rounded-xl shadow-lg p-6",
+        `bg-gradient-to-br ${metric.gradient}`,
+        "text-white",
+        className,
+      )}
+    >
+      {/* Background particles */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
+        <DivineParticles
+          variant="minimal"
+          intensity="low"
+          interactive={false}
+        />
+      </div>
+
+      {/* Content container */}
+      <div className="relative z-10">
+        {/* Header with icon and title */}
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-medium">{metric.title}</h3>
+          <div className="p-2 bg-white/20 rounded-lg">
+            <Icon className="h-5 w-5" />
+          </div>
+        </div>
+
+        {/* Value with animation */}
+        <div className="mb-2">
+          {animate ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="text-3xl font-bold flex items-baseline"
+            >
+              <motion.span
+                key={metric.value}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              >
+                {metric.value.toLocaleString()}
+              </motion.span>
+              {metric.suffix && (
+                <span className="ml-1 text-xl opacity-80">{metric.suffix}</span>
+              )}
+            </motion.div>
+          ) : (
+            <div className="text-3xl font-bold flex items-baseline">
+              <span>{metric.value.toLocaleString()}</span>
+              {metric.suffix && (
+                <span className="ml-1 text-xl opacity-80">{metric.suffix}</span>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Description */}
+        <p className="text-sm opacity-80 mb-4">{metric.description}</p>
+
+        {/* Progress bar if goal exists */}
+        {progressPercentage !== null && (
+          <div className="mb-3">
+            <div className="h-2 bg-black/20 rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${progressPercentage}%` }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+                className="h-full bg-white/70 rounded-full"
+              />
+            </div>
+            <div className="flex justify-between mt-1 text-xs opacity-80">
+              <span>Progress</span>
+              <span>
+                {Math.round(progressPercentage)}% of {metric.goal}
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Trend indicator */}
+        {metric.trend && (
+          <div className="flex items-center mt-2">
+            <div className={`flex items-center ${trendColorClass}`}>
+              <TrendIcon className="h-4 w-4 mr-1" />
+              <span className="text-sm font-medium">
+                {metric.trend.value.toFixed(1)}%
+              </span>
+            </div>
+            <span className="text-xs opacity-70 ml-2">
+              {metric.trend.timeframe}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Pulse effect for real-time metrics */}
+      <div className="absolute top-3 right-3">
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+        </span>
+      </div>
+    </motion.div>
+  );
+}
+
+export default withErrorBoundary(MetricCard, {
+  componentName: "MetricCard",
+  id: "metriccard",
+});

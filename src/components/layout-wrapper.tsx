@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 
 // Dynamic imports for client components
 const Navigation = dynamic(() => import("@/components/navigation"), {
@@ -79,3 +80,9 @@ export default function LayoutWrapper({
     </>
   );
 }
+
+// Export with error boundary
+export default withErrorBoundary(LayoutWrapperExported, {
+  componentName: "layout-wrapper",
+  id: "layout-wrapper",
+});

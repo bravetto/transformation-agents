@@ -6,12 +6,13 @@ import { FileText, BarChart, User, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { withSafeUI } from "./with-safe-ui";
 
 interface ExploreNavProps {
   className?: string;
 }
 
-export function ExploreNav({ className = "" }: ExploreNavProps) {
+function ExploreNav({ className = "" }: ExploreNavProps) {
   const navItems = [
     {
       icon: <FileText className="w-6 h-6 text-white" />,
@@ -78,3 +79,7 @@ export function ExploreNav({ className = "" }: ExploreNavProps) {
     </div>
   );
 }
+
+export default withSafeUI(ExploreNav, {
+  componentName: "ExploreNav",
+});

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
+import { withSafeUI } from "./with-safe-ui";
 
 interface ResponsiveContainerProps {
   children: React.ReactNode;
@@ -11,7 +12,7 @@ interface ResponsiveContainerProps {
   padding?: boolean;
 }
 
-export function ResponsiveContainer({
+function ResponsiveContainer({
   children,
   size = "default",
   centered = true,
@@ -39,3 +40,7 @@ export function ResponsiveContainer({
     </div>
   );
 }
+
+export default withSafeUI(ResponsiveContainer, {
+  componentName: "ResponsiveContainer",
+});

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { cn } from "@/lib/utils";
 
 interface DailyBreadProps {
@@ -51,7 +52,7 @@ const sacredOfferings: BreadOffering[] = [
   },
 ];
 
-export function DailyBread({ className }: DailyBreadProps) {
+function DailyBread({ className }: DailyBreadProps) {
   return (
     <div className={cn("relative w-full max-w-4xl mx-auto", className)}>
       {/* Sacred Loaf */}
@@ -145,3 +146,8 @@ export function DailyBread({ className }: DailyBreadProps) {
     </div>
   );
 }
+
+export default withErrorBoundary(DailyBread, {
+  componentName: "DailyBread",
+  id: "dailybread",
+});

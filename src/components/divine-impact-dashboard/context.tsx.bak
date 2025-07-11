@@ -1,0 +1,97 @@
+"use client";
+
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { generateMockData } from "./mock-data";
+import type { DashboardContextType, DashboardProviderProps, MetricCard } from "./types";
+
+// Create the context with a default value
+const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
+
+/**
+ * Custom hook to use the dashboard context
+ */
+export function useDashboard() {
+  const context = useContext(DashboardContext);
+  if (context === undefined) {
+    throw new Error("useDashboard must be used within a DashboardProvider");
+  }
+  return context;
+}
+
+/**
+ * Dashboard Provider Component
+ * Manages state and data fetching for the dashboard
+ */
+export function DashboardProvider({
+  children,
+  refreshInterval = 30000, // default to 30 seconds
+  autoRefresh = true,
+  defaultRole = "messenger",
+  initialMetrics = [],
+}: DashboardProviderProps) {
+  // State for metrics data
+  const [metrics, setMetrics] = useState<MetricCard[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+
+  // Function to fetch/generate data
+  const refreshData = useCallback(async () => {
+    try {
+      setLoading(true);
+      
+      // In a real app, this would be an API call
+      // For now, we're using mock data
+      const data = generateMockData();
+      
+      // If initial metrics were provided, merge them with the generated data
+      if (initialMetrics.length > 0) {
+        const mergedData = data.map(metric => {
+          const initialMetric = initialMetrics.find(m => m.id === metric.id);
+          return initialMetric ? { ...metric, ...initialMetric } : metric;
+        });
+        setMetrics(mergedData);
+      } else {
+        setMetrics(data);
+      }
+      
+      setLastUpdated(new Date());
+    } catch (error) {
+      console.error("Error refreshing dashboard data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [initialMetrics]);
+
+  // Initial data load
+  useEffect(() => {
+    refreshData();
+  }, [refreshData]);
+
+  // Set up auto-refresh interval
+  useEffect(() => {
+    if (!autoRefresh) return;
+    
+    const intervalId = setInterval(() => {
+      refreshData();
+    }, refreshInterval);
+    
+    return () => clearInterval(intervalId);
+  }, [autoRefresh, refreshInterval, refreshData]);
+
+  // Context value
+  const value: DashboardContextType = {
+    metrics,
+    loading,
+    lastUpdated,
+    refreshData,
+    refreshInterval,
+    autoRefresh,
+    defaultRole,
+  };
+
+  return (
+    <DashboardContext.Provider value={value}>
+      {children}
+    </DashboardContext.Provider>
+  );
+} 

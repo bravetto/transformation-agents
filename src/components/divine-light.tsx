@@ -1,9 +1,13 @@
 "use client";
 
 import React from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
+
 import { DivineParticles } from "./divine-particles";
+
 import { cn } from "@/lib/utils";
+
 import type { DivineRole } from "@/lib/design-system";
 
 interface DivineLightProps {
@@ -58,7 +62,7 @@ const rayVariants = {
   },
 };
 
-export function DivineLight({ role = "default", className }: DivineLightProps) {
+function DivineLight({ role = "default", className }: DivineLightProps) {
   const [activeVerse, setActiveVerse] = React.useState(0);
 
   React.useEffect(() => {
@@ -173,3 +177,8 @@ export function DivineLight({ role = "default", className }: DivineLightProps) {
     </div>
   );
 }
+
+export default withErrorBoundary(DivineLight, {
+  componentName: "DivineLight",
+  id: "divinelight",
+});

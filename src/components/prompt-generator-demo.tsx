@@ -1,13 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Card } from "@/components/ui/card";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Button } from "@/components/ui/button";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Textarea } from "@/components/ui/textarea";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Label } from "@/components/ui/label";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Select } from "@/components/ui/select";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Input } from "@/components/ui/input";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { ConversationContext, UserProfile } from "@/types/prompts";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 
 const defaultContext: ConversationContext = {
   goals: ["Understand the prompt system", "Learn about AI personalities"],
@@ -179,3 +187,9 @@ export default function PromptGeneratorDemo() {
     </div>
   );
 }
+
+// Export with error boundary
+export default withErrorBoundary(PromptGeneratorDemoExported, {
+  componentName: "prompt-generator-demo",
+  id: "prompt-generator-demo",
+});

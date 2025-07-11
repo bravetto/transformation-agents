@@ -1,9 +1,13 @@
 "use client";
 
 import React from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Card, Text, Quote } from "@/components/ui";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { RevealOnScroll } from "@/components/ui/page-transition";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { cn } from "@/lib/utils";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 
 interface TestimonialCardProps {
   quote: string;
@@ -66,3 +70,9 @@ export default function TestimonialCard({
     </RevealOnScroll>
   );
 }
+
+// Export with error boundary
+export default withErrorBoundary(TestimonialCardExported, {
+  componentName: "testimonial-card",
+  id: "testimonial-card",
+});

@@ -1,16 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 
 interface CountdownTimerProps {
   targetDate: Date;
   className?: string;
 }
 
-export function CountdownTimer({
-  targetDate,
-  className = "",
-}: CountdownTimerProps) {
+function CountdownTimer({ targetDate, className = "" }: CountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState("");
 
   useEffect(() => {
@@ -42,3 +40,8 @@ export function CountdownTimer({
     </div>
   );
 }
+
+export default withErrorBoundary(CountdownTimer, {
+  componentName: "CountdownTimer",
+  id: "countdowntimer",
+});

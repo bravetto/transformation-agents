@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Users, TrendingUp, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { withSafeUI } from "./with-safe-ui";
 
 interface SupporterCountProps {
   current: number;
@@ -14,7 +15,7 @@ interface SupporterCountProps {
   showProgress?: boolean;
 }
 
-export function SupporterCount({
+function SupporterCount({
   current,
   goal = 5000,
   text = "supporters have written to Judge Ferrero",
@@ -186,3 +187,7 @@ export function LiveSupporterCount(props: SupporterCountProps) {
 
   return <SupporterCount {...props} current={current} />;
 }
+
+export default withSafeUI(SupporterCount, {
+  componentName: "SupporterCount",
+});

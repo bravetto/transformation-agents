@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { withErrorBoundary } from "@/components/with-error-boundary";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
   Container,
   Heading,
@@ -13,9 +14,8 @@ import {
 import Link from "next/link";
 import { ArrowRight, Calendar, Shield, ChevronDown, Users } from "lucide-react";
 import Section from "./section";
-import { useScroll, useTransform } from "framer-motion";
 
-export default function Hero() {
+function Hero() {
   const [daysSinceLaunch, setDaysSinceLaunch] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [mouseX, setMouseX] = useState(0);
@@ -251,3 +251,8 @@ export default function Hero() {
     </Section>
   );
 }
+
+export default withErrorBoundary(Hero, {
+  componentName: "Hero",
+  id: "hero",
+});

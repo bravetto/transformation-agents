@@ -1,8 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion } from "framer-motion";
+
 import { Card } from "@/components/ui/card";
+
 import {
   AlertTriangle,
   TrendingDown,
@@ -51,7 +54,7 @@ const consequences: Consequence[] = [
   },
 ];
 
-export function LossAversion() {
+function LossAversion() {
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -197,3 +200,8 @@ export function LossAversion() {
     </div>
   );
 }
+
+export default withErrorBoundary(LossAversion, {
+  componentName: "LossAversion",
+  id: "lossaversion",
+});

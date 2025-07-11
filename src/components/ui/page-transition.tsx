@@ -11,6 +11,7 @@ import {
 } from "framer-motion";
 import { animations } from "@/lib/design-system";
 import { useAnimation } from "@/components/animation-context";
+import { withSafeUI } from "./with-safe-ui";
 import {
   getPageTransitionVariants,
   getDivineAnimationPreset,
@@ -177,4 +178,6 @@ export const RevealOnScroll: React.FC<RevealOnScrollProps> = React.memo(
 
 RevealOnScroll.displayName = "RevealOnScroll";
 
-export default PageTransition;
+export default withSafeUI(PageTransition, {
+  componentName: "PageTransition",
+});

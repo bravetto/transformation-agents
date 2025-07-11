@@ -5,6 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import type { DivineRole } from "@/lib/design-system";
 import { getRoleColorClasses } from "@/lib/utils";
+import { withSafeUI } from "./with-safe-ui";
 
 /**
  * Button component using the design system
@@ -156,4 +157,12 @@ const RoleButton = React.forwardRef<
 });
 RoleButton.displayName = "RoleButton";
 
-export { Button, RoleButton, buttonVariants };
+const SafeButton = withSafeUI(Button, {
+  componentName: "Button",
+});
+
+const SafeRoleButton = withSafeUI(RoleButton, {
+  componentName: "RoleButton",
+});
+
+export { SafeButton as Button, SafeRoleButton as RoleButton, buttonVariants };

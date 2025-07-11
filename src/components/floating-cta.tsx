@@ -1,9 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Heart, X, Trophy } from "lucide-react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import Link from "next/link";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 
 export default function FloatingCTA() {
   const [isVisible, setIsVisible] = useState(false);
@@ -136,3 +140,9 @@ export default function FloatingCTA() {
     </AnimatePresence>
   );
 }
+
+// Export with error boundary
+export default withErrorBoundary(FloatingCTAExported, {
+  componentName: "floating-cta",
+  id: "floating-cta",
+});

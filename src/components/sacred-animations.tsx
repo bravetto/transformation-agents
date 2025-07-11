@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import {
   useSpring,
   animated,
@@ -19,7 +20,7 @@ interface SacredRevealProps {
   trigger?: boolean;
 }
 
-export function SacredReveal({
+function SacredReveal({
   children,
   delay = 0,
   direction = "up",
@@ -432,3 +433,8 @@ export function MagneticButton({
     </animated.div>
   );
 }
+
+export default withErrorBoundary(SacredReveal, {
+  componentName: "SacredReveal",
+  id: "sacredreveal",
+});

@@ -1,11 +1,17 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
+
 import { DivineTransformation } from "./divine-transformation";
+
 import { SacredContainer } from "./sacred-container";
+
 import { DivineParticles } from "./divine-particles";
+
 import { cn } from "@/lib/utils";
+
 import type { DivineRole } from "@/lib/design-system";
 
 interface SacredExperienceProps {
@@ -90,7 +96,7 @@ const sacredTriads = [
   },
 ];
 
-export function SacredExperience({
+function SacredExperience({
   role = "default",
   className,
 }: SacredExperienceProps) {
@@ -193,3 +199,8 @@ export function SacredExperience({
     </SacredContainer>
   );
 }
+
+export default withErrorBoundary(SacredExperience, {
+  componentName: "SacredExperience",
+  id: "sacredexperience",
+});

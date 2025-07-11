@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion } from "framer-motion";
 import {
   Shield,
@@ -21,7 +22,7 @@ interface RiskData {
   status: "addressed" | "monitoring" | "guaranteed";
 }
 
-export default function RiskMitigation() {
+function RiskMitigation() {
   const [selectedRisk, setSelectedRisk] = useState<number | null>(null);
 
   const risks: RiskData[] = [
@@ -298,3 +299,8 @@ export default function RiskMitigation() {
     </div>
   );
 }
+
+export default withErrorBoundary(RiskMitigation, {
+  componentName: "RiskMitigation",
+  id: "risk-mitigation",
+});

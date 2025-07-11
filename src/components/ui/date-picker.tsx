@@ -12,6 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { DateRange } from "react-day-picker";
+import { withSafeUI } from "./with-safe-ui";
 
 interface DatePickerProps {
   date: Date | undefined;
@@ -21,7 +22,7 @@ interface DatePickerProps {
   disabled?: boolean;
 }
 
-export function DatePicker({
+function DatePicker({
   date,
   setDate,
   className,
@@ -125,3 +126,7 @@ export function DateRangePicker({
     </Popover>
   );
 }
+
+export default withSafeUI(DatePicker, {
+  componentName: "DatePicker",
+});

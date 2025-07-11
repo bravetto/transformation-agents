@@ -6,6 +6,7 @@ import { X, AlertCircle, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
 import Link from "next/link";
+import { withSafeUI } from "./with-safe-ui";
 
 interface UrgencyBannerProps {
   className?: string;
@@ -13,7 +14,7 @@ interface UrgencyBannerProps {
   supporterCount?: number;
 }
 
-export function UrgencyBanner({
+function UrgencyBanner({
   className,
   onDismiss,
   supporterCount = 247,
@@ -109,3 +110,7 @@ export function MinimalUrgencyBanner({ className }: UrgencyBannerProps) {
     </div>
   );
 }
+
+export default withSafeUI(UrgencyBanner, {
+  componentName: "UrgencyBanner",
+});

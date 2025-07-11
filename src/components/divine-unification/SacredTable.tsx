@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { cn } from "@/lib/utils";
+
 import { useState } from "react";
 
 interface SacredTableProps {
@@ -87,7 +89,7 @@ const divineGuests: DivineGuest[] = [
   },
 ];
 
-export function SacredTable({ className }: SacredTableProps) {
+function SacredTable({ className }: SacredTableProps) {
   const [selectedSeat, setSelectedSeat] = useState<number | null>(null);
 
   return (
@@ -264,3 +266,8 @@ export function SacredTable({ className }: SacredTableProps) {
     </div>
   );
 }
+
+export default withErrorBoundary(SacredTable, {
+  componentName: "SacredTable",
+  id: "sacredtable",
+});

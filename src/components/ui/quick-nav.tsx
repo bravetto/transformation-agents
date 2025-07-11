@@ -6,6 +6,7 @@ import { FileText, BarChart, User, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { withSafeUI } from "./with-safe-ui";
 
 interface QuickNavProps {
   className?: string;
@@ -13,7 +14,7 @@ interface QuickNavProps {
   showLabels?: boolean;
 }
 
-export function QuickNav({
+function QuickNav({
   className = "",
   variant = "default",
   showLabels = true,
@@ -88,3 +89,7 @@ export function QuickNav({
     </div>
   );
 }
+
+export default withSafeUI(QuickNav, {
+  componentName: "QuickNav",
+});

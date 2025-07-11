@@ -2,11 +2,13 @@
 
 import { Component, ReactNode } from "react";
 import { DivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { reportError } from "@/lib/analytics";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
   fallback?: ReactNode;
   componentName?: string;
+  onError?: (error: Error, errorInfo: React.ErrorInfo) => void;
 }
 
 interface ErrorBoundaryState {
@@ -33,6 +35,9 @@ export class ErrorBoundary extends Component<
       error,
       errorInfo,
     );
+    if (this.props.onError) {
+      this.props.onError(error, errorInfo);
+    }
   }
 
   render() {
@@ -55,6 +60,56 @@ export class ErrorBoundary extends Component<
 
     return this.props.children;
   }
+}
+
+interface WithErrorBoundaryOptions {
+  componentName?: string;
+  id?: string;
+  fallback?: ReactNode;
+}
+
+export function withErrorBoundary<P extends object>(
+  WrappedComponent: React.ComponentType<P>,
+  options: WithErrorBoundaryOptions | string,
+) {
+  // Handle string case for backward compatibility
+  const opts =
+    typeof options === "string" ? { componentName: options } : options;
+
+  const componentName =
+    opts.componentName ||
+    WrappedComponent.displayName ||
+    WrappedComponent.name ||
+    "Component";
+  const id = opts.id || componentName.toLowerCase().replace(/\s+/g, "-");
+
+  function WithErrorBoundary(props: P) {
+    const handleError = (error: Error, errorInfo: React.ErrorInfo) => {
+      // Log error to console
+      console.error(`Error in ${componentName}:`, error, errorInfo);
+
+      // Report to analytics
+      reportError(error, {
+        componentStack: errorInfo.componentStack,
+        boundaryId: id,
+        componentName,
+        location: typeof window !== "undefined" ? window.location.href : null,
+      });
+    };
+
+    return (
+      <ErrorBoundary
+        componentName={componentName}
+        onError={handleError}
+        fallback={opts.fallback}
+      >
+        <WrappedComponent {...props} />
+      </ErrorBoundary>
+    );
+  }
+
+  WithErrorBoundary.displayName = `withErrorBoundary(${componentName})`;
+  return WithErrorBoundary;
 }
 
 export function withUnifiedErrorBoundary<P extends object>(

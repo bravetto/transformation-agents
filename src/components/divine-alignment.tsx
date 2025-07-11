@@ -1,11 +1,17 @@
 "use client";
 
 import React from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion } from "framer-motion";
+
 import { DivineTransformation } from "./divine-transformation";
+
 import { SacredContainer } from "./sacred-container";
+
 import { DivineParticles } from "./divine-particles";
+
 import { cn } from "@/lib/utils";
+
 import type { DivineRole } from "@/lib/design-system";
 
 interface DivineAlignmentProps {
@@ -28,7 +34,7 @@ const alignmentVariants = {
   },
 };
 
-export function DivineAlignment({
+function DivineAlignment({
   role = "default",
   className,
   title,
@@ -98,3 +104,8 @@ export function DivineAlignment({
     </SacredContainer>
   );
 }
+
+export default withErrorBoundary(DivineAlignment, {
+  componentName: "DivineAlignment",
+  id: "divinealignment",
+});

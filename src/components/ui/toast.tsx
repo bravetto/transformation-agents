@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { withSafeUI } from "./with-safe-ui";
 
 interface ToastProps {
   message: string;
@@ -10,7 +11,7 @@ interface ToastProps {
   onClose?: () => void;
 }
 
-export function Toast({
+function Toast({
   message,
   type = "info",
   duration = 3000,
@@ -59,3 +60,7 @@ export function toast(message: string, type: ToastProps["type"] = "info") {
     toastContainer.dispatchEvent(event);
   }
 }
+
+export default withSafeUI(Toast, {
+  componentName: "Toast",
+});

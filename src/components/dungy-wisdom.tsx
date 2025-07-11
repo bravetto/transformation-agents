@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { BookOpen, Heart, ArrowRight } from "lucide-react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 
 const books = [
   {
@@ -143,3 +145,9 @@ export default function DungyWisdom() {
     </section>
   );
 }
+
+// Export with error boundary
+export default withErrorBoundary(DungyWisdomExported, {
+  componentName: "dungy-wisdom",
+  id: "dungy-wisdom",
+});

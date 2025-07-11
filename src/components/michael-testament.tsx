@@ -1,8 +1,11 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, useInView } from "framer-motion";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Heart, Briefcase, Shield, Star, ArrowRight } from "lucide-react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 
 export default function MichaelTestament() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -118,3 +121,9 @@ export default function MichaelTestament() {
     </section>
   );
 }
+
+// Export with error boundary
+export default withErrorBoundary(MichaelTestamentExported, {
+  componentName: "michael-testament",
+  id: "michael-testament",
+});

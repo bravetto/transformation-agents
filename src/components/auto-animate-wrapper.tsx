@@ -1,7 +1,9 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import autoAnimate from "@formkit/auto-animate";
+
 import { cn } from "@/lib/utils";
 
 interface AutoAnimateProps {
@@ -12,7 +14,7 @@ interface AutoAnimateProps {
   disrespectUserMotionPreference?: boolean;
 }
 
-export function AutoAnimateContainer({
+function AutoAnimateContainer({
   children,
   className = "",
   duration = 250,
@@ -333,3 +335,8 @@ export function AutoAnimateAccordion({
     </div>
   );
 }
+
+export default withErrorBoundary(AutoAnimateContainer, {
+  componentName: "AutoAnimateContainer",
+  id: "autoanimatecontainer",
+});

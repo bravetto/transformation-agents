@@ -1,10 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
+
 import { Card } from "@/components/ui/card";
+
 import { Button } from "@/components/ui/button";
+
 import { CheckCircle2, Circle, ArrowRight } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 
 interface Commitment {
@@ -49,7 +54,7 @@ interface MicroCommitmentsProps {
   onComplete?: () => void;
 }
 
-export function MicroCommitments({ onComplete }: MicroCommitmentsProps) {
+function MicroCommitments({ onComplete }: MicroCommitmentsProps) {
   const [completed, setCompleted] = useState<string[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -224,3 +229,8 @@ export function MicroCommitments({ onComplete }: MicroCommitmentsProps) {
     </Card>
   );
 }
+
+export default withErrorBoundary(MicroCommitments, {
+  componentName: "MicroCommitments",
+  id: "microcommitments",
+});

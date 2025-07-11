@@ -1,9 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Heart, Activity, TrendingUp } from "lucide-react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { impactEvents } from "./impact-dashboard";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 
 interface HeartbeatMonitorProps {
   className?: string;
@@ -277,3 +281,9 @@ export default function HeartbeatMonitor({
     </div>
   );
 }
+
+// Export with error boundary
+export default withErrorBoundary(HeartbeatMonitorExported, {
+  componentName: "heartbeat-monitor",
+  id: "heartbeat-monitor",
+});

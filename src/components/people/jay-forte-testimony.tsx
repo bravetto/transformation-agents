@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import {
   Brain,
   Heart,
@@ -15,9 +16,10 @@ import {
   Quote,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
+
 import { Badge } from "@/components/ui/badge";
 
-export function JayForteTestimony() {
+function JayForteTestimony() {
   return (
     <section className="w-full py-16 bg-gradient-to-b from-indigo-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
       <div className="container-wide">
@@ -335,3 +337,8 @@ export function JayForteTestimony() {
     </section>
   );
 }
+
+export default withErrorBoundary(JayForteTestimony, {
+  componentName: "JayForteTestimony",
+  id: "jayfortetestimony",
+});

@@ -1,6 +1,7 @@
 "use client";
 
 import { Component, ReactNode } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 
 interface Props {
   children: ReactNode;
@@ -70,7 +71,7 @@ export class UnificationErrorBoundary extends Component<Props, State> {
 }
 
 // HOC for easy wrapping
-export function withUnificationErrorBoundary<P extends object>(
+function withUnificationErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
   componentName?: string,
 ) {
@@ -82,3 +83,8 @@ export function withUnificationErrorBoundary<P extends object>(
     );
   };
 }
+
+export default withErrorBoundary(withUnificationErrorBoundary, {
+  componentName: "withUnificationErrorBoundary",
+  id: "withunificationerrorboundary",
+});

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 
 interface Particle {
   x: number;
@@ -114,3 +115,9 @@ export default function CursorTrail() {
     />
   );
 }
+
+// Export with error boundary
+export default withErrorBoundary(CursorTrailExported, {
+  componentName: "cursor-trail",
+  id: "cursor-trail",
+});

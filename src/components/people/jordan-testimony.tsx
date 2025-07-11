@@ -1,11 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { Quote, Heart, Star, ExternalLink } from "lucide-react";
+
 import { Card } from "@/components/ui/card";
 
 // Full Jordan testimony that was removed from homepage
-export function JordanFullTestimony() {
+function JordanFullTestimony() {
   return (
     <section className="section-spacing">
       <div className="content-center">
@@ -302,3 +304,8 @@ export function JordanFullTestimony() {
     </section>
   );
 }
+
+export default withErrorBoundary(JordanFullTestimony, {
+  componentName: "JordanFullTestimony",
+  id: "jordanfulltestimony",
+});

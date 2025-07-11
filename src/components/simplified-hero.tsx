@@ -1,13 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion } from "framer-motion";
+
 import { Clock, Users, FileText } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
+
 import { Badge } from "@/components/ui/badge";
+
 import Link from "next/link";
 
-export function SimplifiedHero() {
+function SimplifiedHero() {
   const [timeUntilCourt, setTimeUntilCourt] = useState("");
 
   useEffect(() => {
@@ -248,3 +253,8 @@ export function WhatHappensNext() {
     </section>
   );
 }
+
+export default withErrorBoundary(SimplifiedHero, {
+  componentName: "SimplifiedHero",
+  id: "simplifiedhero",
+});

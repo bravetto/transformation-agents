@@ -1,8 +1,11 @@
 "use client";
 
 import React from "react";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion } from "framer-motion";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 import { cn } from "@/lib/utils";
+import { withErrorBoundary } from "@/components/with-error-boundary";
 
 interface VennDiagramProps {
   className?: string;
@@ -110,4 +113,10 @@ export const VennDiagram: React.FC<VennDiagramProps> = ({
   );
 };
 
-export default VennDiagram;
+const VennDiagramExported = VennDiagram;
+
+// Export with error boundary
+export default withErrorBoundary(VennDiagramExported, {
+  componentName: "Venn Diagram",
+  id: "VennDiagram",
+});
