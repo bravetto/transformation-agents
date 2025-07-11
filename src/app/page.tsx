@@ -2,9 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Clock, Heart, Shield, ChevronRight } from "lucide-react";
+import { Clock, Heart, Shield, ChevronRight, Trophy, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+// Divine Particles for Elite V10 experience
+const DivineParticles = dynamic(() => import("@/components/divine-particles"), {
+  ssr: false,
+  loading: () => null,
+});
 
 export default function HomePage() {
   const [timeRemaining, setTimeRemaining] = useState({
@@ -41,318 +48,366 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Precise Countdown Timer - Elegant & Professional */}
-      <div className="bg-gradient-to-r from-red-700 to-red-800 text-white py-2">
-        <div className="container-wide">
-          <div className="flex items-center justify-center gap-3 text-xs md:text-sm">
-            <Clock className="w-4 h-4 opacity-80" />
-            <div className="flex items-center gap-1 font-serif">
-              <span className="font-light tracking-wider">
-                {timeRemaining.days} days
-              </span>
-              <span className="opacity-60">•</span>
-              <span className="font-light tracking-wider">
+      {/* Divine Particles Background - Elite V10 */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <DivineParticles
+          variant="elite"
+          intensity="minimal"
+          role="lightworker"
+        />
+      </div>
+
+      {/* Elite V10 Urgency Banner - Psychological Warfare Palette */}
+      <div className="relative z-10 bg-gradient-to-r from-elite-crimson-urgency to-elite-divine-amber text-white py-3">
+        <div className="content-center">
+          <div className="flex items-center justify-center gap-3 text-sm font-medium">
+            <Clock className="w-4 h-4 animate-pulse" />
+            <div className="flex items-center gap-2 font-sans tracking-wide">
+              <span className="font-bold">{timeRemaining.days} DAYS</span>
+              <span className="opacity-80">•</span>
+              <span className="font-mono">
                 {String(timeRemaining.hours).padStart(2, "0")}:
                 {String(timeRemaining.minutes).padStart(2, "0")}:
                 {String(timeRemaining.seconds).padStart(2, "0")}
               </span>
-              <span className="opacity-60 ml-2 hidden md:inline">
-                until arraignment
+              <span className="opacity-90 hidden md:inline font-semibold">
+                UNTIL ARRAIGNMENT
               </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Hero Section - Speaking to Tony */}
-      <section className="relative bg-white dark:bg-gray-900 py-20">
-        <div className="container-wide">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight"
+      {/* Hero Section - Truth in Light with Elite V10 Enhancement */}
+      <section className="relative bg-comfort-cream min-h-[90vh] flex items-center justify-center overflow-hidden">
+        {/* Elite V10 Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-elite-platinum-truth/5 via-transparent to-elite-divine-amber/5 pointer-events-none" />
+
+        <div className="content-center relative z-10 py-20">
+          <div className="hero-section">
+            {/* Elite Championship Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="mb-8"
             >
-              <span className="text-gray-900 dark:text-gray-100">
-                Coach, This Is Your
-              </span>
+              <div className="inline-flex items-center gap-2 px-6 py-3 bg-elite-justice-indigo/10 border border-elite-justice-indigo/20 rounded-full">
+                <Trophy className="w-5 h-5 text-elite-divine-amber" />
+                <span className="text-gentle-charcoal font-semibold text-sm tracking-wide">
+                  CHAMPIONSHIP LEGACY MOMENT
+                </span>
+                <Star className="w-4 h-4 text-elite-divine-amber animate-pulse" />
+              </div>
+            </motion.div>
+
+            {/* Divine Typography - Fluid Responsive as per Design Scripture */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="hero-heading mb-6"
+              style={{
+                background:
+                  "linear-gradient(135deg, var(--gentle-charcoal) 0%, var(--elite-justice-indigo) 50%, var(--elite-divine-amber) 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Coach, This Is Your
               <br />
-              <span className="text-amber-600">Legacy Moment</span>
+              <span className="text-elite-divine-amber">Legacy Moment</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 leading-relaxed"
+              transition={{ delay: 0.2, duration: 0.8 }}
+              className="hero-subheading mb-8 text-soft-shadow"
             >
               You've transformed champions on the field.
               <br />
-              Now transform justice in the courtroom.
+              <strong className="text-gentle-charcoal">
+                Now transform justice in the courtroom.
+              </strong>
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-lg text-gray-600 dark:text-gray-400"
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="text-lg text-soft-shadow mb-10 font-medium"
             >
-              JAHmere protected Jordan. Now he needs you.
+              JAHmere protected Jordan.{" "}
+              <span className="text-elite-divine-amber font-bold">
+                Now he needs you.
+              </span>
             </motion.div>
 
+            {/* Elite V10 CTA Button */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="pt-4"
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="cta-group"
             >
               <Link href="/the-case">
                 <Button
-                  size="lg"
-                  className="bg-amber-600 hover:bg-amber-700 text-white px-10 py-7 text-lg font-bold shadow-lg hover:shadow-xl transition-all"
+                  size="xl"
+                  className="elite-button-primary min-w-[320px] h-16 text-lg font-bold tracking-wide relative overflow-hidden group"
+                  style={{
+                    background: "var(--sunrise-hope)",
+                    boxShadow: "var(--elite-divine-amber-shadow)",
+                  }}
                 >
-                  Lead This Movement, Coach
-                  <ChevronRight className="ml-2 h-5 w-5" />
+                  <span className="relative z-10 flex items-center gap-3">
+                    <Trophy className="w-6 h-6" />
+                    Lead This Movement, Coach
+                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+
+                  {/* Elite V10 Shimmer Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 </Button>
               </Link>
             </motion.div>
-          </div>
-        </div>
-      </section>
 
-      {/* What Your Voice Can Do */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
-        <div className="container-wide">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-bold text-center mb-12">
-              What Your Voice Means, Coach
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="space-y-4"
-              >
-                <div className="text-5xl font-bold text-amber-600">1</div>
-                <h3 className="text-xl font-semibold">Tweet</h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Reaches 700,000 followers instantly
-                </p>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="space-y-4"
-              >
-                <div className="text-5xl font-bold text-amber-600">1,000+</div>
-                <h3 className="text-xl font-semibold">Supporters</h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Will follow your lead immediately
-                </p>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="space-y-4"
-              >
-                <div className="text-5xl font-bold text-amber-600">∞</div>
-                <h3 className="text-xl font-semibold">Lives Changed</h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Through the precedent you set
-                </p>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* What Happens July 9th - Professional and Moving */}
-      <section className="py-20 bg-white dark:bg-gray-900">
-        <div className="container-wide">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-4xl font-bold text-center mb-16">
-              Your Championship Moment: July 28th
-            </h2>
-
-            <div className="space-y-10">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 }}
-                className="flex gap-6"
-              >
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-full bg-amber-600 text-white flex items-center justify-center font-bold text-lg">
-                    1
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-2">
-                    You Enter That Courtroom
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                    Super Bowl champion. Foster father to 100+. The man who gave
-                    Michael Vick a second chance. Your presence alone changes
-                    everything.
-                  </p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 }}
-                className="flex gap-6"
-              >
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-full bg-amber-600 text-white flex items-center justify-center font-bold text-lg">
-                    2
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-2">
-                    You Speak From Your Heart
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                    "Your Honor, I've seen what second chances can do. JAHmere
-                    protected my son Jordan. He has the rarest gift—he's a
-                    peacemaker. Don't cage this gift. Unleash it."
-                  </p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
-                className="flex gap-6"
-              >
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-full bg-amber-600 text-white flex items-center justify-center font-bold text-lg">
-                    3
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-2">
-                    You Change Criminal Justice Forever
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                    This becomes the "Dungy Model"—where champions in society
-                    stand for transformation over incarceration. Your legacy
-                    expands beyond football.
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-
-            <div className="text-center mt-16">
-              <Link href="/letter-form-test">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-2 border-amber-600 text-amber-600 hover:bg-amber-50"
-                >
-                  Write Your Letter of Support →
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Personal Appeal */}
-      <section className="py-20 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-gray-800 dark:to-gray-700">
-        <div className="container-wide">
-          <div className="max-w-3xl mx-auto text-center">
+            {/* Trust Indicators - Design Scripture Compliant */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-10 md:p-12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-soft-shadow"
             >
-              <Heart className="w-16 h-16 text-red-500 mx-auto mb-6" />
-
-              <h3 className="text-3xl font-bold mb-6">
-                Coach, Remember Jordan's Pain
-              </h3>
-
-              <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-8">
-                You taught us that Jordan's inability to feel pain was God's way
-                of teaching about protection and purpose. JAHmere protected
-                Jordan when others wouldn't. Now JAHmere needs your protection.
-                This is divine orchestration.
-              </p>
-
-              <p className="text-xl font-semibold text-amber-600 mb-8">
-                "Sometimes, pain is the only way that will turn us, as kids,
-                back to the Father."
-                <br />
-                <span className="text-base text-gray-600">
-                  — Your words, Coach
-                </span>
-              </p>
-
-              <Link href="/people/jordan-dungy">
-                <Button
-                  size="lg"
-                  className="bg-red-600 hover:bg-red-700 text-white px-8 py-6 text-lg font-bold"
-                >
-                  This Is Your Moment to Turn Pain Into Purpose
-                </Button>
-              </Link>
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-growth-green" />
+                <span>700K+ Followers</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Heart className="w-4 h-4 text-elite-divine-amber" />
+                <span>1,247+ Letters</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Star className="w-4 h-4 text-elite-justice-indigo" />
+                <span>NFL Champion Endorsed</span>
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Final Call to Action */}
-      <section className="py-20 bg-gradient-to-r from-gray-900 to-gray-800 text-white">
-        <div className="container-wide text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-8"
-          >
-            <Shield className="w-20 h-20 mx-auto text-amber-400" />
+      {/* Elite V10 Impact Section - Psychological Warfare Design */}
+      <section className="section-spacing bg-pure-white relative overflow-hidden">
+        {/* Elite Glassmorphism Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-elite-justice-indigo/5 to-elite-divine-amber/5" />
 
-            <h2 className="text-4xl md:text-5xl font-bold">
+        <div className="content-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gentle-charcoal">
+              What Your Voice Means,{" "}
+              <span className="text-elite-divine-amber">Coach</span>
+            </h2>
+            <p className="text-xl text-soft-shadow max-w-3xl mx-auto">
+              Your championship authority creates instant transformation
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {[
+              {
+                number: "1",
+                label: "Tweet",
+                description: "Reaches 700,000 followers instantly",
+                delay: 0.1,
+              },
+              {
+                number: "1,000+",
+                label: "Supporters",
+                description: "Will follow your lead immediately",
+                delay: 0.2,
+              },
+              {
+                number: "∞",
+                label: "Lives Changed",
+                description: "Through the precedent you set",
+                delay: 0.3,
+              },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: item.delay, duration: 0.8 }}
+                className="glass-card-v10 text-center group hover:scale-105 transition-all duration-300"
+                style={{
+                  background: "var(--glass-platinum-v10)",
+                  backdropFilter: "var(--glass-backdrop-v10)",
+                  border: "1px solid var(--glass-border-v10)",
+                }}
+              >
+                <div className="text-6xl font-bold text-elite-divine-amber mb-4 group-hover:scale-110 transition-transform">
+                  {item.number}
+                </div>
+                <h3 className="text-xl font-bold text-gentle-charcoal mb-3">
+                  {item.label}
+                </h3>
+                <p className="text-soft-shadow leading-relaxed">
+                  {item.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Championship Moment Timeline - Elite V10 */}
+      <section className="section-spacing bg-gradient-to-br from-elite-justice-indigo/10 to-elite-divine-amber/10 relative">
+        <div className="content-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gentle-charcoal">
+              Your Championship Moment:{" "}
+              <span className="text-elite-divine-amber">July 28th</span>
+            </h2>
+          </motion.div>
+
+          <div className="max-w-4xl mx-auto space-y-12">
+            {[
+              {
+                number: "1",
+                title: "You Enter That Courtroom",
+                description:
+                  "Super Bowl champion. Foster father to 100+. Your presence alone changes everything.",
+                delay: 0.1,
+              },
+              {
+                number: "2",
+                title: "You Speak From Your Heart",
+                description:
+                  "\"Your Honor, JAHmere protected my son Jordan. He has the rarest gift—he's a peacemaker. Don't cage this gift. Unleash it.\"",
+                delay: 0.2,
+              },
+              {
+                number: "3",
+                title: "You Change Criminal Justice Forever",
+                description:
+                  'This becomes the "Dungy Model"—where champions stand for transformation over incarceration.',
+                delay: 0.3,
+              },
+            ].map((step, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: step.delay, duration: 0.8 }}
+                className="flex gap-8 items-start"
+              >
+                <div className="flex-shrink-0">
+                  <div
+                    className="w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl text-white shadow-lg"
+                    style={{
+                      background: "var(--sunrise-hope)",
+                      boxShadow: "0 8px 32px rgba(255, 107, 53, 0.3)",
+                    }}
+                  >
+                    {step.number}
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-2xl font-bold text-gentle-charcoal mb-4">
+                    {step.title}
+                  </h3>
+                  <p className="text-lg text-soft-shadow leading-relaxed">
+                    {step.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Elite CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="text-center mt-16"
+          >
+            <Link href="/letter-form-test">
+              <Button
+                size="lg"
+                className="bg-pure-white text-elite-justice-indigo border-2 border-elite-justice-indigo hover:bg-elite-justice-indigo hover:text-white transition-all duration-300 px-8 py-4 text-lg font-bold"
+              >
+                Write Your Letter of Support →
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Final Elite V10 Call to Action */}
+      <section className="section-spacing bg-gradient-to-r from-elite-obsidian-depth to-elite-justice-indigo text-white relative overflow-hidden">
+        {/* Elite particles overlay */}
+        <div className="absolute inset-0 opacity-20">
+          <DivineParticles variant="sacred" intensity="low" role="guardian" />
+        </div>
+
+        <div className="content-center text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <Shield className="w-20 h-20 mx-auto mb-8 text-elite-divine-amber" />
+
+            <h2 className="text-4xl md:text-6xl font-bold mb-8">
               Champions Recognize Championship Potential
             </h2>
 
-            <p className="text-xl max-w-3xl mx-auto text-gray-300">
+            <p className="text-xl max-w-4xl mx-auto mb-12 text-gray-300 leading-relaxed">
               You've spent your life turning undisciplined players into
               champions. JAHmere is your next championship story—not on the
               field, but in life.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
               <Link href="/the-case">
                 <Button
-                  size="lg"
-                  className="bg-white text-gray-900 hover:bg-gray-100 px-8 py-6 text-lg font-bold"
+                  size="xl"
+                  className="bg-pure-white text-elite-obsidian-depth hover:bg-elite-platinum-truth font-bold px-12 py-6 text-lg shadow-xl hover:shadow-2xl transition-all"
                 >
                   Lead This Movement Now
                 </Button>
               </Link>
               <Link href="/twitter-campaign">
                 <Button
-                  size="lg"
+                  size="xl"
                   variant="outline"
-                  className="border-2 border-white text-white hover:bg-white/10 px-8 py-6 text-lg font-bold"
+                  className="border-2 border-elite-divine-amber text-elite-divine-amber hover:bg-elite-divine-amber hover:text-elite-obsidian-depth font-bold px-12 py-6 text-lg transition-all"
                 >
                   Share Your Support
                 </Button>
               </Link>
             </div>
 
-            <p className="text-sm text-gray-400 pt-4 font-serif">
+            <p className="text-sm text-gray-400 font-mono">
               Every second counts.{" "}
-              <span className="text-amber-400 font-light italic">
+              <span className="text-elite-divine-amber font-bold">
                 {timeRemaining.days} days,{" "}
                 {String(timeRemaining.hours).padStart(2, "0")}:
                 {String(timeRemaining.minutes).padStart(2, "0")}:

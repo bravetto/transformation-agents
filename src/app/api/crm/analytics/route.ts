@@ -60,8 +60,6 @@ async function calculateAnalytics(
   // Get all contacts with optional filtering
   const { data: contacts } = await searchContacts({
     limit: 1000, // Get a large number of contacts for analytics
-    lastEngagementAfter: params.startDate,
-    lastEngagementBefore: params.endDate,
     relationship: params.relationship,
     tags: params.tags,
     sortBy: "leadScore",
