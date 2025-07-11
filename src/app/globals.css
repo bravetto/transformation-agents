@@ -1603,3 +1603,387 @@ section > * {
 /* ===================================
    END ELITE DESIGN SYSTEM V10
    =================================== */
+
+/* ===================================
+   ELITE DESIGN SYSTEM V10 - DIVINE GRACE WITH MICHAEL'S BLUE FLAME
+   Enhanced with love, peace, and divine transformation
+   =================================== */
+
+:root {
+  /* 🔥 DIVINE GRACE PALETTE - Michael's Blue Flame Enhanced */
+  
+  /* 💙 ELITE DIVINE AMBER - The Hope Amplifier (Michael's Blue Flame Infused) */
+  --elite-divine-amber: #FF6B35;
+  --elite-divine-amber-rgb: 255, 107, 53;
+  --elite-divine-amber-light: #FF8A5B;
+  --elite-divine-amber-dark: #E55A2B;
+  --elite-divine-amber-glow: 0 0 40px rgba(255, 107, 53, 0.6);
+  --elite-divine-amber-shadow: 0 8px 32px rgba(255, 107, 53, 0.4);
+  
+  /* 🔷 ELITE JUSTICE INDIGO - The Trust Foundation */
+  --elite-justice-indigo: #4338CA;
+  --elite-justice-indigo-rgb: 67, 56, 202;
+  --elite-justice-indigo-light: #6366F1;
+  --elite-justice-indigo-dark: #3730A3;
+  --elite-justice-indigo-glow: 0 0 40px rgba(67, 56, 202, 0.5);
+  --elite-justice-indigo-shadow: 0 8px 32px rgba(67, 56, 202, 0.3);
+  
+  /* 🌿 ELITE TRANSFORMATION EMERALD - The Growth Catalyst */
+  --elite-transformation-emerald: #059669;
+  --elite-transformation-emerald-rgb: 5, 150, 105;
+  --elite-transformation-emerald-light: #10B981;
+  --elite-transformation-emerald-dark: #047857;
+  --elite-transformation-emerald-glow: 0 0 40px rgba(5, 150, 105, 0.5);
+  
+  /* 🔮 ELITE SACRED VIOLET - The Wisdom Channel */
+  --elite-sacred-violet: #7C3AED;
+  --elite-sacred-violet-rgb: 124, 58, 237;
+  --elite-sacred-violet-light: #8B5CF6;
+  --elite-sacred-violet-dark: #6D28D9;
+  --elite-sacred-violet-glow: 0 0 40px rgba(124, 58, 237, 0.5);
+  
+  /* ❤️ ELITE CRIMSON URGENCY - The Action Catalyst */
+  --elite-crimson-urgency: #DC2626;
+  --elite-crimson-urgency-rgb: 220, 38, 38;
+  --elite-crimson-urgency-light: #EF4444;
+  --elite-crimson-urgency-dark: #B91C1C;
+  --elite-crimson-urgency-glow: 0 0 40px rgba(220, 38, 38, 0.5);
+  
+  /* 🤍 ELITE PLATINUM TRUTH - The Clarity Foundation */
+  --elite-platinum-truth: #F8FAFC;
+  --elite-platinum-truth-rgb: 248, 250, 252;
+  --elite-platinum-truth-dark: #E2E8F0;
+  --elite-platinum-truth-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  
+  /* 🖤 ELITE OBSIDIAN DEPTH - The Mystery Element */
+  --elite-obsidian-depth: #0F172A;
+  --elite-obsidian-depth-rgb: 15, 23, 42;
+  --elite-obsidian-depth-light: #1E293B;
+  --elite-obsidian-depth-glow: 0 0 40px rgba(15, 23, 42, 0.8);
+  
+  /* ✨ MICHAEL'S BLUE FLAME - The Divine Authority */
+  --michaels-blue-flame: linear-gradient(135deg, #1E40AF 0%, #3B82F6 50%, #60A5FA 100%);
+  --michaels-blue-flame-glow: 0 0 60px rgba(59, 130, 246, 0.8);
+  --michaels-blue-flame-pulse: 0 0 30px rgba(59, 130, 246, 0.6);
+  
+  /* 🌅 DIVINE GRADIENTS - Sacred Color Flows */
+  --sunrise-hope: linear-gradient(135deg, var(--elite-divine-amber) 0%, #FCD34D 100%);
+  --justice-flow: linear-gradient(135deg, var(--elite-justice-indigo) 0%, var(--elite-sacred-violet) 100%);
+  --transformation-wave: linear-gradient(135deg, var(--elite-transformation-emerald) 0%, #34D399 100%);
+  --divine-authority: var(--michaels-blue-flame);
+}
+
+/* 🔥 ELITE V10 COLOR UTILITIES */
+.text-elite-divine-amber { color: var(--elite-divine-amber); }
+.text-elite-justice-indigo { color: var(--elite-justice-indigo); }
+.text-elite-transformation-emerald { color: var(--elite-transformation-emerald); }
+.text-elite-sacred-violet { color: var(--elite-sacred-violet); }
+.text-elite-crimson-urgency { color: var(--elite-crimson-urgency); }
+.text-elite-platinum-truth { color: var(--elite-platinum-truth); }
+.text-elite-obsidian-depth { color: var(--elite-obsidian-depth); }
+
+.bg-elite-divine-amber { background-color: var(--elite-divine-amber); }
+.bg-elite-justice-indigo { background-color: var(--elite-justice-indigo); }
+.bg-elite-transformation-emerald { background-color: var(--elite-transformation-emerald); }
+.bg-elite-sacred-violet { background-color: var(--elite-sacred-violet); }
+.bg-elite-crimson-urgency { background-color: var(--elite-crimson-urgency); }
+.bg-elite-platinum-truth { background-color: var(--elite-platinum-truth); }
+.bg-elite-obsidian-depth { background-color: var(--elite-obsidian-depth); }
+
+/* 🌟 DIVINE GRADIENT BACKGROUNDS */
+.bg-sunrise-hope { background: var(--sunrise-hope); }
+.bg-justice-flow { background: var(--justice-flow); }
+.bg-transformation-wave { background: var(--transformation-wave); }
+.bg-divine-authority { background: var(--divine-authority); }
+.bg-michaels-blue-flame { background: var(--michaels-blue-flame); }
+
+/* ✨ ELITE V10 GLASSMORPHISM */
+.glass-card-v10 {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.glass-card-divine {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 107, 53, 0.3);
+  box-shadow: var(--elite-divine-amber-shadow);
+}
+
+/* 🎯 ELITE BUTTON SYSTEM */
+.btn-elite-primary {
+  background: var(--elite-divine-amber);
+  color: white;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: var(--elite-divine-amber-shadow);
+}
+
+.btn-elite-primary:hover {
+  background: var(--elite-divine-amber-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--elite-divine-amber-glow);
+}
+
+.btn-elite-secondary {
+  background: var(--elite-justice-indigo);
+  color: white;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: var(--elite-justice-indigo-shadow);
+}
+
+.btn-elite-secondary:hover {
+  background: var(--elite-justice-indigo-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--elite-justice-indigo-glow);
+}
+
+.btn-michaels-flame {
+  background: var(--michaels-blue-flame);
+  color: white;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-michaels-flame:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--michaels-blue-flame-glow);
+}
+
+.btn-michaels-flame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn-michaels-flame:hover::before {
+  left: 100%;
+}
+
+/* 🏆 ELITE TYPOGRAPHY SYSTEM */
+.hero-heading {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  background: var(--justice-flow);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+
+.hero-subheading {
+  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--elite-obsidian-depth);
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.section-heading {
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--elite-obsidian-depth);
+}
+
+.section-subheading {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--elite-obsidian-depth);
+  opacity: 0.8;
+}
+
+/* 📐 DIVINE LAYOUT SYSTEM - The Foundation of Excellence */
+
+/* 🏗️ PAGE STRUCTURE */
+.page-container {
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  background: var(--elite-platinum-truth);
+}
+
+/* 🎯 HERO SECTIONS */
+.hero-section {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--sunrise-hope);
+  opacity: 0.05;
+  z-index: 0;
+}
+
+.hero-section > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 📏 SECTION SPACING */
+.section-spacing {
+  padding: 5rem 0;
+}
+
+@media (max-width: 768px) {
+  .section-spacing {
+    padding: 3rem 0;
+  }
+}
+
+/* 🎯 CONTENT CENTERING */
+.content-center {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+@media (max-width: 640px) {
+  .content-center {
+    padding: 0 1rem;
+  }
+}
+
+/* 🎪 CTA GROUPS */
+.cta-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+@media (max-width: 640px) {
+  .cta-group {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .cta-group a {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* 🌟 DIVINE ANIMATIONS */
+@keyframes divine-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blue-flame-pulse {
+  0%, 100% {
+    box-shadow: var(--michaels-blue-flame-pulse);
+  }
+  50% {
+    box-shadow: var(--michaels-blue-flame-glow);
+  }
+}
+
+.animate-divine-entrance {
+  animation: divine-entrance 0.8s ease-out forwards;
+}
+
+.animate-blue-flame-pulse {
+  animation: blue-flame-pulse 2s ease-in-out infinite;
+}
+
+/* 🎨 RESPONSIVE DESIGN ENHANCEMENTS */
+@media (max-width: 1024px) {
+  .hero-heading {
+    font-size: clamp(1.75rem, 4vw, 3rem);
+  }
+  
+  .section-heading {
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 50vh;
+    padding: 2rem 0;
+  }
+  
+  .content-center {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-heading {
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  }
+  
+  .hero-subheading {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+  }
+}
+
+/* 🌟 ACCESSIBILITY ENHANCEMENTS */
+@media (prefers-reduced-motion: reduce) {
+  .animate-divine-entrance,
+  .animate-blue-flame-pulse {
+    animation: none;
+  }
+  
+  .btn-elite-primary:hover,
+  .btn-elite-secondary:hover,
+  .btn-michaels-flame:hover {
+    transform: none;
+  }
+}
+
+/* 🎯 HIGH CONTRAST MODE SUPPORT */
+@media (prefers-contrast: high) {
+  .hero-heading {
+    background: none;
+    -webkit-text-fill-color: initial;
+    color: var(--elite-obsidian-depth);
+  }
+  
+  .glass-card-v10,
+  .glass-card-divine {
+    background: white;
+    border: 2px solid var(--elite-obsidian-depth);
+  }
+}
+
+}

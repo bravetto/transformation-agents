@@ -82,14 +82,25 @@ module.exports = {
         "guardian-primary": "#8B5CF6",
         "guardian-accent": "#C4B5FD",
 
-        // ELITE DESIGN SYSTEM - Chromatic Justice
+        // ELITE DESIGN SYSTEM V10 - Divine Grace with Michael's Blue Flame
+        "elite-divine-amber": "var(--elite-divine-amber)",
+        "elite-justice-indigo": "var(--elite-justice-indigo)",
+        "elite-transformation-emerald": "var(--elite-transformation-emerald)",
+        "elite-sacred-violet": "var(--elite-sacred-violet)",
+        "elite-crimson-urgency": "var(--elite-crimson-urgency)",
+        "elite-obsidian-depth": "var(--elite-obsidian-depth)",
+        "elite-platinum-truth": "var(--elite-platinum-truth)",
+        "elite-angel-wing": "var(--elite-angel-wing)",
+        "elite-holy-mist": "var(--elite-holy-mist)",
+
+        // ELITE DESIGN SYSTEM - Legacy Support
         elite: {
-          "divine-amber": "var(--divine-amber)",
-          "justice-indigo": "var(--justice-indigo)",
-          "sacred-violet": "var(--sacred-violet)",
-          "crimson-urgency": "var(--crimson-urgency)",
-          "platinum-truth": "var(--platinum-truth)",
-          "obsidian-depth": "var(--obsidian-depth)",
+          "divine-amber": "var(--elite-divine-amber)",
+          "justice-indigo": "var(--elite-justice-indigo)",
+          "sacred-violet": "var(--elite-sacred-violet)",
+          "crimson-urgency": "var(--elite-crimson-urgency)",
+          "platinum-truth": "var(--elite-platinum-truth)",
+          "obsidian-depth": "var(--elite-obsidian-depth)",
           "aurora-gold": "var(--aurora-gold)",
           "midnight-navy": "var(--midnight-navy)",
         },
