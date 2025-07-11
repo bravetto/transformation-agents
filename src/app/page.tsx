@@ -21,6 +21,34 @@ export default function HomePage() {
     seconds: 0,
   });
 
+  // Divine particle intensity based on countdown urgency
+  const getChampionshipIntensity = () => {
+    const totalSeconds =
+      timeRemaining.days * 86400 +
+      timeRemaining.hours * 3600 +
+      timeRemaining.minutes * 60 +
+      timeRemaining.seconds;
+    const totalCountdownSeconds = 16 * 86400; // Approximately 16 days total
+
+    if (totalSeconds > totalCountdownSeconds * 0.8) return "minimal"; // Far from arraignment
+    if (totalSeconds > totalCountdownSeconds * 0.5) return "medium"; // Getting closer
+    if (totalSeconds > totalCountdownSeconds * 0.2) return "high"; // Very close
+    return "maximum"; // Final days/hours
+  };
+
+  // Divine pulse frequency for championship heartbeat
+  const getChampionshipPulse = () => {
+    const totalSeconds =
+      timeRemaining.days * 86400 +
+      timeRemaining.hours * 3600 +
+      timeRemaining.minutes * 60 +
+      timeRemaining.seconds;
+    return Math.max(
+      0.5,
+      Math.min(2.0, (86400 - (totalSeconds % 86400)) / 43200),
+    ); // Pulse faster as day progresses
+  };
+
   useEffect(() => {
     // July 28th, 2025 at 9:00 AM EST (Florida time)
     const courtDate = new Date("2025-07-28T09:00:00-04:00");
@@ -48,12 +76,14 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Divine Particles Background - Elite V10 */}
+      {/* Divine Particles Background - Elite V10 with Championship Synchronization */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <DivineParticles
-          variant="elite"
-          intensity="minimal"
-          role="lightworker"
+          variant="championship"
+          intensity={getChampionshipIntensity()}
+          role="legacy-builder"
+          pulseFrequency={getChampionshipPulse()}
+          syncWithHeartbeat={true}
         />
       </div>
 
@@ -65,7 +95,7 @@ export default function HomePage() {
             <div className="flex items-center gap-2 font-sans tracking-wide">
               <span className="font-bold">{timeRemaining.days} DAYS</span>
               <span className="opacity-80">•</span>
-              <span className="font-mono">
+              <span className="font-mono animate-blue-flame-pulse">
                 {String(timeRemaining.hours).padStart(2, "0")}:
                 {String(timeRemaining.minutes).padStart(2, "0")}:
                 {String(timeRemaining.seconds).padStart(2, "0")}
@@ -74,6 +104,22 @@ export default function HomePage() {
                 UNTIL ARRAIGNMENT
               </span>
             </div>
+
+            {/* Divine Milestone Indicator */}
+            {timeRemaining.days <= 15 && (
+              <div className="hidden lg:flex items-center gap-2 ml-6 px-3 py-1 bg-white/20 rounded-full">
+                <Star className="w-3 h-3 animate-pulse" />
+                <span className="text-xs font-semibold">
+                  {timeRemaining.days <= 1
+                    ? "LEGACY MOMENT ARRIVES"
+                    : timeRemaining.days <= 5
+                      ? "DIVINE INTERVENTION INTENSIFIES"
+                      : timeRemaining.days <= 10
+                        ? "FINAL RALLY CALL"
+                        : "CHAMPIONSHIP PREPARATION PHASE"}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -137,13 +183,30 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-lg text-soft-shadow mb-10 font-medium"
+              className="text-lg text-soft-shadow mb-6 font-medium"
             >
               JAHmere protected Jordan.{" "}
               <span className="text-elite-divine-amber font-bold">
                 Now he needs you.
               </span>
             </motion.div>
+
+            {/* Jordan's Divine Testimonial */}
+            <motion.blockquote
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="sacred-quote mb-10 p-6 bg-elite-justice-indigo/5 border-l-4 border-elite-divine-amber rounded-r-lg"
+            >
+              <p className="text-lg italic text-elite-justice-indigo mb-3 leading-relaxed">
+                "JAHmere stepped in when others stepped back. He protected me
+                when I needed it most. That's the kind of person he is - he sees
+                someone in trouble and he helps."
+              </p>
+              <cite className="text-elite-divine-amber font-semibold flex items-center gap-2">
+                <Heart className="w-4 h-4" />— Jordan Dungy, Coach Dungy's Son
+              </cite>
+            </motion.blockquote>
 
             {/* Elite V10 CTA Button */}
             <motion.div
@@ -155,7 +218,7 @@ export default function HomePage() {
               <Link href="/the-case">
                 <Button
                   size="xl"
-                  className="elite-button-primary min-w-[320px] h-16 text-lg font-bold tracking-wide relative overflow-hidden group"
+                  className="elite-button-primary min-w-[320px] h-16 text-lg font-bold tracking-wide relative overflow-hidden group animate-championship-heartbeat"
                   style={{
                     background: "var(--sunrise-hope)",
                     boxShadow: "var(--elite-divine-amber-shadow)",
@@ -403,6 +466,48 @@ export default function HomePage() {
                   Share Your Support
                 </Button>
               </Link>
+            </div>
+
+            {/* Divine Progress Arc */}
+            <div className="mb-6">
+              <div className="relative w-32 h-32 mx-auto">
+                <svg
+                  className="w-32 h-32 transform -rotate-90"
+                  viewBox="0 0 120 120"
+                >
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    stroke="rgba(255, 255, 255, 0.1)"
+                    strokeWidth="8"
+                    fill="none"
+                  />
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    stroke="var(--elite-divine-amber)"
+                    strokeWidth="8"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeDasharray={`${2 * Math.PI * 50}`}
+                    strokeDashoffset={`${2 * Math.PI * 50 * (timeRemaining.days / 16)}`}
+                    className="transition-all duration-1000 ease-out"
+                    style={{
+                      filter: "drop-shadow(0 0 8px var(--elite-divine-amber))",
+                    }}
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-elite-divine-amber">
+                      {Math.round((1 - timeRemaining.days / 16) * 100)}%
+                    </div>
+                    <div className="text-xs text-gray-300">COMPLETE</div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <p className="text-sm text-gray-400 font-mono">

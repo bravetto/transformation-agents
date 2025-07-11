@@ -204,15 +204,15 @@ function Navigation() {
                 className="relative"
               >
                 <div className="h-8 w-8 bg-gradient-to-br from-elite-divine-amber to-elite-justice-indigo rounded-full flex items-center justify-center shadow-lg">
-                  <span className="text-pure-white font-bold text-lg">✨</span>
+                  <span className="text-pure-white font-bold text-lg">B</span>
                 </div>
               </motion.div>
               <div>
                 <span className="text-gentle-charcoal font-bold text-base">
-                  DIVINE GRACE
+                  THE BRIDGE
                 </span>
                 <div className="text-[10px] text-soft-shadow">
-                  God's Justice Flows
+                  Building from Day 1
                 </div>
               </div>
             </Link>
@@ -226,8 +226,8 @@ function Navigation() {
                       <button
                         className={`flex items-center gap-2 transition-colors h-9 min-h-[36px] px-2 ${
                           pathname.startsWith(item.href)
-                            ? "text-hope-gold font-semibold"
-                            : "text-gentle-charcoal hover:text-hope-gold"
+                            ? "text-elite-justice-indigo font-semibold"
+                            : "text-gentle-charcoal hover:text-elite-justice-indigo"
                         }`}
                         aria-expanded={expandedItems.includes(item.href)}
                         aria-haspopup="true"
@@ -250,7 +250,7 @@ function Navigation() {
                     >
                       <Link
                         href={item.href}
-                        className="block px-3 py-2 min-h-[36px] flex items-center text-sm text-gentle-charcoal hover:bg-soft-cloud hover:text-hope-gold rounded-md transition-colors mb-1"
+                        className="block px-3 py-2 min-h-[36px] flex items-center text-sm text-gentle-charcoal hover:bg-soft-cloud hover:text-elite-justice-indigo rounded-md transition-colors mb-1"
                         role="menuitem"
                       >
                         View All {item.label}
@@ -264,7 +264,7 @@ function Navigation() {
                         <Link
                           key={child.href}
                           href={child.href}
-                          className="block px-3 py-2 min-h-[36px] flex items-center text-sm text-gentle-charcoal hover:bg-soft-cloud hover:text-hope-gold rounded-md transition-colors"
+                          className="block px-3 py-2 min-h-[36px] flex items-center text-sm text-gentle-charcoal hover:bg-soft-cloud hover:text-elite-justice-indigo rounded-md transition-colors"
                           role="menuitem"
                         >
                           {child.label}
@@ -278,8 +278,8 @@ function Navigation() {
                     href={item.href}
                     className={`flex items-center gap-2 transition-colors h-9 min-h-[36px] px-2 ${
                       pathname === item.href
-                        ? "text-hope-gold font-semibold"
-                        : "text-gentle-charcoal hover:text-hope-gold"
+                        ? "text-elite-justice-indigo font-semibold"
+                        : "text-gentle-charcoal hover:text-elite-justice-indigo"
                     }`}
                     role="menuitem"
                     aria-current={pathname === item.href ? "page" : undefined}
@@ -305,7 +305,7 @@ function Navigation() {
                 <Button
                   variant="primary"
                   size="sm"
-                  className="bg-hope-gold text-pure-white hover:bg-hope-gold/90 h-9 px-4"
+                  className="bg-elite-divine-amber text-pure-white hover:bg-elite-divine-amber/90 h-9 px-4 shadow-lg"
                   aria-label="Take Action"
                 >
                   Take Action
@@ -316,7 +316,7 @@ function Navigation() {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden text-gentle-charcoal hover:text-hope-gold transition-colors h-9 w-9 min-h-[36px] min-w-[36px] flex items-center justify-center"
+              className="md:hidden text-gentle-charcoal hover:text-elite-justice-indigo transition-colors h-9 w-9 min-h-[36px] min-w-[36px] flex items-center justify-center"
               aria-label={isOpen ? "Close menu" : "Open menu"}
               aria-expanded={isOpen}
               aria-controls="mobile-menu"
@@ -360,8 +360,8 @@ function Navigation() {
                         onKeyDown={(e) => handleKeyDown(e, item.href)}
                         className={`flex items-center justify-between w-full py-4 min-h-[56px] border-b border-quiet-stone ${
                           pathname.startsWith(item.href)
-                            ? "text-hope-gold font-semibold"
-                            : "text-gentle-charcoal hover:text-hope-gold"
+                            ? "text-elite-justice-indigo font-semibold"
+                            : "text-gentle-charcoal hover:text-elite-justice-indigo"
                         } transition-colors`}
                         aria-expanded={expandedItems.includes(item.href)}
                         aria-haspopup="true"
@@ -395,7 +395,7 @@ function Navigation() {
                             <Link
                               href={item.href}
                               onClick={() => setIsOpen(false)}
-                              className="flex items-center gap-3 py-4 min-h-[56px] pl-10 text-sm text-gentle-charcoal hover:text-hope-gold transition-colors"
+                              className="flex items-center gap-3 py-4 min-h-[56px] pl-10 text-sm text-gentle-charcoal hover:text-elite-justice-indigo transition-colors"
                               role="menuitem"
                             >
                               View All {item.label}
@@ -407,8 +407,8 @@ function Navigation() {
                                 onClick={() => setIsOpen(false)}
                                 className={`flex items-center gap-3 py-4 min-h-[56px] pl-10 text-sm ${
                                   pathname === child.href
-                                    ? "text-hope-gold font-semibold"
-                                    : "text-gentle-charcoal hover:text-hope-gold"
+                                    ? "text-elite-justice-indigo font-semibold"
+                                    : "text-gentle-charcoal hover:text-elite-justice-indigo"
                                 } transition-colors`}
                                 role="menuitem"
                                 aria-current={
@@ -428,8 +428,8 @@ function Navigation() {
                       onClick={() => setIsOpen(false)}
                       className={`flex items-center gap-3 py-4 min-h-[56px] border-b border-quiet-stone ${
                         pathname === item.href
-                          ? "text-hope-gold font-semibold"
-                          : "text-gentle-charcoal hover:text-hope-gold"
+                          ? "text-elite-justice-indigo font-semibold"
+                          : "text-gentle-charcoal hover:text-elite-justice-indigo"
                       } transition-colors`}
                       role="menuitem"
                       aria-current={pathname === item.href ? "page" : undefined}
@@ -453,7 +453,7 @@ function Navigation() {
                     variant="primary"
                     width="full"
                     size="lg"
-                    className="bg-hope-gold text-pure-white hover:bg-hope-gold/90"
+                    className="bg-elite-divine-amber text-pure-white hover:bg-elite-divine-amber/90 shadow-lg"
                   >
                     Take Action Now
                   </Button>
@@ -467,12 +467,10 @@ function Navigation() {
                 transition={{ delay: 0.7 }}
                 className="mt-12 text-center"
               >
-                <p className="text-hope-gold font-bold text-lg mb-2">
+                <p className="text-elite-justice-indigo font-bold text-lg mb-2">
                   Zero Graduates. Infinite Possibility.
                 </p>
-                <p className="text-soft-shadow text-sm">
-                  Building Justice from Day One
-                </p>
+                <p className="text-soft-shadow text-sm">Building from Day 1</p>
               </motion.div>
 
               {/* Footer Links */}
@@ -485,14 +483,14 @@ function Navigation() {
                 <div className="flex flex-col gap-4 text-sm">
                   <Link
                     href="/check-in"
-                    className="text-soft-shadow hover:text-hope-gold min-h-[44px] flex items-center"
+                    className="text-soft-shadow hover:text-elite-justice-indigo min-h-[44px] flex items-center"
                     onClick={() => setIsOpen(false)}
                   >
                     Daily Check-In
                   </Link>
                   <Link
                     href="/dashboard/judge"
-                    className="text-soft-shadow hover:text-hope-gold min-h-[44px] flex items-center"
+                    className="text-soft-shadow hover:text-elite-justice-indigo min-h-[44px] flex items-center"
                     onClick={() => setIsOpen(false)}
                   >
                     Judge Dashboard

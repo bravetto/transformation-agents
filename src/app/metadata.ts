@@ -2,24 +2,24 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    default: "Divine Grace | The Bridge Project",
-    template: "%s | Divine Grace",
+    default: "The Bridge Project | Building from Day 1",
+    template: "%s | The Bridge Project",
   },
   description:
-    "Where God's Justice flows through divine grace - building transformation from day one through community-driven rehabilitation.",
+    "Supporting JAHmere Webb's transformation justice case through community advocacy, mentorship, and systemic change. Building bridges to a better future.",
   metadataBase: new URL("https://bridgeproject.org"),
   openGraph: {
-    title: "Divine Grace | The Bridge Project",
+    title: "The Bridge Project | Building from Day 1",
     description:
-      "Where God's Justice flows through divine grace - building transformation from day one through community-driven rehabilitation.",
+      "Supporting JAHmere Webb's transformation justice case through community advocacy, mentorship, and systemic change. Building bridges to a better future.",
     url: "https://bridgeproject.org",
-    siteName: "Divine Grace",
+    siteName: "The Bridge Project",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Divine Grace - The Bridge Project",
+        alt: "The Bridge Project - Building from Day 1",
       },
     ],
     locale: "en_US",
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Divine Grace | The Bridge Project",
+    title: "The Bridge Project | Building from Day 1",
     description:
-      "Where God's Justice flows through divine grace - building transformation from day one through community-driven rehabilitation.",
+      "Supporting JAHmere Webb's transformation justice case through community advocacy, mentorship, and systemic change. Building bridges to a better future.",
     images: ["/og-image.png"],
   },
   icons: {
@@ -43,12 +43,15 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   keywords: [
-    "divine grace",
-    "God's justice",
-    "rehabilitation",
-    "justice reform",
+    "The Bridge Project",
+    "JAHmere Webb",
+    "transformation justice",
+    "criminal justice reform",
     "community support",
     "mentorship",
-    "divine intervention",
+    "youth advocacy",
+    "systemic change",
+    "community building",
+    "rehabilitation",
   ],
 };

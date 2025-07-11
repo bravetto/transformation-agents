@@ -1910,10 +1910,23 @@ section > * {
 
 @keyframes blue-flame-pulse {
   0%, 100% {
-    box-shadow: var(--michaels-blue-flame-pulse);
+    box-shadow: 0 0 20px rgba(79, 70, 229, 0.3);
+    text-shadow: 0 0 10px rgba(79, 70, 229, 0.5);
   }
   50% {
-    box-shadow: var(--michaels-blue-flame-glow);
+    box-shadow: 0 0 30px rgba(255, 107, 53, 0.4);
+    text-shadow: 0 0 15px rgba(255, 107, 53, 0.6);
+  }
+}
+
+@keyframes championship-heartbeat {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
   }
 }
 
@@ -1923,6 +1936,10 @@ section > * {
 
 .animate-blue-flame-pulse {
   animation: blue-flame-pulse 2s ease-in-out infinite;
+}
+
+.animate-championship-heartbeat {
+  animation: championship-heartbeat 1.5s ease-in-out infinite;
 }
 
 /* 🎨 RESPONSIVE DESIGN ENHANCEMENTS */
