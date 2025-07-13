@@ -67,7 +67,7 @@
     "crm:test-create": "curl -X POST http://localhost:3000/api/crm/contacts -H 'Content-Type: application/json' -d '{\"firstName\":\"Test\",\"lastName\":\"User\",\"email\":\"test@example.com\",\"relationship\":\"Test\",\"connectionStrength\":\"Test\",\"engagementLevel\":\"low\"}'",
     "prepare-deployment": "chmod +x ./prepare-deployment.sh && ./prepare-deployment.sh",
     "prepare-vercel": "chmod +x ./prepare-vercel-deployment.sh && ./prepare-vercel-deployment.sh",
-    "postinstall": "node scripts/clean-build-cache.js",
+
     "docs:watch": "node scripts/watch-ux-docs.js",
     "docs:update": "node scripts/update-ux-documentation.js",
     "backlog:watch": "ts-node scripts/backlog/init.ts",
