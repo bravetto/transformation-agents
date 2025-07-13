@@ -4,6 +4,8 @@ import {
   ContactCreateResult,
   UpdateContactRequest,
   SearchContactsParams,
+} from "@/types/crm";
+import {
   createClickUpContact,
   updateClickUpContact,
   getClickUpContact,
