@@ -73,34 +73,6 @@ export default function JordanDungyPage() {
       }
     >
       <main className="min-h-screen">
-        {/* Full-width Banner */}
-        <section className="w-full bg-gradient-to-r from-blue-600 to-blue-400 text-white">
-          <div className="container mx-auto py-16 px-4 flex flex-col md:flex-row items-center justify-between">
-            <div className="md:w-1/2 mb-8 md:mb-0 space-y-4">
-              <h1 className="text-4xl md:text-6xl font-bold">Jordan Dungy</h1>
-              <p className="text-xl md:text-2xl">
-                Son of NFL Hall of Famer Tony Dungy
-              </p>
-              <p className="text-lg opacity-90">
-                Advocate for second chances and believer in the power of
-                mentorship
-              </p>
-            </div>
-            <div className="md:w-1/2 flex justify-center md:justify-end">
-              <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-xl">
-                <Image
-                  src="/images/people/display/jordan-dungy.jpg"
-                  alt="Jordan Dungy"
-                  fill
-                  sizes="(max-width: 768px) 256px, 320px"
-                  style={{ objectFit: "cover" }}
-                  priority
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Hero Section */}
         <section className="relative bg-gradient-to-b from-amber-50 to-white">
           <DivineErrorBoundary
