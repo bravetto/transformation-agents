@@ -326,7 +326,7 @@ export default function HomePage() {
                         more crime, not less.
                       </Text>
                       <Text size="sm" className="text-soft-shadow">
-                        Source: National Institute of Justice, 2024
+                        Source: National Institute of Justice, 2025
                       </Text>
                     </Stack>
                   </Card>

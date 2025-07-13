@@ -10,7 +10,7 @@ import { withErrorBoundary } from "@/components/with-error-boundary";
 function Footer() {
   const currentYear = new Date().getFullYear();
   const daysSinceLaunch = Math.ceil(
-    (new Date().getTime() - new Date("2024-12-26").getTime()) /
+    (new Date().getTime() - new Date("2025-07-13").getTime()) /
       (1000 * 60 * 60 * 24),
   );
 

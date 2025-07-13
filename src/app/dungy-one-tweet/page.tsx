@@ -25,7 +25,7 @@ function DungyOneTweetCore() {
   // Calculate time until arraignment
   useEffect(() => {
     const timer = setInterval(() => {
-      const july9 = new Date("2024-07-09T09:00:00");
+      const july9 = new Date("2025-07-09T09:00:00");
       const now = new Date();
       const diff = july9.getTime() - now.getTime();
 

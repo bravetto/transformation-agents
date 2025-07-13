@@ -17,7 +17,10 @@ function CaseStatus({ className, variant = "inline" }: CaseStatusProps) {
       status: "complete",
       label: "Tony Dungy endorsement secured",
       icon: Check,
-      date: "December 2024",
+      date: new Date().toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      }),
     },
     {
       status: "complete",

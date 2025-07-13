@@ -99,7 +99,7 @@ async function processBehaviorEvent(
 
     // Update page visit data
     if (event.eventType === "page_view" && event.eventData?.pageUrl) {
-      const pagesVisited = [...contact.pagesVisited];
+      const pagesVisited = [...(contact.pagesVisited || [])];
       if (!pagesVisited.includes(event.eventData.pageUrl)) {
         pagesVisited.push(event.eventData.pageUrl);
       }

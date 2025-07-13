@@ -76,7 +76,7 @@ function ImpactDashboard() {
     if (typeof window === "undefined") return;
 
     // Calculate days since launch
-    const launchDate = new Date("2024-12-26");
+    const launchDate = new Date("2025-07-13");
     const independenceDay = new Date("2025-07-04");
     const today = new Date();
     const diffTime = Math.abs(today.getTime() - launchDate.getTime());
@@ -274,7 +274,7 @@ function ImpactDashboard() {
               <p className="text-2xl font-bold text-hope-gold">
                 Day {safeDayCount}
               </p>
-              <p className="text-xs text-soft-shadow mt-1">December 26, 2024</p>
+              <p className="text-xs text-soft-shadow mt-1">July 13, 2025</p>
             </div>
 
             {/* Real Metrics */}

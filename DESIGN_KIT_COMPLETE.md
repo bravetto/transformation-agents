@@ -930,5 +930,5 @@ xl:  // @media (min-width: 1280px)
 ---
 
 **Design System Version:** 2.0
-**Last Updated:** December 2024
+**Last Updated:** July 2025
 **Maintained by:** The Bridge Project Team 
