@@ -1,6 +1,6 @@
-import { DivineRevelation } from "@/components/divine-revelation";
+import DivineRevelation from "@/components/divine-revelation";
 import { DivineErrorBoundary } from "@/components/ui/divine-error-boundary";
-import { SacredExperience } from "@/components/sacred-experience";
+import SacredExperience from "@/components/sacred-experience";
 
 export const metadata = {
   title: "Divine Revelation | The Bridge Project",

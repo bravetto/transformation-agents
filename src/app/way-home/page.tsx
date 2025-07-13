@@ -1,6 +1,6 @@
 import { WayHome } from "@/components/way-home";
 import { DivineErrorBoundary } from "@/components/ui/divine-error-boundary";
-import { DivineRevelation } from "@/components/divine-revelation";
+import DivineRevelation from "@/components/divine-revelation";
 
 export const metadata = {
   title: "The Way Home | The Bridge Project",

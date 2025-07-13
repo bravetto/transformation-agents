@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
-import { withUnifiedErrorBoundary } from "./ui/unified-error-boundary";
+import withUnifiedErrorBoundary from "./ui/unified-error-boundary";
 
 interface UniversalAgentMonitorProps {
   className?: string;

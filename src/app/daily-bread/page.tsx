@@ -1,5 +1,5 @@
-import { DailyBread } from "@/components/divine-unification/DailyBread";
-import { SacredTable } from "@/components/divine-unification/SacredTable";
+import DailyBread from "@/components/divine-unification/DailyBread";
+import SacredTable from "@/components/divine-unification/SacredTable";
 import { UnificationErrorBoundary } from "@/components/divine-unification/UnificationErrorBoundary";
 import { Metadata } from "next";
 import Link from "next/link";

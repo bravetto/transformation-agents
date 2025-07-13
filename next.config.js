@@ -15,7 +15,6 @@ const nextConfig = {
     // domains: ['images.unsplash.com', 'thebridgeproject.org'],
   },
   // Production optimizations
-  swcMinify: true,
   poweredByHeader: false,
   compress: true,
   generateEtags: true,

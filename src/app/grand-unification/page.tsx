@@ -1,4 +1,4 @@
-import { SacredTable } from "@/components/divine-unification/SacredTable";
+import SacredTable from "@/components/divine-unification/SacredTable";
 import { UnificationErrorBoundary } from "@/components/divine-unification/UnificationErrorBoundary";
 import { Metadata } from "next";
 

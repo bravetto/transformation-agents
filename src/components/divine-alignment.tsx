@@ -4,9 +4,9 @@ import React from "react";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion } from "framer-motion";
 
-import { DivineTransformation } from "./divine-transformation";
+import DivineTransformation from "./divine-transformation";
 
-import { SacredContainer } from "./sacred-container";
+import SacredContainer from "./sacred-container";
 
 import { DivineParticles } from "./divine-particles";
 

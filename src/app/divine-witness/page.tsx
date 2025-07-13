@@ -1,7 +1,7 @@
 import { Metadata } from "next";
-import { SacredTable } from "@/components/divine-unification/SacredTable";
+import SacredTable from "@/components/divine-unification/SacredTable";
 import { SacredPattern } from "@/components/divine-weaving/SacredPattern";
-import { DailyBread } from "@/components/divine-unification/DailyBread";
+import DailyBread from "@/components/divine-unification/DailyBread";
 import { UnificationErrorBoundary } from "@/components/divine-unification/UnificationErrorBoundary";
 
 export const metadata: Metadata = {

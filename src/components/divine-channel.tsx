@@ -6,7 +6,7 @@ import { DivineParticles } from "./divine-particles";
 import { SacredProtection } from "./sacred-protection";
 import { cn } from "@/lib/utils";
 import type { DivineRole } from "@/lib/design-system";
-import { withUnifiedErrorBoundary } from "./ui/unified-error-boundary";
+import withUnifiedErrorBoundary from "./ui/unified-error-boundary";
 import { withDivineErrorBoundary } from "./ui/divine-error-boundary";
 import { useUnifiedArchitecture } from "@/lib/unified-architecture";
 
