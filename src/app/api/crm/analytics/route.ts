@@ -68,18 +68,21 @@ async function calculateAnalytics(
   const totalContacts = contacts.length;
 
   // Calculate contacts by engagement level
+  // Note: engagementLevel not available in current ContactData interface
+  // Using leadScore as proxy for engagement level
   const contactsByEngagementLevel = {
-    high: contacts.filter((contact) => contact.engagementLevel === "high")
-      .length,
-    medium: contacts.filter((contact) => contact.engagementLevel === "medium")
-      .length,
-    low: contacts.filter((contact) => contact.engagementLevel === "low").length,
+    high: contacts.filter((contact) => (contact.leadScore || 0) >= 80).length,
+    medium: contacts.filter(
+      (contact) =>
+        (contact.leadScore || 0) >= 40 && (contact.leadScore || 0) < 80,
+    ).length,
+    low: contacts.filter((contact) => (contact.leadScore || 0) < 40).length,
   };
 
   // Calculate contacts by relationship
   const contactsByRelationship: Record<string, number> = {};
   contacts.forEach((contact) => {
-    const relationship = contact.relationship;
+    const relationship = contact.relationship || "unknown";
     contactsByRelationship[relationship] =
       (contactsByRelationship[relationship] || 0) + 1;
   });
@@ -102,7 +105,7 @@ async function calculateAnalytics(
 
   // Calculate average lead score
   const averageLeadScore = totalContacts
-    ? contacts.reduce((sum, contact) => sum + contact.leadScore, 0) /
+    ? contacts.reduce((sum, contact) => sum + (contact.leadScore || 0), 0) /
       totalContacts
     : 0;
 
@@ -110,12 +113,15 @@ async function calculateAnalytics(
   const tagStats: Record<string, { count: number; totalLeadScore: number }> =
     {};
   contacts.forEach((contact) => {
-    contact.tags.forEach((tag: string) => {
+    // Note: tags property not available in current ContactData interface
+    // Using empty array as fallback
+    const tags = (contact as any).tags || [];
+    tags.forEach((tag: string) => {
       if (!tagStats[tag]) {
         tagStats[tag] = { count: 0, totalLeadScore: 0 };
       }
       tagStats[tag].count += 1;
-      tagStats[tag].totalLeadScore += contact.leadScore;
+      tagStats[tag].totalLeadScore += contact.leadScore || 0;
     });
   });
 
