@@ -74,7 +74,7 @@ export default function JordanDungyPage() {
     >
       <main className="min-h-screen">
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-b from-amber-50 to-white">
+        <section className="w-full">
           <DivineErrorBoundary
             componentName="JordanDungyHero"
             role="messenger"
@@ -86,9 +86,7 @@ export default function JordanDungyPage() {
             }
           >
             <Suspense fallback={<PersonPageSkeleton />}>
-              <div className="content-center">
-                <EnhancedPersonHero {...heroProps} />
-              </div>
+              <EnhancedPersonHero {...heroProps} />
             </Suspense>
           </DivineErrorBoundary>
         </section>
