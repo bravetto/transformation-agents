@@ -1,4 +1,4 @@
-import { SacredPattern } from "@/components/divine-weaving/SacredPattern";
+import SacredPattern from "@/components/divine-weaving/SacredPattern";
 import { SacredPatternErrorBoundary } from "@/components/divine-weaving/error-boundary";
 import { Metadata } from "next";
 

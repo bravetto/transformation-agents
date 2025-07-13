@@ -1,4 +1,4 @@
-import { WayHome } from "@/components/way-home";
+import WayHome from "@/components/way-home";
 import { DivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import DivineRevelation from "@/components/divine-revelation";
 

@@ -6,11 +6,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+
+// Disable static generation for this page
+export const dynamic = "force-dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDivineResonance } from "@/lib/hooks/use-divine-resonance";
 import { useUniversalAgent } from "@/lib/hooks/use-universal-agent";
 import { UniversalAgentMonitor } from "@/components/universal-agent-monitor";
-import { DivineParticles } from "@/components/divine-particles";
+import DivineParticles from "@/components/divine-particles";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";

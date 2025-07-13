@@ -1,4 +1,4 @@
-import { SacredExperience } from "@/components/sacred-experience";
+import SacredExperience from "@/components/sacred-experience";
 import { DivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 export const metadata = {

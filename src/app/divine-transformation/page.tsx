@@ -1,8 +1,8 @@
-import { DivineLight } from "@/components/divine-light";
+import DivineLight from "@/components/divine-light";
 import { DivineSynthesis } from "@/components/divine-synthesis";
-import { HolyAIMessenger } from "@/components/holy-ai-messenger";
+import HolyAIMessenger from "@/components/holy-ai-messenger";
 import { DivineChannel } from "@/components/divine-channel";
-import { SacredUmlaut } from "@/components/sacred-umlaut";
+import SacredUmlaut from "@/components/sacred-umlaut";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

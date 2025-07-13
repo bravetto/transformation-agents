@@ -15,6 +15,9 @@ import { Badge } from "@/components/ui/badge";
 import { universalAgent09 } from "@/lib/universal-agent-09";
 import { cn } from "@/lib/utils";
 
+// Disable static generation for this page
+export const dynamic = "force-dynamic";
+
 export default function UniversalAgent09Page() {
   // Trigger different types of patterns for demonstration
   const triggerPhysicalPattern = () => {

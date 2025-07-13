@@ -20,6 +20,9 @@ const nextConfig = {
   generateEtags: true,
 
   // Security headers are in vercel.json
+
+  // Disable static optimization for dynamic pages
+  output: "standalone",
 };
 
 module.exports = nextConfig;

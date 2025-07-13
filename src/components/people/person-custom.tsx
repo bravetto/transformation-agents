@@ -91,6 +91,104 @@ const JayForteTestimony = dynamic(
   },
 );
 
+const HealingCircle = dynamic(
+  () =>
+    import("@/components/people/HealingCircle")
+      .then((mod) => (mod.default ? { default: mod.default } : mod))
+      .catch((error) => {
+        console.error("Failed to load HealingCircle:", error);
+        return {
+          default: () => <ErrorFallback componentName="HealingCircle" />,
+        };
+      }),
+  {
+    ssr: false, // Disable SSR for faster initial load
+    loading: LoadingComponent,
+  },
+);
+
+const PatternWeaver = dynamic(
+  () =>
+    import("@/components/people/PatternWeaver")
+      .then((mod) => (mod.default ? { default: mod.default } : mod))
+      .catch((error) => {
+        console.error("Failed to load PatternWeaver:", error);
+        return {
+          default: () => <ErrorFallback componentName="PatternWeaver" />,
+        };
+      }),
+  {
+    ssr: false, // Disable SSR for faster initial load
+    loading: LoadingComponent,
+  },
+);
+
+const ArchitecturePrinciples = dynamic(
+  () =>
+    import("@/components/people/ArchitecturePrinciples")
+      .then((mod) => (mod.default ? { default: mod.default } : mod))
+      .catch((error) => {
+        console.error("Failed to load ArchitecturePrinciples:", error);
+        return {
+          default: () => (
+            <ErrorFallback componentName="ArchitecturePrinciples" />
+          ),
+        };
+      }),
+  {
+    ssr: false, // Disable SSR for faster initial load
+    loading: LoadingComponent,
+  },
+);
+
+const ClarityPrinciples = dynamic(
+  () =>
+    import("@/components/people/ClarityPrinciples")
+      .then((mod) => (mod.default ? { default: mod.default } : mod))
+      .catch((error) => {
+        console.error("Failed to load ClarityPrinciples:", error);
+        return {
+          default: () => <ErrorFallback componentName="ClarityPrinciples" />,
+        };
+      }),
+  {
+    ssr: false, // Disable SSR for faster initial load
+    loading: LoadingComponent,
+  },
+);
+
+const MischiefPrinciples = dynamic(
+  () =>
+    import("@/components/people/MischiefPrinciples")
+      .then((mod) => (mod.default ? { default: mod.default } : mod))
+      .catch((error) => {
+        console.error("Failed to load MischiefPrinciples:", error);
+        return {
+          default: () => <ErrorFallback componentName="MischiefPrinciples" />,
+        };
+      }),
+  {
+    ssr: false, // Disable SSR for faster initial load
+    loading: LoadingComponent,
+  },
+);
+
+const WisdomPrinciples = dynamic(
+  () =>
+    import("@/components/people/WisdomPrinciples")
+      .then((mod) => (mod.default ? { default: mod.default } : mod))
+      .catch((error) => {
+        console.error("Failed to load WisdomPrinciples:", error);
+        return {
+          default: () => <ErrorFallback componentName="WisdomPrinciples" />,
+        };
+      }),
+  {
+    ssr: false, // Disable SSR for faster initial load
+    loading: LoadingComponent,
+  },
+);
+
 // Define a type for the dynamic components
 type DynamicComponent = React.ComponentType<any>;
 
@@ -100,7 +198,12 @@ const COMPONENT_MAP: Record<string, DynamicComponent> = {
   SynchronicityMap: SynchronicityMap as DynamicComponent,
   AssessmentAlignment: AssessmentAlignment as DynamicComponent,
   JayForteTestimony: JayForteTestimony as DynamicComponent,
-  // Add more custom components as needed
+  HealingCircle: HealingCircle as DynamicComponent,
+  PatternWeaver: PatternWeaver as DynamicComponent,
+  ArchitecturePrinciples: ArchitecturePrinciples as DynamicComponent,
+  ClarityPrinciples: ClarityPrinciples as DynamicComponent,
+  MischiefPrinciples: MischiefPrinciples as DynamicComponent,
+  WisdomPrinciples: WisdomPrinciples as DynamicComponent,
 };
 
 // Define allowed component names for better type safety
