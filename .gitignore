@@ -74,3 +74,19 @@ index-*.txt
 
 # Local development
 .cursor/
+
+# Build artifacts
+tsconfig.tsbuildinfo
+
+# Development scripts
+launch-*.sh
+build-*.sh
+verify-*.sh
+
+# Temporary files
+current-files.txt
+actual-files.txt
+index-*.txt
+
+# Local development
+.cursor/
