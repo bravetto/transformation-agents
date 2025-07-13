@@ -111,7 +111,7 @@ async function processBehaviorEvent(
 
     // Update story read data
     if (event.eventType === "story_read" && event.eventData?.storyId) {
-      const storiesRead = [...contact.storiesRead];
+      const storiesRead = [...(contact.storiesRead || [])];
       if (!storiesRead.includes(event.eventData.storyId)) {
         storiesRead.push(event.eventData.storyId);
       }
