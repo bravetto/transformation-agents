@@ -10,6 +10,22 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
 
+  // Exclude backup files from build
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+    };
+    // Exclude .bak files from being processed
+    config.module.rules.push({
+      test: /\.bak$/,
+      type: "asset/resource",
+      generator: {
+        emit: false,
+      },
+    });
+    return config;
+  },
+
   // Enhanced image optimization for performance
   images: {
     // Modern image formats for better compression
