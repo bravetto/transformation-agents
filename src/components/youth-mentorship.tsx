@@ -39,11 +39,20 @@ function YouthMentorship() {
 
   useEffect(() => {
     // Load data from localStorage
-    const saved = localStorage.getItem("youthMentorshipData");
-    if (saved) {
-      const data = JSON.parse(saved);
-      setYouthCount(data.count || 15);
-      setRecentMessages(data.messages || []);
+    try {
+      const saved = localStorage.getItem("youthMentorshipData");
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          setYouthCount(data.count || 15);
+          setRecentMessages(data.messages || []);
+        } catch (parseError) {
+          console.warn("Corrupted youthMentorshipData, clearing:", parseError);
+          localStorage.removeItem("youthMentorshipData");
+        }
+      }
+    } catch (error) {
+      console.warn("localStorage access error:", error);
     }
 
     // Listen for global impact events

@@ -111,6 +111,4 @@ export function MinimalUrgencyBanner({ className }: UrgencyBannerProps) {
   );
 }
 
-export default withSafeUI(UrgencyBanner, {
-  componentName: "UrgencyBanner",
-});
+export default UrgencyBanner;

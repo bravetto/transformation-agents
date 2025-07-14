@@ -110,7 +110,7 @@ const TestAssetFallbacks = () => {
             Missing Signature:
           </Text>
           <DivineImage
-            src="/images/signatures/tony-dungy.png"
+            src="/images/profiles/coach-dungy.svg"
             alt="Tony Dungy Signature"
             width={200}
             height={100}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Container } from "@/components/ui/container";
@@ -27,6 +27,15 @@ function Hero() {
   // Determine if we should use parallax based on performance
   const useParallax = performanceTier !== "low";
 
+  // Add mouse move handler for subtle parallax effect with useCallback to prevent infinite loops
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    // Normalize mouse position between -1 and 1
+    const x = (e.clientX / window.innerWidth) * 2 - 1;
+    const y = (e.clientY / window.innerHeight) * 2 - 1;
+    setMouseX(x);
+    setMouseY(y);
+  }, []); // Empty dependencies since setMouseX and setMouseY are stable
+
   useEffect(() => {
     setMounted(true);
 
@@ -42,15 +51,6 @@ function Hero() {
       setDaysSinceLaunch(3);
     }
 
-    // Add mouse move handler for subtle parallax effect
-    const handleMouseMove = (e: MouseEvent) => {
-      // Normalize mouse position between -1 and 1
-      const x = (e.clientX / window.innerWidth) * 2 - 1;
-      const y = (e.clientY / window.innerHeight) * 2 - 1;
-      setMouseX(x);
-      setMouseY(y);
-    };
-
     // Detect device performance with proper feature detection
     const detectPerformance = () => {
       if (typeof window === "undefined") return "medium";
@@ -58,15 +58,13 @@ function Hero() {
       // Check for low-end devices or data-saving modes
       const isLowEndDevice =
         window.innerWidth < 768 ||
-        (typeof window.navigator.hardwareConcurrency !== "undefined" &&
-          window.navigator.hardwareConcurrency <= 4);
+        (typeof (navigator as any).connection !== "undefined" &&
+          ((navigator as any).connection.effectiveType === "slow-2g" ||
+            (navigator as any).connection.effectiveType === "2g"));
 
-      // Safely check connection API
       const hasSlowConnection =
         typeof (navigator as any).connection !== "undefined" &&
-        ((navigator as any).connection.saveData === true ||
-          (navigator as any).connection.effectiveType === "3g" ||
-          (navigator as any).connection.effectiveType === "2g");
+        (navigator as any).connection.saveData;
 
       if (isLowEndDevice || hasSlowConnection) {
         return "low";
@@ -98,7 +96,7 @@ function Hero() {
         window.removeEventListener("mousemove", handleMouseMove);
       };
     }
-  }, []);
+  }, [handleMouseMove]); // Include handleMouseMove in dependencies
 
   if (!mounted) return null;
 
@@ -232,7 +230,7 @@ function Hero() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="hero-subheading text-responsive-sub"
           >
-            <Text size="lg" className="text-soft-shadow">
+            <Text size="lg" className="text-gentle-charcoal">
               Why Judge Ferrero should consider The Bridge Project for JAHmere
               Webb
             </Text>
@@ -410,7 +408,7 @@ function Hero() {
               }}
               className="cursor-pointer"
             >
-              <ChevronDown className="h-8 w-8 text-soft-shadow hover:text-hope-gold transition-colors" />
+              <ChevronDown className="h-8 w-8 text-gentle-charcoal hover:text-hope-gold transition-colors" />
             </motion.div>
           </motion.div>
         </div>

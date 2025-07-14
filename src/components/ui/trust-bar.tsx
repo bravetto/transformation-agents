@@ -90,6 +90,4 @@ function TrustBar({ className = "", variant = "default" }: TrustBarProps) {
   );
 }
 
-export default withSafeUI(TrustBar, {
-  componentName: "TrustBar",
-});
+export default TrustBar;

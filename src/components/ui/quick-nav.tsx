@@ -90,6 +90,4 @@ function QuickNav({
   );
 }
 
-export default withSafeUI(QuickNav, {
-  componentName: "QuickNav",
-});
+export default QuickNav;

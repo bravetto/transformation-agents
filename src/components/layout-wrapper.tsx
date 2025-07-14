@@ -3,6 +3,8 @@
 import dynamic from "next/dynamic";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { DivineFAB } from "@/components/ui/floating-cta";
+import { ImpactDashboard } from "@/components/client-dynamic-components";
+import CascadeMonitor from "@/components/debug/cascade-monitor";
 
 // Dynamic imports for client components
 const Navigation = dynamic(() => import("@/components/navigation"), {
@@ -59,6 +61,9 @@ function LayoutWrapperExported({ children }: { children: React.ReactNode }) {
 
       {/* Floating Impact Dashboard */}
       <ImpactDashboard />
+
+      {/* Cascade Prevention Monitor */}
+      <CascadeMonitor minimized={true} />
 
       {/* Floating Social Share */}
       <SocialAmplification />

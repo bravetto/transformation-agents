@@ -230,7 +230,4 @@ function MicroCommitments({ onComplete }: MicroCommitmentsProps) {
   );
 }
 
-export default withErrorBoundary(MicroCommitments, {
-  componentName: "MicroCommitments",
-  id: "microcommitments",
-});
+export default MicroCommitments;

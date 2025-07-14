@@ -432,12 +432,10 @@ function DivineImpactDashboard({
   useEffect(() => {
     if (!autoRefresh) return;
 
-    const interval = setInterval(() => {
-      refreshData();
-    }, refreshInterval);
+    const interval = setInterval(refreshData, refreshInterval);
 
     return () => clearInterval(interval);
-  }, [autoRefresh, refreshInterval, refreshData]);
+  }, [autoRefresh, refreshInterval, refreshData]); // Include refreshData to prevent stale closures
 
   // Memoize filtered metrics to prevent unnecessary recalculations
   const filteredMetrics = useMemo(() => {

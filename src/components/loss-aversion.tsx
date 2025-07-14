@@ -201,7 +201,4 @@ function LossAversion() {
   );
 }
 
-export default withErrorBoundary(LossAversion, {
-  componentName: "LossAversion",
-  id: "lossaversion",
-});
+export default LossAversion;

@@ -3,8 +3,27 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Shield, Heart, Scale, Star, Crown, Zap } from "lucide-react";
-import DivineLetterForm from "@/components/divine-letter-form";
 import { Card } from "@/components/ui/card";
+import dynamic from "next/dynamic";
+
+// Dynamic import for heavy components - reduces initial bundle size
+const DivineLetterForm = dynamic(
+  () => import("@/components/divine-letter-form"),
+  {
+    loading: () => (
+      <div className="max-w-5xl mx-auto">
+        <Card className="glass-card-divine p-12 text-center">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 bg-elite-divine-amber/20 rounded w-1/3 mx-auto"></div>
+            <div className="h-4 bg-elite-platinum-truth rounded w-2/3 mx-auto"></div>
+            <div className="h-32 bg-elite-platinum-truth rounded"></div>
+          </div>
+        </Card>
+      </div>
+    ),
+    ssr: false,
+  },
+);
 
 export default function GodsJusticeConduit() {
   const [submittedData, setSubmittedData] = useState<any>(null);

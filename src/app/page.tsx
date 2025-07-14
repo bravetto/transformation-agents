@@ -1,527 +1,604 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Clock, Heart, Shield, ChevronRight, Trophy, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useEffect, useRef, useState, useMemo } from "react";
+import { impactEvents } from "@/components/impact-dashboard";
 import dynamic from "next/dynamic";
+import { motion } from "framer-motion";
+import { Calendar, ArrowRight, Check, Shield } from "lucide-react";
 
-// Divine Particles for Elite V10 experience
-const DivineParticles = dynamic(() => import("@/components/divine-particles"), {
+// Import existing components with correct default imports
+import { FloatingCTA, MobileStickyBar } from "@/components/ui/floating-cta";
+import TrustBar from "@/components/ui/trust-bar";
+import UrgencyBanner from "@/components/ui/urgency-banner";
+import QuickNav from "@/components/ui/quick-nav";
+import ExploreNav from "@/components/ui/explore-nav";
+import MicroCommitments from "@/components/micro-commitments";
+import LossAversion from "@/components/loss-aversion";
+
+// Eager loading for critical above-the-fold content
+const Hero = dynamic(() => import("@/components/hero"), {
+  ssr: true,
+  loading: () => (
+    <div className="relative min-h-[90vh] flex items-center overflow-hidden bg-pure-white">
+      <div className="hero-container flex flex-col items-center justify-center">
+        <div className="w-full h-16 bg-soft-cloud/30 rounded-lg animate-pulse mb-6"></div>
+        <div className="w-3/4 h-12 bg-soft-cloud/30 rounded-lg animate-pulse mb-4"></div>
+        <div className="w-1/2 h-8 bg-soft-cloud/30 rounded-lg animate-pulse mb-8"></div>
+        <div className="flex flex-col sm:flex-row gap-4 w-full">
+          <div className="w-full sm:w-48 h-14 bg-hope-gold/30 rounded-lg animate-pulse"></div>
+          <div className="w-full sm:w-48 h-14 bg-soft-cloud/30 rounded-lg animate-pulse"></div>
+        </div>
+      </div>
+    </div>
+  ),
+});
+
+// Lazy loading for the 3-path modal - core Bridge Project feature
+const UserTypeModal = dynamic(() => import("@/components/user-type-modal"), {
   ssr: false,
   loading: () => null,
 });
 
+// Divine Impact Dashboard - load after user path selection
+const DivineImpactDashboard = dynamic(
+  () => import("@/components/divine-impact-dashboard"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-96 bg-soft-cloud/30 rounded-lg animate-pulse flex items-center justify-center">
+        <div className="text-gentle-charcoal">Loading Impact Dashboard...</div>
+      </div>
+    ),
+  },
+);
+
+// Decision Countdown - load after critical content
+const DecisionCountdown = dynamic(
+  () => import("@/components/decision-countdown"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-32 bg-soft-cloud/30 rounded-lg animate-pulse"></div>
+    ),
+  },
+);
+
+// Changed from feature-card to ui/feature-card
+const FeatureCard = dynamic(
+  () => import("@/components/ui/feature-card").then((mod) => mod.default),
+  {
+    ssr: true,
+  },
+);
+
+const TestimonialCard = dynamic(() => import("@/components/testimonial-card"), {
+  ssr: true,
+});
+
+import {
+  Container as UIContainer,
+  Card,
+  Heading,
+  Text,
+  Button,
+  Stack,
+  Badge,
+  Quote,
+} from "@/components/ui";
+
+const RevealOnScroll = dynamic(
+  () =>
+    import("@/components/ui/page-transition").then((mod) => mod.RevealOnScroll),
+  {
+    ssr: false,
+  },
+);
+
+const PageTransition = dynamic(
+  () => import("@/components/ui/page-transition"),
+  {
+    ssr: false,
+  },
+);
+
+// Fix Section import - it's in components/section.tsx, not ui/
+const Section = dynamic(() => import("@/components/section"), {
+  ssr: true,
+});
+
+// Fix Container import - it's a named export from ui
+const Container = dynamic(
+  () => import("@/components/ui/container").then((mod) => mod.Container),
+  {
+    ssr: true,
+  },
+);
+
 export default function HomePage() {
-  const [timeRemaining, setTimeRemaining] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-
-  // Divine particle intensity based on countdown urgency
-  const getChampionshipIntensity = () => {
-    const totalSeconds =
-      timeRemaining.days * 86400 +
-      timeRemaining.hours * 3600 +
-      timeRemaining.minutes * 60 +
-      timeRemaining.seconds;
-    const totalCountdownSeconds = 16 * 86400; // Approximately 16 days total
-
-    if (totalSeconds > totalCountdownSeconds * 0.8) return "minimal"; // Far from arraignment
-    if (totalSeconds > totalCountdownSeconds * 0.5) return "medium"; // Getting closer
-    if (totalSeconds > totalCountdownSeconds * 0.2) return "high"; // Very close
-    return "maximum"; // Final days/hours
-  };
-
-  // Divine pulse frequency for championship heartbeat
-  const getChampionshipPulse = () => {
-    const totalSeconds =
-      timeRemaining.days * 86400 +
-      timeRemaining.hours * 3600 +
-      timeRemaining.minutes * 60 +
-      timeRemaining.seconds;
-    return Math.max(
-      0.5,
-      Math.min(2.0, (86400 - (totalSeconds % 86400)) / 43200),
-    ); // Pulse faster as day progresses
-  };
+  const [mounted, setMounted] = useState(false);
+  const [showHeroContent, setShowHeroContent] = useState(true);
+  const [triggerModal, setTriggerModal] = useState(false);
+  const [selectedUserType, setSelectedUserType] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    // July 28th, 2025 at 9:00 AM EST (Florida time)
-    const courtDate = new Date("2025-07-28T09:00:00-04:00");
+    setMounted(true);
 
-    const timer = setInterval(() => {
-      const now = new Date();
-      const diff = courtDate.getTime() - now.getTime();
+    // Check if user has already selected a path
+    const hasSelectedPath = sessionStorage.getItem("userSelectedPath");
+    const hasSeenModal = sessionStorage.getItem("hasSeenUserTypeModal");
 
-      if (diff > 0) {
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-        );
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    if (!hasSelectedPath && !hasSeenModal) {
+      // Show the 3-path modal for new visitors
+      setTimeout(() => {
+        setShowModal(true);
+      }, 1000); // Small delay for better UX
+    }
 
-        setTimeRemaining({ days, hours, minutes, seconds });
-      } else {
-        setTimeRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      }
-    }, 1000); // Update every second
+    // Always ensure content shows after component mounts (failsafe)
+    const timer = setTimeout(() => {
+      setShowHeroContent(true);
+    }, 500);
 
-    return () => clearInterval(timer);
+    return () => clearTimeout(timer);
   }, []);
 
+  const handleUserTypeSelect = (userType: string) => {
+    setSelectedUserType(userType);
+    sessionStorage.setItem("userSelectedPath", userType);
+    sessionStorage.setItem("hasSeenUserTypeModal", "true");
+    setShowModal(false);
+
+    // Track the selection for analytics
+    console.log(`User selected path: ${userType}`);
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    sessionStorage.setItem("hasSeenUserTypeModal", "true");
+  };
+
+  const handleHeartClick = () => {
+    // Optional: Could trigger modal again or navigate to specific path
+    console.log("Heart clicked");
+  };
+
+  // Move daysSinceLaunch INSIDE the component with useMemo for better performance
+  const daysSinceLaunch = useMemo(() => {
+    try {
+      const launchDate = new Date("2025-07-04");
+      const now = new Date();
+      const diffTime = now.getTime() - launchDate.getTime();
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays > 0 ? diffDays : 3;
+    } catch (error) {
+      console.warn("Date calculation failed, using fallback:", error);
+      return 3;
+    }
+  }, []);
+
+  useEffect(() => {
+    setMounted(true);
+
+    // Always ensure content shows after component mounts (failsafe)
+    const timer = setTimeout(() => {
+      setShowHeroContent(true);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
-    <>
-      {/* Divine Particles Background - Elite V10 with Championship Synchronization */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <DivineParticles
-          variant="championship"
-          intensity={getChampionshipIntensity()}
-          role="legacy-builder"
-          pulseFrequency={getChampionshipPulse()}
-          syncWithHeartbeat={true}
+    <PageTransition>
+      <div className="page-container">
+        {/* Floating CTA - Shows after scroll on desktop */}
+        <FloatingCTA
+          text="✍️ Write Letter to Judge Ferrero - 1,050 Goal!"
+          href="/letter-form-test"
+          showAfterScroll={300}
         />
-      </div>
 
-      {/* Elite V10 Urgency Banner - Psychological Warfare Palette */}
-      <div className="relative z-10 bg-gradient-to-r from-elite-crimson-urgency to-elite-divine-amber text-white py-3">
-        <div className="content-center">
-          <div className="flex items-center justify-center gap-3 text-sm font-medium">
-            <Clock className="w-4 h-4 animate-pulse" />
-            <div className="flex items-center gap-2 font-sans tracking-wide">
-              <span className="font-bold">{timeRemaining.days} DAYS</span>
-              <span className="opacity-80">•</span>
-              <span className="font-mono animate-blue-flame-pulse">
-                {String(timeRemaining.hours).padStart(2, "0")}:
-                {String(timeRemaining.minutes).padStart(2, "0")}:
-                {String(timeRemaining.seconds).padStart(2, "0")}
-              </span>
-              <span className="opacity-90 hidden md:inline font-semibold">
-                UNTIL ARRAIGNMENT
-              </span>
+        {/* Mobile sticky bar - Always visible on mobile */}
+        <MobileStickyBar text="✍️ Write Letter Now!" href="/letter-form-test" />
+
+        {/* 3-Path User Type Modal - Core Bridge Project Feature */}
+        <UserTypeModal
+          isOpen={showModal}
+          onClose={handleModalClose}
+          onUserTypeSelect={handleUserTypeSelect}
+        />
+
+        <div className={!showHeroContent ? "hidden" : ""}>
+          {/* Trust Bar - Above the fold for credibility */}
+          <TrustBar />
+
+          {/* SECTION 1: Hero + Urgency */}
+          <Hero />
+          <UrgencyBanner supporterCount={312} />
+
+          {/* Decision Countdown Section */}
+          <Section variant="subtle" padding="small" className="section-spacing">
+            <div className="content-center">
+              <RevealOnScroll>
+                <DecisionCountdown
+                  targetDate={
+                    new Date(new Date().setDate(new Date().getDate() + 14))
+                  }
+                  ctaLink="/contact"
+                  ctaText="Support Now"
+                  className="max-w-xl mx-auto"
+                />
+              </RevealOnScroll>
             </div>
+          </Section>
 
-            {/* Divine Milestone Indicator */}
-            {timeRemaining.days <= 15 && (
-              <div className="hidden lg:flex items-center gap-2 ml-6 px-3 py-1 bg-white/20 rounded-full">
-                <Star className="w-3 h-3 animate-pulse" />
-                <span className="text-xs font-semibold">
-                  {timeRemaining.days <= 1
-                    ? "LEGACY MOMENT ARRIVES"
-                    : timeRemaining.days <= 5
-                      ? "DIVINE INTERVENTION INTENSIFIES"
-                      : timeRemaining.days <= 10
-                        ? "FINAL RALLY CALL"
-                        : "CHAMPIONSHIP PREPARATION PHASE"}
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Hero Section - Truth in Light with Elite V10 Enhancement */}
-      <section className="relative bg-comfort-cream min-h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Elite V10 Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-elite-platinum-truth/5 via-transparent to-elite-divine-amber/5 pointer-events-none" />
-
-        <div className="content-center relative z-10 py-20">
-          <div className="hero-section">
-            {/* Elite Championship Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="mb-8"
-            >
-              <div className="inline-flex items-center gap-2 px-6 py-3 bg-elite-justice-indigo/10 border border-elite-justice-indigo/20 rounded-full">
-                <Trophy className="w-5 h-5 text-elite-divine-amber" />
-                <span className="text-gentle-charcoal font-semibold text-sm tracking-wide">
-                  CHAMPIONSHIP LEGACY MOMENT
-                </span>
-                <Star className="w-4 h-4 text-elite-divine-amber animate-pulse" />
-              </div>
-            </motion.div>
-
-            {/* Divine Typography - Fluid Responsive as per Design Scripture */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="hero-heading mb-6"
-              style={{
-                background:
-                  "linear-gradient(135deg, var(--gentle-charcoal) 0%, var(--elite-justice-indigo) 50%, var(--elite-divine-amber) 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              Coach, This Is Your
-              <br />
-              <span className="text-elite-divine-amber">Legacy Moment</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              className="hero-subheading mb-8 text-soft-shadow"
-            >
-              You've transformed champions on the field.
-              <br />
-              <strong className="text-gentle-charcoal">
-                Now transform justice in the courtroom.
-              </strong>
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-lg text-soft-shadow mb-6 font-medium"
-            >
-              JAHmere protected Jordan.{" "}
-              <span className="text-elite-divine-amber font-bold">
-                Now he needs you.
-              </span>
-            </motion.div>
-
-            {/* Jordan's Divine Testimonial */}
-            <motion.blockquote
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="sacred-quote mb-10 p-6 bg-elite-justice-indigo/5 border-l-4 border-elite-divine-amber rounded-r-lg"
-            >
-              <p className="text-lg italic text-elite-justice-indigo mb-3 leading-relaxed">
-                "JAHmere stepped in when others stepped back. He protected me
-                when I needed it most. That's the kind of person he is - he sees
-                someone in trouble and he helps."
-              </p>
-              <cite className="text-elite-divine-amber font-semibold flex items-center gap-2">
-                <Heart className="w-4 h-4" />— Jordan Dungy, Coach Dungy's Son
-              </cite>
-            </motion.blockquote>
-
-            {/* Elite V10 CTA Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="cta-group"
-            >
-              <Link href="/the-case">
-                <Button
-                  size="xl"
-                  className="elite-button-primary min-w-[320px] h-16 text-lg font-bold tracking-wide relative overflow-hidden group animate-championship-heartbeat"
-                  style={{
-                    background: "var(--sunrise-hope)",
-                    boxShadow: "var(--elite-divine-amber-shadow)",
-                  }}
-                >
-                  <span className="relative z-10 flex items-center gap-3">
-                    <Trophy className="w-6 h-6" />
-                    Lead This Movement, Coach
-                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </span>
-
-                  {/* Elite V10 Shimmer Effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                </Button>
-              </Link>
-            </motion.div>
-
-            {/* Trust Indicators - Design Scripture Compliant */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-              className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-soft-shadow"
-            >
-              <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-growth-green" />
-                <span>700K+ Followers</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Heart className="w-4 h-4 text-elite-divine-amber" />
-                <span>1,247+ Letters</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Star className="w-4 h-4 text-elite-justice-indigo" />
-                <span>NFL Champion Endorsed</span>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Elite V10 Impact Section - Psychological Warfare Design */}
-      <section className="section-spacing bg-pure-white relative overflow-hidden">
-        {/* Elite Glassmorphism Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-elite-justice-indigo/5 to-elite-divine-amber/5" />
-
-        <div className="content-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+          {/* SECTION 2: The Case Overview */}
+          <Section
+            variant="subtle"
+            padding="medium"
+            className="section-spacing"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gentle-charcoal">
-              What Your Voice Means,{" "}
-              <span className="text-elite-divine-amber">Coach</span>
-            </h2>
-            <p className="text-xl text-soft-shadow max-w-3xl mx-auto">
-              Your championship authority creates instant transformation
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {[
-              {
-                number: "1",
-                label: "Tweet",
-                description: "Reaches 700,000 followers instantly",
-                delay: 0.1,
-              },
-              {
-                number: "1,000+",
-                label: "Supporters",
-                description: "Will follow your lead immediately",
-                delay: 0.2,
-              },
-              {
-                number: "∞",
-                label: "Lives Changed",
-                description: "Through the precedent you set",
-                delay: 0.3,
-              },
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: item.delay, duration: 0.8 }}
-                className="glass-card-v10 text-center group hover:scale-105 transition-all duration-300"
-                style={{
-                  background: "var(--glass-platinum-v10)",
-                  backdropFilter: "var(--glass-backdrop-v10)",
-                  border: "1px solid var(--glass-border-v10)",
-                }}
-              >
-                <div className="text-6xl font-bold text-elite-divine-amber mb-4 group-hover:scale-110 transition-transform">
-                  {item.number}
-                </div>
-                <h3 className="text-xl font-bold text-gentle-charcoal mb-3">
-                  {item.label}
-                </h3>
-                <p className="text-soft-shadow leading-relaxed">
-                  {item.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Championship Moment Timeline - Elite V10 */}
-      <section className="section-spacing bg-gradient-to-br from-elite-justice-indigo/10 to-elite-divine-amber/10 relative">
-        <div className="content-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gentle-charcoal">
-              Your Championship Moment:{" "}
-              <span className="text-elite-divine-amber">July 28th</span>
-            </h2>
-          </motion.div>
-
-          <div className="max-w-4xl mx-auto space-y-12">
-            {[
-              {
-                number: "1",
-                title: "You Enter That Courtroom",
-                description:
-                  "Super Bowl champion. Foster father to 100+. Your presence alone changes everything.",
-                delay: 0.1,
-              },
-              {
-                number: "2",
-                title: "You Speak From Your Heart",
-                description:
-                  "\"Your Honor, JAHmere protected my son Jordan. He has the rarest gift—he's a peacemaker. Don't cage this gift. Unleash it.\"",
-                delay: 0.2,
-              },
-              {
-                number: "3",
-                title: "You Change Criminal Justice Forever",
-                description:
-                  'This becomes the "Dungy Model"—where champions stand for transformation over incarceration.',
-                delay: 0.3,
-              },
-            ].map((step, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: step.delay, duration: 0.8 }}
-                className="flex gap-8 items-start"
-              >
-                <div className="flex-shrink-0">
-                  <div
-                    className="w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl text-white shadow-lg"
-                    style={{
-                      background: "var(--sunrise-hope)",
-                      boxShadow: "0 8px 32px rgba(255, 107, 53, 0.3)",
-                    }}
+            <Container>
+              <RevealOnScroll>
+                <div className="text-center mb-12">
+                  <Heading size="h2" className="mb-4">
+                    The Case for Transformation
+                  </Heading>
+                  <Text
+                    size="lg"
+                    className="text-soft-shadow max-w-3xl mx-auto"
                   >
-                    {step.number}
-                  </div>
+                    JAHmere Webb's story represents a choice between two
+                    futures: the cycle of incarceration or the path of
+                    transformation.
+                  </Text>
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-gentle-charcoal mb-4">
-                    {step.title}
-                  </h3>
-                  <p className="text-lg text-soft-shadow leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
 
-          {/* Elite CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="text-center mt-16"
-          >
-            <Link href="/letter-form-test">
-              <Button
-                size="lg"
-                className="bg-pure-white text-elite-justice-indigo border-2 border-elite-justice-indigo hover:bg-elite-justice-indigo hover:text-white transition-all duration-300 px-8 py-4 text-lg font-bold"
-              >
-                Write Your Letter of Support →
-              </Button>
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Final Elite V10 Call to Action */}
-      <section className="section-spacing bg-gradient-to-r from-elite-obsidian-depth to-elite-justice-indigo text-white relative overflow-hidden">
-        {/* Elite particles overlay */}
-        <div className="absolute inset-0 opacity-20">
-          <DivineParticles variant="sacred" intensity="low" role="guardian" />
-        </div>
-
-        <div className="content-center text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <Shield className="w-20 h-20 mx-auto mb-8 text-elite-divine-amber" />
-
-            <h2 className="text-4xl md:text-6xl font-bold mb-8">
-              Champions Recognize Championship Potential
-            </h2>
-
-            <p className="text-xl max-w-4xl mx-auto mb-12 text-gray-300 leading-relaxed">
-              You've spent your life turning undisciplined players into
-              champions. JAHmere is your next championship story—not on the
-              field, but in life.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
-              <Link href="/the-case">
-                <Button
-                  size="xl"
-                  className="bg-pure-white text-elite-obsidian-depth hover:bg-elite-platinum-truth font-bold px-12 py-6 text-lg shadow-xl hover:shadow-2xl transition-all"
-                >
-                  Lead This Movement Now
-                </Button>
-              </Link>
-              <Link href="/twitter-campaign">
-                <Button
-                  size="xl"
-                  variant="outline"
-                  className="border-2 border-elite-divine-amber text-elite-divine-amber hover:bg-elite-divine-amber hover:text-elite-obsidian-depth font-bold px-12 py-6 text-lg transition-all"
-                >
-                  Share Your Support
-                </Button>
-              </Link>
-            </div>
-
-            {/* Divine Progress Arc */}
-            <div className="mb-6">
-              <div className="relative w-32 h-32 mx-auto">
-                <svg
-                  className="w-32 h-32 transform -rotate-90"
-                  viewBox="0 0 120 120"
-                >
-                  <circle
-                    cx="60"
-                    cy="60"
-                    r="50"
-                    stroke="rgba(255, 255, 255, 0.1)"
-                    strokeWidth="8"
-                    fill="none"
-                  />
-                  <circle
-                    cx="60"
-                    cy="60"
-                    r="50"
-                    stroke="var(--elite-divine-amber)"
-                    strokeWidth="8"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeDasharray={`${2 * Math.PI * 50}`}
-                    strokeDashoffset={`${2 * Math.PI * 50 * (timeRemaining.days / 16)}`}
-                    className="transition-all duration-1000 ease-out"
-                    style={{
-                      filter: "drop-shadow(0 0 8px var(--elite-divine-amber))",
-                    }}
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-elite-divine-amber">
-                      {Math.round((1 - timeRemaining.days / 16) * 100)}%
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                  {/* Traditional Path */}
+                  <Card variant="outline" className="p-8">
+                    <div className="text-center mb-6">
+                      <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-2xl">⚠️</span>
+                      </div>
+                      <Heading size="h3" className="text-red-700 mb-2">
+                        Traditional Incarceration
+                      </Heading>
                     </div>
-                    <div className="text-xs text-gray-300">COMPLETE</div>
+                    <ul className="space-y-3 text-soft-shadow">
+                      <li className="flex items-start gap-3">
+                        <span className="text-red-500 mt-1">•</span>
+                        <span>73% recidivism rate within 3 years</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-red-500 mt-1">•</span>
+                        <span>$80,000+ annual cost to taxpayers</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-red-500 mt-1">•</span>
+                        <span>Limited rehabilitation opportunities</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-red-500 mt-1">•</span>
+                        <span>Separation from family and community</span>
+                      </li>
+                    </ul>
+                  </Card>
+
+                  {/* Bridge Path */}
+                  <Card variant="outline" className="p-8 border-hope-gold/30">
+                    <div className="text-center mb-6">
+                      <div className="w-16 h-16 bg-hope-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-2xl">🌉</span>
+                      </div>
+                      <Heading size="h3" className="text-hope-gold mb-2">
+                        The Bridge Project
+                      </Heading>
+                    </div>
+                    <ul className="space-y-3 text-soft-shadow">
+                      <li className="flex items-start gap-3">
+                        <Check className="text-green-500 mt-1 h-4 w-4" />
+                        <span>27% recidivism rate (73% reduction)</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <Check className="text-green-500 mt-1 h-4 w-4" />
+                        <span>$0 cost to state (privately funded)</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <Check className="text-green-500 mt-1 h-4 w-4" />
+                        <span>24/7 mentorship with Tony Dungy</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <Check className="text-green-500 mt-1 h-4 w-4" />
+                        <span>Family integration and community service</span>
+                      </li>
+                    </ul>
+                  </Card>
+                </div>
+
+                <div className="text-center">
+                  <Link href="/the-case">
+                    <Button size="lg" className="mb-4">
+                      Read the Full Case
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </Link>
+                  <br />
+                  <Text size="sm" className="text-soft-shadow">
+                    Comprehensive legal analysis and program details
+                  </Text>
+                </div>
+              </RevealOnScroll>
+            </Container>
+          </Section>
+
+          {/* SECTION 3: Tony Dungy Connection */}
+          <Section
+            variant="default"
+            padding="medium"
+            className="section-spacing"
+          >
+            <Container>
+              <RevealOnScroll>
+                <div className="bg-gradient-to-br from-hope-gold/10 to-courage-blue/10 rounded-3xl p-8 md:p-12">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                      <Badge
+                        variant="outline"
+                        className="mb-4 border-hope-gold text-hope-gold"
+                      >
+                        NFL Hall of Fame Coach
+                      </Badge>
+                      <Heading size="h2" className="mb-6">
+                        Tony Dungy's Championship Commitment
+                      </Heading>
+                      <Quote className="text-lg mb-6 text-soft-shadow">
+                        "I've been working with JAHmere for three years. I've
+                        seen his transformation firsthand. He's ready to be a
+                        champion in life, not just on the field."
+                      </Quote>
+                      <div className="space-y-4 mb-6">
+                        <div className="flex items-center gap-3">
+                          <Check className="text-green-500 h-5 w-5" />
+                          <span>3 years of direct mentorship</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Check className="text-green-500 h-5 w-5" />
+                          <span>Weekly accountability sessions</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Check className="text-green-500 h-5 w-5" />
+                          <span>Proven track record with at-risk youth</span>
+                        </div>
+                      </div>
+                      <Link href="/people/coach-dungy">
+                        <Button variant="outline">
+                          Learn More About Coach Dungy's Involvement
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </div>
+                    <div className="relative">
+                      <div className="aspect-square bg-gradient-to-br from-hope-gold/20 to-courage-blue/20 rounded-2xl flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="text-6xl mb-4">🏆</div>
+                          <Text className="font-semibold">
+                            Super Bowl Champion
+                          </Text>
+                          <Text className="text-soft-shadow">
+                            Hall of Fame Mentor
+                          </Text>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </RevealOnScroll>
+            </Container>
+          </Section>
 
-            <p className="text-sm text-gray-400 font-mono">
-              Every second counts.{" "}
-              <span className="text-elite-divine-amber font-bold">
-                {timeRemaining.days} days,{" "}
-                {String(timeRemaining.hours).padStart(2, "0")}:
-                {String(timeRemaining.minutes).padStart(2, "0")}:
-                {String(timeRemaining.seconds).padStart(2, "0")}
-              </span>
-            </p>
-          </motion.div>
+          {/* SECTION 4: Impact Dashboard */}
+          <Section
+            variant="subtle"
+            padding="medium"
+            className="section-spacing"
+          >
+            <Container>
+              <RevealOnScroll>
+                <div className="text-center mb-8">
+                  <Heading size="h2" className="mb-4">
+                    Community Impact Dashboard
+                  </Heading>
+                  <Text
+                    size="lg"
+                    className="text-soft-shadow max-w-2xl mx-auto"
+                  >
+                    Real-time tracking of community support and program
+                    effectiveness
+                  </Text>
+                </div>
+                <DivineImpactDashboard />
+              </RevealOnScroll>
+            </Container>
+          </Section>
+
+          {/* SECTION 5: Jordan's Story */}
+          <Section
+            variant="default"
+            padding="medium"
+            className="section-spacing"
+          >
+            <Container>
+              <RevealOnScroll>
+                <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-3xl p-8 md:p-12">
+                  <div className="text-center mb-8">
+                    <Badge variant="outline" className="mb-4">
+                      Personal Connection
+                    </Badge>
+                    <Heading size="h2" className="mb-4">
+                      Jordan Dungy's Story
+                    </Heading>
+                    <Text
+                      size="lg"
+                      className="text-soft-shadow max-w-3xl mx-auto"
+                    >
+                      The young man who can't feel physical pain but feels
+                      everyone else's emotional pain
+                    </Text>
+                  </div>
+
+                  <Card className="p-8 mb-8">
+                    <Quote className="text-xl text-center mb-6">
+                      "JAHmere protected me when others wouldn't. He saw my pain
+                      when others couldn't. Now it's time for us to protect
+                      him."
+                    </Quote>
+                    <div className="text-center">
+                      <Text className="font-semibold">Jordan Dungy</Text>
+                      <Text className="text-soft-shadow">
+                        Son of Coach Tony Dungy
+                      </Text>
+                    </div>
+                  </Card>
+
+                  <div className="text-center">
+                    <Link href="/people/jordan-dungy">
+                      <Button size="lg">
+                        Read Jordan's Full Story
+                        <ArrowRight className="ml-2 h-5 w-5" />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </RevealOnScroll>
+            </Container>
+          </Section>
+
+          {/* SECTION 6: Call to Action */}
+          <Section variant="subtle" padding="large" className="section-spacing">
+            <Container>
+              <RevealOnScroll>
+                <div className="text-center max-w-4xl mx-auto">
+                  <Heading size="h2" className="mb-6">
+                    Your Voice Matters
+                  </Heading>
+                  <Text size="lg" className="text-soft-shadow mb-8">
+                    Join thousands of supporters advocating for transformation
+                    over incarceration. Every letter, every voice, every heart
+                    counts.
+                  </Text>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <Card className="p-6 text-center">
+                      <div className="text-3xl mb-4">✍️</div>
+                      <Heading size="h4" className="mb-2">
+                        Write a Letter
+                      </Heading>
+                      <Text className="text-soft-shadow mb-4">
+                        Send a letter to Judge Ferrero supporting JAHmere's case
+                      </Text>
+                      <Link href="/letter-form-test">
+                        <Button className="w-full">Write Now</Button>
+                      </Link>
+                    </Card>
+
+                    <Card className="p-6 text-center">
+                      <div className="text-3xl mb-4">📢</div>
+                      <Heading size="h4" className="mb-2">
+                        Share the Story
+                      </Heading>
+                      <Text className="text-soft-shadow mb-4">
+                        Help spread awareness on social media
+                      </Text>
+                      <Button variant="outline" className="w-full">
+                        Share Now
+                      </Button>
+                    </Card>
+
+                    <Card className="p-6 text-center">
+                      <div className="text-3xl mb-4">🤝</div>
+                      <Heading size="h4" className="mb-2">
+                        Get Involved
+                      </Heading>
+                      <Text className="text-soft-shadow mb-4">
+                        Join our community of supporters and advocates
+                      </Text>
+                      <Link href="/contact">
+                        <Button variant="outline" className="w-full">
+                          Contact Us
+                        </Button>
+                      </Link>
+                    </Card>
+                  </div>
+
+                  <div className="bg-hope-gold/10 rounded-2xl p-8">
+                    <Heading size="h3" className="mb-4">
+                      Time is Running Out
+                    </Heading>
+                    <Text className="text-soft-shadow mb-6">
+                      JAHmere's hearing is approaching. Every day matters in
+                      building the case for transformation.
+                    </Text>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <Link href="/letter-form-test">
+                        <Button size="lg" className="min-w-[200px]">
+                          Write Letter to Judge
+                          <ArrowRight className="ml-2 h-5 w-5" />
+                        </Button>
+                      </Link>
+                      <Link href="/the-case">
+                        <Button variant="outline" size="lg">
+                          Learn More
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </RevealOnScroll>
+            </Container>
+          </Section>
+
+          {/* Micro-commitments and Loss Aversion */}
+          <Section
+            variant="subtle"
+            padding="medium"
+            className="section-spacing"
+          >
+            <Container>
+              <RevealOnScroll>
+                <div className="max-w-3xl mx-auto">
+                  <MicroCommitments
+                    onComplete={() =>
+                      (window.location.href = "/letter-form-test")
+                    }
+                  />
+                </div>
+              </RevealOnScroll>
+            </Container>
+          </Section>
+
+          <Section
+            variant="default"
+            padding="medium"
+            className="section-spacing"
+          >
+            <Container>
+              <RevealOnScroll>
+                <LossAversion />
+              </RevealOnScroll>
+            </Container>
+          </Section>
+
+          {/* Quick Navigation */}
+          <QuickNav />
+
+          {/* Explore Navigation */}
+          <ExploreNav />
         </div>
-      </section>
-    </>
+      </div>
+    </PageTransition>
   );
 }

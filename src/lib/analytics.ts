@@ -111,3 +111,42 @@ export function reportError(error: Error, context?: Record<string, unknown>) {
     console.error("Error reporting error:", reportingError);
   });
 }
+
+/**
+ * Track custom events for user interactions
+ */
+export function trackEvent(
+  eventName: string,
+  properties?: Record<string, unknown>,
+) {
+  const eventData = {
+    event: eventName,
+    properties: {
+      ...properties,
+      timestamp: Date.now(),
+      url: typeof window !== "undefined" ? window.location.href : "",
+      userAgent: typeof navigator !== "undefined" ? navigator.userAgent : "",
+    },
+  };
+
+  // In development, log to console
+  if (process.env.NODE_ENV === "development") {
+    console.log("Event tracked:", eventData);
+    return Promise.resolve();
+  }
+
+  // Send to analytics endpoint if configured
+  if (ANALYTICS_URL) {
+    return fetch(`${ANALYTICS_URL}/events`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(eventData),
+    }).catch((error) => {
+      console.error("Error tracking event:", error);
+    });
+  }
+
+  return Promise.resolve();
+}

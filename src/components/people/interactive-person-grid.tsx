@@ -271,38 +271,31 @@ function InteractivePersonGrid({
   // Track scroll position
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  // Calculate filter counts using useMemo to prevent dependency changes on every render
-  const roleCount = useMemo<Record<PersonRole, number>>(
-    () => ({
-      lightworker: 0,
-      messenger: 0,
-      witness: 0,
-      guardian: 0,
-    }),
-    [],
-  );
+  // Initialize filter counts as state to prevent recreation
+  const [roleCount, setRoleCount] = useState<Record<PersonRole, number>>({
+    lightworker: 0,
+    messenger: 0,
+    witness: 0,
+    guardian: 0,
+  });
 
-  const themeCount = useMemo<Record<PersonTheme, number>>(
-    () => ({
-      faith: 0,
-      courage: 0,
-      transformation: 0,
-      leadership: 0,
-      unity: 0,
-      wisdom: 0,
-    }),
-    [],
-  );
+  const [themeCount, setThemeCount] = useState<Record<PersonTheme, number>>({
+    faith: 0,
+    courage: 0,
+    transformation: 0,
+    leadership: 0,
+    unity: 0,
+    wisdom: 0,
+  });
 
-  const impactCount = useMemo<Record<PersonImpactLevel, number>>(
-    () => ({
-      local: 0,
-      regional: 0,
-      global: 0,
-      eternal: 0,
-    }),
-    [],
-  );
+  const [impactCount, setImpactCount] = useState<
+    Record<PersonImpactLevel, number>
+  >({
+    local: 0,
+    regional: 0,
+    global: 0,
+    eternal: 0,
+  });
 
   // Memoize person attribute determination functions to prevent recreation on each render
   const getPersonRole = useCallback((person: PersonData): PersonRole => {
@@ -333,17 +326,34 @@ function InteractivePersonGrid({
     // Simulate data loading delay (for testing)
     const timer = setTimeout(() => {
       try {
+        // Reset counts
+        const newRoleCount = {
+          lightworker: 0,
+          messenger: 0,
+          witness: 0,
+          guardian: 0,
+        };
+        const newThemeCount = {
+          faith: 0,
+          courage: 0,
+          transformation: 0,
+          leadership: 0,
+          unity: 0,
+          wisdom: 0,
+        };
+        const newImpactCount = { local: 0, regional: 0, global: 0, eternal: 0 };
+
         const processedPeople = people.map((person) => {
           const role = getPersonRole(person);
           const themes = getPersonThemes(person);
           const impactLevel = getPersonImpactLevel(person);
 
           // Update counts
-          if (role in roleCount) roleCount[role]++;
+          if (role in newRoleCount) newRoleCount[role]++;
           themes.forEach((theme) => {
-            if (theme in themeCount) themeCount[theme]++;
+            if (theme in newThemeCount) newThemeCount[theme]++;
           });
-          if (impactLevel in impactCount) impactCount[impactLevel]++;
+          if (impactLevel in newImpactCount) newImpactCount[impactLevel]++;
 
           return {
             ...person,
@@ -352,6 +362,11 @@ function InteractivePersonGrid({
             derivedImpactLevel: impactLevel,
           };
         });
+
+        // Update state with new counts
+        setRoleCount(newRoleCount);
+        setThemeCount(newThemeCount);
+        setImpactCount(newImpactCount);
 
         // Update state with processed data
         setPeopleWithAttributes(processedPeople);
@@ -371,9 +386,6 @@ function InteractivePersonGrid({
   }, [
     people,
     simulateLoadingDelay,
-    roleCount,
-    themeCount,
-    impactCount,
     getPersonRole,
     getPersonThemes,
     getPersonImpactLevel,

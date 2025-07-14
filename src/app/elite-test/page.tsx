@@ -14,7 +14,7 @@ export default function EliteTestPage() {
           <h1 className="text-4xl font-bold mb-4 elite-text-gradient">
             🔥 CHROMATIC JUSTICE DESIGN SYSTEM
           </h1>
-          <p className="text-xl text-elite-platinum-truth/80">
+          <p className="text-xl text-elite-platinum-truth">
             Testing the Elite Design Transformation
           </p>
         </div>
@@ -54,7 +54,7 @@ export default function EliteTestPage() {
           {/* Elite Particle Test */}
           <div className="elite-particle-container bg-elite-obsidian-depth/20 p-6 rounded-lg border border-glass-border">
             <h3 className="text-xl font-bold mb-4">Divine Particles</h3>
-            <p className="text-elite-platinum-truth/80 mb-4">
+            <p className="text-elite-platinum-truth mb-4">
               Watch the sacred particles float with divine timing.
             </p>
             <div

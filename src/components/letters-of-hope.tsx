@@ -35,10 +35,19 @@ function LettersOfHope() {
 
   // Load saved count
   useEffect(() => {
-    const saved = localStorage.getItem("bridge-metrics");
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (parsed.letters) setLetterCount(parsed.letters);
+    try {
+      const saved = localStorage.getItem("bridge-metrics");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed.letters) setLetterCount(parsed.letters);
+        } catch (parseError) {
+          console.warn("Corrupted bridge-metrics data, clearing:", parseError);
+          localStorage.removeItem("bridge-metrics");
+        }
+      }
+    } catch (error) {
+      console.warn("localStorage access error:", error);
     }
   }, []);
 

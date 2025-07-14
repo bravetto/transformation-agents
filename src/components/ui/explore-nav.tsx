@@ -80,6 +80,4 @@ function ExploreNav({ className = "" }: ExploreNavProps) {
   );
 }
 
-export default withSafeUI(ExploreNav, {
-  componentName: "ExploreNav",
-});
+export default ExploreNav;

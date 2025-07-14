@@ -16,6 +16,7 @@ import {
   ChevronDown,
   BarChart,
   Target,
+  Activity,
 } from "lucide-react";
 import {
   Button,
@@ -26,6 +27,10 @@ import {
 import { Container } from "@/components/ui/container";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import MiniCountdown from "@/components/ui/mini-countdown";
+import {
+  useAdvancedGestures,
+  useMobileOptimization,
+} from "@/components/ui/mobile-optimization";
 
 interface NavItem {
   href: string;
@@ -118,6 +123,13 @@ const navItems: NavItem[] = [
     href: "/impact",
     label: "Impact Dashboard",
     icon: <BarChart className="h-4 w-4" />,
+    description: "View real-time impact metrics and community growth",
+  },
+  {
+    href: "/analytics-dashboard",
+    label: "Analytics Command Center",
+    icon: <Activity className="h-4 w-4" />,
+    description: "Championship-level analytics and system monitoring",
   },
 ];
 
@@ -126,6 +138,28 @@ function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const pathname = usePathname();
+
+  // Mobile optimization hooks
+  const { isMobile } = useMobileOptimization();
+  const { createSwipeHandler, triggerHaptic } = useAdvancedGestures();
+
+  // Enhanced mobile navigation with swipe support
+  const mobileSwipeHandlers = createSwipeHandler(
+    () => {
+      // Swipe left to close menu
+      if (isOpen) {
+        setIsOpen(false);
+        triggerHaptic("light");
+      }
+    },
+    () => {
+      // Swipe right to open menu
+      if (!isOpen && isMobile) {
+        setIsOpen(true);
+        triggerHaptic("light");
+      }
+    },
+  );
 
   // Handle body scrolling when mobile menu is open
   useEffect(() => {
@@ -182,7 +216,7 @@ function Navigation() {
         Skip to main content
       </a>
 
-      {/* Navigation Bar - Using Unified Spacing System */}
+      {/* Navigation Bar - Enhanced for mobile */}
       <motion.nav
         initial={{ y: 0 }}
         animate={{ y: 0 }}
@@ -191,6 +225,7 @@ function Navigation() {
         }`}
         role="navigation"
         aria-label="Main navigation"
+        {...(isMobile ? mobileSwipeHandlers : {})}
       >
         <Container py="none">
           <div className="flex items-center justify-between h-header">
@@ -331,7 +366,7 @@ function Navigation() {
         </Container>
       </motion.nav>
 
-      {/* Mobile Menu - Updated positioning */}
+      {/* Enhanced Mobile Menu with swipe gestures */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -344,7 +379,13 @@ function Navigation() {
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation menu"
+            {...mobileSwipeHandlers}
           >
+            {/* Swipe indicator */}
+            <div className="absolute top-4 right-4 text-soft-shadow text-xs">
+              ← Swipe to close
+            </div>
+
             <div className="flex flex-col pt-20 px-4 sm:px-8 pb-8" role="menu">
               {navItems.map((item, index) => (
                 <motion.div

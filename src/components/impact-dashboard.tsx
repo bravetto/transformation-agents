@@ -92,14 +92,25 @@ function ImpactDashboard() {
     try {
       const saved = localStorage.getItem("bridge-metrics");
       if (saved) {
-        const parsed = JSON.parse(saved) || {};
-        setMetrics((prev) => ({
-          ...prev,
-          heartsBeating: typeof parsed?.hearts === "number" ? parsed.hearts : 0,
-          lettersWritten:
-            typeof parsed?.letters === "number" ? parsed.letters : 0,
-          daysSinceLaunch: diffDays,
-        }));
+        try {
+          const parsed = JSON.parse(saved) || {};
+          setMetrics((prev) => ({
+            ...prev,
+            heartsBeating:
+              typeof parsed?.hearts === "number" ? parsed.hearts : 0,
+            lettersWritten:
+              typeof parsed?.letters === "number" ? parsed.letters : 0,
+            daysSinceLaunch: diffDays,
+          }));
+        } catch (parseError) {
+          console.warn(
+            "Corrupted localStorage data detected, clearing:",
+            parseError,
+          );
+          // Clear corrupted data and start fresh
+          localStorage.removeItem("bridge-metrics");
+          setMetrics((prev) => ({ ...prev, daysSinceLaunch: diffDays }));
+        }
       } else {
         setMetrics((prev) => ({ ...prev, daysSinceLaunch: diffDays }));
       }
