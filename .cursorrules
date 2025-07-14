@@ -1,0 +1,53 @@
+# 🏆 BRIDGE PROJECT - CURSOR RULES
+# State Protection & Development Excellence Protocol
+
+## 🛡️ CASCADE PREVENTION (SACRED LAW)
+- NEVER run multiple dev servers simultaneously
+- ALWAYS kill existing processes before starting new ones  
+- Clear cache on ANY import error
+- Commit working states immediately
+- Use manual precision methodology ONLY
+
+## 🌐 PORT MANAGEMENT
+preferred_port: 1437  # Known clean state (v1.0-clean-state)
+proven_clean_ports: [1437]
+fallback_ports: [3000, 3001, 4000, 4242]
+avoid_ports: [3714]  # Known problematic state
+
+## 🚀 DEVELOPMENT WORKFLOW
+1. Use `./scripts/clean-start.sh` for fresh starts
+2. Run `npm run build` before any commit
+3. Fix ESLint errors immediately (no @ts-ignore)
+4. Test analytics at /analytics-dashboard
+5. Preserve clean state with git tags
+
+## 📊 ANALYTICS PERFORMANCE STANDARDS
+- API response time: <50ms (current: 7ms ✅)
+- Event processing: <10ms
+- Modal selection rate: >30% (current: 33.33% ✅)
+- Build time: <10s
+- Zero TypeScript errors (MANDATORY)
+
+## 🎯 3-PATH SYSTEM PRIORITIES
+1. Coach Path: Complete leadership development tools
+2. Judge Path: Enhance evidence dashboard
+3. Activist Path: Finish letter portal templates
+
+## ⚡ QUICK COMMANDS
+- Clean start: `./scripts/clean-start.sh`
+- Health check: `curl http://localhost:1437/api/health`
+- Analytics: `open http://localhost:1437/analytics-dashboard`
+- Cache clear: `rm -rf .next node_modules/.cache`
+
+## 🏆 SUCCESS METRICS
+- Zero import errors: ✅ ACHIEVED
+- Championship analytics: ✅ ACHIEVED (7ms)
+- Production build: ✅ ACHIEVED
+- Clean state tagged: ✅ v1.0-clean-state
+
+## 🚨 EMERGENCY RECOVERY
+If cascade failure occurs:
+1. `git checkout v1.0-clean-state`
+2. `./scripts/clean-start.sh`
+3. Verify at http://localhost:1437
+4. Proceed with manual precision only 
