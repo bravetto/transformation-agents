@@ -265,7 +265,7 @@ function PropheticCountdown({
 
     // Clean up interval on unmount
     return () => clearInterval(interval);
-  }, [calculateTimeRemaining]);
+  }, [targetDate]); // ✅ Fixed: Only depend on targetDate, not the callback
 
   // Show nothing during SSR
   if (!isMounted) return null;
