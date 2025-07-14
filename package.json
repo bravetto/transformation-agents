@@ -67,7 +67,6 @@
     "crm:test-create": "curl -X POST http://localhost:3000/api/crm/contacts -H 'Content-Type: application/json' -d '{\"firstName\":\"Test\",\"lastName\":\"User\",\"email\":\"test@example.com\",\"relationship\":\"Test\",\"connectionStrength\":\"Test\",\"engagementLevel\":\"low\"}'",
     "prepare-deployment": "chmod +x ./prepare-deployment.sh && ./prepare-deployment.sh",
     "prepare-vercel": "chmod +x ./prepare-vercel-deployment.sh && ./prepare-vercel-deployment.sh",
-
     "docs:watch": "node scripts/watch-ux-docs.js",
     "docs:update": "node scripts/update-ux-documentation.js",
     "backlog:watch": "ts-node scripts/backlog/init.ts",
@@ -113,7 +112,7 @@
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
     "web-vitals": "^3.5.2",
-    "zod": "^3.25.74"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@babel/parser": "^7.23.0",

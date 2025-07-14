@@ -357,7 +357,8 @@ function DivineImpactDashboard({
   const [activeRole, setActiveRole] = useState<DivineRole | "all">(defaultRole);
 
   // Initialize metrics data with mock data or provided metrics
-  useEffect(() => {
+  // Use useMemo to prevent infinite loops caused by props-to-state cycles
+  const processedMetricsData = useMemo(() => {
     const mockData = generateMockData();
 
     // If custom metrics are provided, merge them with mock data
@@ -366,11 +367,15 @@ function DivineImpactDashboard({
         const customMetric = metrics.find((m) => m.id === mockMetric.id);
         return customMetric ? { ...mockMetric, ...customMetric } : mockMetric;
       });
-
-      setMetricsData(mergedData);
-    } else {
-      setMetricsData(mockData);
+      return mergedData;
     }
+
+    return mockData;
+  }, [metrics]);
+
+  // Initialize metrics data once with processed data
+  useEffect(() => {
+    setMetricsData(processedMetricsData);
 
     // Initial animation
     setAnimateValues(true);
@@ -381,7 +386,7 @@ function DivineImpactDashboard({
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [metrics]);
+  }, [processedMetricsData]);
 
   // Function to refresh data with small random changes (for demo purposes)
   const refreshData = useCallback(() => {
