@@ -59,6 +59,20 @@ index-*.txt
 # Local development
 .cursor/
 
+# Backup files
+*.bak
+*.backup
+*.old
+*.tmp
+.backup-*
+.archive/
+
+# Additional backup patterns
+*.orig
+*.swp
+*.swo
+*~
+
 # Build artifacts
 tsconfig.tsbuildinfo
 
