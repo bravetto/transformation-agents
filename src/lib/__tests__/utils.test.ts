@@ -37,40 +37,58 @@ describe("Utility Functions", () => {
   describe("getRoleColorClasses", () => {
     it("returns correct colors for lightworker role", () => {
       const colors = getRoleColorClasses("lightworker");
-      expect(colors.primary).toBe("bg-lightworker-primary");
-      // Remove text property checks since it doesn't exist
-      expect(colors.border).toBe("border-lightworker-primary");
-      expect(colors.gradient).toContain("from-amber-500");
+      expect(colors.primary).toBe("text-amber-500");
+      expect(colors.bg).toBe("bg-amber-500");
+      expect(colors.border).toBe("border-amber-500");
+      expect(colors.hover).toBe("hover:bg-amber-600");
+      expect(colors.ring).toBe("ring-amber-400");
+      expect(colors.gradient).toBe(
+        "from-amber-500 via-orange-400 to-yellow-500",
+      );
     });
 
     it("returns correct colors for messenger role", () => {
       const colors = getRoleColorClasses("messenger");
-      expect(colors.primary).toBe("bg-messenger-primary");
-      // Remove text property checks since it doesn't exist
-      expect(colors.border).toBe("border-messenger-primary");
-      expect(colors.gradient).toContain("from-blue-500");
+      expect(colors.primary).toBe("text-blue-500");
+      expect(colors.bg).toBe("bg-blue-500");
+      expect(colors.border).toBe("border-blue-500");
+      expect(colors.hover).toBe("hover:bg-blue-600");
+      expect(colors.ring).toBe("ring-blue-400");
+      expect(colors.gradient).toBe(
+        "from-blue-500 via-indigo-500 to-purple-500",
+      );
     });
 
     it("returns correct colors for witness role", () => {
       const colors = getRoleColorClasses("witness");
-      expect(colors.primary).toBe("bg-witness-primary");
-      // Remove text property checks since it doesn't exist
-      expect(colors.border).toBe("border-witness-primary");
-      expect(colors.gradient).toContain("from-emerald-500");
+      expect(colors.primary).toBe("text-emerald-500");
+      expect(colors.bg).toBe("bg-emerald-500");
+      expect(colors.border).toBe("border-emerald-500");
+      expect(colors.hover).toBe("hover:bg-emerald-600");
+      expect(colors.ring).toBe("ring-emerald-400");
+      expect(colors.gradient).toBe("from-emerald-500 via-teal-500 to-cyan-500");
     });
 
     it("returns correct colors for guardian role", () => {
       const colors = getRoleColorClasses("guardian");
-      expect(colors.primary).toBe("bg-guardian-primary");
-      // Remove text property checks since it doesn't exist
-      expect(colors.border).toBe("border-guardian-primary");
-      expect(colors.gradient).toContain("from-purple-500");
+      expect(colors.primary).toBe("text-purple-500");
+      expect(colors.bg).toBe("bg-purple-500");
+      expect(colors.border).toBe("border-purple-500");
+      expect(colors.hover).toBe("hover:bg-purple-600");
+      expect(colors.ring).toBe("ring-purple-400");
+      expect(colors.gradient).toBe("from-purple-500 via-pink-500 to-rose-500");
     });
 
     it("returns default colors when no role specified", () => {
       const colors = getRoleColorClasses("default");
-      expect(colors.primary).toBe("bg-courage-blue");
-      // Remove text property checks since it doesn't exist
+      expect(colors.primary).toBe("text-blue-500");
+      expect(colors.bg).toBe("bg-blue-500");
+      expect(colors.border).toBe("border-blue-500");
+      expect(colors.hover).toBe("hover:bg-blue-600");
+      expect(colors.ring).toBe("ring-blue-400");
+      expect(colors.gradient).toBe(
+        "from-blue-500 via-indigo-500 to-purple-500",
+      );
     });
   });
 

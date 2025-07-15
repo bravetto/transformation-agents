@@ -118,8 +118,8 @@ describe("Animation Utilities", () => {
 
       // Simulate visibility change
       act(() => {
-        Object.defineProperty(document, "visibilityState", {
-          value: "hidden",
+        Object.defineProperty(document, "hidden", {
+          value: true,
           writable: true,
         });
         document.dispatchEvent(new Event("visibilitychange"));
