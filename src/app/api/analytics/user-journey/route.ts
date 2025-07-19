@@ -1,115 +1,65 @@
-import { NextRequest, NextResponse } from "next/server";
-import type { AnalyticsEvent } from "@/lib/analytics/user-journey";
+import { NextResponse } from "next/server";
+import { logger } from "@/lib/logger";
+import {
+  SessionStore,
+  type UserJourneyEvent,
+} from "@/lib/analytics/session-store";
 
-// Store analytics events in memory for development
-// In production, this would be stored in a database
-const analyticsStore: AnalyticsEvent[] = [];
-const sessionStore: Map<string, AnalyticsEvent[]> = new Map();
-
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
-    const event: AnalyticsEvent = await request.json();
+    const event: UserJourneyEvent = await request.json();
 
-    // Validate the event structure
-    if (!event.eventType || !event.timestamp || !event.sessionId) {
+    // Validate required fields
+    if (!event.eventType || !event.userType || !event.sessionId) {
       return NextResponse.json(
-        { error: "Invalid event structure" },
+        { error: "Missing required fields: eventType, userType, sessionId" },
         { status: 400 },
       );
     }
 
-    // Store the event
-    analyticsStore.push(event);
-
-    // Store by session
-    const sessionEvents = sessionStore.get(event.sessionId) || [];
-    sessionEvents.push(event);
-    sessionStore.set(event.sessionId, sessionEvents);
-
-    // Log in development
-    if (process.env.NODE_ENV === "development") {
-      console.log("📊 Analytics Event Received:", {
-        eventType: event.eventType,
-        userType: "userType" in event ? event.userType : "unknown",
-        sessionId: event.sessionId,
-        timestamp: new Date(event.timestamp).toISOString(),
-      });
+    // Add timestamp if not provided
+    if (!event.timestamp) {
+      event.timestamp = new Date().toISOString();
     }
 
-    // In production, you would:
-    // 1. Store in database (PostgreSQL, MongoDB, etc.)
-    // 2. Send to analytics service (Google Analytics, Mixpanel, etc.)
-    // 3. Queue for batch processing
-    // 4. Apply data validation and sanitization
+    // Store event using shared session store
+    SessionStore.addEvent(event);
 
-    return NextResponse.json({ success: true });
+    // Log the divine event
+    logger.divine("✨ DIVINE EVENT RECEIVED", {
+      eventType: event.eventType.toUpperCase(),
+      timestamp: event.timestamp,
+      userId: event.userId,
+      sessionId: event.sessionId,
+      path: event.path,
+      userAgent: event.userAgent,
+      metadata: event.metadata,
+    });
+
+    return NextResponse.json({
+      success: true,
+      eventId: `${event.sessionId}-${Date.now()}`,
+      message: "Event tracked successfully",
+    });
   } catch (error) {
-    console.error("Error processing analytics event:", error);
+    console.error("User journey tracking error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Failed to track event" },
       { status: 500 },
     );
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const { searchParams } = new URL(request.url);
-    const sessionId = searchParams.get("sessionId");
-    const eventType = searchParams.get("eventType");
-    const userType = searchParams.get("userType");
-    const limit = parseInt(searchParams.get("limit") || "100");
+    // Get metrics from shared session store
+    const sessionMetrics = SessionStore.getSessionMetrics();
 
-    let filteredEvents = [...analyticsStore];
-
-    // Apply filters
-    if (sessionId) {
-      filteredEvents = sessionStore.get(sessionId) || [];
-    }
-
-    if (eventType) {
-      filteredEvents = filteredEvents.filter((e) => e.eventType === eventType);
-    }
-
-    if (userType) {
-      filteredEvents = filteredEvents.filter(
-        (e) => "userType" in e && e.userType === userType,
-      );
-    }
-
-    // Apply limit
-    filteredEvents = filteredEvents.slice(-limit);
-
-    // Calculate basic metrics
-    const metrics = {
-      totalEvents: filteredEvents.length,
-      eventTypes: [...new Set(filteredEvents.map((e) => e.eventType))],
-      userTypes: [
-        ...new Set(
-          filteredEvents
-            .filter((e) => "userType" in e)
-            .map((e) => ("userType" in e ? e.userType : "unknown")),
-        ),
-      ],
-      sessions: [...new Set(filteredEvents.map((e) => e.sessionId))].length,
-      timeRange:
-        filteredEvents.length > 0
-          ? {
-              start: Math.min(...filteredEvents.map((e) => e.timestamp)),
-              end: Math.max(...filteredEvents.map((e) => e.timestamp)),
-            }
-          : null,
-    };
-
-    return NextResponse.json({
-      events: filteredEvents,
-      metrics,
-      total: analyticsStore.length,
-    });
+    return NextResponse.json(sessionMetrics);
   } catch (error) {
-    console.error("Error retrieving analytics data:", error);
+    console.error("User journey GET error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Failed to get journey data" },
       { status: 500 },
     );
   }

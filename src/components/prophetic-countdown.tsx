@@ -1,18 +1,22 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Calendar,
-  Clock,
-  Award,
-  AlertCircle,
-  CheckCircle,
-  ChevronRight,
-} from "lucide-react";
+import { Calendar, Clock, Target, Zap } from "lucide-react";
 import { DivineParticles } from "./divine-particles";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { cn } from "@/lib/utils";
+import { EasterEgg } from "@/components/divine-easter-eggs";
+import {
+  useCircuitBreaker,
+  CircuitBreakerFallback,
+} from "@/lib/circuit-breaker";
 
 // Types for the component props
 export interface PropheticCountdownProps {
@@ -138,13 +142,17 @@ const AnimatedNumber = ({
 // Main component
 function PropheticCountdown({
   targetDate,
-  milestone,
+  milestone = "Divine Moment",
   role = "lightworker",
-  onMilestoneReached,
   showProgress = true,
-  className,
 }: PropheticCountdownProps) {
-  // State to hold the calculated countdown values
+  // 🛡️ CRITICAL: ALL HOOKS MUST BE AT THE TOP - BEFORE ANY RETURNS
+  const componentName = `PropheticCountdown-${role}`;
+  const renderCount = useRef(0);
+  const isMountedRef = useRef(false);
+  const isCompleteRef = useRef(false);
+
+  // State management with proper initialization
   const [countdown, setCountdown] = useState<CountdownValues>({
     days: 0,
     hours: 0,
@@ -154,20 +162,180 @@ function PropheticCountdown({
     progress: 0,
   });
 
-  // State to track if the countdown has reached zero
   const [isComplete, setIsComplete] = useState(false);
-
-  // State to track component mounting for SSR
-  const [isMounted, setIsMounted] = useState(false);
-
-  // State to handle errors
+  const [showCelebration, setShowCelebration] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  // State to track celebration animation
-  const [showCelebration, setShowCelebration] = useState(false);
+  // 🛡️ CRITICAL FIX: Reset render count on mount
+  useEffect(() => {
+    isMountedRef.current = true;
+    isCompleteRef.current = false;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
-  // Get the particle intensity based on remaining time
-  const getParticleIntensity = useCallback((): "low" | "medium" | "high" => {
+  // 🛡️ CRITICAL FIX: Move date calculations to useMemo to prevent re-computation
+  const dateCalculations = useMemo(() => {
+    if (typeof window === "undefined") {
+      return {
+        now: new Date(),
+        target: new Date(targetDate),
+        difference: 0,
+        totalDuration: 0,
+      };
+    }
+
+    const now = new Date();
+    const target = new Date(targetDate);
+    const difference = target.getTime() - now.getTime();
+
+    // Calculate total duration from a reference point (July 4, 2024)
+    const referenceDate = new Date("2024-07-04T00:00:00");
+    const totalDuration = target.getTime() - referenceDate.getTime();
+
+    return { now, target, difference, totalDuration };
+  }, [targetDate]);
+
+  // 🛡️ CRITICAL FIX: Main countdown calculation effect
+  useEffect(() => {
+    if (!isMountedRef.current) return;
+
+    const updateCountdown = () => {
+      try {
+        const { difference, totalDuration } = dateCalculations;
+
+        if (difference <= 0 && !isCompleteRef.current) {
+          // Countdown complete
+          setCountdown({
+            days: 0,
+            hours: 0,
+            minutes: 0,
+            seconds: 0,
+            totalSeconds: 0,
+            progress: 100,
+          });
+          setIsComplete(true);
+          setShowCelebration(true);
+          isCompleteRef.current = true;
+          return;
+        }
+
+        if (difference > 0) {
+          const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+          const hours = Math.floor(
+            (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+          );
+          const minutes = Math.floor(
+            (difference % (1000 * 60 * 60)) / (1000 * 60),
+          );
+          const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+          const totalSeconds = Math.floor(difference / 1000);
+
+          // Calculate progress (0-100%)
+          const elapsed = totalDuration - difference;
+          const progress =
+            totalDuration > 0
+              ? Math.min(100, Math.max(0, (elapsed / totalDuration) * 100))
+              : 0;
+
+          setCountdown({
+            days,
+            hours,
+            minutes,
+            seconds,
+            totalSeconds,
+            progress,
+          });
+        }
+      } catch (error) {
+        console.error(`${componentName} calculation error:`, error);
+        setHasError(true);
+      }
+    };
+
+    // Initial calculation
+    updateCountdown();
+
+    // Set up interval for updates
+    const interval = setInterval(updateCountdown, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [dateCalculations, componentName]);
+
+  // 🛡️ CRITICAL FIX: Celebration effect
+  useEffect(() => {
+    if (showCelebration && typeof window !== "undefined") {
+      const timer = setTimeout(() => {
+        setShowCelebration(false);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showCelebration]);
+
+  // Divine intervention refs for animations
+  const countdownRef = useRef<HTMLDivElement>(null);
+  const celebrationRef = useRef<HTMLDivElement>(null);
+
+  // 🛡️ CIRCUIT BREAKER: Prevent infinite renders
+  renderCount.current++;
+  if (renderCount.current > 100) {
+    console.warn(
+      `🚨 ${componentName}: Circuit breaker activated - too many renders`,
+    );
+    return (
+      <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+        <p className="text-red-600 text-sm">
+          Countdown temporarily unavailable. Please refresh the page.
+        </p>
+      </div>
+    );
+  }
+
+  // 🚨 SSR/CSR PROTECTION - Check after all hooks are defined
+  if (typeof window === "undefined") {
+    return (
+      <div className="p-6 bg-gradient-to-br from-lightworker-primary/10 to-lightworker-secondary/10 rounded-xl border border-lightworker-primary/20">
+        <div className="text-center">
+          <h3 className="text-lg font-semibold text-lightworker-primary mb-2">
+            {milestone}
+          </h3>
+          <div className="grid grid-cols-4 gap-2 text-center">
+            <div className="bg-white/50 rounded-lg p-2">
+              <div className="text-2xl font-bold text-lightworker-primary">
+                --
+              </div>
+              <div className="text-xs text-gray-600">Days</div>
+            </div>
+            <div className="bg-white/50 rounded-lg p-2">
+              <div className="text-2xl font-bold text-lightworker-primary">
+                --
+              </div>
+              <div className="text-xs text-gray-600">Hours</div>
+            </div>
+            <div className="bg-white/50 rounded-lg p-2">
+              <div className="text-2xl font-bold text-lightworker-primary">
+                --
+              </div>
+              <div className="text-xs text-gray-600">Minutes</div>
+            </div>
+            <div className="bg-white/50 rounded-lg p-2">
+              <div className="text-2xl font-bold text-lightworker-primary">
+                --
+              </div>
+              <div className="text-xs text-gray-600">Seconds</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 🛡️ CRITICAL FIX: Memoize particle intensity calculation to prevent render loops
+  const particleIntensity = useMemo((): "low" | "medium" | "high" => {
     // If less than 1 day remaining, use high intensity
     if (countdown.days <= 1) return "high";
     // If less than 7 days remaining, use medium intensity
@@ -176,99 +344,11 @@ function PropheticCountdown({
     return "low";
   }, [countdown.days]);
 
-  // Role-specific styling from the role config
+  // 🛡️ CRITICAL FIX: Memoize role-specific styling
   const roleStyles = useMemo(() => roleConfig[role], [role]);
 
-  // Calculate the time remaining and update state
-  const calculateTimeRemaining = useCallback(() => {
-    try {
-      const now = new Date();
-      const target = new Date(targetDate);
-
-      // Validate target date
-      if (isNaN(target.getTime())) {
-        console.error("Invalid target date provided to PropheticCountdown");
-        setHasError(true);
-        return;
-      }
-
-      // Calculate time difference in milliseconds
-      const difference = target.getTime() - now.getTime();
-
-      // If the target date is in the past, set countdown to zero
-      if (difference <= 0) {
-        if (!isComplete) {
-          setIsComplete(true);
-          setShowCelebration(true);
-
-          // Trigger the callback if provided
-          if (onMilestoneReached) {
-            onMilestoneReached();
-          }
-
-          // Hide celebration after 5 seconds
-          setTimeout(() => {
-            setShowCelebration(false);
-          }, 5000);
-        }
-
-        setCountdown({
-          days: 0,
-          hours: 0,
-          minutes: 0,
-          seconds: 0,
-          totalSeconds: 0,
-          progress: 100,
-        });
-
-        return;
-      }
-
-      // Calculate total seconds for the entire countdown period
-      const totalDuration =
-        target.getTime() - new Date(now).setHours(0, 0, 0, 0);
-      const elapsedDuration =
-        now.getTime() - new Date(now).setHours(0, 0, 0, 0);
-      const progress = Math.min(100, (elapsedDuration / totalDuration) * 100);
-
-      // Calculate days, hours, minutes, seconds
-      const totalSeconds = Math.floor(difference / 1000);
-      const days = Math.floor(totalSeconds / (60 * 60 * 24));
-      const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
-      const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
-      const seconds = Math.floor(totalSeconds % 60);
-
-      // Update state with new values
-      setCountdown({
-        days,
-        hours,
-        minutes,
-        seconds,
-        totalSeconds,
-        progress,
-      });
-    } catch (error) {
-      console.error("Error calculating countdown:", error);
-      setHasError(true);
-    }
-  }, [targetDate, isComplete, onMilestoneReached]);
-
-  // Initialize countdown on mount and set up interval
-  useEffect(() => {
-    setIsMounted(true);
-
-    // Calculate time remaining immediately
-    calculateTimeRemaining();
-
-    // Set up interval to update countdown every second
-    const interval = setInterval(calculateTimeRemaining, 1000);
-
-    // Clean up interval on unmount
-    return () => clearInterval(interval);
-  }, [targetDate]); // ✅ Fixed: Only depend on targetDate, not the callback
-
   // Show nothing during SSR
-  if (!isMounted) return null;
+  if (!isMountedRef.current) return null; // This line is now handled by the circuit breaker
 
   // Show error state if there's an issue
   if (hasError) {
@@ -279,7 +359,7 @@ function PropheticCountdown({
           className,
         )}
       >
-        <AlertCircle className="h-8 w-8 text-red-500 mx-auto mb-2" />
+        <Zap className="h-8 w-8 text-red-500 mx-auto mb-2" />
         <h3 className="text-lg font-bold text-red-800">Countdown Error</h3>
         <p className="text-sm text-red-600">
           There was an issue with the countdown. Please check the target date.
@@ -294,7 +374,7 @@ function PropheticCountdown({
       <div className="absolute inset-0 opacity-50">
         <DivineParticles
           variant={roleStyles.particleVariant as any}
-          intensity={getParticleIntensity()}
+          intensity={particleIntensity}
           className="h-full"
         />
       </div>
@@ -315,37 +395,38 @@ function PropheticCountdown({
         </div>
 
         {/* Countdown Display */}
-        <div className="flex gap-2 md:gap-4 mb-6">
-          <AnimatedNumber
-            value={countdown.days}
-            unit="days"
-            className="bg-white/10 text-white"
-          />
-          <span className="text-2xl md:text-4xl mt-3 md:mt-4 text-white/80">
-            :
-          </span>
-          <AnimatedNumber
-            value={countdown.hours}
-            unit="hours"
-            className="bg-white/10 text-white"
-          />
-          <span className="text-2xl md:text-4xl mt-3 md:mt-4 text-white/80">
-            :
-          </span>
-          <AnimatedNumber
-            value={countdown.minutes}
-            unit="minutes"
-            className="bg-white/10 text-white"
-          />
-          <span className="text-2xl md:text-4xl mt-3 md:mt-4 text-white/80">
-            :
-          </span>
-          <AnimatedNumber
-            value={countdown.seconds}
-            unit="seconds"
-            className="bg-white/10 text-white"
-          />
-        </div>
+        <EasterEgg eggId="july-28-countdown-hover" className="mb-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
+          >
+            {(["days", "hours", "minutes", "seconds"] as TimeUnit[]).map(
+              (unit, index) => (
+                <motion.div
+                  key={unit}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.3 + index * 0.1,
+                  }}
+                  className={cn(
+                    "bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/20",
+                    "hover:shadow-xl hover:scale-105 transition-all duration-300",
+                  )}
+                >
+                  <AnimatedNumber
+                    value={countdown[unit]}
+                    unit={unit}
+                    className={roleStyles.textClass}
+                  />
+                </motion.div>
+              ),
+            )}
+          </motion.div>
+        </EasterEgg>
 
         {/* Progress Bar (conditional) */}
         {showProgress && (
@@ -446,9 +527,9 @@ function PropheticCountdown({
                   "text-white font-medium",
                 )}
               >
-                <CheckCircle className="h-4 w-4 mr-2" />
+                <Target className="h-4 w-4 mr-2" />
                 Continue the Journey
-                <ChevronRight className="h-4 w-4 ml-1" />
+                <Zap className="h-4 w-4 ml-1" />
               </motion.div>
             </motion.div>
 

@@ -13,7 +13,7 @@ import {
 import { PersonData } from "@/types/person";
 
 // Divine particles component for the header
-const DivineParticles = () => {
+const PeoplePageParticles = () => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {[...Array(30)].map((_, i) => (
@@ -110,28 +110,29 @@ function PeopleContent({ simulationConfig }: PeopleContentProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
               className="hero-heading text-responsive-hero font-cinzel bg-gradient-to-r from-white via-hope-gold to-white bg-clip-text text-transparent drop-shadow-lg"
+              data-testid="heading"
             >
-              Transformation Agents
+              Our People
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4 }}
               className="hero-subheading text-responsive-sub text-white/90"
+              data-testid="text"
             >
-              Meet the extraordinary individuals whose faith journeys are
-              transforming lives and communities through authentic connection
-              and divine purpose.
+              Meet the visionaries whose faith journeys are transforming lives
+              and communities through authentic connection and divine purpose.
             </motion.p>
           </div>
 
           {/* Divine particles background */}
-          <DivineParticles />
+          <PeoplePageParticles />
         </motion.div>
       </section>
 
       {/* Content Section */}
-      <section className="section-spacing">
+      <section className="section-spacing py-24" data-testid="section">
         <div className="content-center">
           {/* Loading, Error or Content */}
           {isLoading ? (
@@ -151,6 +152,7 @@ function PeopleContent({ simulationConfig }: PeopleContentProps) {
                 <InteractivePersonGrid
                   people={people}
                   simulateLoadingDelay={0} // Set to a value to test with delay
+                  data-testid="person-grid"
                 />
               </Suspense>
             )

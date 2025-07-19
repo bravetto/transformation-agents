@@ -6,6 +6,8 @@ import React, {
   useState,
   useEffect,
   useCallback,
+  useRef,
+  useMemo,
 } from "react";
 import { generateMockData } from "./mock-data";
 import type {
@@ -14,6 +16,9 @@ import type {
   MetricCard,
 } from "./types";
 import { withErrorBoundary } from "@/components/with-error-boundary";
+
+// 🚨 DEBUG: Track render count to detect loops
+let renderCount = 0;
 
 // Create the context with a default value
 const DashboardContext = createContext<DashboardContextType | undefined>(
@@ -42,13 +47,50 @@ export function DashboardProvider({
   defaultRole = "messenger",
   initialMetrics = [],
 }: DashboardProviderProps) {
+  // 🚨 DEBUG: Count renders to detect infinite loops
+  renderCount++;
+  console.warn(`🔍 DashboardProvider render #${renderCount}`);
+
+  // 🚨 EMERGENCY: Circuit breaker to prevent infinite loops
+  if (renderCount > 10) {
+    console.error("🚨 INFINITE RENDER LOOP DETECTED IN DASHBOARD PROVIDER!");
+    return (
+      <div className="p-8 bg-red-900/20 rounded-lg text-white">
+        <h2 className="text-xl text-red-400 mb-2">
+          Dashboard Temporarily Disabled
+        </h2>
+        <p className="text-gray-300 mb-4">
+          Infinite render loop detected ({renderCount} renders)
+        </p>
+        <button
+          onClick={() => {
+            renderCount = 0;
+            window.location.reload();
+          }}
+          className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded transition-colors"
+        >
+          Reset Dashboard
+        </button>
+      </div>
+    );
+  }
+
   // State for metrics data
   const [metrics, setMetrics] = useState<MetricCard[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
-  // Function to fetch/generate data
+  // 🛡️ CRITICAL FIX: Use ref to prevent re-renders and track mount status
+  const isMounted = useRef(true);
+
+  // 🛡️ CRITICAL FIX: Move initialMetrics to ref to prevent recreation
+  const initialMetricsRef = useRef(initialMetrics);
+  initialMetricsRef.current = initialMetrics;
+
+  // 🛡️ CRITICAL FIX: Stabilize function WITHOUT dependencies that change
   const refreshData = useCallback(async () => {
+    if (!isMounted.current) return;
+
     try {
       setLoading(true);
 
@@ -57,30 +99,46 @@ export function DashboardProvider({
       const data = generateMockData();
 
       // If initial metrics were provided, merge them with the generated data
-      if (initialMetrics.length > 0) {
+      const currentInitialMetrics = initialMetricsRef.current;
+      if (currentInitialMetrics.length > 0) {
         const mergedData = data.map((metric) => {
-          const initialMetric = initialMetrics.find((m) => m.id === metric.id);
+          const initialMetric = currentInitialMetrics.find(
+            (m) => m.id === metric.id,
+          );
           return initialMetric ? { ...metric, ...initialMetric } : metric;
         });
-        setMetrics(mergedData);
+
+        if (isMounted.current) {
+          setMetrics(mergedData);
+        }
       } else {
-        setMetrics(data);
+        if (isMounted.current) {
+          setMetrics(data);
+        }
       }
 
-      setLastUpdated(new Date());
+      if (isMounted.current) {
+        setLastUpdated(new Date());
+      }
     } catch (error) {
       console.error("Error refreshing dashboard data:", error);
     } finally {
-      setLoading(false);
+      if (isMounted.current) {
+        setLoading(false);
+      }
     }
-  }, [initialMetrics]);
+  }, []); // 🚨 CRITICAL: Empty dependency array to prevent recreation
 
-  // Initial data load
+  // 🛡️ CRITICAL FIX: Initial data load with proper cleanup - ONLY run once
   useEffect(() => {
     refreshData();
-  }, [refreshData]);
 
-  // Set up auto-refresh interval
+    return () => {
+      isMounted.current = false;
+    };
+  }, []); // 🚨 CRITICAL: Empty dependency array - run only once on mount
+
+  // 🛡️ CRITICAL FIX: Set up auto-refresh interval with stable dependencies
   useEffect(() => {
     if (!autoRefresh) return;
 
@@ -109,7 +167,4 @@ export function DashboardProvider({
   );
 }
 
-export default withErrorBoundary(useDashboard, {
-  componentName: "useDashboard",
-  id: "usedashboard",
-});
+export default useDashboard;

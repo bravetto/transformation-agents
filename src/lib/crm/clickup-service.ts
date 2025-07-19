@@ -4,6 +4,7 @@
  */
 
 import { z } from "zod";
+import { logger } from "@/lib/logger";
 import {
   mapClickUpTaskToContact,
   mapContactToClickUpTask,
@@ -19,7 +20,7 @@ const CLICKUP_TEAM_ID = process.env.CLICKUP_TEAM_ID;
 const CLICKUP_API_URL = "https://api.clickup.com/api/v2";
 
 if (!CLICKUP_API_KEY || !CLICKUP_LIST_ID) {
-  console.error("Missing required ClickUp environment variables");
+  logger.error("Missing required ClickUp environment variables");
 }
 
 // Validation schemas
@@ -64,9 +65,9 @@ async function clickUpRequest(
     ...(options.headers || {}),
   };
 
-  console.log(`ClickUp Request: ${options.method || "GET"} ${url}`);
+  logger.debug(`ClickUp Request: ${options.method || "GET"} ${url}`);
   if (options.body) {
-    console.log("Request body:", options.body);
+    logger.debug("Request body:", options.body);
   }
 
   try {
@@ -103,10 +104,7 @@ async function clickUpRequest(
 export async function getClickUpCustomFields(): Promise<any> {
   try {
     const response = await clickUpRequest(`/list/${CLICKUP_LIST_ID}/field`);
-    console.log(
-      "ClickUp Custom Fields:",
-      JSON.stringify(response.fields, null, 2),
-    );
+    logger.debug("ClickUp Custom Fields:", response.fields);
     return response.fields;
   } catch (error) {
     console.error("Error fetching custom fields:", error);
@@ -123,14 +121,11 @@ export async function createClickUpContact(
   try {
     // Validate input
     const validated = clickUpContactSchema.parse(contact);
-    console.log("Validated contact data:", JSON.stringify(validated, null, 2));
+    logger.debug("Validated contact data", validated);
 
     // Map to ClickUp format
     const taskData = mapContactToClickUpTask(validated);
-    console.log(
-      "Mapped task data for ClickUp:",
-      JSON.stringify(taskData, null, 2),
-    );
+    logger.debug("Mapped task data for ClickUp", taskData);
 
     // Create task in ClickUp
     const response = await clickUpRequest(`/list/${CLICKUP_LIST_ID}/task`, {
@@ -441,28 +436,28 @@ export async function getClickUpCRMAnalytics(): Promise<{
  * Run this once and update clickup-field-mapping.ts with actual IDs
  */
 export async function initializeFieldIds(): Promise<void> {
-  console.log("Fetching ClickUp custom field IDs...");
-  console.log("List ID:", CLICKUP_LIST_ID);
+  logger.info("Fetching ClickUp custom field IDs...");
+  logger.info("List ID", { listId: CLICKUP_LIST_ID });
 
   try {
     const fields = await getClickUpCustomFields();
 
-    console.log(
+    logger.info(
       "\nUpdate CLICKUP_FIELD_IDS in clickup-field-mapping.ts with these values:",
     );
-    console.log("export const CLICKUP_FIELD_IDS: ClickUpCustomFieldIds = {");
+    logger.info("export const CLICKUP_FIELD_IDS: ClickUpCustomFieldIds = {");
 
     fields.forEach((field: any) => {
       const fieldName = field.name
         .toLowerCase()
         .replace(/\s+/g, "_")
         .replace(/[^\w_]/g, "");
-      console.log(
+      logger.info(
         `  ${fieldName}: '${field.id}', // ${field.name} (${field.type})`,
       );
     });
 
-    console.log("};");
+    logger.info("};");
   } catch (error) {
     console.error("Failed to fetch field IDs:", error);
   }

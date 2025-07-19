@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import {
   trackModalInteraction,
   trackPathProgression,
   trackConversion,
+  trackDivineEvent,
   getCurrentUserType,
+  getSessionAnalytics,
   type UserType,
 } from "@/lib/analytics/user-journey";
 
@@ -97,45 +99,44 @@ export function AnalyticsWrapper({ children }: AnalyticsWrapperProps) {
 
 // Hook for tracking modal interactions
 export function useModalAnalytics() {
-  const trackModalView = () => {
+  // 🛡️ CRITICAL FIX: Memoized tracking functions to prevent re-renders
+  const trackModalView = useCallback(() => {
     trackModalInteraction({
       eventType: "modal_viewed",
       metadata: {
         deviceType: getDeviceType(),
       },
     });
-  };
+  }, []);
 
-  const trackCardHover = (userType: UserType, hoverTime: number) => {
+  const trackCardHover = useCallback((userType: UserType) => {
     trackModalInteraction({
       eventType: "card_hovered",
       userType,
       metadata: {
-        hoverTime,
         deviceType: getDeviceType(),
       },
     });
-  };
+  }, []);
 
-  const trackPathSelection = (userType: UserType, selectionTime: number) => {
+  const trackPathSelection = useCallback((userType: UserType) => {
     trackModalInteraction({
       eventType: "path_selected",
       userType,
       metadata: {
-        selectionTime,
         deviceType: getDeviceType(),
       },
     });
-  };
+  }, []);
 
-  const trackModalDismiss = () => {
+  const trackModalDismiss = useCallback(() => {
     trackModalInteraction({
       eventType: "modal_dismissed",
       metadata: {
         deviceType: getDeviceType(),
       },
     });
-  };
+  }, []);
 
   return {
     trackModalView,

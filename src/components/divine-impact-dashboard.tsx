@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Mail,
@@ -25,6 +31,7 @@ import {
 import DivineParticles from "./divine-particles";
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
+import { EasterEgg } from "@/components/divine-easter-eggs";
 
 // Define metric card interface
 interface MetricCard {
@@ -337,12 +344,24 @@ const generateMockData = (): MetricCard[] => {
  * Features animated metric cards, trend indicators, and goal tracking.
  */
 function DivineImpactDashboard({
-  className = "",
-  refreshInterval = 30000, // default to 30 seconds
-  autoRefresh = true,
-  defaultRole = "messenger",
   metrics = [],
+  className = "",
+  autoRefresh = false,
+  refreshInterval = 30000,
+  defaultRole = "lightworker",
 }: DivineImpactDashboardProps) {
+  // 🛡️ CRITICAL DEBUG: Track render cycles to prevent infinite loops
+  const renderCount = useRef(0);
+  const componentName = "DivineImpactDashboard";
+
+  // Increment render count and log if excessive
+  renderCount.current++;
+  if (renderCount.current > 10) {
+    console.warn(
+      `🚨 ${componentName} excessive renders: ${renderCount.current}`,
+    );
+  }
+
   // State for metrics data
   const [metricsData, setMetricsData] = useState<MetricCard[]>([]);
 
@@ -356,11 +375,33 @@ function DivineImpactDashboard({
   // State for active role filter
   const [activeRole, setActiveRole] = useState<DivineRole | "all">(defaultRole);
 
-  // Initialize metrics data with mock data or provided metrics
+  // 🛡️ CRITICAL FIX: Use ref to prevent re-renders
+  const isMounted = useRef(true);
+
+  // 🛡️ CRITICAL FIX: Reset render count on mount
   useEffect(() => {
+    renderCount.current = 0;
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  // 🛡️ CRITICAL FIX: Memoize setAnimationTimer to prevent infinite loops
+  const setAnimationTimer = useCallback(() => {
+    return setTimeout(() => {
+      if (isMounted.current) {
+        setAnimateValues(false);
+      }
+    }, 2000);
+  }, []); // Empty deps - this function is stable
+
+  // 🛡️ CRITICAL FIX: Initialize data with proper dependencies
+  useEffect(() => {
+    if (!isMounted.current) return;
+
     const mockData = generateMockData();
 
-    // If custom metrics are provided, merge them with mock data
     if (metrics && metrics.length > 0) {
       const mergedData = mockData.map((mockMetric) => {
         const customMetric = metrics.find((m) => m.id === mockMetric.id);
@@ -372,23 +413,28 @@ function DivineImpactDashboard({
       setMetricsData(mockData);
     }
 
-    // Initial animation
+    // Initial animation - LINE 385: Sacred animation trigger
     setAnimateValues(true);
 
     // Disable animation after initial render
-    const timer = setTimeout(() => {
-      setAnimateValues(false);
-    }, 1000);
+    const timer = setAnimationTimer();
 
-    return () => clearTimeout(timer);
-  }, [metrics]);
+    return () => {
+      clearTimeout(timer);
+      isMounted.current = false;
+    };
+  }, [metrics, setAnimationTimer]); // 🔥 FIXED: Added setAnimationTimer to deps since it's now stable
 
-  // Function to refresh data with small random changes (for demo purposes)
+  // 🛡️ CRITICAL FIX: Stabilize refresh function with useCallback and functional updates
   const refreshData = useCallback(() => {
+    if (!isMounted.current) return;
+
     setIsRefreshing(true);
 
     // Simulate API call delay
     setTimeout(() => {
+      if (!isMounted.current) return;
+
       setMetricsData((prevMetrics) =>
         prevMetrics.map((metric) => {
           // Generate a small random change (+/- 0-5%)
@@ -422,20 +468,21 @@ function DivineImpactDashboard({
 
       // Briefly enable animations for the refresh
       setAnimateValues(true);
-      setTimeout(() => {
-        setAnimateValues(false);
-      }, 1000);
-    }, 800);
-  }, []);
+      const timer = setAnimationTimer();
 
-  // Set up auto-refresh interval
+      // Clean up timer if component unmounts
+      return () => clearTimeout(timer);
+    }, 800);
+  }, [setAnimationTimer]); // 🌟 REMOVED setAnimationTimer from deps - it's stable with []
+
+  // 🛡️ CRITICAL FIX: Set up auto-refresh interval with stable dependencies
   useEffect(() => {
     if (!autoRefresh) return;
 
     const interval = setInterval(refreshData, refreshInterval);
 
     return () => clearInterval(interval);
-  }, [autoRefresh, refreshInterval, refreshData]); // Include refreshData to prevent stale closures
+  }, [autoRefresh, refreshInterval, refreshData]);
 
   // Memoize filtered metrics to prevent unnecessary recalculations
   const filteredMetrics = useMemo(() => {
@@ -444,7 +491,12 @@ function DivineImpactDashboard({
       : metricsData.filter((metric) => metric.role === activeRole);
   }, [metricsData, activeRole]);
 
-  // Memoize role buttons for consistent rendering
+  // 🛡️ CRITICAL FIX: Extract click handler to prevent setState-in-render violation
+  const handleRoleChange = useCallback((role: DivineRole | "all") => {
+    setActiveRole(role);
+  }, []);
+
+  // 🛡️ CRITICAL FIX: Remove setState from useMemo to prevent infinite loops
   const roleFilterButtons = useMemo(() => {
     const roles: Array<DivineRole | "all"> = [
       "all",
@@ -459,63 +511,83 @@ function DivineImpactDashboard({
         {roles.map((role) => (
           <button
             key={role}
-            onClick={() => setActiveRole(role)}
+            onClick={() => handleRoleChange(role)}
             className={cn(
               "px-3 py-1 text-sm rounded-md transition",
               activeRole === role
-                ? "bg-white dark:bg-gray-700 shadow-sm"
-                : "hover:bg-white/50 dark:hover:bg-gray-700/50",
+                ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm"
+                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100",
             )}
           >
             {role === "all"
-              ? "All"
+              ? "All Roles"
               : role.charAt(0).toUpperCase() + role.slice(1)}
           </button>
         ))}
       </div>
     );
+  }, [activeRole, handleRoleChange]); // 🛡️ FIXED: Only depend on activeRole and handleRoleChange
+
+  // 🛡️ CRITICAL FIX: Memoize particle variant to prevent unnecessary re-renders
+  const particleVariant = useMemo(() => {
+    const roleVariantMap = {
+      lightworker: "sacred",
+      messenger: "divine",
+      witness: "light",
+      guardian: "starfield",
+      all: "unified",
+    } as const;
+
+    return (
+      roleVariantMap[activeRole as keyof typeof roleVariantMap] || "unified"
+    );
   }, [activeRole]);
 
   // Render the dashboard
   return (
-    <div className={cn("relative", className)}>
-      {/* Background particles */}
-      <div className="absolute inset-0 -z-10">
-        <DivineParticles
-          variant="minimal"
-          intensity="low"
-          interactive={false}
-        />
+    <div className={`relative ${className}`}>
+      {/* Background Particles */}
+      <div className="absolute inset-0 pointer-events-none">
+        <DivineParticles variant={particleVariant} density="medium" />
       </div>
 
-      {/* Dashboard header */}
-      <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center">
-        <div>
-          <h2 className="text-2xl md:text-3xl font-bold">
-            The Bridge Project Impact
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            Real-time metrics showing our growing community influence
-          </p>
-        </div>
-
-        <div className="mt-4 md:mt-0 flex items-center space-x-4">
-          {/* Role filter buttons */}
-          {roleFilterButtons}
-
-          {/* Refresh button */}
-          <button
-            onClick={refreshData}
-            disabled={isRefreshing}
-            className="flex items-center space-x-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg transition"
+      {/* Dashboard Header with Easter Egg */}
+      <div className="relative z-10 mb-6">
+        <EasterEgg eggId="hidden-scripture-cipher" className="text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl font-bold text-white mb-2"
           >
-            <RefreshCw
-              className={cn("h-4 w-4", isRefreshing ? "animate-spin" : "")}
-            />
-            <span>Refresh</span>
-          </button>
-        </div>
+            🌟 Divine Impact Dashboard 🌟
+          </motion.h2>
+          <p className="text-white/80 text-lg">
+            Witnessing the Bridge Project's Growing Influence
+          </p>
+        </EasterEgg>
       </div>
+
+      {/* Analytics Dashboard Easter Egg */}
+      <EasterEgg eggId="divine-synchronicity-complete" className="mb-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20"
+        >
+          <h3 className="text-xl font-semibold text-white mb-4">
+            📊 Real-Time Divine Metrics
+          </h3>
+
+          {/* Metrics Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {metricsData.map((metric, index) => (
+              <MetricCard key={metric.id} metric={metric} />
+            ))}
+          </div>
+        </motion.div>
+      </EasterEgg>
 
       {/* Last refreshed indicator */}
       <div className="text-sm text-gray-500 dark:text-gray-400 mb-6">
@@ -550,15 +622,13 @@ function DivineImpactDashboard({
   );
 }
 
-// Export with divine error boundary and React.memo for performance
-const DivineImpactDashboardWithErrorBoundary = React.memo(
-  withDivineErrorBoundary(DivineImpactDashboard, {
+// 🛡️ DIVINE ERROR BOUNDARY: Wrap component with error boundary
+const DivineImpactDashboardWithErrorBoundary = withDivineErrorBoundary(
+  DivineImpactDashboard,
+  {
     componentName: "DivineImpactDashboard",
-  }),
+  },
 );
-
-// Named export
-export { DivineImpactDashboardWithErrorBoundary as DivineImpactDashboard };
 
 // Default export for backward compatibility
 export default DivineImpactDashboardWithErrorBoundary;

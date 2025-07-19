@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2015",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -25,5 +25,5 @@
     "types": ["jest", "@testing-library/jest-dom", "node"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/setupTests.ts"],
-  "exclude": ["node_modules", "cypress", "cypress.config.ts"]
+  "exclude": ["node_modules", "cypress", "cypress.config.ts", "docs/**/*", "src/agents/**/*"]
 }

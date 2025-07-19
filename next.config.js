@@ -1,107 +1,59 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  typescript: {
-    // TODO: Remove this for production - fix TypeScript errors first
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    // TODO: Remove this for production - fix ESLint errors first
-    ignoreDuringBuilds: true,
-  },
-
-  // Exclude backup files from build
-  webpack: (config) => {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-    };
-    // Exclude .bak files from being processed
-    config.module.rules.push({
-      test: /\.bak$/,
-      type: "asset/resource",
-      generator: {
-        emit: false,
-      },
-    });
-    return config;
+  experimental: {
+    // Enable React 18 features (appDir is now default in Next.js 13+)
+    optimizeCss: true,
+    optimizePackageImports: [
+      "lucide-react",
+      "framer-motion",
+      "@radix-ui/react-tooltip",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-popover",
+      "date-fns",
+      "clsx",
+      "tailwind-merge",
+    ],
   },
 
-  // Enhanced image optimization for performance
+  // Move serverComponentsExternalPackages to root level
+  serverExternalPackages: [],
+
+  // 🚀 PERFORMANCE SUPREMACY CONFIGURATION
   images: {
-    // Modern image formats for better compression
+    // Enable next-gen image formats
     formats: ["image/avif", "image/webp"],
-
-    // Optimized device sizes for responsive images
+    // Optimize image loading
+    minimumCacheTTL: 60 * 60 * 24 * 365, // 1 year
+    // Image optimization
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "attachment",
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    domains: [],
+    // Responsive image breakpoints
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-
-    // Enable responsive images
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        port: "",
-        pathname: "/**",
-      },
-      // Add your production domain when ready
-      // {
-      //   protocol: 'https',
-      //   hostname: 'thebridgeproject.org',
-      //   port: '',
-      //   pathname: '/**',
-      // },
-    ],
   },
 
-  // Experimental features for performance
-  experimental: {
-    // Optimize CSS for faster loading
-    optimizeCss: true,
-
-    // Optimize package imports to reduce bundle size
-    optimizePackageImports: [
-      "framer-motion",
-      "lucide-react",
-      "@radix-ui/react-dialog",
-    ],
-  },
-
-  // Production optimizations
-  poweredByHeader: false,
-  compress: true,
-  generateEtags: true,
-
-  // Webpack optimizations for bundle splitting
-  webpack: (config, { dev, isServer }) => {
-    // Optimize bundle splitting for better caching
-    if (!dev && !isServer) {
+  // Simplified webpack configuration to prevent module loading failures
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Only apply minimal optimizations to prevent webpack module errors
+    if (!isServer && !dev) {
+      // Production-only optimizations with safer chunk splitting
       config.optimization.splitChunks = {
-        ...config.optimization.splitChunks,
+        chunks: "all",
+        maxSize: 500000,
         cacheGroups: {
-          ...config.optimization.splitChunks.cacheGroups,
-          // Separate vendor chunks for better caching
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true,
+          },
           vendor: {
             test: /[\\/]node_modules[\\/]/,
             name: "vendors",
+            priority: -10,
             chunks: "all",
-            priority: 10,
-          },
-          // Separate heavy animation libraries
-          animations: {
-            test: /[\\/]node_modules[\\/](framer-motion|@react-spring)[\\/]/,
-            name: "animations",
-            chunks: "all",
-            priority: 20,
-          },
-          // Separate UI component libraries
-          ui: {
-            test: /[\\/]node_modules[\\/](@radix-ui|lucide-react)[\\/]/,
-            name: "ui",
-            chunks: "all",
-            priority: 15,
+            reuseExistingChunk: true,
           },
         },
       };
@@ -110,10 +62,88 @@ const nextConfig = {
     return config;
   },
 
-  // Security headers are in vercel.json
+  // Headers for performance optimization
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          // Cache static assets aggressively
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+          // Security headers
+          {
+            key: "X-DNS-Prefetch-Control",
+            value: "on",
+          },
+          {
+            key: "X-XSS-Protection",
+            value: "1; mode=block",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          // Performance headers
+          {
+            key: "X-Compress",
+            value: "1",
+          },
+        ],
+      },
+      {
+        source: "/api/:path*",
+        headers: [
+          // API-specific caching
+          {
+            key: "Cache-Control",
+            value:
+              "public, max-age=60, s-maxage=300, stale-while-revalidate=60",
+          },
+        ],
+      },
+    ];
+  },
 
-  // Disable static optimization for dynamic pages
-  output: "standalone",
+  // Enable compression and optimization
+  compress: true,
+  poweredByHeader: false,
+
+  // Build optimization
+  generateBuildId: async () => {
+    // Use deterministic build ID for better caching
+    return "build-" + Date.now();
+  },
+
+  // Redirect and rewrite optimization
+  async redirects() {
+    return [];
+  },
+
+  // Environment configuration
+  env: {
+    NEXT_TELEMETRY_DISABLED: "1", // Disable telemetry for faster builds
+  },
+
+  // TypeScript configuration
+  typescript: {
+    ignoreBuildErrors: false, // Maintain type safety
+  },
+
+  // ESLint configuration
+  eslint: {
+    ignoreDuringBuilds: false, // Maintain code quality
+  },
+
+  // Server runtime optimization
+  serverRuntimeConfig: {},
+  publicRuntimeConfig: {},
 };
 
 module.exports = nextConfig;

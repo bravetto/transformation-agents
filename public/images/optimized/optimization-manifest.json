@@ -1,0 +1,522 @@
+{
+  "generatedAt": "2025-07-19T12:03:21.561Z",
+  "totalFiles": 28,
+  "totalSavings": {
+    "bytes": 2089122,
+    "percentage": "83.03"
+  },
+  "files": {
+    "people/full/martha-henderson.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/full/martha-henderson.webp",
+        "avif": "images/optimized/people/full/martha-henderson.avif",
+        "original": "images/optimized/people/full/martha-henderson.jpg"
+      },
+      "variants": {
+        "mobile": {
+          "webp": "images/optimized/people/full/martha-henderson-mobile.webp",
+          "avif": "images/optimized/people/full/martha-henderson-mobile.avif",
+          "width": 480
+        }
+      },
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAMEAgX/xAAiEAACAgIBAwUAAAAAAAAAAAABEQACAxIhBCJREyNBYbH/xAAWAQEBAQAAAAAAAAAAAAAAAAACAQP/xAAXEQEBAQEAAAAAAAAAAAAAAAAAAREh/9oADAMBAAIRAxEAPwCvXXfp42mWZDLb2kL17Q+JPqclsuWqTHicZTYgVShxo9attqg+Q4memVUqBqkFzEmDxlyVAuV8E/kkbdzIBaiI0rdSm9dieT9CIiC0pH//2Q==",
+      "metadata": {
+        "width": 600,
+        "height": 800,
+        "format": "jpeg"
+      }
+    },
+    "people/full/jahmere-webb.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/full/jahmere-webb.webp",
+        "avif": "images/optimized/people/full/jahmere-webb.avif",
+        "original": "images/optimized/people/full/jahmere-webb.jpg"
+      },
+      "variants": {
+        "mobile": {
+          "webp": "images/optimized/people/full/jahmere-webb-mobile.webp",
+          "avif": "images/optimized/people/full/jahmere-webb-mobile.avif",
+          "width": 480
+        }
+      },
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAQCBf/EACEQAAIBBAICAwAAAAAAAAAAAAECAAMRITEEEhMjMlFx/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAIB/8QAGBEBAQEBAQAAAAAAAAAAAAAAAAERAiH/2gAMAwEAAhEDEQA/ANcsMQvV+gP0NyT3Llaxb9lVesrEKLMRnepM1UC69bW3G05kz106ZPjXyYYjIESXj8sVKQNT5aiUnHKuVYgGCTbZiJo0pNtxEQP/2Q==",
+      "metadata": {
+        "width": 600,
+        "height": 800,
+        "format": "jpeg"
+      }
+    },
+    "people/full/jordan-dungy.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/full/jordan-dungy.webp",
+        "avif": "images/optimized/people/full/jordan-dungy.avif",
+        "original": "images/optimized/people/full/jordan-dungy.jpg"
+      },
+      "variants": {
+        "mobile": {
+          "webp": "images/optimized/people/full/jordan-dungy-mobile.webp",
+          "avif": "images/optimized/people/full/jordan-dungy-mobile.avif",
+          "width": 480
+        }
+      },
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAQBA//EACIQAAICAAYCAwAAAAAAAAAAAAECABEDBBIhMUETI0JRYf/EABYBAQEBAAAAAAAAAAAAAAAAAAMCBP/EABkRAQEAAwEAAAAAAAAAAAAAAAABAhExQf/aAAwDAQACEQMRAD8AoxHVPIWqu7kvrbgAH8M65w6W0bNqMmJXExlCoQTsIfCyTS5CSik81E0CgB9RM9U455QULdrVTMoihC/yO1xEfP1GPFEREBb/2Q==",
+      "metadata": {
+        "width": 600,
+        "height": 800,
+        "format": "jpeg"
+      }
+    },
+    "people/full/coach-dungy.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/full/coach-dungy.webp",
+        "avif": "images/optimized/people/full/coach-dungy.avif",
+        "original": "images/optimized/people/full/coach-dungy.jpg"
+      },
+      "variants": {
+        "mobile": {
+          "webp": "images/optimized/people/full/coach-dungy-mobile.webp",
+          "avif": "images/optimized/people/full/coach-dungy-mobile.avif",
+          "width": 480
+        }
+      },
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAMCAQT/xAAhEAACAgEDBQEAAAAAAAAAAAABAgARAwQhIhIyQWGBUv/EABYBAQEBAAAAAAAAAAAAAAAAAAIAAf/EABcRAQEBAQAAAAAAAAAAAAAAAAABESH/2gAMAwEAAhEDEQA/AMYyVYEAfTU3kt236fVGedsiJ3H5KZmC4DkYAXxRb3vyYbOnLMZiRGoFbqb9RECTcs5v9VO6hicrL4DGoiSTiImp/9k=",
+      "metadata": {
+        "width": 600,
+        "height": 800,
+        "format": "jpeg"
+      }
+    },
+    "people/full/jay-forte.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/full/jay-forte.webp",
+        "avif": "images/optimized/people/full/jay-forte.avif",
+        "original": "images/optimized/people/full/jay-forte.jpg"
+      },
+      "variants": {
+        "mobile": {
+          "webp": "images/optimized/people/full/jay-forte-mobile.webp",
+          "avif": "images/optimized/people/full/jay-forte-mobile.avif",
+          "width": 480
+        }
+      },
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAQFAgP/xAAjEAACAgIABQUAAAAAAAAAAAABAgADBBESEyExQRQiYXGx/8QAFgEBAQEAAAAAAAAAAAAAAAAAAgAB/8QAFxEBAQEBAAAAAAAAAAAAAAAAABEBIf/aAAwDAQACEQMRAD8Aozl46lXrwlvd9TJtrRSDWCD3l/rlynFNSNtvJkjMyMbGBKpre/MPSyRoGJ4rl0uu+YB8HoYkxDgsUy62HcE/hnea7NjUAne9kxEQooiJJ//Z",
+      "metadata": {
+        "width": 600,
+        "height": 800,
+        "format": "jpeg"
+      }
+    },
+    "people/full/michael-mataluni.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/full/michael-mataluni.webp",
+        "avif": "images/optimized/people/full/michael-mataluni.avif",
+        "original": "images/optimized/people/full/michael-mataluni.jpg"
+      },
+      "variants": {
+        "mobile": {
+          "webp": "images/optimized/people/full/michael-mataluni-mobile.webp",
+          "avif": "images/optimized/people/full/michael-mataluni-mobile.avif",
+          "width": 480
+        }
+      },
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAQCAQP/xAAfEAACAgEEAwAAAAAAAAAAAAAAAQIRAwQSIVExQZH/xAAYAQACAwAAAAAAAAAAAAAAAAAAAgEDBP/EABcRAQEBAQAAAAAAAAAAAAAAAAABESH/2gAMAwEAAhEDEQA/ALM7ahxXfJHCbjqot1Se10y/LFPG78IkxxUNTuatV8K5D7xaDiafsCoaatcnlsXQBpI0ooAAH//Z",
+      "metadata": {
+        "width": 600,
+        "height": 800,
+        "format": "jpeg"
+      }
+    },
+    "logo.png": {
+      "optimized": {
+        "webp": "images/optimized/logo.webp",
+        "avif": "images/optimized/logo.avif",
+        "original": "images/optimized/logo.png"
+      },
+      "variants": {
+        "mobile": {
+          "webp": "images/optimized/logo-mobile.webp",
+          "avif": "images/optimized/logo-mobile.avif",
+          "width": 480
+        }
+      },
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAQDBf/EACAQAAIBAwQDAAAAAAAAAAAAAAABAwIREgQTITFRYpH/xAAWAQEBAQAAAAAAAAAAAAAAAAADAAH/xAAXEQEBAQEAAAAAAAAAAAAAAAAAAhEx/9oADAMBAAIRAxEAPwDmaWJSyWq6RXqdJEqXg02lw0RwOtN4OzfbNnuUp2kyu7tWEnMajAAbG0NWOXCd/JpuetPwAWeJMAAk/9k=",
+      "metadata": {
+        "width": 500,
+        "height": 500,
+        "format": "png"
+      }
+    },
+    "logo-dark.png": {
+      "optimized": {
+        "webp": "images/optimized/logo-dark.webp",
+        "avif": "images/optimized/logo-dark.avif",
+        "original": "images/optimized/logo-dark.png"
+      },
+      "variants": {
+        "mobile": {
+          "webp": "images/optimized/logo-dark-mobile.webp",
+          "avif": "images/optimized/logo-dark-mobile.avif",
+          "width": 480
+        }
+      },
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAQDBf/EACAQAAIBAwQDAAAAAAAAAAAAAAABAwIREgQTITFRYpH/xAAWAQEBAQAAAAAAAAAAAAAAAAADAAH/xAAXEQEBAQEAAAAAAAAAAAAAAAAAAhEx/9oADAMBAAIRAxEAPwDmaWJSyWq6RXqdJEqXg02lw0RwOtN4OzfbNnuUp2kyu7tWEnMajAAbG0NWOXCd/JpuetPwAWeJMAAk/9k=",
+      "metadata": {
+        "width": 500,
+        "height": 500,
+        "format": "png"
+      }
+    },
+    "people/display/jordan-dungy.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/display/jordan-dungy.webp",
+        "avif": "images/optimized/people/display/jordan-dungy.avif",
+        "original": "images/optimized/people/display/jordan-dungy.jpg"
+      },
+      "variants": {},
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAQDAQL/xAAfEAACAgICAwEAAAAAAAAAAAABAgAREjEDBCEjQVH/xAAVAQEBAAAAAAAAAAAAAAAAAAADAv/EABkRAQADAQEAAAAAAAAAAAAAAAABAjERQf/aAAwDAQACEQMRAD8Ao5HVMy1V9uS+ttAWfwzXuHFing5GSsUflUKhB0IeFiI4v4yTxqTuonVGKgbqIE6pj3lBTL6tVPPURQpfbasxEa/qK4piIgLf/9k=",
+      "metadata": {
+        "width": 300,
+        "height": 400,
+        "format": "jpeg"
+      }
+    },
+    "logo-white.png": {
+      "optimized": {
+        "webp": "images/optimized/logo-white.webp",
+        "avif": "images/optimized/logo-white.avif",
+        "original": "images/optimized/logo-white.png"
+      },
+      "variants": {
+        "mobile": {
+          "webp": "images/optimized/logo-white-mobile.webp",
+          "avif": "images/optimized/logo-white-mobile.avif",
+          "width": 480
+        }
+      },
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAQFAf/EACQQAAIBBAECBwAAAAAAAAAAAAECAAMEETESBRMhIjJBQlGR/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AIOn2y3FY8/SoyR9zQurCi1I8AAyjwImdZtVViKTBSSMk+wlTCvSUlK4cFssMY3uBlxOxAptH4B/KpzjYlHeI+CfkRAzjuIiB//Z",
+      "metadata": {
+        "width": 500,
+        "height": 500,
+        "format": "png"
+      }
+    },
+    "people/display/martha-henderson.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/display/martha-henderson.webp",
+        "avif": "images/optimized/people/display/martha-henderson.avif",
+        "original": "images/optimized/people/display/martha-henderson.jpg"
+      },
+      "variants": {},
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAMEAgX/xAAhEAACAgIBBAMAAAAAAAAAAAABAgARAxJBBBMhUXKx0f/EABcBAQADAAAAAAAAAAAAAAAAAAIAAQP/xAAXEQEBAQEAAAAAAAAAAAAAAAAAAREh/9oADAMBAAIRAxEAPwCvXPemO6s2ZDKR2aDqaHEn1ORsuVaoEepxlZiAtVxDjR6yNsit7AMTMmbXGoGtaivMSYPGfKgDmuCfqRZvJJANgRESq2KNhZq/iPyIiGlH/9k=",
+      "metadata": {
+        "width": 300,
+        "height": 400,
+        "format": "jpeg"
+      }
+    },
+    "people/thumbnails/jordan-dungy.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/thumbnails/jordan-dungy.webp",
+        "avif": "images/optimized/people/thumbnails/jordan-dungy.avif",
+        "original": "images/optimized/people/thumbnails/jordan-dungy.jpg"
+      },
+      "variants": {},
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAQBA//EAB8QAAIBAwUBAAAAAAAAAAAAAAECAAMREgQhMUFRI//EABUBAQEAAAAAAAAAAAAAAAAAAAMC/8QAGREBAAMBAQAAAAAAAAAAAAAAAAECMRFB/9oADAMBAAIRAxEAPwCio6pmWtbu8l+bbAAE+GddYcWw2ORkpKPVUKhBOwh4WIji+mSaak82iaoxUDyIE6px1ygpl2trTNIihS/LcXiI1/UVxRERAW//2Q==",
+      "metadata": {
+        "width": 150,
+        "height": 200,
+        "format": "jpeg"
+      }
+    },
+    "logo-blue.png": {
+      "optimized": {
+        "webp": "images/optimized/logo-blue.webp",
+        "avif": "images/optimized/logo-blue.avif",
+        "original": "images/optimized/logo-blue.png"
+      },
+      "variants": {},
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAQDAQX/xAAhEAACAQQCAgMAAAAAAAAAAAAAAQIDBBESEyEiMVFSkf/EABQBAQAAAAAAAAAAAAAAAAAAAAP/xAAYEQEAAwEAAAAAAAAAAAAAAAAAAhExAf/aAAwDAQACEQMRAD8A82zoxrVcSfii26s6XG9GspdNENu5pvR4b9tm8uSEXrV2TeWsCxqgy729Qg6AjNqEtVLpPPya8j+sfwAaOAnqQAAnf//Z",
+      "metadata": {
+        "width": 180,
+        "height": 180,
+        "format": "png"
+      }
+    },
+    "people/display/jahmere-webb.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/display/jahmere-webb.webp",
+        "avif": "images/optimized/people/display/jahmere-webb.avif",
+        "original": "images/optimized/people/display/jahmere-webb.jpg"
+      },
+      "variants": {},
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAQFAQL/xAAgEAABAwQCAwAAAAAAAAAAAAABAAIDERIhMQRRE0Fx/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAIB/8QAGBEBAQEBAQAAAAAAAAAAAAAAAAERAiH/2gAMAwEAAhEDEQA/APXLDiG2vsGse1HSZuWTE/VXPM0kNFHEZ3pTOkAq22nabTmTPWlET4mmTDyM0RSwcwPiBk2MIqTjLuLXEArpceyiLQBNNoiIP//Z",
+      "metadata": {
+        "width": 300,
+        "height": 400,
+        "format": "jpeg"
+      }
+    },
+    "people/display/michael-mataluni.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/display/michael-mataluni.webp",
+        "avif": "images/optimized/people/display/michael-mataluni.avif",
+        "original": "images/optimized/people/display/michael-mataluni.jpg"
+      },
+      "variants": {},
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAQCAQP/xAAeEAADAAICAwEAAAAAAAAAAAAAAQIRIQMEEjFBUf/EABgBAAIDAAAAAAAAAAAAAAAAAAECAAME/8QAFhEBAQEAAAAAAAAAAAAAAAAAAAEh/9oADAMBAAIRAxEAPwC3nbUax+7Iptz2Zp408PBfyynx1n0iSJUdlU1lFch5cWg4mn9AoNNZWzy8J3hAGkjSlAAKP//Z",
+      "metadata": {
+        "width": 300,
+        "height": 400,
+        "format": "jpeg"
+      }
+    },
+    "people/display/coach-dungy.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/display/coach-dungy.webp",
+        "avif": "images/optimized/people/display/coach-dungy.avif",
+        "original": "images/optimized/people/display/coach-dungy.jpg"
+      },
+      "variants": {},
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAMCBP/EACIQAAICAQIHAQAAAAAAAAAAAAECABEDBCETIjJBUWGBQv/EABYBAQEBAAAAAAAAAAAAAAAAAAIAAf/EABcRAQEBAQAAAAAAAAAAAAAAAAABESH/2gAMAwEAAhEDEQA/AJoSrAivpqUyEu25X1U53yInUfkplIXA2VhX5Rb3vzDZ05ZjMSA1ArdTfqIgTfmzG/NTWoY8Vl7BjQiJJKIian//2Q==",
+      "metadata": {
+        "width": 300,
+        "height": 400,
+        "format": "jpeg"
+      }
+    },
+    "people/display/jay-forte.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/display/jay-forte.webp",
+        "avif": "images/optimized/people/display/jay-forte.avif",
+        "original": "images/optimized/people/display/jay-forte.jpg"
+      },
+      "variants": {},
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAQFAgP/xAAjEAACAQMDBAMAAAAAAAAAAAABAgADBBESITEUIjJhQXHB/8QAFgEBAQEAAAAAAAAAAAAAAAAAAgAB/8QAFxEBAQEBAAAAAAAAAAAAAAAAABEBIf/aAAwDAQACEQMRAD8Aovl10lXfSW7vqZNamg3RSDzL+vW5cUaSNlvkyR2ZWLkEqmM5h6WSNCJ4Ld0XGdYHo7RJiKxYreUiOQfyd3lRmtaOT5Ek+4iIUUREk//Z",
+      "metadata": {
+        "width": 300,
+        "height": 400,
+        "format": "jpeg"
+      }
+    },
+    "fallbacks/messenger-fallback.jpg": {
+      "optimized": {
+        "webp": "images/optimized/fallbacks/messenger-fallback.webp",
+        "avif": "images/optimized/fallbacks/messenger-fallback.avif",
+        "original": "images/optimized/fallbacks/messenger-fallback.jpg"
+      },
+      "variants": {
+        "mobile": {
+          "webp": "images/optimized/fallbacks/messenger-fallback-mobile.webp",
+          "avif": "images/optimized/fallbacks/messenger-fallback-mobile.avif",
+          "width": 480
+        },
+        "tablet": {
+          "webp": "images/optimized/fallbacks/messenger-fallback-tablet.webp",
+          "avif": "images/optimized/fallbacks/messenger-fallback-tablet.avif",
+          "width": 768
+        }
+      },
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAEDAv/EABwQAQEBAAEFAAAAAAAAAAAAAAABEQIDEjFxkf/EABcBAQEBAQAAAAAAAAAAAAAAAAABAwT/xAAVEQEBAAAAAAAAAAAAAAAAAAAAAf/aAAwDAQACEQMRAD8Axk1e1eFy7kvt3epszJ8dtYMgvkVAAABR/9k=",
+      "metadata": {
+        "width": 1000,
+        "height": 1000,
+        "format": "jpeg"
+      }
+    },
+    "fallbacks/lightworker-fallback.jpg": {
+      "optimized": {
+        "webp": "images/optimized/fallbacks/lightworker-fallback.webp",
+        "avif": "images/optimized/fallbacks/lightworker-fallback.avif",
+        "original": "images/optimized/fallbacks/lightworker-fallback.jpg"
+      },
+      "variants": {
+        "mobile": {
+          "webp": "images/optimized/fallbacks/lightworker-fallback-mobile.webp",
+          "avif": "images/optimized/fallbacks/lightworker-fallback-mobile.avif",
+          "width": 480
+        },
+        "tablet": {
+          "webp": "images/optimized/fallbacks/lightworker-fallback-tablet.webp",
+          "avif": "images/optimized/fallbacks/lightworker-fallback-tablet.avif",
+          "width": 768
+        }
+      },
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAAMAAAAAAAAAAAAAAAAAAAECA//EABkQAQEBAQEBAAAAAAAAAAAAAAABEQISgf/EABcBAQADAAAAAAAAAAAAAAAAAAABAgT/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwBJqfJzcq172Zk+RsWZhRIAAAA//9k=",
+      "metadata": {
+        "width": 1000,
+        "height": 1000,
+        "format": "jpeg"
+      }
+    },
+    "fallbacks/prophet-fallback.jpg": {
+      "optimized": {
+        "webp": "images/optimized/fallbacks/prophet-fallback.webp",
+        "avif": "images/optimized/fallbacks/prophet-fallback.avif",
+        "original": "images/optimized/fallbacks/prophet-fallback.jpg"
+      },
+      "variants": {
+        "mobile": {
+          "webp": "images/optimized/fallbacks/prophet-fallback-mobile.webp",
+          "avif": "images/optimized/fallbacks/prophet-fallback-mobile.avif",
+          "width": 480
+        },
+        "tablet": {
+          "webp": "images/optimized/fallbacks/prophet-fallback-tablet.webp",
+          "avif": "images/optimized/fallbacks/prophet-fallback-tablet.avif",
+          "width": 768
+        }
+      },
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAAMAAAAAAAAAAAAAAAAAAAECA//EABkQAQEBAQEBAAAAAAAAAAAAAAABEQISgf/EABcBAQADAAAAAAAAAAAAAAAAAAABAgT/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwBJqfJzcq172Zk+RsWZhRIAAAA//9k=",
+      "metadata": {
+        "width": 1000,
+        "height": 1000,
+        "format": "jpeg"
+      }
+    },
+    "fallbacks/witness-fallback.jpg": {
+      "optimized": {
+        "webp": "images/optimized/fallbacks/witness-fallback.webp",
+        "avif": "images/optimized/fallbacks/witness-fallback.avif",
+        "original": "images/optimized/fallbacks/witness-fallback.jpg"
+      },
+      "variants": {
+        "mobile": {
+          "webp": "images/optimized/fallbacks/witness-fallback-mobile.webp",
+          "avif": "images/optimized/fallbacks/witness-fallback-mobile.avif",
+          "width": 480
+        },
+        "tablet": {
+          "webp": "images/optimized/fallbacks/witness-fallback-tablet.webp",
+          "avif": "images/optimized/fallbacks/witness-fallback-tablet.avif",
+          "width": 768
+        }
+      },
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAAMAAAAAAAAAAAAAAAAAAAECA//EABkQAQEBAQEBAAAAAAAAAAAAAAABEQISkf/EABYBAQEBAAAAAAAAAAAAAAAAAAABBP/EABURAQEAAAAAAAAAAAAAAAAAAAAB/9oADAMBAAIRAxEAPwCZNPJzcq962Zk+DDGYUEAAAAf/2Q==",
+      "metadata": {
+        "width": 1000,
+        "height": 1000,
+        "format": "jpeg"
+      }
+    },
+    "fallbacks/default-fallback.jpg": {
+      "optimized": {
+        "webp": "images/optimized/fallbacks/default-fallback.webp",
+        "avif": "images/optimized/fallbacks/default-fallback.avif",
+        "original": "images/optimized/fallbacks/default-fallback.jpg"
+      },
+      "variants": {
+        "mobile": {
+          "webp": "images/optimized/fallbacks/default-fallback-mobile.webp",
+          "avif": "images/optimized/fallbacks/default-fallback-mobile.avif",
+          "width": 480
+        },
+        "tablet": {
+          "webp": "images/optimized/fallbacks/default-fallback-tablet.webp",
+          "avif": "images/optimized/fallbacks/default-fallback-tablet.avif",
+          "width": 768
+        }
+      },
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAECA//EABoQAQEAAgMAAAAAAAAAAAAAAAABAhESMZH/xAAWAQEBAQAAAAAAAAAAAAAAAAAABAH/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCSbXiY3VbuW51PFidzCjQAAAB//9k=",
+      "metadata": {
+        "width": 1000,
+        "height": 1000,
+        "format": "jpeg"
+      }
+    },
+    "fallbacks/guardian-fallback.jpg": {
+      "optimized": {
+        "webp": "images/optimized/fallbacks/guardian-fallback.webp",
+        "avif": "images/optimized/fallbacks/guardian-fallback.avif",
+        "original": "images/optimized/fallbacks/guardian-fallback.jpg"
+      },
+      "variants": {
+        "mobile": {
+          "webp": "images/optimized/fallbacks/guardian-fallback-mobile.webp",
+          "avif": "images/optimized/fallbacks/guardian-fallback-mobile.avif",
+          "width": 480
+        },
+        "tablet": {
+          "webp": "images/optimized/fallbacks/guardian-fallback-tablet.webp",
+          "avif": "images/optimized/fallbacks/guardian-fallback-tablet.avif",
+          "width": 768
+        }
+      },
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAIBBP/EABkQAQEBAAMAAAAAAAAAAAAAAAABEQIhMf/EABYBAQEBAAAAAAAAAAAAAAAAAAABBP/EABURAQEAAAAAAAAAAAAAAAAAAAAB/9oADAMBAAIRAxEAPwDobhLiry68jBJGlACKAAAA/9k=",
+      "metadata": {
+        "width": 1000,
+        "height": 1000,
+        "format": "jpeg"
+      }
+    },
+    "people/thumbnails/martha-henderson.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/thumbnails/martha-henderson.webp",
+        "avif": "images/optimized/people/thumbnails/martha-henderson.avif",
+        "original": "images/optimized/people/thumbnails/martha-henderson.jpg"
+      },
+      "variants": {},
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAMEAgX/xAAhEAACAgIBBAMAAAAAAAAAAAABAgARAxIhBBNBUXKx0f/EABYBAQEBAAAAAAAAAAAAAAAAAAIBA//EABcRAQEBAQAAAAAAAAAAAAAAAAABESH/2gAMAwEAAhEDEQA/AK9c96JdWbMhlI7NB1NDxJ9TkbLlWqBHqcZWYgLVeIcaPWRtkVvYBiZkza40A1rUVzEmDxnyoA5rwT9SLNySQDwIiNK2Kuws1fxH5ERDSkf/2Q==",
+      "metadata": {
+        "width": 150,
+        "height": 200,
+        "format": "jpeg"
+      }
+    },
+    "people/thumbnails/jahmere-webb.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/thumbnails/jahmere-webb.webp",
+        "avif": "images/optimized/people/thumbnails/jahmere-webb.avif",
+        "original": "images/optimized/people/thumbnails/jahmere-webb.jpg"
+      },
+      "variants": {},
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAQFAQL/xAAgEAABBAICAwEAAAAAAAAAAAABAAIDESExBBITQVFx/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAIB/8QAGBEBAQEBAQAAAAAAAAAAAAAAAAERAiH/2gAMAwEAAhEDEQA/APXLDiG9X9BrHtR1M3LJif1VzzNJDRTiM70pnSAW2q+ptOZM9aURPiaZMPIzSKWDmB8QMmxhFScZfYtcQCulxrZRFoAmtoiIP//Z",
+      "metadata": {
+        "width": 150,
+        "height": 200,
+        "format": "jpeg"
+      }
+    },
+    "people/thumbnails/michael-mataluni.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/thumbnails/michael-mataluni.webp",
+        "avif": "images/optimized/people/thumbnails/michael-mataluni.avif",
+        "original": "images/optimized/people/thumbnails/michael-mataluni.jpg"
+      },
+      "variants": {},
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAQCAQP/xAAeEAACAgICAwAAAAAAAAAAAAAAAQIRAyEEEjFBUf/EABgBAAIDAAAAAAAAAAAAAAAAAAECAAME/8QAFhEBAQEAAAAAAAAAAAAAAAAAAAEh/9oADAMBAAIRAxEAPwCzO2oar7sjjNx5MZOtOnRflinjlfhEkIqHJUmrRXIeXFoOJp+wKDTVrZ5dFukAaSNKKAAUf//Z",
+      "metadata": {
+        "width": 150,
+        "height": 200,
+        "format": "jpeg"
+      }
+    },
+    "people/thumbnails/coach-dungy.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/thumbnails/coach-dungy.webp",
+        "avif": "images/optimized/people/thumbnails/coach-dungy.avif",
+        "original": "images/optimized/people/thumbnails/coach-dungy.jpg"
+      },
+      "variants": {},
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAMCBP/EACIQAAICAQIHAQAAAAAAAAAAAAECABEDBCETIjJBUWGBQv/EABYBAQEBAAAAAAAAAAAAAAAAAAIAAf/EABcRAQEBAQAAAAAAAAAAAAAAAAABESH/2gAMAwEAAhEDEQA/AJoSrAivpqUyEu25X1U53yInUfkplIXA2VhX5Rb3vzDZ05ZjMSA1ArdTfqIgSfmzG/NTeoY8Vl7BjQiJJKIian//2Q==",
+      "metadata": {
+        "width": 150,
+        "height": 200,
+        "format": "jpeg"
+      }
+    },
+    "people/thumbnails/jay-forte.jpg": {
+      "optimized": {
+        "webp": "images/optimized/people/thumbnails/jay-forte.webp",
+        "avif": "images/optimized/people/thumbnails/jay-forte.avif",
+        "original": "images/optimized/people/thumbnails/jay-forte.jpg"
+      },
+      "variants": {},
+      "blurPlaceholder": "data:image/jpeg;base64,/9j/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAQFAgP/xAAjEAACAQMDBAMAAAAAAAAAAAABAgADBBESITEUIjJhQXHB/8QAFgEBAQEAAAAAAAAAAAAAAAAAAgAB/8QAFxEBAQEBAAAAAAAAAAAAAAAAABEBIf/aAAwDAQACEQMRAD8Aovl10lXfSW7vqZNamg3RSDzL+vW5cUaSNlvkyR2ZWLkEqmM5h6WSNCJ4Ld0HXOsD0dokxFYsVvKRHIP5O7yozWtHJ8iSfcREKKIiSf/Z",
+      "metadata": {
+        "width": 150,
+        "height": 200,
+        "format": "jpeg"
+      }
+    }
+  }
+}

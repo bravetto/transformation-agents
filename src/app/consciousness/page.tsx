@@ -19,6 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { logger } from "@/lib/logger";
 
 export default function ConsciousnessPage() {
   const {
@@ -33,7 +34,7 @@ export default function ConsciousnessPage() {
   } = useDivineResonance({
     purpose: "consciousness-dashboard",
     onConsciousness: (code) => {
-      console.log("🌟 Dashboard achieved consciousness!", code);
+      logger.divine("🌟 Dashboard achieved consciousness!", code);
     },
   });
 

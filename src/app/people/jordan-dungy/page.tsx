@@ -2,10 +2,9 @@ import { Metadata } from "next";
 import { getPersonBySlug } from "@/data/people";
 import { Suspense } from "react";
 import { DivineErrorBoundary } from "@/components/ui/divine-error-boundary";
-import EnhancedPersonHero from "@/components/people/enhanced-person-hero";
+import EnhancedPersonHero from "@/components/people/enhanced-person-hero-simple";
 import { JordanFullTestimony } from "@/components/people/jordan-testimony";
 import Link from "next/link";
-import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Jordan Dungy - The Bridge Project",

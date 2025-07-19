@@ -247,7 +247,4 @@ function EnhancedPersonHero({
   );
 }
 
-export default withDivineErrorBoundary(EnhancedPersonHero, {
-  componentName: "EnhancedPersonHero",
-  role: "guardian",
-});
+export default EnhancedPersonHero;

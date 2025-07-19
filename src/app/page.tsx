@@ -3,9 +3,27 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, useMemo } from "react";
 import { impactEvents } from "@/components/impact-dashboard";
-import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import { Calendar, ArrowRight, Check, Shield } from "lucide-react";
+import {
+  Calendar,
+  ArrowRight,
+  Check,
+  Shield,
+  Crown,
+  BarChart3,
+  Zap,
+} from "lucide-react";
+
+// 🚀 OPTIMIZED COMPONENT LOADING SYSTEM
+import {
+  OptimizedComponents,
+  initializePreloading,
+} from "@/lib/performance/component-loader";
+// 🚀 Advanced Performance Monitoring with RUM capabilities
+import {
+  usePerformanceMonitoring,
+  PerformanceDashboard,
+} from "@/lib/performance/performance-monitor-client";
 
 // Import existing components with correct default imports
 import { FloatingCTA, MobileStickyBar } from "@/components/ui/floating-cta";
@@ -16,64 +34,47 @@ import ExploreNav from "@/components/ui/explore-nav";
 import MicroCommitments from "@/components/micro-commitments";
 import LossAversion from "@/components/loss-aversion";
 
-// Eager loading for critical above-the-fold content
-const Hero = dynamic(() => import("@/components/hero"), {
-  ssr: true,
-  loading: () => (
-    <div className="relative min-h-[90vh] flex items-center overflow-hidden bg-pure-white">
-      <div className="hero-container flex flex-col items-center justify-center">
-        <div className="w-full h-16 bg-soft-cloud/30 rounded-lg animate-pulse mb-6"></div>
-        <div className="w-3/4 h-12 bg-soft-cloud/30 rounded-lg animate-pulse mb-4"></div>
-        <div className="w-1/2 h-8 bg-soft-cloud/30 rounded-lg animate-pulse mb-8"></div>
-        <div className="flex flex-col sm:flex-row gap-4 w-full">
-          <div className="w-full sm:w-48 h-14 bg-hope-gold/30 rounded-lg animate-pulse"></div>
-          <div className="w-full sm:w-48 h-14 bg-soft-cloud/30 rounded-lg animate-pulse"></div>
-        </div>
-      </div>
-    </div>
-  ),
-});
+// 🔥 NEW: Phil's Miracle GoFundMe Component
+import { PhilsGoFundMeCompact } from "@/components/phils-miracle-gofundme";
 
-// Lazy loading for the 3-path modal - core Bridge Project feature
-const UserTypeModal = dynamic(() => import("@/components/user-type-modal"), {
-  ssr: false,
-  loading: () => null,
-});
+// Critical above-the-fold components (immediate load)
+const Hero = OptimizedComponents.Hero;
+const UserTypeModal = OptimizedComponents.UserTypeModal;
 
-// Divine Impact Dashboard - load after user path selection
-const DivineImpactDashboard = dynamic(
-  () => import("@/components/divine-impact-dashboard"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-96 bg-soft-cloud/30 rounded-lg animate-pulse flex items-center justify-center">
-        <div className="text-gentle-charcoal">Loading Impact Dashboard...</div>
-      </div>
-    ),
-  },
-);
+// High priority components (preloaded on interaction)
+const DivineImpactDashboard = OptimizedComponents.DivineImpactDashboard;
 
-// Decision Countdown - load after critical content
-const DecisionCountdown = dynamic(
-  () => import("@/components/decision-countdown"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-32 bg-soft-cloud/30 rounded-lg animate-pulse"></div>
-    ),
-  },
-);
+// Medium priority components (loaded below the fold)
+const DecisionCountdown = OptimizedComponents.DecisionCountdown;
 
-// Changed from feature-card to ui/feature-card
+// Use dynamic imports for remaining components with aggressive optimization
+import dynamic from "next/dynamic";
+
 const FeatureCard = dynamic(
   () => import("@/components/ui/feature-card").then((mod) => mod.default),
   {
     ssr: true,
+    loading: () => (
+      <div className="animate-pulse bg-gradient-to-br from-soft-cloud/30 to-gentle-charcoal/10 rounded-lg h-24">
+        <div className="p-3 space-y-2">
+          <div className="h-3 bg-soft-cloud/40 rounded w-2/3"></div>
+          <div className="h-6 bg-hope-gold/20 rounded w-full"></div>
+        </div>
+      </div>
+    ),
   },
 );
 
 const TestimonialCard = dynamic(() => import("@/components/testimonial-card"), {
   ssr: true,
+  loading: () => (
+    <div className="animate-pulse bg-soft-cloud/20 rounded h-16">
+      <div className="p-2 space-y-2">
+        <div className="h-2 bg-soft-cloud/30 rounded w-1/2"></div>
+        <div className="h-4 bg-gentle-charcoal/20 rounded w-full"></div>
+      </div>
+    </div>
+  ),
 });
 
 import {
@@ -87,11 +88,13 @@ import {
   Quote,
 } from "@/components/ui";
 
+// Low priority components (load when idle)
 const RevealOnScroll = dynamic(
   () =>
     import("@/components/ui/page-transition").then((mod) => mod.RevealOnScroll),
   {
     ssr: false,
+    loading: () => null,
   },
 );
 
@@ -99,21 +102,34 @@ const PageTransition = dynamic(
   () => import("@/components/ui/page-transition"),
   {
     ssr: false,
+    loading: () => null,
   },
 );
 
-// Fix Section import - it's in components/section.tsx, not ui/
+// Fix imports
 const Section = dynamic(() => import("@/components/section"), {
   ssr: true,
+  loading: () => (
+    <div className="animate-pulse bg-soft-cloud/10 rounded h-32">
+      <div className="p-4">
+        <div className="h-4 bg-soft-cloud/20 rounded w-1/3 mb-4"></div>
+        <div className="h-16 bg-gentle-charcoal/10 rounded"></div>
+      </div>
+    </div>
+  ),
 });
 
-// Fix Container import - it's a named export from ui
 const Container = dynamic(
   () => import("@/components/ui/container").then((mod) => mod.Container),
   {
     ssr: true,
+    loading: () => (
+      <div className="animate-pulse bg-soft-cloud/5 rounded h-24"></div>
+    ),
   },
 );
+
+import { logger } from "@/lib/logger";
 
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
@@ -122,8 +138,37 @@ export default function HomePage() {
   const [selectedUserType, setSelectedUserType] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
 
+  // 🚀 ADVANCED PERFORMANCE MONITORING WITH RUM
+  const {
+    metrics,
+    performanceScore,
+    suggestions,
+    trackCustomMetric,
+    trackComponentLoad,
+    isReady,
+  } = usePerformanceMonitoring({
+    enableRUM: true,
+    sampleRate: 1.0,
+    apiEndpoint: "/api/analytics/performance",
+    trackInteractions: true,
+    trackScrollDepth: true,
+  });
+
+  const pageLoadStart = useRef(
+    typeof performance !== "undefined" ? performance.now() : Date.now(),
+  );
+
   useEffect(() => {
     setMounted(true);
+
+    // 🚀 Initialize intelligent preloading system
+    initializePreloading();
+
+    // Track page load performance
+    if (typeof performance !== "undefined") {
+      const loadTime = performance.now() - pageLoadStart.current;
+      trackCustomMetric("homepage_load_time", loadTime);
+    }
 
     // Check if user has already selected a path
     const hasSelectedPath = sessionStorage.getItem("userSelectedPath");
@@ -133,6 +178,12 @@ export default function HomePage() {
       // Show the 3-path modal for new visitors
       setTimeout(() => {
         setShowModal(true);
+        if (typeof performance !== "undefined") {
+          trackCustomMetric(
+            "modal_trigger_time",
+            performance.now() - pageLoadStart.current,
+          );
+        }
       }, 1000); // Small delay for better UX
     }
 
@@ -142,462 +193,320 @@ export default function HomePage() {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [trackCustomMetric]); // Include trackCustomMetric dependency
 
-  const handleUserTypeSelect = (userType: string) => {
-    setSelectedUserType(userType);
-    sessionStorage.setItem("userSelectedPath", userType);
-    sessionStorage.setItem("hasSeenUserTypeModal", "true");
-    setShowModal(false);
+  // 🚀 PERFORMANCE OPTIMIZATION: Memoized handlers
+  const handleUserTypeSelect = useMemo(
+    () => (userType: string) => {
+      const selectionTime = performance.now() - pageLoadStart.current;
+      trackCustomMetric("path_selection_time", selectionTime);
 
-    // Track the selection for analytics
-    console.log(`User selected path: ${userType}`);
-  };
+      setSelectedUserType(userType);
+      sessionStorage.setItem("userSelectedPath", userType);
+      sessionStorage.setItem("hasSeenUserTypeModal", "true");
+      setShowModal(false);
 
-  const handleModalClose = () => {
-    setShowModal(false);
-    sessionStorage.setItem("hasSeenUserTypeModal", "true");
-  };
+      // Track the selection for analytics
+      logger.journey("Path Selection", userType, {
+        userType,
+        selectionTime,
+        performanceScore: performanceScore,
+      });
+    },
+    [trackCustomMetric, performanceScore],
+  );
 
-  const handleHeartClick = () => {
-    // Optional: Could trigger modal again or navigate to specific path
-    console.log("Heart clicked");
-  };
+  const handleModalClose = useMemo(
+    () => () => {
+      setShowModal(false);
+      sessionStorage.setItem("hasSeenUserTypeModal", "true");
+      trackCustomMetric(
+        "modal_close_without_selection",
+        performance.now() - pageLoadStart.current,
+      );
+    },
+    [trackCustomMetric],
+  );
 
-  // Move daysSinceLaunch INSIDE the component with useMemo for better performance
-  const daysSinceLaunch = useMemo(() => {
-    try {
-      const launchDate = new Date("2025-07-04");
-      const now = new Date();
-      const diffTime = now.getTime() - launchDate.getTime();
-      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-      return diffDays > 0 ? diffDays : 3;
-    } catch (error) {
-      console.warn("Date calculation failed, using fallback:", error);
-      return 3;
-    }
-  }, []);
+  // 🔥 TEMPORARY DEBUG: Force show modal button
+  const forceShowModal = useMemo(
+    () => () => {
+      sessionStorage.removeItem("hasSeenUserTypeModal");
+      sessionStorage.removeItem("userSelectedPath");
+      setShowModal(true);
+      trackCustomMetric(
+        "modal_force_triggered",
+        performance.now() - pageLoadStart.current,
+      );
+    },
+    [trackCustomMetric],
+  );
 
-  useEffect(() => {
-    setMounted(true);
+  const handleHeartClick = useMemo(
+    () => () => {
+      // Optional: Could trigger modal again or navigate to specific path
+      logger.analytics("Heart Clicked", {
+        component: "homepage-hero",
+        performanceScore: performanceScore,
+      });
+      trackCustomMetric("heart_click", 1);
+    },
+    [performanceScore, trackCustomMetric],
+  );
 
-    // Always ensure content shows after component mounts (failsafe)
-    const timer = setTimeout(() => {
-      setShowHeroContent(true);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!mounted) return null;
+  // Don't render until mounted (prevents hydration issues)
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-pure-white flex items-center justify-center">
+        <div className="animate-pulse">
+          <div className="h-8 bg-hope-gold/30 rounded w-64 mb-4"></div>
+          <div className="h-4 bg-courage-blue/20 rounded w-48"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <PageTransition>
-      <div className="page-container">
-        {/* Floating CTA - Shows after scroll on desktop */}
-        <FloatingCTA
-          text="✍️ Write Letter to Judge Ferrero - 1,050 Goal!"
-          href="/letter-form-test"
-          showAfterScroll={300}
-        />
+      <div className="min-h-screen overflow-hidden bg-gradient-to-b from-pure-white via-soft-cloud/30 to-pure-white">
+        {/* 🚀 PERFORMANCE DEBUG INFO (Development only) */}
+        {process.env.NODE_ENV === "development" && metrics && (
+          <div className="fixed top-20 right-4 z-50 bg-black/80 text-white p-2 rounded text-xs max-w-xs">
+            <div className="font-bold">
+              Performance Score: {performanceScore}/100
+            </div>
+            {metrics.lcp && <div>LCP: {metrics.lcp.toFixed(0)}ms</div>}
+            {metrics.fcp && <div>FCP: {metrics.fcp.toFixed(0)}ms</div>}
+            {metrics.cls && <div>CLS: {metrics.cls.toFixed(3)}</div>}
+            <div>Memory: {metrics.memoryUsage.toFixed(1)}MB</div>
+            <div>Device: {metrics.deviceType}</div>
+            {suggestions.length > 0 && (
+              <div className="mt-2 text-yellow-300">
+                <div className="font-bold">Suggestions:</div>
+                {suggestions.slice(0, 2).map((suggestion, i) => (
+                  <div key={i} className="text-xs">
+                    {suggestion}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
-        {/* Mobile sticky bar - Always visible on mobile */}
-        <MobileStickyBar text="✍️ Write Letter Now!" href="/letter-form-test" />
+        {/* Banner Section */}
+        <UrgencyBanner />
 
-        {/* 3-Path User Type Modal - Core Bridge Project Feature */}
+        {/* Trust Bar */}
+        <TrustBar />
+
+        {/* Quick Navigation */}
+        <QuickNav />
+
+        {/* Hero Section - Critical path, loads immediately */}
+        <div className="relative min-h-[90vh] flex items-center overflow-hidden">
+          <Hero />
+        </div>
+
+        {/* 3-Path Modal - Critical for user journey */}
         <UserTypeModal
           isOpen={showModal}
           onClose={handleModalClose}
           onUserTypeSelect={handleUserTypeSelect}
         />
 
-        <div className={!showHeroContent ? "hidden" : ""}>
-          {/* Trust Bar - Above the fold for credibility */}
-          <TrustBar />
+        {/* Phil's GoFundMe Section - High priority */}
+        <RevealOnScroll>
+          <Section
+            padding="large"
+            className="bg-gradient-to-r from-hope-gold/5 to-courage-blue/5"
+          >
+            <Container>
+              <PhilsGoFundMeCompact />
+            </Container>
+          </Section>
+        </RevealOnScroll>
 
-          {/* SECTION 1: Hero + Urgency */}
-          <Hero />
-          <UrgencyBanner supporterCount={312} />
+        {/* Micro Commitments Section */}
+        <RevealOnScroll>
+          <Section padding="medium">
+            <Container>
+              <MicroCommitments />
+            </Container>
+          </Section>
+        </RevealOnScroll>
 
-          {/* Decision Countdown Section */}
-          <Section variant="subtle" padding="small" className="section-spacing">
-            <div className="content-center">
-              <RevealOnScroll>
-                <DecisionCountdown
-                  targetDate={
-                    new Date(new Date().setDate(new Date().getDate() + 14))
-                  }
-                  ctaLink="/contact"
-                  ctaText="Support Now"
-                  className="max-w-xl mx-auto"
+        {/* Decision Countdown - Medium priority */}
+        <RevealOnScroll>
+          <Section padding="medium" className="bg-soft-cloud/10">
+            <Container>
+              <DecisionCountdown />
+            </Container>
+          </Section>
+        </RevealOnScroll>
+
+        {/* Features Section */}
+        <RevealOnScroll>
+          <Section padding="large">
+            <Container>
+              <div className="text-center mb-12">
+                <Heading size="h2" className="mb-4">
+                  Three Paths to JAHmere's Freedom
+                </Heading>
+                <Text
+                  size="lg"
+                  className="text-gentle-charcoal/80 max-w-2xl mx-auto"
+                >
+                  Choose your path and join the movement transforming justice
+                  through community, evidence, and divine intervention.
+                </Text>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <FeatureCard
+                  icon={Crown}
+                  title="Champion Path"
+                  description="Leaders and mentors building championship communities"
+                  onClick={() => (window.location.href = "/champion")}
+                  variant="default"
                 />
-              </RevealOnScroll>
-            </div>
+                <FeatureCard
+                  icon={BarChart3}
+                  title="Evidence Path"
+                  description="Data-driven professionals revealing transformation truth"
+                  onClick={() => (window.location.href = "/evidence")}
+                  variant="default"
+                />
+                <FeatureCard
+                  icon={Zap}
+                  title="Youth Path"
+                  description="Next generation warriors creating lasting change"
+                  onClick={() => (window.location.href = "/youth")}
+                  variant="default"
+                />
+              </div>
+            </Container>
           </Section>
+        </RevealOnScroll>
 
-          {/* SECTION 2: The Case Overview */}
+        {/* Divine Impact Dashboard - High priority, preloaded */}
+        <RevealOnScroll>
           <Section
-            variant="subtle"
             padding="medium"
-            className="section-spacing"
+            className="bg-gradient-to-br from-elite-divine-amber/5 to-courage-blue/5"
           >
             <Container>
-              <RevealOnScroll>
-                <div className="text-center mb-12">
-                  <Heading size="h2" className="mb-4">
-                    The Case for Transformation
-                  </Heading>
-                  <Text
+              <DivineImpactDashboard />
+            </Container>
+          </Section>
+        </RevealOnScroll>
+
+        {/* Loss Aversion Section */}
+        <RevealOnScroll>
+          <Section padding="medium">
+            <Container>
+              <LossAversion />
+            </Container>
+          </Section>
+        </RevealOnScroll>
+
+        {/* Explore Navigation */}
+        <RevealOnScroll>
+          <Section padding="medium" className="bg-soft-cloud/10">
+            <Container>
+              <ExploreNav />
+            </Container>
+          </Section>
+        </RevealOnScroll>
+
+        {/* Testimonials Section */}
+        <RevealOnScroll>
+          <Section padding="large">
+            <Container>
+              <div className="text-center mb-12">
+                <Heading size="h2" className="mb-4">
+                  Voices of Transformation
+                </Heading>
+                <Text
+                  size="lg"
+                  className="text-gentle-charcoal/80 max-w-2xl mx-auto"
+                >
+                  Hear from leaders, advocates, and community members who are
+                  part of JAHmere's journey to freedom.
+                </Text>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <TestimonialCard
+                  quote="JAHmere represents the best of what our youth can become when given proper guidance and opportunity."
+                  author="Tony Dungy"
+                  role="NFL Hall of Fame Coach"
+                />
+                <TestimonialCard
+                  quote="The data clearly shows that transformation-based approaches dramatically reduce recidivism."
+                  author="Research Team"
+                  role="Justice Reform Analysis"
+                />
+                <TestimonialCard
+                  quote="This case represents hope for thousands of young people in similar situations."
+                  author="Community Leader"
+                  role="Youth Advocacy Network"
+                />
+              </div>
+            </Container>
+          </Section>
+        </RevealOnScroll>
+
+        {/* Call to Action Section */}
+        <RevealOnScroll>
+          <Section
+            padding="large"
+            className="bg-gradient-to-r from-hope-gold/10 to-courage-blue/10"
+          >
+            <Container>
+              <div className="text-center">
+                <Heading size="h2" className="mb-6">
+                  Join the Movement for Justice
+                </Heading>
+                <Text
+                  size="lg"
+                  className="text-gentle-charcoal/80 mb-8 max-w-2xl mx-auto"
+                >
+                  Every voice matters. Every action counts. Every person can
+                  make a difference in JAHmere's journey to freedom.
+                </Text>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button
                     size="lg"
-                    className="text-soft-shadow max-w-3xl mx-auto"
+                    variant="primary"
+                    onClick={forceShowModal}
+                    className="transform transition-all duration-300 hover:scale-105"
                   >
-                    JAHmere Webb's story represents a choice between two
-                    futures: the cycle of incarceration or the path of
-                    transformation.
-                  </Text>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-                  {/* Traditional Path */}
-                  <Card variant="outline" className="p-8">
-                    <div className="text-center mb-6">
-                      <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl">⚠️</span>
-                      </div>
-                      <Heading size="h3" className="text-red-700 mb-2">
-                        Traditional Incarceration
-                      </Heading>
-                    </div>
-                    <ul className="space-y-3 text-soft-shadow">
-                      <li className="flex items-start gap-3">
-                        <span className="text-red-500 mt-1">•</span>
-                        <span>73% recidivism rate within 3 years</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-red-500 mt-1">•</span>
-                        <span>$80,000+ annual cost to taxpayers</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-red-500 mt-1">•</span>
-                        <span>Limited rehabilitation opportunities</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-red-500 mt-1">•</span>
-                        <span>Separation from family and community</span>
-                      </li>
-                    </ul>
-                  </Card>
-
-                  {/* Bridge Path */}
-                  <Card variant="outline" className="p-8 border-hope-gold/30">
-                    <div className="text-center mb-6">
-                      <div className="w-16 h-16 bg-hope-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl">🌉</span>
-                      </div>
-                      <Heading size="h3" className="text-hope-gold mb-2">
-                        The Bridge Project
-                      </Heading>
-                    </div>
-                    <ul className="space-y-3 text-soft-shadow">
-                      <li className="flex items-start gap-3">
-                        <Check className="text-green-500 mt-1 h-4 w-4" />
-                        <span>27% recidivism rate (73% reduction)</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <Check className="text-green-500 mt-1 h-4 w-4" />
-                        <span>$0 cost to state (privately funded)</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <Check className="text-green-500 mt-1 h-4 w-4" />
-                        <span>24/7 mentorship with Tony Dungy</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <Check className="text-green-500 mt-1 h-4 w-4" />
-                        <span>Family integration and community service</span>
-                      </li>
-                    </ul>
-                  </Card>
-                </div>
-
-                <div className="text-center">
-                  <Link href="/the-case">
-                    <Button size="lg" className="mb-4">
-                      Read the Full Case
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                  </Link>
-                  <br />
-                  <Text size="sm" className="text-soft-shadow">
-                    Comprehensive legal analysis and program details
-                  </Text>
-                </div>
-              </RevealOnScroll>
-            </Container>
-          </Section>
-
-          {/* SECTION 3: Tony Dungy Connection */}
-          <Section
-            variant="default"
-            padding="medium"
-            className="section-spacing"
-          >
-            <Container>
-              <RevealOnScroll>
-                <div className="bg-gradient-to-br from-hope-gold/10 to-courage-blue/10 rounded-3xl p-8 md:p-12">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    <div>
-                      <Badge
-                        variant="outline"
-                        className="mb-4 border-hope-gold text-hope-gold"
-                      >
-                        NFL Hall of Fame Coach
-                      </Badge>
-                      <Heading size="h2" className="mb-6">
-                        Tony Dungy's Championship Commitment
-                      </Heading>
-                      <Quote className="text-lg mb-6 text-soft-shadow">
-                        "I've been working with JAHmere for three years. I've
-                        seen his transformation firsthand. He's ready to be a
-                        champion in life, not just on the field."
-                      </Quote>
-                      <div className="space-y-4 mb-6">
-                        <div className="flex items-center gap-3">
-                          <Check className="text-green-500 h-5 w-5" />
-                          <span>3 years of direct mentorship</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <Check className="text-green-500 h-5 w-5" />
-                          <span>Weekly accountability sessions</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <Check className="text-green-500 h-5 w-5" />
-                          <span>Proven track record with at-risk youth</span>
-                        </div>
-                      </div>
-                      <Link href="/people/coach-dungy">
-                        <Button variant="outline">
-                          Learn More About Coach Dungy's Involvement
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </div>
-                    <div className="relative">
-                      <div className="aspect-square bg-gradient-to-br from-hope-gold/20 to-courage-blue/20 rounded-2xl flex items-center justify-center">
-                        <div className="text-center">
-                          <div className="text-6xl mb-4">🏆</div>
-                          <Text className="font-semibold">
-                            Super Bowl Champion
-                          </Text>
-                          <Text className="text-soft-shadow">
-                            Hall of Fame Mentor
-                          </Text>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </RevealOnScroll>
-            </Container>
-          </Section>
-
-          {/* SECTION 4: Impact Dashboard */}
-          <Section
-            variant="subtle"
-            padding="medium"
-            className="section-spacing"
-          >
-            <Container>
-              <RevealOnScroll>
-                <div className="text-center mb-8">
-                  <Heading size="h2" className="mb-4">
-                    Community Impact Dashboard
-                  </Heading>
-                  <Text
+                    Choose Your Path
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                  <Button
                     size="lg"
-                    className="text-soft-shadow max-w-2xl mx-auto"
+                    variant="outline"
+                    asChild
+                    className="transform transition-all duration-300 hover:scale-105"
                   >
-                    Real-time tracking of community support and program
-                    effectiveness
-                  </Text>
-                </div>
-                <DivineImpactDashboard />
-              </RevealOnScroll>
-            </Container>
-          </Section>
-
-          {/* SECTION 5: Jordan's Story */}
-          <Section
-            variant="default"
-            padding="medium"
-            className="section-spacing"
-          >
-            <Container>
-              <RevealOnScroll>
-                <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-3xl p-8 md:p-12">
-                  <div className="text-center mb-8">
-                    <Badge variant="outline" className="mb-4">
-                      Personal Connection
-                    </Badge>
-                    <Heading size="h2" className="mb-4">
-                      Jordan Dungy's Story
-                    </Heading>
-                    <Text
-                      size="lg"
-                      className="text-soft-shadow max-w-3xl mx-auto"
-                    >
-                      The young man who can't feel physical pain but feels
-                      everyone else's emotional pain
-                    </Text>
-                  </div>
-
-                  <Card className="p-8 mb-8">
-                    <Quote className="text-xl text-center mb-6">
-                      "JAHmere protected me when others wouldn't. He saw my pain
-                      when others couldn't. Now it's time for us to protect
-                      him."
-                    </Quote>
-                    <div className="text-center">
-                      <Text className="font-semibold">Jordan Dungy</Text>
-                      <Text className="text-soft-shadow">
-                        Son of Coach Tony Dungy
-                      </Text>
-                    </div>
-                  </Card>
-
-                  <div className="text-center">
-                    <Link href="/people/jordan-dungy">
-                      <Button size="lg">
-                        Read Jordan's Full Story
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                      </Button>
+                    <Link href="/the-case">
+                      Learn About the Case
+                      <Calendar className="ml-2 h-5 w-5" />
                     </Link>
-                  </div>
+                  </Button>
                 </div>
-              </RevealOnScroll>
+              </div>
             </Container>
           </Section>
+        </RevealOnScroll>
 
-          {/* SECTION 6: Call to Action */}
-          <Section variant="subtle" padding="large" className="section-spacing">
-            <Container>
-              <RevealOnScroll>
-                <div className="text-center max-w-4xl mx-auto">
-                  <Heading size="h2" className="mb-6">
-                    Your Voice Matters
-                  </Heading>
-                  <Text size="lg" className="text-soft-shadow mb-8">
-                    Join thousands of supporters advocating for transformation
-                    over incarceration. Every letter, every voice, every heart
-                    counts.
-                  </Text>
+        {/* Floating CTAs - Always visible */}
+        <FloatingCTA text="Join JAHmere's Journey" href="/letter-portal" />
+        <MobileStickyBar text="Support JAHmere" href="/letter-portal" />
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <Card className="p-6 text-center">
-                      <div className="text-3xl mb-4">✍️</div>
-                      <Heading size="h4" className="mb-2">
-                        Write a Letter
-                      </Heading>
-                      <Text className="text-soft-shadow mb-4">
-                        Send a letter to Judge Ferrero supporting JAHmere's case
-                      </Text>
-                      <Link href="/letter-form-test">
-                        <Button className="w-full">Write Now</Button>
-                      </Link>
-                    </Card>
-
-                    <Card className="p-6 text-center">
-                      <div className="text-3xl mb-4">📢</div>
-                      <Heading size="h4" className="mb-2">
-                        Share the Story
-                      </Heading>
-                      <Text className="text-soft-shadow mb-4">
-                        Help spread awareness on social media
-                      </Text>
-                      <Button variant="outline" className="w-full">
-                        Share Now
-                      </Button>
-                    </Card>
-
-                    <Card className="p-6 text-center">
-                      <div className="text-3xl mb-4">🤝</div>
-                      <Heading size="h4" className="mb-2">
-                        Get Involved
-                      </Heading>
-                      <Text className="text-soft-shadow mb-4">
-                        Join our community of supporters and advocates
-                      </Text>
-                      <Link href="/contact">
-                        <Button variant="outline" className="w-full">
-                          Contact Us
-                        </Button>
-                      </Link>
-                    </Card>
-                  </div>
-
-                  <div className="bg-hope-gold/10 rounded-2xl p-8">
-                    <Heading size="h3" className="mb-4">
-                      Time is Running Out
-                    </Heading>
-                    <Text className="text-soft-shadow mb-6">
-                      JAHmere's hearing is approaching. Every day matters in
-                      building the case for transformation.
-                    </Text>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <Link href="/letter-form-test">
-                        <Button size="lg" className="min-w-[200px]">
-                          Write Letter to Judge
-                          <ArrowRight className="ml-2 h-5 w-5" />
-                        </Button>
-                      </Link>
-                      <Link href="/the-case">
-                        <Button variant="outline" size="lg">
-                          Learn More
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </RevealOnScroll>
-            </Container>
-          </Section>
-
-          {/* Micro-commitments and Loss Aversion */}
-          <Section
-            variant="subtle"
-            padding="medium"
-            className="section-spacing"
-          >
-            <Container>
-              <RevealOnScroll>
-                <div className="max-w-3xl mx-auto">
-                  <MicroCommitments
-                    onComplete={() =>
-                      (window.location.href = "/letter-form-test")
-                    }
-                  />
-                </div>
-              </RevealOnScroll>
-            </Container>
-          </Section>
-
-          <Section
-            variant="default"
-            padding="medium"
-            className="section-spacing"
-          >
-            <Container>
-              <RevealOnScroll>
-                <LossAversion />
-              </RevealOnScroll>
-            </Container>
-          </Section>
-
-          {/* Quick Navigation */}
-          <QuickNav />
-
-          {/* Explore Navigation */}
-          <ExploreNav />
-        </div>
+        {/* 🚀 Real-Time Performance Dashboard (Development Only) */}
+        {process.env.NODE_ENV === "development" && <PerformanceDashboard />}
       </div>
     </PageTransition>
   );

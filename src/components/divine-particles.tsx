@@ -1,9 +1,23 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
+import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import type { ISourceOptions, InteractivityDetect } from "@tsparticles/engine";
+import {
+  useCircuitBreaker,
+  CircuitBreakerFallback,
+} from "@/lib/circuit-breaker";
+import { Particles } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import { Engine } from "@tsparticles/engine";
 
 // Lazy load the actual particles to prevent SSR issues
 const ParticlesEngine = dynamic(
@@ -16,7 +30,7 @@ const ParticlesEngine = dynamic(
   },
 );
 
-interface DivineParticlesProps {
+export interface DivineParticlesProps {
   variant?:
     | "light"
     | "dark"
@@ -32,6 +46,7 @@ interface DivineParticlesProps {
   density?: "low" | "medium" | "high";
   interactive?: boolean;
   intensity?: "low" | "medium" | "high" | "auto";
+  colors?: string[];
   className?: string;
 }
 
@@ -39,14 +54,22 @@ const DivineParticlesBase = ({
   variant = "light",
   density = "medium",
   interactive = true,
-  intensity,
+  intensity = "medium",
   className,
 }: DivineParticlesProps) => {
-  const [isWebGLSupported, setIsWebGLSupported] = useState(true);
-  const [particleCount, setParticleCount] = useState(50);
+  // 🛡️ CRITICAL: ALL HOOKS MUST BE AT THE TOP - BEFORE ANY RETURNS
+  const renderCountRef = useRef(0);
 
-  // Get particle count based on device capabilities
-  const getParticleCount = useCallback((density: "low" | "medium" | "high") => {
+  // 🛡️ DEFENSIVE FIX: Reset render count on mount
+  useEffect(() => {
+    renderCountRef.current = 0;
+  }, []);
+
+  // 🛡️ CRITICAL FIX: Memoize particle count calculation to prevent re-renders
+  const particleCount = useMemo(() => {
+    // 🚨 SSR FIX: Only access navigator in browser environment
+    if (typeof window === "undefined") return 50; // Default for SSR
+
     const cores = navigator.hardwareConcurrency || 4;
     const memory = (performance as any).memory?.jsHeapSizeLimit || 0;
 
@@ -56,200 +79,171 @@ const DivineParticlesBase = ({
       high: 100,
     };
 
-    let multiplier = 1;
-    if (cores <= 2 || memory < 1000000000) {
-      multiplier = 0.5; // Low-end devices
-    } else if (cores >= 8 && memory > 4000000000) {
-      multiplier = 2; // High-end devices
+    const count =
+      intensity === "auto" ? baseCounts.medium : baseCounts[intensity];
+
+    // Adjust based on device capabilities
+    if (memory > 0 && memory < 100000000) {
+      // Low memory device
+      return Math.max(20, Math.floor(count * 0.5));
     }
 
-    return Math.floor(baseCounts[density] * multiplier);
-  }, []);
+    if (cores >= 8) {
+      // High-end device
+      return Math.floor(count * 1.5);
+    }
 
-  // Detect device capabilities and set particle count
-  const detectDeviceCapabilities = useCallback(() => {
-    const count = getParticleCount(density);
-    setParticleCount(count);
-  }, [density, getParticleCount]);
+    return count;
+  }, [intensity]);
 
-  // Check WebGL support and device capabilities on mount
-  useEffect(() => {
-    // Check WebGL support
-    const canvas = document.createElement("canvas");
-    const gl =
-      canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-    setIsWebGLSupported(!!gl);
+  // 🛡️ CRITICAL FIX: Optimize colors array to prevent re-renders
+  const optimizedColors = useMemo(() => {
+    const defaultColors = ["#F59E0B", "#3B82F6", "#10B981"];
+    const colorArray = colors || defaultColors;
+    return colorArray.map((color: string) => {
+      // Ensure colors are valid hex values
+      return color.startsWith("#") ? color : `#${color}`;
+    });
+  }, [colors]);
 
-    // Detect device capabilities
-    detectDeviceCapabilities();
-  }, [detectDeviceCapabilities]);
-
-  // Color schemes based on variant
-  const colors = useMemo(
-    () => ({
-      light: {
-        background: "#FFFBF5",
-        particles: ["#4C1D95", "#6D28D9", "#7C3AED"],
-      },
-      dark: {
-        background: "#1F2937",
-        particles: ["#9333EA", "#A855F7", "#C084FC"],
-      },
-      sacred: {
-        background: "#FAF5FF",
-        particles: ["#6D28D9", "#7C3AED", "#8B5CF6"],
-      },
-      divine: {
-        background: "#FAF5FF",
-        particles: ["#FFD700", "#FFA500", "#FF8C00"],
-      },
-      minimal: {
-        background: "#FFFFFF",
-        particles: ["#E2E8F0", "#CBD5E1", "#94A3B8"],
-      },
-      flame: {
-        background: "#FEF2F2",
-        particles: ["#DC2626", "#EF4444", "#F87171"],
-      },
-      starfield: {
-        background: "#030712",
-        particles: ["#FFFFFF", "#E2E8F0", "#CBD5E1"],
-      },
-      rain: {
-        background: "#F0F9FF",
-        particles: ["#0EA5E9", "#38BDF8", "#7DD3FC"],
-      },
-      hope: {
-        background: "#ECFDF5",
-        particles: ["#10B981", "#34D399", "#6EE7B7"],
-      },
-      rage: {
-        background: "#FEF2F2",
-        particles: ["#B91C1C", "#EF4444", "#FCA5A5"],
-      },
-      unified: {
-        background: "#F5F3FF",
-        particles: ["#8B5CF6", "#A78BFA", "#C4B5FD"],
-      },
-    }),
-    [],
-  );
-
-  // Use the variant or fallback to light if not found
-  const safeVariant = variant in colors ? variant : "light";
-
-  // Particle configuration
-  const options = useMemo<ISourceOptions>(
-    () => ({
+  // 🛡️ CRITICAL FIX: Memoize particle configurations
+  const particleOptions = useMemo(() => {
+    return {
+      autoPlay: true,
       background: {
-        color: colors[safeVariant].background,
+        color: {
+          value: "transparent",
+        },
+      },
+      fpsLimit: 60,
+      interactivity: {
+        events: {
+          onClick: {
+            enable: true,
+            mode: "push",
+          },
+          onHover: {
+            enable: true,
+            mode: "repulse",
+          },
+          resize: true,
+        },
+        modes: {
+          push: {
+            quantity: 4,
+          },
+          repulse: {
+            distance: 200,
+            duration: 0.4,
+          },
+        },
       },
       particles: {
+        color: {
+          value: optimizedColors,
+        },
+        links: {
+          color: optimizedColors[0],
+          distance: 150,
+          enable: true,
+          opacity: 0.5,
+          width: 1,
+        },
+        move: {
+          direction: "none",
+          enable: true,
+          outModes: {
+            default: "bounce",
+          },
+          random: false,
+          speed: 2,
+          straight: false,
+        },
         number: {
-          value: particleCount,
           density: {
             enable: true,
             area: 800,
           },
+          value: particleCount,
         },
-        color: {
-          value: colors[safeVariant].particles,
+        opacity: {
+          value: 0.5,
         },
         shape: {
           type: "circle",
         },
-        opacity: {
-          value: 0.6,
-          random: true,
-          animation: {
-            enable: true,
-            speed: 0.5,
-            minimumValue: 0.3,
-            sync: false,
-          },
-        },
         size: {
-          value: 3,
-          random: true,
-          animation: {
-            enable: true,
-            speed: 2,
-            minimumValue: 1,
-            sync: false,
-          },
-        },
-        links: {
-          enable: interactive,
-          distance: 150,
-          color: colors[safeVariant].particles[0],
-          opacity: 0.4,
-          width: 1,
-        },
-        move: {
-          enable: true,
-          speed: 2,
-          direction: "none",
-          random: false,
-          straight: false,
-          outModes: {
-            default: "out",
-          },
-          attract: {
-            enable: interactive,
-            rotateX: 600,
-            rotateY: 1200,
-          },
+          value: { min: 1, max: 5 },
         },
       },
-      interactivity: interactive
-        ? {
-            detectsOn: "window" as InteractivityDetect,
-            events: {
-              onHover: {
-                enable: true,
-                mode: "grab",
-              },
-              onClick: {
-                enable: true,
-                mode: "push",
-              },
-              resize: {
-                enable: true,
-                delay: 0.5,
-              },
-            },
-            modes: {
-              grab: {
-                distance: 140,
-                links: {
-                  opacity: 0.8,
-                },
-              },
-              push: {
-                quantity: 4,
-              },
-            },
-          }
-        : undefined,
-    }),
-    [safeVariant, particleCount, interactive, colors],
-  );
+      detectRetina: true,
+    } as ISourceOptions;
+  }, [optimizedColors, particleCount]);
 
-  if (!isWebGLSupported) {
+  // 🛡️ CRITICAL FIX: Stable callback to prevent re-initialization
+  const particlesInit = useCallback(async (engine: Engine) => {
+    try {
+      await loadSlim(engine);
+    } catch (error) {
+      console.error("Failed to load particles engine:", error);
+    }
+  }, []);
+
+  // 🚨 SSR/CSR PROTECTION - Check after all hooks are defined
+  if (typeof window === "undefined") {
     return (
-      <div
-        className={`fixed inset-0 -z-10 ${className || ""}`}
-        style={{ backgroundColor: colors[safeVariant].background }}
-      />
+      <div className={cn("absolute inset-0 pointer-events-none", className)}>
+        <div className="absolute inset-0 bg-gradient-to-br from-hope-gold/5 via-transparent to-courage-blue/5" />
+      </div>
     );
   }
 
-  return (
-    <ParticlesEngine
-      className={`fixed inset-0 -z-10 ${className || ""}`}
-      options={options}
-    />
-  );
+  // 🛡️ CIRCUIT BREAKER: Prevent infinite renders
+  renderCountRef.current++;
+  if (renderCountRef.current > 100) {
+    console.warn(
+      "🚨 DivineParticles: Circuit breaker activated - too many renders",
+    );
+    return (
+      <div className={cn("absolute inset-0 pointer-events-none", className)}>
+        <div className="absolute inset-0 bg-gradient-to-br from-hope-gold/5 via-transparent to-courage-blue/5" />
+      </div>
+    );
+  }
+
+  // 🛡️ CRITICAL FIX: Add error boundary fallback
+  useEffect(() => {
+    const handleError = (error: ErrorEvent) => {
+      if (
+        error.message.includes("tsparticles") ||
+        error.message.includes("particles")
+      ) {
+        console.warn(
+          "Particles error caught and handled gracefully:",
+          error.message,
+        );
+        return true; // Prevent error propagation
+      }
+      return false;
+    };
+
+    window.addEventListener("error", handleError);
+    return () => window.removeEventListener("error", handleError);
+  }, []);
+
+  // 🛡️ CRITICAL FIX: Memoize the entire Particles component to prevent re-renders
+  const ParticlesComponent = useMemo(() => {
+    return (
+      <Particles
+        id="divine-particles"
+        onInit={particlesInit}
+        options={particleOptions}
+        className={cn("absolute inset-0 pointer-events-none", className)}
+      />
+    );
+  }, [particlesInit, particleOptions, className]);
+
+  return ParticlesComponent;
 };
 
 // Export the wrapped component

@@ -1,16 +1,28 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Trophy, Scale, Users, ArrowRight, Sparkles } from "lucide-react";
+import {
+  X,
+  Trophy,
+  Scale,
+  Users,
+  ArrowRight,
+  Sparkles,
+  Check,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { useModalAnalytics } from "@/components/analytics-wrapper";
-import { UserType } from "@/lib/analytics/user-journey";
+import { trackModalInteraction } from "@/lib/analytics/user-journey";
+
+export type UserType = "champion" | "justice-seeker" | "movement-builder";
 
 interface UserTypeModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onUserTypeSelect: (userType: UserType) => void;
+  onUserTypeSelect: (type: UserType) => void;
+  className?: string;
 }
 
 interface PathCard {
@@ -28,7 +40,7 @@ interface PathCard {
 
 const pathCards: PathCard[] = [
   {
-    id: "coach",
+    id: "champion",
     title: "Champion Builder",
     subtitle: "I Am... a Champion Builder",
     description:
@@ -46,7 +58,7 @@ const pathCards: PathCard[] = [
     callToAction: "Start Building Champions",
   },
   {
-    id: "judge",
+    id: "justice-seeker",
     title: "Justice Seeker",
     subtitle: "I Am... seeking JAHmere & Justice",
     description:
@@ -64,7 +76,7 @@ const pathCards: PathCard[] = [
     callToAction: "Explore the Case",
   },
   {
-    id: "activist",
+    id: "movement-builder",
     title: "Movement Builder",
     subtitle: "I Am... building Mataluni & Movement",
     description:
@@ -87,35 +99,88 @@ function UserTypeModal({
   isOpen,
   onClose,
   onUserTypeSelect,
+  className = "",
 }: UserTypeModalProps) {
+  // 🛡️ CRITICAL DEBUG: Track render cycles to prevent infinite loops
+  const renderCount = useRef(0);
+  const componentName = "UserTypeModal";
+
+  // Increment render count and log if excessive
+  renderCount.current++;
+  if (renderCount.current > 10) {
+    console.warn(
+      `🚨 ${componentName} excessive renders: ${renderCount.current}`,
+    );
+  }
+
+  // State management with proper initialization
   const [selectedPath, setSelectedPath] = useState<UserType | null>(null);
   const [hoveredPath, setHoveredPath] = useState<UserType | null>(null);
-  const { trackModalView, trackCardHover, trackPathSelection } =
-    useModalAnalytics();
+  const isMounted = useRef(true);
 
+  // 🛡️ CRITICAL FIX: Reset render count on mount
   useEffect(() => {
-    if (isOpen) {
-      trackModalView();
+    renderCount.current = 0;
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  // 🛡️ CRITICAL FIX: Track modal view only once when opened
+  useEffect(() => {
+    if (isOpen && isMounted.current) {
+      // Use direct call instead of the memoized function to avoid dependency issues
+      trackModalInteraction({
+        eventType: "modal_viewed",
+        timestamp: Date.now(),
+      });
     }
-  }, [isOpen, trackModalView]);
+  }, [isOpen]); // 🔥 FIXED: Remove trackModalView from dependencies
 
-  const handlePathSelect = (pathId: UserType) => {
-    setSelectedPath(pathId);
-    trackPathSelection(pathId);
+  // 🛡️ CRITICAL FIX: Stabilize path selection handler
+  const handlePathSelect = useCallback(
+    (pathId: UserType) => {
+      if (!isMounted.current) return;
 
-    // Brief delay for visual feedback before navigation
-    setTimeout(() => {
-      onUserTypeSelect(pathId);
-      onClose();
-    }, 300);
-  };
+      setSelectedPath(pathId);
+      trackModalInteraction({
+        eventType: "path_selected",
+        userType: pathId,
+        timestamp: Date.now(),
+      });
 
-  const handleCardHover = (pathId: UserType, isHovering: boolean) => {
-    setHoveredPath(isHovering ? pathId : null);
-    if (isHovering) {
-      trackCardHover(pathId);
-    }
-  };
+      // Brief delay for visual feedback before navigation
+      setTimeout(() => {
+        if (isMounted.current) {
+          onUserTypeSelect(pathId);
+          onClose();
+        }
+      }, 300);
+    },
+    [onUserTypeSelect, onClose],
+  );
+
+  // 🛡️ CRITICAL FIX: Stabilize hover handler with proper state checks
+  const handleCardHover = useCallback(
+    (pathId: UserType, isHovering: boolean) => {
+      if (!isMounted.current) return;
+
+      // Throttle hover state changes to prevent excessive updates
+      if (isHovering && hoveredPath !== pathId) {
+        setHoveredPath(pathId);
+        // Use direct call instead of memoized function
+        trackModalInteraction({
+          eventType: "card_hovered",
+          userType: pathId,
+          timestamp: Date.now(),
+        });
+      } else if (!isHovering && hoveredPath === pathId) {
+        setHoveredPath(null);
+      }
+    },
+    [hoveredPath],
+  ); // 🔥 FIXED: Remove trackCardHover from dependencies
 
   if (!isOpen) return null;
 
@@ -306,11 +371,26 @@ function UserTypeModal({
   );
 }
 
+// Export with error boundary
 export default withDivineErrorBoundary(UserTypeModal, {
   componentName: "UserTypeModal",
   fallback: (
-    <div className="p-8 text-center text-red-600">
-      Path selection temporarily unavailable
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl p-8 text-center max-w-md">
+        <h2 className="text-xl font-bold mb-4">
+          Unable to Load Path Selection
+        </h2>
+        <p className="text-gray-600 mb-6">
+          The user type selection modal encountered an error. Please refresh the
+          page to try again.
+        </p>
+        <button
+          onClick={() => window.location.reload()}
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Refresh Page
+        </button>
+      </div>
     </div>
   ),
 });

@@ -141,12 +141,56 @@ module.exports = {
           80: "rgba(0, 0, 0, 0.8)",
           90: "rgba(0, 0, 0, 0.9)",
         },
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        gold: {
+          50: "#fffbeb",
+          100: "#fef3c7",
+          200: "#fde68a",
+          300: "#fcd34d",
+          400: "#fbbf24",
+          500: "#f59e0b",
+          600: "#d97706",
+          700: "#b45309",
+          800: "#92400e",
+          900: "#78350f",
+        },
       },
 
       fontFamily: {
-        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
-        serif: ["Georgia", "serif"],
-        mono: ["JetBrains Mono", "monospace"],
+        sans: [
+          "var(--font-inter)",
+          "Inter",
+          "system-ui",
+          "-apple-system",
+          "sans-serif",
+        ],
+        serif: ["var(--font-serif)", "Playfair Display", "Georgia", "serif"],
+        mono: [
+          "var(--font-mono)",
+          "JetBrains Mono",
+          "Menlo",
+          "Monaco",
+          "monospace",
+        ],
       },
 
       fontSize: {
@@ -313,6 +357,9 @@ module.exports = {
         "twilight-justice": "var(--twilight-justice)",
         "divine-aurora": "var(--divine-aurora)",
         "sacred-convergence": "var(--sacred-convergence)",
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
 
       // ELITE DESIGN SYSTEM V10 - Psychological Warfare

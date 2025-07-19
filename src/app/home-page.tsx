@@ -9,15 +9,15 @@ import { Calendar, ArrowRight, Check, Shield } from "lucide-react";
 
 // Import FloatingCTA
 import { FloatingCTA, MobileStickyBar } from "@/components/ui/floating-cta";
-import { TrustBanner } from "@/components/ui/trust-banner";
-import { TrustBar } from "@/components/ui/trust-bar";
-import { CaseStatus } from "@/components/ui/case-status";
-import { UrgencyBanner } from "@/components/ui/urgency-banner";
+import TrustBanner from "@/components/ui/trust-banner";
+import TrustBar from "@/components/ui/trust-bar";
+import CaseStatus from "@/components/ui/case-status";
+import UrgencyBanner from "@/components/ui/urgency-banner";
 import { LiveSupporterCount as SupporterCount } from "@/components/ui/supporter-count";
-import { QuickNav } from "@/components/ui/quick-nav";
-import { ExploreNav } from "@/components/ui/explore-nav";
-import { MicroCommitments } from "@/components/micro-commitments";
-import { LossAversion } from "@/components/loss-aversion";
+import QuickNav from "@/components/ui/quick-nav";
+import ExploreNav from "@/components/ui/explore-nav";
+import MicroCommitments from "@/components/micro-commitments";
+import LossAversion from "@/components/loss-aversion";
 
 // Eager loading for critical above-the-fold content
 const Hero = dynamic(() => import("@/components/hero"), {
@@ -38,12 +38,15 @@ const Hero = dynamic(() => import("@/components/hero"), {
 });
 
 // Dynamic imports with lazy loading for below-the-fold content
-const DivineParticles = dynamic(() => import("@/components/divine-particles"), {
-  ssr: false,
-  loading: () => (
-    <div className="min-h-[100px] animate-pulse bg-gray-100/10 rounded-md"></div>
-  ),
-});
+const DivineParticlesLazy = dynamic(
+  () => import("@/components/divine-particles"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="min-h-[100px] animate-pulse bg-gray-100/10 rounded-md"></div>
+    ),
+  },
+);
 
 const DungyWisdom = dynamic(() => import("@/components/dungy-wisdom"), {
   ssr: false,

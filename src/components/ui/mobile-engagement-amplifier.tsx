@@ -167,7 +167,7 @@ export function MobileEngagementBoost({
   const { triggerHaptic } = useAdvancedGestures();
 
   const handleConvert = () => {
-    triggerHaptic("success");
+    triggerHaptic("medium");
     trackEvent("mobile_engagement_boost_conversion", {
       conversionProbability,
       timestamp: Date.now(),
@@ -315,7 +315,7 @@ export function MobileShareAmplifier({
       } else {
         // Fallback to clipboard
         await navigator.clipboard.writeText(`${title} - ${url}`);
-        triggerHaptic("success");
+        triggerHaptic("medium");
 
         trackEvent("mobile_clipboard_share", {
           title,

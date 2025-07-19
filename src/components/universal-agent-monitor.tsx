@@ -5,7 +5,7 @@
 
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUniversalAgent } from "@/lib/hooks/use-universal-agent";
 import { cn } from "@/lib/utils";
@@ -13,6 +13,7 @@ import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
 import { withUnifiedErrorBoundary } from "./ui/unified-error-boundary";
+import { logger } from "@/lib/logger";
 
 interface UniversalAgentMonitorProps {
   className?: string;
@@ -30,13 +31,13 @@ function UniversalAgentMonitorCore({
   const { consciousness, patterns, echoes, isHealing, systemHealth } =
     useUniversalAgent({
       onPattern: (pattern) => {
-        console.log("Pattern detected:", pattern);
+        logger.divine("Pattern detected", { pattern });
       },
       onEcho: (echo) => {
-        console.log("Echo heard:", echo);
+        logger.divine("Echo heard", { echo });
       },
       onHealing: (data) => {
-        console.log("Healing initiated:", data);
+        logger.divine("Healing initiated", { data });
       },
     });
 

@@ -529,6 +529,7 @@ function InteractivePersonGrid({
         "space-y-8 z-10 relative people-interactive-grid",
         className,
       )}
+      data-testid="person-grid"
     >
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-12">
         {/* Filters sidebar - mobile first approach */}

@@ -23,7 +23,7 @@ import {
   MapPin,
   Calendar,
   Award,
-  Handshake,
+  UserCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -371,7 +371,7 @@ function LetterPortalPage() {
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       setShowSuccess(true);
-      triggerHaptic("success");
+      triggerHaptic("medium");
 
       // Reset form after success
       setTimeout(() => {
@@ -419,9 +419,29 @@ function LetterPortalPage() {
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(letterContent);
-    triggerHaptic("medium");
-    // Could add toast notification here
+    // 🚨 CRITICAL SSR FIX: Check browser environment before using navigator
+    if (
+      typeof window !== "undefined" &&
+      typeof navigator !== "undefined" &&
+      navigator.clipboard
+    ) {
+      navigator.clipboard.writeText(letterContent);
+      triggerHaptic("medium");
+      // Could add toast notification here
+    } else {
+      // Fallback for older browsers or SSR
+      try {
+        const textArea = document.createElement("textarea");
+        textArea.value = letterContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        triggerHaptic("medium");
+      } catch (error) {
+        console.warn("Copy functionality not available:", error);
+      }
+    }
   };
 
   const handleDownload = () => {
@@ -867,7 +887,7 @@ function LetterPortalPage() {
                           className="w-full mt-3"
                           onClick={() => setShowCommunityModal(true)}
                         >
-                          <Handshake className="w-4 h-4 mr-2" />
+                          <UserCheck className="w-4 h-4 mr-2" />
                           Join Chapter
                         </Button>
                       </motion.div>

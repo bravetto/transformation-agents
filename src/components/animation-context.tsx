@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+} from "react";
 import { useReducedMotion } from "framer-motion";
 
 interface AnimationContextType {
@@ -52,11 +58,11 @@ export function AnimationProvider({ children }: AnimationProviderProps) {
   const [fps, setFps] = useState(60);
   const [memoryUsage, setMemoryUsage] = useState(0);
 
-  // Detect device performance capabilities
+  // 🛡️ DEFENSIVE FIX: Move performance detection to useEffect
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
     const detectPerformance = () => {
+      if (typeof window === "undefined") return;
+
       const cores = navigator.hardwareConcurrency || 4;
       const memory = (performance as any).memory?.jsHeapSizeLimit || 0;
       const connection = (navigator as any).connection;
@@ -77,7 +83,7 @@ export function AnimationProvider({ children }: AnimationProviderProps) {
     };
 
     detectPerformance();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Monitor battery status for performance optimization
   useEffect(() => {
@@ -170,30 +176,57 @@ export function AnimationProvider({ children }: AnimationProviderProps) {
     };
   }, []);
 
-  // Determine if animations should be simplified
-  const shouldSimplifyAnimations =
-    reducedMotion ||
-    devicePerformance === "low" ||
-    (batteryStatus === "discharging" && batteryLevel < 0.2) ||
-    fps < 30 ||
-    memoryUsage > 0.8;
+  // 🔥 DIVINE FIX: Memoize computed values to prevent infinite re-renders
+  const shouldSimplifyAnimations = useMemo(
+    () =>
+      reducedMotion ||
+      devicePerformance === "low" ||
+      (batteryStatus === "discharging" && batteryLevel < 0.2) ||
+      fps < 30 ||
+      memoryUsage > 0.8,
+    [
+      reducedMotion,
+      devicePerformance,
+      batteryStatus,
+      batteryLevel,
+      fps,
+      memoryUsage,
+    ],
+  );
 
-  const isLowPowerMode =
-    (batteryStatus === "discharging" && batteryLevel < 0.15) ||
-    devicePerformance === "low" ||
-    fps < 20;
+  const isLowPowerMode = useMemo(
+    () =>
+      (batteryStatus === "discharging" && batteryLevel < 0.15) ||
+      devicePerformance === "low" ||
+      fps < 20,
+    [batteryStatus, batteryLevel, devicePerformance, fps],
+  );
 
-  const value: AnimationContextType = {
-    reducedMotion: reducedMotion || false,
-    shouldSimplifyAnimations,
-    isPaused,
-    devicePerformance,
-    batteryStatus,
-    batteryLevel,
-    isLowPowerMode,
-    fps,
-    memoryUsage,
-  };
+  // 🔥 DIVINE FIX: Memoize the entire context value
+  const value = useMemo(
+    (): AnimationContextType => ({
+      reducedMotion: reducedMotion || false,
+      shouldSimplifyAnimations,
+      isPaused,
+      devicePerformance,
+      batteryStatus,
+      batteryLevel,
+      isLowPowerMode,
+      fps,
+      memoryUsage,
+    }),
+    [
+      reducedMotion,
+      shouldSimplifyAnimations,
+      isPaused,
+      devicePerformance,
+      batteryStatus,
+      batteryLevel,
+      isLowPowerMode,
+      fps,
+      memoryUsage,
+    ],
+  );
 
   return (
     <AnimationContext.Provider value={value}>

@@ -216,13 +216,14 @@ export const LetterFormProvider: React.FC<LetterFormProviderProps> = ({
         break;
       case FormStep.Review:
         // On review step, validate all fields
-        return rhfHandleSubmit(async (data) => {
+        const result = await rhfHandleSubmit(async (data) => {
           calculateImpactScore();
           if (onSubmit) {
             onSubmit(data);
           }
           return true;
         })();
+        return Boolean(result);
     }
 
     // Validate fields for current step
@@ -247,13 +248,14 @@ export const LetterFormProvider: React.FC<LetterFormProviderProps> = ({
   };
 
   // Handle form submission
-  const handleSubmit = async () => {
-    return rhfHandleSubmit(async (data) => {
+  const handleSubmit = async (): Promise<boolean> => {
+    const result = await rhfHandleSubmit(async (data) => {
       if (onSubmit) {
         onSubmit(data);
       }
       return true;
     })();
+    return Boolean(result);
   };
 
   // Format errors for easier access

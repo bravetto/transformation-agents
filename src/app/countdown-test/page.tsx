@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Container, Heading, Text, Button, Stack } from "@/components/ui";
 import PropheticCountdown from "@/components/prophetic-countdown";
+import { logger } from "@/lib/logger";
 
 export default function CountdownTest() {
   const [selectedRole, setSelectedRole] = useState<
@@ -23,6 +24,11 @@ export default function CountdownTest() {
 
   const pastDate = new Date();
   pastDate.setFullYear(pastDate.getFullYear() - 1); // 1 year in the past
+
+  const handleMilestone = (milestone: string) => {
+    logger.divine("Milestone reached!", { milestone });
+    // Handle milestone logic
+  };
 
   return (
     <Container className="py-16">
@@ -89,7 +95,7 @@ export default function CountdownTest() {
             showProgress={showProgress}
             onMilestoneReached={() => {
               setMilestoneReached(true);
-              console.log("Milestone reached!");
+              handleMilestone("JAHmere's Keynote Address");
             }}
           />
         </div>

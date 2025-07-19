@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { motion } from "framer-motion";
 import {
   BarChart3,
   Users,
@@ -35,6 +35,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { cn } from "@/lib/utils";
+import { logger } from "@/lib/logger";
 
 // Enhanced Analytics Metrics Interface
 interface EnhancedAnalyticsMetrics {
@@ -215,39 +216,34 @@ const ActivityFeed = ({ events }: { events: any[] }) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 max-h-80 overflow-y-auto">
-        <AnimatePresence>
-          {events.slice(0, visibleEvents).map((event, index) => (
-            <motion.div
-              key={`${event.timestamp}-${index}`}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              transition={{ delay: index * 0.1 }}
-              className="flex items-center gap-3 p-3 rounded-lg bg-gray-50/50 hover:bg-gray-100/50 transition-colors"
+        {events.slice(0, visibleEvents).map((event, index) => (
+          <motion.div
+            key={`${event.timestamp}-${index}`}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ delay: index * 0.1 }}
+            className="flex items-center gap-3 p-3 rounded-lg bg-gray-50/50 hover:bg-gray-100/50 transition-colors"
+          >
+            <div
+              className={cn("p-2 rounded-full", getEventColor(event.eventType))}
             >
-              <div
-                className={cn(
-                  "p-2 rounded-full",
-                  getEventColor(event.eventType),
-                )}
-              >
-                {getEventIcon(event.eventType)}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 capitalize">
-                  {event.eventType.replace("_", " ")}
-                </p>
-                <p className="text-xs text-gray-500 truncate">
-                  {event.userType} •{" "}
-                  {new Date(event.timestamp).toLocaleTimeString()}
-                </p>
-              </div>
-              <Badge variant="outline" className="text-xs">
-                {event.metadata?.deviceType || "desktop"}
-              </Badge>
-            </motion.div>
-          ))}
-        </AnimatePresence>
+              {getEventIcon(event.eventType)}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-gray-900 capitalize">
+                {event.eventType.replace("_", " ")}
+              </p>
+              <p className="text-xs text-gray-500 truncate">
+                {event.userType} •{" "}
+                {new Date(event.timestamp).toLocaleTimeString()}
+              </p>
+            </div>
+            <Badge variant="outline" className="text-xs">
+              {event.metadata?.deviceType || "desktop"}
+            </Badge>
+          </motion.div>
+        ))}
 
         {events.length > visibleEvents && (
           <Button
@@ -399,453 +395,358 @@ const SystemHealthMonitor = ({ health }: { health: any }) => {
 };
 
 // Main Dashboard Component
-function AnalyticsDashboard() {
-  const [metrics, setMetrics] = useState<EnhancedAnalyticsMetrics | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string>("");
-  const [lastUpdate, setLastUpdate] = useState<string>("");
-  const [activeTab, setActiveTab] = useState("overview");
+export default function AnalyticsDashboard() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [lastRefresh, setLastRefresh] = useState(Date.now());
 
-  // Fetch analytics data with enhanced error handling
+  // 🛡️ CRITICAL: Use refs to prevent fetch storm
+  const fetchInProgress = useRef(false);
+  const retryCount = useRef(0);
+  const maxRetries = 3;
+  const mounted = useRef(true);
+
+  // 🎯 FIXED: Proper fetch with protection
   const fetchAnalytics = useCallback(async () => {
-    setIsLoading(true);
-    setError("");
+    // Prevent concurrent fetches
+    if (fetchInProgress.current) {
+      logger.debug(
+        "Fetch already in progress, skipping...",
+        null,
+        "analytics-dashboard",
+      );
+      return;
+    }
+
+    // Check if component is still mounted
+    if (!mounted.current) {
+      logger.debug(
+        "Component unmounted, skipping fetch...",
+        null,
+        "analytics-dashboard",
+      );
+      return;
+    }
+
+    fetchInProgress.current = true;
 
     try {
+      logger.info("Fetching analytics data...", null, "analytics-dashboard");
       const response = await fetch("/api/analytics/user-journey/dashboard", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
+        // Add timeout to prevent hanging requests
         signal: AbortSignal.timeout(10000), // 10 second timeout
       });
 
       if (!response.ok) {
-        throw new Error(
-          `Analytics fetch failed: ${response.status} ${response.statusText}`,
+        // If 404, we need to handle it gracefully
+        if (response.status === 404) {
+          throw new Error(
+            "Analytics API endpoint not found. Please ensure the API route exists.",
+          );
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (mounted.current) {
+        setData(result);
+        setError(null);
+        retryCount.current = 0; // Reset retry count on success
+        logger.info(
+          "Analytics data fetched successfully",
+          { dataLength: result?.length },
+          "analytics-dashboard",
         );
       }
-
-      const data = await response.json();
-
-      // Enhance data with mock system health and trends
-      const enhancedData: EnhancedAnalyticsMetrics = {
-        ...data,
-        systemHealth: {
-          uptime: 99.9,
-          responseTime: 145,
-          errorRate: 0.1,
-          cacheHitRate: 95.2,
-        },
-        trends: {
-          sessionsGrowth: 12.5,
-          conversionGrowth: 8.3,
-          engagementGrowth: 15.7,
-        },
-      };
-
-      setMetrics(enhancedData);
-      setLastUpdate(new Date().toLocaleTimeString());
     } catch (err) {
-      console.error("Analytics fetch error:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to fetch analytics",
-      );
+      logger.error("Failed to fetch analytics:", err);
 
-      // Fallback to enhanced mock data
-      setMetrics(generateEnhancedMockMetrics());
-      setLastUpdate(new Date().toLocaleTimeString() + " (fallback)");
+      if (mounted.current) {
+        setError(
+          err instanceof Error ? err.message : "Failed to load analytics",
+        );
+
+        // Implement exponential backoff for retries
+        if (retryCount.current < maxRetries) {
+          retryCount.current++;
+          const backoffDelay = Math.min(
+            1000 * Math.pow(2, retryCount.current),
+            30000,
+          );
+          logger.warn(
+            `Retrying in ${backoffDelay}ms (attempt ${retryCount.current}/${maxRetries})`,
+            { backoffDelay, retryCount: retryCount.current, maxRetries },
+            "analytics-dashboard",
+          );
+
+          setTimeout(() => {
+            if (mounted.current) {
+              fetchAnalytics();
+            }
+          }, backoffDelay);
+        }
+      }
     } finally {
-      setIsLoading(false);
+      fetchInProgress.current = false;
+      if (mounted.current) {
+        setLoading(false);
+      }
     }
-  }, [generateEnhancedMockMetrics]);
+  }, []);
 
-  // Generate enhanced mock metrics
-  const generateEnhancedMockMetrics = (): EnhancedAnalyticsMetrics => {
-    return {
-      totalSessions: Math.floor(Math.random() * 1000) + 500,
-      modalViewRate: 0.85 + Math.random() * 0.15,
-      pathSelectionRate: 0.65 + Math.random() * 0.25,
-      averageSessionDuration: 2500 + Math.random() * 2000,
-      pathDistribution: {
-        coach: 0.35 + Math.random() * 0.15,
-        judge: 0.25 + Math.random() * 0.15,
-        activist: 0.3 + Math.random() * 0.15,
-      },
-      conversionFunnel: {
-        modalViewed: 100,
-        cardHovered: 85 + Math.random() * 10,
-        pathSelected: 65 + Math.random() * 15,
-        journeyCompleted: 45 + Math.random() * 15,
-      },
-      deviceBreakdown: {
-        desktop: 0.65 + Math.random() * 0.15,
-        mobile: 0.25 + Math.random() * 0.15,
-        tablet: 0.1 + Math.random() * 0.05,
-      },
-      engagementMetrics: {
-        averageHoverTime: 1500 + Math.random() * 1000,
-        selectionSpeed: 3000 + Math.random() * 2000,
-        returnVisitors: 0.25 + Math.random() * 0.15,
-      },
-      realtimeEvents: generateMockEvents(15),
-      systemHealth: {
-        uptime: 99.9,
-        responseTime: 145,
-        errorRate: 0.1,
-        cacheHitRate: 95.2,
-      },
-      trends: {
-        sessionsGrowth: 12.5,
-        conversionGrowth: 8.3,
-        engagementGrowth: 15.7,
-      },
-    };
-  };
-
-  const generateMockEvents = (count: number) => {
-    const eventTypes = ["modal_viewed", "card_hovered", "path_selected"];
-    const userTypes = ["coach", "judge", "activist", "unknown"];
-    const events = [];
-
-    for (let i = 0; i < count; i++) {
-      events.push({
-        timestamp: new Date(Date.now() - Math.random() * 3600000).toISOString(),
-        eventType: eventTypes[Math.floor(Math.random() * eventTypes.length)],
-        userType: userTypes[Math.floor(Math.random() * userTypes.length)],
-        metadata: {
-          deviceType: Math.random() > 0.7 ? "mobile" : "desktop",
-          sessionDuration: Math.floor(Math.random() * 5000),
-        },
-      });
-    }
-
-    return events.sort(
-      (a, b) =>
-        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-    );
-  };
-
-  // Auto-refresh with error recovery
+  // 🛡️ FIXED: Proper effect cleanup
   useEffect(() => {
+    mounted.current = true;
+
+    // Initial fetch
     fetchAnalytics();
 
-    const interval = setInterval(() => {
-      if (!isLoading) {
+    // Set up interval for refresh (5 seconds)
+    const intervalId = setInterval(() => {
+      if (mounted.current && !fetchInProgress.current) {
+        setLastRefresh(Date.now());
         fetchAnalytics();
       }
-    }, 30000);
+    }, 5000); // 5 seconds, not milliseconds!
 
-    return () => clearInterval(interval);
-  }, [fetchAnalytics, isLoading]);
+    // Cleanup function
+    return () => {
+      mounted.current = false;
+      clearInterval(intervalId);
+      fetchInProgress.current = false;
+    };
+  }, []); // Empty deps, fetchAnalytics is stable due to useCallback
 
-  // Helper functions
-  const formatDuration = (ms: number) => {
-    const seconds = Math.floor(ms / 1000);
-    return `${seconds}s`;
-  };
-
-  const formatPercentage = (value: number) => {
-    return `${Math.round(value * 100)}%`;
-  };
-
-  if (!metrics) {
+  // Loading state
+  if (loading && !data) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center space-y-4"
-        >
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+        <div className="text-center">
           <motion.div
             animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          >
-            <Sparkles className="w-12 h-12 text-blue-500 mx-auto" />
-          </motion.div>
-          <h2 className="text-xl font-semibold text-gray-800">
-            Initializing Analytics Dashboard
-          </h2>
-          <p className="text-gray-600">
-            Loading championship-level insights...
-          </p>
-        </motion.div>
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full mx-auto mb-4"
+          />
+          <p className="text-gray-400">Loading analytics...</p>
+        </div>
       </div>
     );
   }
 
+  // Error state with manual retry
+  if (error && !data) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+        <div className="bg-red-900/20 border border-red-500 rounded-lg p-8 max-w-md text-center">
+          <h2 className="text-2xl font-bold text-red-400 mb-4">
+            Analytics Error
+          </h2>
+          <p className="text-gray-300 mb-4">{error}</p>
+          <button
+            onClick={() => {
+              setError(null);
+              setLoading(true);
+              retryCount.current = 0;
+              fetchAnalytics();
+            }}
+            className="px-6 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+            disabled={fetchInProgress.current}
+          >
+            {fetchInProgress.current ? "Retrying..." : "Retry"}
+          </button>
+          <p className="text-sm text-gray-500 mt-4">
+            Tip: Check if the API endpoint exists at
+            /api/analytics/user-journey/dashboard/route.ts
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Mock data for when API is not available
+  const displayData = data || {
+    summary: {
+      totalSessions: 1339,
+      activeSessions: 17,
+      totalEvents: 2466,
+      lastUpdated: new Date().toISOString(),
+    },
+    conversionFunnel: {
+      homepage: { visits: 1339, percentage: 100 },
+      modalView: { count: 1150, percentage: 85.9 },
+      pathSelection: { count: 786, percentage: 58.7 },
+      completion: { count: 377, percentage: 28.2 },
+    },
+    pathBreakdown: {
+      coach: {
+        selections: 245,
+        completions: 98,
+        conversionRate: 40.0,
+        avgTime: 234,
+      },
+      judge: {
+        selections: 341,
+        completions: 179,
+        conversionRate: 52.5,
+        avgTime: 189,
+      },
+      activist: {
+        selections: 200,
+        completions: 100,
+        conversionRate: 50.0,
+        avgTime: 156,
+      },
+    },
+  };
+
+  // Main dashboard render
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                <motion.div
-                  animate={{ rotate: [0, 360] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                >
-                  <BarChart3 className="w-8 h-8 text-blue-600" />
-                </motion.div>
-                Analytics Command Center
-              </h1>
-              <p className="text-gray-600 mt-1">
-                Championship-level insights for The Bridge Project
-              </p>
-            </div>
-
-            <div className="flex items-center gap-3">
-              {lastUpdate && (
-                <Badge variant="outline" className="text-xs">
-                  Updated: {lastUpdate}
-                </Badge>
-              )}
-              <Button
-                onClick={fetchAnalytics}
-                disabled={isLoading}
-                size="sm"
-                className="bg-blue-600 hover:bg-blue-700"
-              >
-                {isLoading ? (
-                  <RefreshCw className="w-4 h-4 animate-spin mr-2" />
-                ) : (
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                )}
-                Refresh
-              </Button>
-            </div>
-          </div>
-
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white p-8">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8"
+      >
+        <h1 className="text-4xl font-bold mb-2">Bridge Project Analytics</h1>
+        <p className="text-gray-400">
+          Real-time transformation metrics
           {error && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg"
-            >
-              <div className="flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-red-500" />
-                <p className="text-red-800 font-medium">System Alert</p>
-              </div>
-              <p className="text-red-700 text-sm mt-1">{error}</p>
-            </motion.div>
+            <span className="text-yellow-500 ml-2">(Using cached data)</span>
           )}
-        </motion.div>
+        </p>
+      </motion.div>
 
-        {/* Tabs */}
-        <Tabs
-          value={activeTab}
-          onValueChange={setActiveTab}
-          className="space-y-6"
-        >
-          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-4">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="engagement">Engagement</TabsTrigger>
-            <TabsTrigger value="conversion">Conversion</TabsTrigger>
-            <TabsTrigger value="system">System</TabsTrigger>
-          </TabsList>
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <SummaryCard
+          title="Total Sessions"
+          value={
+            displayData.totalSessions ||
+            displayData.summary?.totalSessions ||
+            1339
+          }
+          trend="+12%"
+          color="purple"
+        />
+        <SummaryCard
+          title="Active Now"
+          value={
+            displayData.activeSessions ||
+            displayData.summary?.activeSessions ||
+            17
+          }
+          trend="Live"
+          color="green"
+        />
+        <SummaryCard
+          title="Modal View Rate"
+          value={`${displayData.modalViewRate || displayData.conversionFunnel?.modalView?.percentage || 85.9}%`}
+          trend="+5%"
+          color="blue"
+        />
+        <SummaryCard
+          title="Path Selection"
+          value={`${displayData.pathSelectionRate || displayData.conversionFunnel?.pathSelection?.percentage || 58.7}%`}
+          trend="+8%"
+          color="yellow"
+        />
+      </div>
 
-          <TabsContent value="overview" className="space-y-6">
-            {/* Key Metrics */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <MetricCard
-                title="Total Sessions"
-                value={metrics.totalSessions.toLocaleString()}
-                change={metrics.trends.sessionsGrowth}
-                icon={Users}
-                color="blue"
-                gradient="from-blue-500 to-blue-600"
-                description="Active user sessions"
-                trend="up"
-                loading={isLoading}
-              />
-              <MetricCard
-                title="Modal Views"
-                value={formatPercentage(metrics.modalViewRate)}
-                change={metrics.trends.engagementGrowth}
-                icon={Eye}
-                color="green"
-                gradient="from-green-500 to-green-600"
-                description="Three-path modal engagement"
-                trend="up"
-                loading={isLoading}
-              />
-              <MetricCard
-                title="Path Selection"
-                value={formatPercentage(metrics.pathSelectionRate)}
-                change={metrics.trends.conversionGrowth}
-                icon={Target}
-                color="purple"
-                gradient="from-purple-500 to-purple-600"
-                description="Journey commitment rate"
-                trend="up"
-                loading={isLoading}
-              />
-              <MetricCard
-                title="Avg. Duration"
-                value={formatDuration(metrics.averageSessionDuration)}
-                change={5.2}
-                icon={Clock}
-                color="orange"
-                gradient="from-orange-500 to-orange-600"
-                description="Session engagement time"
-                trend="up"
-                loading={isLoading}
-              />
-            </div>
-
-            {/* Charts Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <PathDistributionChart distribution={metrics.pathDistribution} />
-              <ActivityFeed events={metrics.realtimeEvents} />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="engagement" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Engagement Metrics */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Engagement Deep Dive</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">
-                        Average Hover Time
-                      </span>
-                      <span className="text-sm text-gray-600">
-                        {formatDuration(
-                          metrics.engagementMetrics.averageHoverTime,
-                        )}
-                      </span>
-                    </div>
-                    <Progress value={75} className="h-2" />
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">
-                        Selection Speed
-                      </span>
-                      <span className="text-sm text-gray-600">
-                        {formatDuration(
-                          metrics.engagementMetrics.selectionSpeed,
-                        )}
-                      </span>
-                    </div>
-                    <Progress value={60} className="h-2" />
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">
-                        Return Visitors
-                      </span>
-                      <span className="text-sm text-gray-600">
-                        {formatPercentage(
-                          metrics.engagementMetrics.returnVisitors,
-                        )}
-                      </span>
-                    </div>
-                    <Progress value={25} className="h-2" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Device Breakdown */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Device Analytics</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {Object.entries(metrics.deviceBreakdown).map(
-                    ([device, percentage]) => (
-                      <div key={device} className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm font-medium capitalize">
-                            {device}
-                          </span>
-                          <span className="text-sm text-gray-600">
-                            {formatPercentage(percentage)}
-                          </span>
-                        </div>
-                        <Progress value={percentage * 100} className="h-2" />
+      {/* Path Performance */}
+      <div className="bg-gray-900/50 backdrop-blur-lg rounded-xl p-6 border border-gray-800 mb-8">
+        <h2 className="text-xl font-bold mb-4">Path Performance</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {displayData.pathDistribution
+            ? Object.entries(displayData.pathDistribution).map(
+                ([path, percentage]: [string, any]) => (
+                  <div key={path} className="p-4 bg-gray-800/50 rounded-lg">
+                    <h3 className="text-lg font-semibold capitalize mb-2">
+                      {path}
+                    </h3>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Distribution:</span>
+                        <span>{percentage}%</span>
                       </div>
-                    ),
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Engagement:</span>
+                        <span className="text-green-400">High</span>
+                      </div>
+                    </div>
+                  </div>
+                ),
+              )
+            : Object.entries(displayData.pathBreakdown || {}).map(
+                ([path, metrics]: [string, any]) => (
+                  <div key={path} className="p-4 bg-gray-800/50 rounded-lg">
+                    <h3 className="text-lg font-semibold capitalize mb-2">
+                      {path}
+                    </h3>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Selections:</span>
+                        <span>{metrics.selections}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Completions:</span>
+                        <span>{metrics.completions}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Conversion:</span>
+                        <span className="text-green-400">
+                          {metrics.conversionRate}%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ),
+              )}
+        </div>
+      </div>
 
-          <TabsContent value="conversion" className="space-y-6">
-            {/* Conversion Funnel */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Conversion Funnel Analysis</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  {Object.entries(metrics.conversionFunnel).map(
-                    ([stage, percentage], index) => (
-                      <motion.div
-                        key={stage}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="text-center"
-                      >
-                        <div className="relative">
-                          <div className="w-20 h-20 mx-auto mb-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                            <span className="text-white font-bold text-lg">
-                              {Math.round(percentage)}%
-                            </span>
-                          </div>
-                          {index < 3 && (
-                            <ChevronRight className="absolute top-8 -right-6 w-6 h-6 text-gray-400 hidden md:block" />
-                          )}
-                        </div>
-                        <h4 className="font-medium text-sm capitalize">
-                          {stage.replace(/([A-Z])/g, " $1")}
-                        </h4>
-                      </motion.div>
-                    ),
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="system" className="space-y-6">
-            <SystemHealthMonitor health={metrics.systemHealth} />
-          </TabsContent>
-        </Tabs>
+      {/* Footer */}
+      <div className="text-center text-sm text-gray-500">
+        Last updated: {new Date(lastRefresh).toLocaleTimeString()}
+        {fetchInProgress.current && <span className="ml-2">• Updating...</span>}
+        {error && (
+          <span className="ml-2 text-yellow-500">• Using cached data</span>
+        )}
       </div>
     </div>
   );
 }
 
-// Export with error boundary
-export default withDivineErrorBoundary(AnalyticsDashboard, {
-  componentName: "AnalyticsDashboard",
-  fallback: (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
-      <div className="text-center space-y-4">
-        <AlertTriangle className="w-12 h-12 text-red-500 mx-auto" />
-        <h2 className="text-xl font-semibold text-gray-800">
-          Dashboard Temporarily Unavailable
-        </h2>
-        <p className="text-gray-600">
-          Please refresh the page or try again later.
-        </p>
-        <Button onClick={() => window.location.reload()}>
-          <RefreshCw className="w-4 h-4 mr-2" />
-          Reload Dashboard
-        </Button>
-      </div>
-    </div>
-  ),
-});
+// Summary Card Component
+const SummaryCard: React.FC<{
+  title: string;
+  value: string | number;
+  trend: string;
+  color: string;
+}> = ({ title, value, trend, color }) => {
+  const colorClasses = {
+    purple: "from-purple-900/50 to-purple-800/50 border-purple-500/20",
+    green: "from-green-900/50 to-green-800/50 border-green-500/20",
+    blue: "from-blue-900/50 to-blue-800/50 border-blue-500/20",
+    yellow: "from-yellow-900/50 to-yellow-800/50 border-yellow-500/20",
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ scale: 1.02 }}
+      className={`bg-gradient-to-br ${colorClasses[color as keyof typeof colorClasses]} backdrop-blur-lg rounded-xl p-6 border`}
+    >
+      <h3 className="text-gray-400 text-sm mb-1">{title}</h3>
+      <p className="text-3xl font-bold">{value}</p>
+      <span className="text-sm text-green-400">{trend}</span>
+    </motion.div>
+  );
+};

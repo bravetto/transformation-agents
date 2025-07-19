@@ -1,3 +1,5 @@
+import { logger } from "@/lib/logger";
+
 /**
  * Resilient network layer with retry logic and circuit breaker
  */
@@ -67,7 +69,7 @@ class CircuitBreaker {
       this.successCount++;
       if (this.successCount >= 3) {
         this.state = "CLOSED";
-        console.log(`Circuit breaker for ${this.service} is now CLOSED`);
+        logger.info(`Circuit breaker for ${this.service} is now CLOSED`);
       }
     }
   }
@@ -78,7 +80,7 @@ class CircuitBreaker {
 
     if (this.failureCount >= this.options.failureThreshold!) {
       this.state = "OPEN";
-      console.error(
+      logger.error(
         `Circuit breaker for ${this.service} is now OPEN after ${this.failureCount} failures`,
       );
     }
@@ -161,7 +163,7 @@ export async function resilientFetch(
             : calculateBackoff(attempt, retryDelay);
 
           if (attempt < retries) {
-            console.warn(`Rate limited. Retrying after ${delay}ms...`);
+            logger.warn(`Rate limited. Retrying after ${delay}ms...`);
             await new Promise((resolve) => setTimeout(resolve, delay));
             continue;
           }
@@ -176,7 +178,7 @@ export async function resilientFetch(
             onRetry(lastError, attempt + 1);
           }
 
-          console.warn(
+          logger.warn(
             `Server error ${response.status}. Retrying in ${delay}ms...`,
           );
           await new Promise((resolve) => setTimeout(resolve, delay));
@@ -200,7 +202,7 @@ export async function resilientFetch(
               onRetry(lastError, attempt + 1);
             }
 
-            console.warn(`Network error. Retrying in ${delay}ms...`);
+            logger.warn(`Network error. Retrying in ${delay}ms...`);
             await new Promise((resolve) => setTimeout(resolve, delay));
             continue;
           }
@@ -280,5 +282,5 @@ export function getCircuitBreakerStatus(): Record<
  */
 export function resetAllCircuitBreakers(): void {
   circuitBreakers.forEach((breaker) => breaker.reset());
-  console.log("All circuit breakers have been reset");
+  logger.info("All circuit breakers have been reset");
 }

@@ -25,20 +25,28 @@ interface YouthMessage {
 
 function YouthMentorship() {
   const [youthCount, setYouthCount] = useState(15);
+  const [recentMessages, setRecentMessages] = useState<YouthMessage[]>([]);
+  const [showViral, setShowViral] = useState(false);
+  const [formData, setFormData] = useState({
+    to: "JAHmere" as const,
+    message: "",
+    name: "",
+    age: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  // 🛡️ DEFENSIVE FIX: Add missing state variables
   const [isWriting, setIsWriting] = useState(false);
   const [selectedRecipient, setSelectedRecipient] =
     useState<YouthMessage["to"]>("JAHmere");
-  const [formData, setFormData] = useState({
-    name: "",
-    age: "",
-    message: "",
-  });
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [showViral, setShowViral] = useState(false);
-  const [recentMessages, setRecentMessages] = useState<YouthMessage[]>([]);
 
+  // 🛡️ DEFENSIVE FIX: Move all initialization to useEffect to prevent setState-in-render
   useEffect(() => {
-    // Load data from localStorage
+    setIsClient(true);
+
+    // Load saved data from localStorage
     try {
       const saved = localStorage.getItem("youthMentorshipData");
       if (saved) {
@@ -54,7 +62,10 @@ function YouthMentorship() {
     } catch (error) {
       console.warn("localStorage access error:", error);
     }
+  }, []);
 
+  // 🛡️ DEFENSIVE FIX: Move event listeners to separate useEffect
+  useEffect(() => {
     // Listen for global impact events
     const handleNewYouth = () => {
       setYouthCount((prev) => {
@@ -83,11 +94,12 @@ function YouthMentorship() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     // Create new message
     const newMessage: YouthMessage = {
       id: Date.now().toString(),
-      to: selectedRecipient,
+      to: selectedRecipient, // 🛡️ DEFENSIVE FIX: Use selectedRecipient state
       message: formData.message,
       name: formData.name,
       age: parseInt(formData.age),
@@ -111,19 +123,17 @@ function YouthMentorship() {
     );
 
     // Trigger global events
-    impactEvents.addYouth();
     window.dispatchEvent(new Event("newYouthMessage"));
 
     // Show success animation
     setShowSuccess(true);
     setTimeout(() => {
       setShowSuccess(false);
-      setShowViral(true);
     }, 2000);
 
     // Reset form
-    setFormData({ name: "", age: "", message: "" });
-    setIsWriting(false);
+    setFormData({ to: "JAHmere" as const, name: "", age: "", message: "" });
+    setIsSubmitting(false);
   };
 
   const shareMessage = () => {

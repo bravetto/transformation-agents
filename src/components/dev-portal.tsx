@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { logger } from "@/lib/logger";
 
 // Developer routes registry
 const DEV_ROUTES = {
@@ -227,104 +228,82 @@ function DevPortalProviderComponent({ children }: DevPortalProviderProps) {
       if (!hasSeenPortal) {
         setIsFirstUnlock(true);
       }
-      console.log(
-        "%c🔓 Developer Mode Unlocked",
-        "color: #4ade80; font-size: 16px; font-weight: bold;",
-      );
+      logger.divine("🔓 Developer Mode Unlocked");
     } else {
-      console.log(
-        "%c🎮 Developer Mode Available",
-        "color: #4ade80; font-size: 16px; font-weight: bold;",
-      );
-      console.log(
-        "%cEnter the Konami Code to unlock: ↑ ↑ ↓ ↓ ← → ← → B A",
-        "color: #94a3b8; font-size: 12px;",
-      );
+      logger.info("🎮 Developer Mode Available");
+      logger.info("Enter the Konami Code to unlock: ↑ ↑ ↓ ↓ ← → ← → B A");
     }
   }, []);
 
-  // Konami code detection
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      // Prevent conflicts with other shortcuts
-      if (
-        e.target instanceof HTMLInputElement ||
-        e.target instanceof HTMLTextAreaElement
-      ) {
+  const handleKeyPress = useCallback(
+    (e: KeyboardEvent) => {
+      // Only process if dev portal is active
+      if (!isUnlocked) return;
+
+      const key = e.key.toLowerCase();
+
+      logger.debug("DevPortal key pressed", {
+        key,
+        currentSequence: konamiIndex,
+      });
+
+      if (konamiIndex === 0) {
+        logger.debug("Starting new sequence with key", key);
+        setKonamiIndex(1);
         return;
       }
 
-      console.log(
-        "Key pressed:",
-        e.key,
-        "Current index:",
-        konamiIndex,
-        "Unlocked:",
-        isUnlocked,
-      );
+      logger.debug("Current sequence", konamiIndex);
 
-      // Check for Ctrl+Shift+D shortcut
-      if (isUnlocked && e.ctrlKey && e.shiftKey && e.key === "D") {
-        e.preventDefault();
-        e.stopPropagation();
-        setIsOpen((prev) => !prev);
-        return;
-      }
+      const currentIndex = konamiIndex;
+      const expectedKey = KONAMI_CODE[currentIndex];
 
-      // Konami code detection
-      if (!isUnlocked) {
-        const key = e.key.toLowerCase();
-        const expectedKey = KONAMI_CODE[konamiIndex].toLowerCase();
-        console.log("Expected:", expectedKey, "Got:", key);
+      if (key === expectedKey) {
+        const newSequence = currentIndex + 1;
+        setKonamiIndex(newSequence);
 
-        if (key === expectedKey) {
-          const newIndex = konamiIndex + 1;
-          setKonamiIndex(newIndex);
-          console.log(
-            "✅ Correct key! Progress:",
-            newIndex,
-            "/",
-            KONAMI_CODE.length,
-          );
+        logger.debug("Correct key pressed", {
+          expected: expectedKey,
+          got: key,
+        });
 
-          if (newIndex === KONAMI_CODE.length) {
-            // Unlock achieved!
-            setIsUnlocked(true);
-            setShowCelebration(true);
-            localStorage.setItem("dev-portal-unlocked", "true");
-            setKonamiIndex(0);
-
-            // Auto-open portal after celebration
-            setTimeout(() => {
-              setShowCelebration(false);
-              setIsOpen(true);
-              localStorage.setItem("dev-portal-seen", "true");
-            }, 2000);
-
-            console.log(
-              "%c🎉 Developer Mode Unlocked!",
-              "color: #4ade80; font-size: 20px; font-weight: bold;",
-            );
-            console.log(
-              "%cPress Ctrl+Shift+D to open portal",
-              "color: #94a3b8; font-size: 14px;",
-            );
-          }
-        } else {
-          console.log("❌ Wrong key, resetting sequence");
+        if (newSequence === KONAMI_CODE.length) {
+          logger.divine("🎉 Developer Mode Unlocked!");
+          setIsUnlocked(true);
+          setShowCelebration(true);
+          localStorage.setItem("dev-portal-unlocked", "true");
           setKonamiIndex(0);
+
+          // Auto-open portal after celebration
+          setTimeout(() => {
+            setShowCelebration(false);
+            setIsOpen(true);
+            localStorage.setItem("dev-portal-seen", "true");
+          }, 2000);
+
+          logger.divine("Press Ctrl+Shift+D to open portal");
         }
+      } else {
+        logger.debug("Wrong key, resetting sequence", {
+          expected: expectedKey,
+          got: key,
+        });
+        setKonamiIndex(0);
       }
-    };
+    },
+    [isUnlocked, konamiIndex],
+  );
+
+  useEffect(() => {
+    logger.debug("DevPortal: Event listener attached");
 
     window.addEventListener("keydown", handleKeyPress);
-    console.log("DevPortal: Event listener attached");
 
     return () => {
+      logger.debug("DevPortal: Event listener removed");
       window.removeEventListener("keydown", handleKeyPress);
-      console.log("DevPortal: Event listener removed");
     };
-  }, [isUnlocked, konamiIndex]);
+  }, [handleKeyPress]);
 
   const togglePortal = useCallback(() => {
     setIsOpen((prev) => !prev);
@@ -338,10 +317,7 @@ function DevPortalProviderComponent({ children }: DevPortalProviderProps) {
     setIsOpen(false);
     localStorage.removeItem("dev-portal-unlocked");
     localStorage.removeItem("dev-portal-seen");
-    console.log(
-      "%c🔒 Developer Mode Locked",
-      "color: #ef4444; font-size: 16px; font-weight: bold;",
-    );
+    logger.info("🔒 Developer Mode Locked");
   }, []);
 
   return (

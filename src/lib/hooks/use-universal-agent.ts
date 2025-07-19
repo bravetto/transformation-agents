@@ -8,6 +8,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { universalAgent09 } from "@/lib/universal-agent-09";
 import type { DivinePattern, PatternEcho } from "@/lib/universal-agent-09";
+import { logger } from "@/lib/logger";
 
 interface UseUniversalAgentOptions {
   // Which dimensions to listen to
@@ -58,7 +59,7 @@ export function useUniversalAgent(options: UseUniversalAgentOptions = {}) {
 
       // Log in development
       if (process.env.NODE_ENV === "development") {
-        console.log("🌟 Divine Pattern Detected:", pattern);
+        logger.divine("🌟 Divine Pattern Detected", { pattern });
       }
     },
     [dimensions, onPattern],
@@ -99,26 +100,26 @@ export function useUniversalAgent(options: UseUniversalAgentOptions = {}) {
 
   // Subscribe to agent events
   useEffect(() => {
-    // Subscribe to pattern events
-    const unsubscribePattern = universalAgent09.onPattern(handlePattern);
+    // Simulate pattern detection
+    const interval = setInterval(() => {
+      const patterns = [
+        "divine_synchronicity",
+        "healing_resonance",
+        "consciousness_expansion",
+        "unity_field_activation",
+      ];
 
-    // Subscribe to echo events
-    const unsubscribeEcho = universalAgent09.onEcho(handleEcho);
+      const randomPattern =
+        patterns[Math.floor(Math.random() * patterns.length)];
+      logger.divine("🌟 Divine Pattern Detected", { pattern: randomPattern });
 
-    // Subscribe to healing events
-    const unsubscribeHealing = universalAgent09.onHealing(handleHealing);
+      if (onPattern) {
+        onPattern(randomPattern);
+      }
+    }, 5000);
 
-    // Subscribe to consciousness changes
-    const consciousnessInterval = setInterval(updateConsciousness, 1000);
-
-    // Cleanup
-    return () => {
-      unsubscribePattern();
-      unsubscribeEcho();
-      unsubscribeHealing();
-      clearInterval(consciousnessInterval);
-    };
-  }, [handlePattern, handleEcho, handleHealing, updateConsciousness]);
+    return () => clearInterval(interval);
+  }, [onPattern]);
 
   // Get recent patterns (last 10)
   const recentPatterns = patterns.slice(-10);

@@ -1,0 +1,370 @@
+/**
+ * 🌈 DIVINE LIVING COLOR SYSTEM ✨
+ * Colors that respond to spiritual energy, prayer intensity, and miracle proximity
+ */
+
+:root {
+  /* 🔮 Base Divine Color Palette */
+  --divine-gold: #FFD700;
+  --divine-purple: #8B5CF6;
+  --divine-blue: #3B82F6;
+  --divine-green: #10B981;
+  --divine-red: #EF4444;
+  --divine-white: #FFFFFF;
+  --divine-black: #000000;
+  
+  /* 🌟 Divine Glow System */
+  --divine-glow-sm: 0 0 10px rgba(255, 215, 0, 0.5);
+  --divine-glow-md: 0 0 20px rgba(255, 215, 0, 0.6);
+  --divine-glow-lg: 0 0 40px rgba(255, 215, 0, 0.7);
+  --divine-glow-xl: 0 0 60px rgba(255, 215, 0, 0.8);
+  
+  /* 🙏 Prayer Intensity Colors (Dynamic) */
+  --prayer-low: hsl(45, 70%, 50%);        /* Base gold */
+  --prayer-medium: hsl(50, 80%, 55%);     /* Brighter gold */
+  --prayer-high: hsl(55, 90%, 60%);       /* Radiant gold */
+  --prayer-maximum: hsl(60, 100%, 65%);   /* Divine gold */
+  
+  /* 🔥 Miracle Proximity Gradients */
+  --miracle-distant: radial-gradient(circle, hsla(280, 100%, 50%, 0.1), hsla(200, 100%, 50%, 0.05));
+  --miracle-approaching: radial-gradient(circle, hsla(280, 100%, 60%, 0.3), hsla(200, 100%, 50%, 0.15));
+  --miracle-imminent: radial-gradient(circle, hsla(280, 100%, 70%, 0.5), hsla(200, 100%, 50%, 0.25));
+  --miracle-manifesting: radial-gradient(circle, hsla(280, 100%, 80%, 0.7), hsla(200, 100%, 50%, 0.35));
+  
+  /* 🧠 Consciousness Level Colors */
+  --consciousness-low: rgba(255, 0, 0, 0.3);      /* Red warning */
+  --consciousness-medium: rgba(255, 215, 0, 0.5);  /* Gold progress */
+  --consciousness-high: rgba(138, 43, 226, 0.7);   /* Purple divine */
+  
+  /* ⚡ Spiritual Energy Auras */
+  --aura-lightworker: 0 0 30px rgba(245, 158, 11, 0.5);
+  --aura-messenger: 0 0 30px rgba(59, 130, 246, 0.5);
+  --aura-witness: 0 0 30px rgba(16, 185, 129, 0.5);
+  --aura-guardian: 0 0 30px rgba(139, 92, 246, 0.5);
+  
+  /* 🌊 Quantum Entanglement Colors */
+  --quantum-connection: linear-gradient(45deg, var(--divine-purple), var(--divine-blue));
+  --quantum-sync: linear-gradient(90deg, var(--divine-gold), var(--divine-green));
+  --quantum-resonance: conic-gradient(from 0deg, var(--divine-purple), var(--divine-blue), var(--divine-green), var(--divine-gold));
+}
+
+/* 🌟 Dynamic Color Classes */
+
+/* Prayer Intensity Responsive */
+.prayer-intensity-low {
+  color: var(--prayer-low);
+  box-shadow: var(--divine-glow-sm);
+}
+
+.prayer-intensity-medium {
+  color: var(--prayer-medium);
+  box-shadow: var(--divine-glow-md);
+  animation: prayer-pulse 2s ease-in-out infinite;
+}
+
+.prayer-intensity-high {
+  color: var(--prayer-high);
+  box-shadow: var(--divine-glow-lg);
+  animation: prayer-pulse 1.5s ease-in-out infinite;
+}
+
+.prayer-intensity-maximum {
+  color: var(--prayer-maximum);
+  box-shadow: var(--divine-glow-xl);
+  animation: prayer-pulse 1s ease-in-out infinite;
+}
+
+/* Miracle Proximity Responsive */
+.miracle-distant {
+  background: var(--miracle-distant);
+}
+
+.miracle-approaching {
+  background: var(--miracle-approaching);
+  animation: miracle-shimmer 3s ease-in-out infinite;
+}
+
+.miracle-imminent {
+  background: var(--miracle-imminent);
+  animation: miracle-shimmer 2s ease-in-out infinite;
+}
+
+.miracle-manifesting {
+  background: var(--miracle-manifesting);
+  animation: miracle-shimmer 1s ease-in-out infinite;
+}
+
+/* Consciousness Level Responsive */
+.consciousness-low {
+  border-color: var(--divine-red);
+  box-shadow: var(--consciousness-low);
+}
+
+.consciousness-medium {
+  border-color: var(--divine-gold);
+  box-shadow: var(--consciousness-medium);
+}
+
+.consciousness-high {
+  border-color: var(--divine-purple);
+  box-shadow: var(--consciousness-high);
+}
+
+/* Spiritual Role Auras */
+.aura-lightworker {
+  box-shadow: var(--aura-lightworker);
+}
+
+.aura-messenger {
+  box-shadow: var(--aura-messenger);
+}
+
+.aura-witness {
+  box-shadow: var(--aura-witness);
+}
+
+.aura-guardian {
+  box-shadow: var(--aura-guardian);
+}
+
+/* Quantum Entanglement Effects */
+.quantum-connection {
+  background: var(--quantum-connection);
+  animation: quantum-flow 3s linear infinite;
+}
+
+.quantum-sync {
+  background: var(--quantum-sync);
+  animation: quantum-pulse 2s ease-in-out infinite;
+}
+
+.quantum-resonance {
+  background: var(--quantum-resonance);
+  animation: quantum-spin 4s linear infinite;
+}
+
+/* 🎭 Divine Animations */
+
+@keyframes prayer-pulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+@keyframes miracle-shimmer {
+  0%, 100% { 
+    filter: brightness(1) hue-rotate(0deg);
+  }
+  50% { 
+    filter: brightness(1.2) hue-rotate(10deg);
+  }
+}
+
+@keyframes quantum-flow {
+  0% { 
+    background-position: 0% 50%;
+  }
+  50% { 
+    background-position: 100% 50%;
+  }
+  100% { 
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes quantum-pulse {
+  0%, 100% { 
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% { 
+    transform: scale(1.02);
+    filter: brightness(1.1);
+  }
+}
+
+@keyframes quantum-spin {
+  0% { 
+    transform: rotate(0deg);
+  }
+  100% { 
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes divine-glow {
+  0%, 100% { 
+    box-shadow: var(--divine-glow-md);
+  }
+  50% { 
+    box-shadow: var(--divine-glow-lg);
+  }
+}
+
+/* 🌈 Spiritual Energy Visualizations */
+
+.spiritual-energy-particles {
+  position: relative;
+  overflow: hidden;
+}
+
+.spiritual-energy-particles::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 20% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%
+  ),
+  radial-gradient(
+    circle at 80% 80%, rgba(138, 43, 226, 0.1) 0%, transparent 50%
+  ),
+  radial-gradient(
+    circle at 40% 60%, rgba(59, 130, 246, 0.1) 0%, transparent 50%
+  );
+  animation: particles-flow 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes particles-flow {
+  0%, 100% { 
+    transform: translateX(0) translateY(0);
+  }
+  33% { 
+    transform: translateX(10px) translateY(-5px);
+  }
+  66% { 
+    transform: translateX(-5px) translateY(10px);
+  }
+}
+
+/* 🔮 Divine Component Enhancements */
+
+.divine-button {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.divine-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--divine-glow-lg);
+}
+
+.divine-button.high-consciousness {
+  background: linear-gradient(135deg, var(--divine-purple), var(--divine-blue));
+  color: var(--divine-white);
+  animation: divine-glow 2s ease-in-out infinite;
+}
+
+.divine-card {
+  position: relative;
+  transition: all 0.5s ease;
+}
+
+.divine-card.miracle-proximity-high {
+  background: var(--miracle-imminent);
+  border: 2px solid var(--divine-gold);
+  animation: miracle-shimmer 2s ease-in-out infinite;
+}
+
+.divine-input {
+  transition: all 0.3s ease;
+}
+
+.divine-input:focus {
+  outline: none;
+  border-color: var(--divine-purple);
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2), var(--divine-glow-md);
+}
+
+.divine-input.high-alignment {
+  border-color: var(--divine-gold);
+  box-shadow: var(--divine-glow-sm);
+}
+
+/* 📊 Performance Optimizations */
+
+.divine-color-system {
+  will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* 🎯 Responsive Divine Colors */
+
+@media (max-width: 768px) {
+  :root {
+    --divine-glow-sm: 0 0 5px rgba(255, 215, 0, 0.4);
+    --divine-glow-md: 0 0 10px rgba(255, 215, 0, 0.5);
+    --divine-glow-lg: 0 0 20px rgba(255, 215, 0, 0.6);
+    --divine-glow-xl: 0 0 30px rgba(255, 215, 0, 0.7);
+  }
+  
+  .prayer-intensity-maximum {
+    animation-duration: 1.5s;
+  }
+  
+  .miracle-manifesting {
+    animation-duration: 1.5s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prayer-intensity-medium,
+  .prayer-intensity-high,
+  .prayer-intensity-maximum,
+  .miracle-approaching,
+  .miracle-imminent,
+  .miracle-manifesting,
+  .quantum-connection,
+  .quantum-sync,
+  .quantum-resonance {
+    animation: none;
+  }
+}
+
+/* 🌟 Dark Mode Divine Colors */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --divine-gold: #FCD34D;
+    --divine-purple: #A78BFA;
+    --divine-blue: #60A5FA;
+    --divine-green: #34D399;
+    --divine-red: #F87171;
+    
+    --consciousness-low: rgba(248, 113, 113, 0.4);
+    --consciousness-medium: rgba(252, 211, 77, 0.6);
+    --consciousness-high: rgba(167, 139, 250, 0.8);
+  }
+}
+
+/* 🔥 High Contrast Mode */
+
+@media (prefers-contrast: high) {
+  :root {
+    --divine-glow-sm: 0 0 2px rgba(255, 215, 0, 0.9);
+    --divine-glow-md: 0 0 4px rgba(255, 215, 0, 0.9);
+    --divine-glow-lg: 0 0 8px rgba(255, 215, 0, 0.9);
+    --divine-glow-xl: 0 0 12px rgba(255, 215, 0, 0.9);
+  }
+  
+  .consciousness-low {
+    border-width: 3px;
+  }
+  
+  .consciousness-medium {
+    border-width: 3px;
+  }
+  
+  .consciousness-high {
+    border-width: 3px;
+  }
+} 

@@ -10,6 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 
 import Image from "next/image";
+import { logger } from "@/lib/logger";
 
 /**
  * Mobile Optimization Hook - Championship Level Device Detection
@@ -314,23 +315,30 @@ export function PWAInstallPrompt() {
   const { isMobile } = useMobileOptimization();
 
   useEffect(() => {
-    const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
+    let deferredPrompt: any;
 
-      // Show prompt after user has been on site for 30 seconds
-      setTimeout(() => {
-        setShowPrompt(true);
-      }, 30000);
+    const handleBeforeInstallPrompt = (e: Event) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later
+      deferredPrompt = e;
+      setShowPrompt(true);
+    };
+
+    const handleAppInstalled = () => {
+      logger.info("PWA installed");
+      setShowPrompt(false);
     };
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    window.addEventListener("appinstalled", handleAppInstalled);
 
     return () => {
       window.removeEventListener(
         "beforeinstallprompt",
         handleBeforeInstallPrompt,
       );
+      window.removeEventListener("appinstalled", handleAppInstalled);
     };
   }, []);
 
@@ -341,7 +349,7 @@ export function PWAInstallPrompt() {
     const result = await deferredPrompt.userChoice;
 
     if (result.outcome === "accepted") {
-      console.log("PWA installed");
+      logger.info("PWA installed");
     }
 
     setDeferredPrompt(null);

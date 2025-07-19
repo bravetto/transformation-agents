@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Edit3, ArrowRight, Sparkles, Heart } from "lucide-react";
 import Link from "next/link";
@@ -28,30 +28,50 @@ export function FloatingCTA({
   const [isVisible, setIsVisible] = useState(false);
   const [isPulsing, setIsPulsing] = useState(true);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setIsVisible(scrollY > showAfterScroll);
-    };
+  // 🛡️ CRITICAL FIX: Use refs to prevent re-render loops
+  const pulseTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const scrollListenerAttached = useRef(false);
 
+  // 🛡️ CRITICAL FIX: Memoized scroll handler
+  const handleScroll = useCallback(() => {
+    const scrollY = window.scrollY;
+    const shouldShow = scrollY > showAfterScroll;
+
+    // Only update if state actually changes
+    setIsVisible((prevVisible) => {
+      if (prevVisible !== shouldShow) {
+        return shouldShow;
+      }
+      return prevVisible;
+    });
+  }, [showAfterScroll]);
+
+  useEffect(() => {
     // Show immediately on mobile, after scroll on desktop
     const isMobile = window.innerWidth < 768;
     if (isMobile) {
       setIsVisible(true);
-    } else {
-      window.addEventListener("scroll", handleScroll);
+    } else if (!scrollListenerAttached.current) {
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      scrollListenerAttached.current = true;
+      handleScroll(); // Check initial position
     }
 
-    // Pulse effect control
-    const pulseTimer = setInterval(() => {
+    // 🛡️ CRITICAL FIX: Pulse effect control with proper cleanup
+    pulseTimerRef.current = setInterval(() => {
       setIsPulsing((prev) => !prev);
     }, 3000);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearInterval(pulseTimer);
+      if (!isMobile && scrollListenerAttached.current) {
+        window.removeEventListener("scroll", handleScroll);
+        scrollListenerAttached.current = false;
+      }
+      if (pulseTimerRef.current) {
+        clearInterval(pulseTimerRef.current);
+      }
     };
-  }, [showAfterScroll]);
+  }, [handleScroll]); // 🛡️ CRITICAL FIX: Stable dependency
 
   return (
     <AnimatePresence>

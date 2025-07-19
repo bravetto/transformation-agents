@@ -2,7 +2,7 @@
 
 import React from "react";
 import { RefreshCw } from "lucide-react";
-import { useDashboard } from "./context";
+import useDashboard from "./context";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 
 /**

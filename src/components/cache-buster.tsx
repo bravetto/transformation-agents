@@ -53,8 +53,13 @@ const CacheBuster = () => {
     setIsClearing(true);
 
     try {
-      // Divine safety checks
-      if (typeof window === "undefined") return;
+      // 🚨 CRITICAL SSR FIX: Only run in browser environment
+      if (typeof window === "undefined" || typeof navigator === "undefined") {
+        console.warn(
+          "Divine protection: Cache clearing only available in browser",
+        );
+        return;
+      }
 
       // Clear localStorage with divine protection
       if (typeof localStorage !== "undefined") {
@@ -66,16 +71,16 @@ const CacheBuster = () => {
         sessionStorage.clear();
       }
 
-      // Clear service worker caches with divine protection
-      if ("caches" in window) {
+      // 🚨 CRITICAL SSR FIX: Check caches API availability
+      if (typeof window !== "undefined" && "caches" in window) {
         const cacheNames = await caches.keys();
         await Promise.all(
           cacheNames.map((cacheName) => caches.delete(cacheName)),
         );
       }
 
-      // Unregister service worker with divine protection
-      if ("serviceWorker" in navigator) {
+      // 🚨 CRITICAL SSR FIX: Check navigator and serviceWorker availability
+      if (typeof navigator !== "undefined" && "serviceWorker" in navigator) {
         const registrations = await navigator.serviceWorker.getRegistrations();
         await Promise.all(
           registrations.map((registration) => registration.unregister()),

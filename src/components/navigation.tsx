@@ -31,6 +31,7 @@ import {
   useAdvancedGestures,
   useMobileOptimization,
 } from "@/components/ui/mobile-optimization";
+import { EasterEgg } from "@/components/divine-easter-eggs";
 
 interface NavItem {
   href: string;
@@ -229,28 +230,19 @@ function Navigation() {
       >
         <Container py="none">
           <div className="flex items-center justify-between h-header">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <motion.div
-                animate={{
-                  scale: [1, 1.05, 1],
-                }}
-                transition={{ duration: 3, repeat: Infinity }}
-                className="relative"
-              >
-                <div className="h-8 w-8 bg-gradient-to-br from-elite-divine-amber to-elite-justice-indigo rounded-full flex items-center justify-center shadow-lg">
-                  <span className="text-pure-white font-bold text-lg">B</span>
-                </div>
-              </motion.div>
-              <div>
-                <span className="text-gentle-charcoal font-bold text-base">
-                  THE BRIDGE
-                </span>
-                <div className="text-[10px] text-soft-shadow">
-                  Building from Day 1
-                </div>
-              </div>
-            </Link>
+            {/* Logo/Brand with Easter Egg */}
+            <div className="flex items-center">
+              <EasterEgg eggId="risen-logo-hover">
+                <Link href="/" className="flex items-center space-x-3 group">
+                  <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white font-bold text-xl">B</span>
+                  </div>
+                  <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    Bridge Project
+                  </span>
+                </Link>
+              </EasterEgg>
+            </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-4" role="menubar">

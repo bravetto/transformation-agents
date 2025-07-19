@@ -42,7 +42,7 @@ npm run docs:update
 
 ### Viewing Documentation
 
-The main documentation file is located at `WEBSITE_UX_UI_STATE.md` in the project root. This file is automatically updated and contains:
+The main documentation file is located at `docs/UX_DOCUMENTATION.md` in the project root. This file is automatically updated and contains:
 - Current state analysis
 - Page breakdowns
 - User journeys
@@ -56,7 +56,7 @@ The main documentation file is located at `WEBSITE_UX_UI_STATE.md` in the projec
 1. **During Development**
    - Run `npm run docs:watch` alongside your development server
    - Documentation updates automatically as you code
-   - Review changes in `WEBSITE_UX_UI_STATE.md`
+   - Review changes in `docs/UX_DOCUMENTATION.md`
 
 2. **Before Commits**
    - Run `npm run docs:update` to ensure latest state is captured
@@ -72,7 +72,7 @@ The main documentation file is located at `WEBSITE_UX_UI_STATE.md` in the projec
 
 ```
 project-root/
-├── WEBSITE_UX_UI_STATE.md     # Main documentation file
+├── docs/UX_DOCUMENTATION.md     # Main documentation file
 ├── scripts/
 │   ├── update-ux-documentation.js    # Documentation generator
 │   └── watch-ux-docs.js             # Watch mode script

@@ -3,6 +3,7 @@
  */
 
 import { PromptUsageRecord, PromptPerformanceMetrics } from "@/types/prompts";
+import { logger } from "@/lib/logger";
 
 /**
  * Interface for tracking prompt performance
@@ -79,7 +80,7 @@ export class PromptAnalyticsService implements PromptAnalytics {
     try {
       // Store usage record in database
       // This could use an external analytics service, database, or logging system
-      console.log("Recording prompt usage:", record);
+      logger.analytics("prompt_usage", record);
 
       // In a real implementation, this would save to a database
       // await db.promptUsage.create({ data: record });

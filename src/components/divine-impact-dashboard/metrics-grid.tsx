@@ -2,8 +2,8 @@
 
 import React from "react";
 import { AnimatePresence } from "framer-motion";
-import { MetricCard } from "./metric-card";
-import { useDashboard } from "./context";
+import MetricCard from "./metric-card";
+import useDashboard from "./context";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 
 /**

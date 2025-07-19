@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
-import { DivineImpactDashboard } from "@/components/divine-impact-dashboard";
+import DivineImpactDashboard from "@/components/divine-impact-dashboard";
 import DivineParticles from "@/components/divine-particles";
 import { type DivineRole } from "@/lib/design-system";
 import { Container } from "@/components/ui/container";

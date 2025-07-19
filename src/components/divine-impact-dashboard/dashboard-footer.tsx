@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Download, Share2 } from "lucide-react";
-import { useDashboard } from "./context";
+import useDashboard from "./context";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 
 /**

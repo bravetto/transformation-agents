@@ -227,7 +227,7 @@ function CascadeMonitor({
                   <div className="flex items-center gap-2">
                     <Badge
                       variant={
-                        overallHealth === "healthy" ? "default" : "destructive"
+                        overallHealth === "healthy" ? "default" : "error"
                       }
                       className={cn(
                         "flex items-center gap-1",
@@ -366,7 +366,7 @@ function CascadeMonitor({
                         className="p-2 bg-red-50 rounded text-xs"
                       >
                         <div className="flex items-center justify-between mb-1">
-                          <Badge variant="destructive" className="text-xs">
+                          <Badge variant="error" className="text-xs">
                             {error.type}
                           </Badge>
                           <span className="text-gray-500">

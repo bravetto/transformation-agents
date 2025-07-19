@@ -3,13 +3,18 @@
 import React, { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import { AnimationProvider } from "@/components/animation-context";
+import { EasterEggProvider } from "@/components/divine-easter-eggs";
 
 interface AllProvidersProps {
   children: React.ReactNode;
 }
 
 const AllProviders = ({ children }: AllProvidersProps) => {
-  return <AnimationProvider>{children}</AnimationProvider>;
+  return (
+    <EasterEggProvider>
+      <AnimationProvider>{children}</AnimationProvider>
+    </EasterEggProvider>
+  );
 };
 
 const customRender = (

@@ -3,10 +3,10 @@
 import React from "react";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { DashboardProvider } from "./context";
-import { DashboardContainer } from "./dashboard-container";
-import { DashboardHeader } from "./dashboard-header";
-import { MetricsGrid } from "./metrics-grid";
-import { DashboardFooter } from "./dashboard-footer";
+import DashboardContainer from "./dashboard-container";
+import DashboardHeader from "./dashboard-header";
+import MetricsGrid from "./metrics-grid";
+import DashboardFooter from "./dashboard-footer";
 import type { DivineImpactDashboardProps } from "./types";
 
 /**

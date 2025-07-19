@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Shield, Heart, Scale, Star, Crown, Zap } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import dynamic from "next/dynamic";
+import { logger } from "@/lib/logger";
 
 // Dynamic import for heavy components - reduces initial bundle size
 const DivineLetterForm = dynamic(
@@ -29,14 +30,14 @@ export default function GodsJusticeConduit() {
   const [submittedData, setSubmittedData] = useState<any>(null);
 
   // Handle form submission - channeling divine justice
-  const handleFormSubmit = (data: any) => {
-    console.log("Divine Justice Letter submitted:", data);
+  const handleSubmit = async (data: any) => {
+    logger.divine("Divine Justice Letter submitted", data);
     setSubmittedData(data);
   };
 
   // Handle auto-save - preserving divine words
-  const handleAutoSave = (data: any) => {
-    console.log("Divine Justice Letter auto-saved:", data);
+  const handleAutoSave = async (data: any) => {
+    logger.info("Divine Justice Letter auto-saved", data);
   };
 
   return (
@@ -222,7 +223,7 @@ export default function GodsJusticeConduit() {
               transition={{ duration: 0.6 }}
             >
               <DivineLetterForm
-                onSubmit={handleFormSubmit}
+                onSubmit={handleSubmit}
                 onSave={handleAutoSave}
                 className="max-w-5xl mx-auto"
               />

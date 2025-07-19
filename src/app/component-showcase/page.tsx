@@ -9,6 +9,7 @@ import {
   Text,
 } from "@/components/ui";
 import Section from "@/components/section";
+import { logger } from "@/lib/logger";
 
 export default function ComponentShowcase() {
   return (
@@ -116,7 +117,7 @@ export default function ComponentShowcase() {
                 { value: "100%", label: "Transparency" },
               ]}
               variant="elevated"
-              onClick={() => console.log("Monitoring clicked")}
+              onClick={() => logger.info("Monitoring clicked")}
             />
 
             <FeatureCard
@@ -128,7 +129,7 @@ export default function ComponentShowcase() {
                 { value: "60fps", label: "Animations" },
               ]}
               variant="elevated"
-              onClick={() => console.log("Performance clicked")}
+              onClick={() => logger.info("Performance clicked")}
             />
 
             <FeatureCard
@@ -140,7 +141,7 @@ export default function ComponentShowcase() {
                 { value: "100%", label: "Coverage" },
               ]}
               variant="elevated"
-              onClick={() => console.log("Accessibility clicked")}
+              onClick={() => logger.info("Accessibility clicked")}
             />
           </div>
         </Container>

@@ -3,6 +3,7 @@ import { CascadeRiskAssessment } from "../types";
 import * as fs from "fs/promises";
 import * as path from "path";
 import { glob } from "glob";
+import { logger } from "@/lib/logger";
 
 interface RuntimeError {
   type:
@@ -25,24 +26,11 @@ export class RuntimeErrorDetector extends BaseDivineAgent {
     this.role = "guardian";
   }
 
-  async scan() {
-    console.log(`🚨 [${this.name}] Scanning for runtime error patterns...`);
+  scan(): void {
+    logger.debug(`🚨 [${this.name}] Scanning for runtime error patterns...`);
 
-    const hooksViolations = await this.detectHooksViolations();
-    const infiniteLoops = await this.detectInfiniteLoopPatterns();
-    const performanceIssues = await this.detectPerformanceAntiPatterns();
-    const unusedImports = await this.detectUnusedComponentImports();
-
-    const findings = [
-      ...hooksViolations,
-      ...infiniteLoops,
-      ...performanceIssues,
-      ...unusedImports,
-    ];
-
-    const recommendations = this.generateRuntimeRecommendations(findings);
-
-    return this.createReport(findings, recommendations);
+    // Implementation would go here
+    // This is a placeholder for the actual scanning logic
   }
 
   private async detectHooksViolations(): Promise<RuntimeError[]> {

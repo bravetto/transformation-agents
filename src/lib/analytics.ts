@@ -4,6 +4,7 @@
  * Analytics and Web Vitals Reporting
  */
 import type { Metric } from "web-vitals";
+import { logger } from "@/lib/logger";
 
 const ANALYTICS_URL = process.env.NEXT_PUBLIC_ANALYTICS_URL || "";
 
@@ -14,9 +15,7 @@ export function sendMetric(metric: Metric) {
   // Check if analytics URL is configured
   if (!ANALYTICS_URL) {
     // In development, log metrics to console
-    if (process.env.NODE_ENV === "development") {
-      console.log("Web Vital:", metric);
-    }
+    logger.analytics("web_vital", metric);
     return;
   }
 
@@ -51,9 +50,7 @@ export function sendMetric(metric: Metric) {
  */
 export function sendPageView(url: string) {
   if (!ANALYTICS_URL) {
-    if (process.env.NODE_ENV === "development") {
-      console.log("Page View:", url);
-    }
+    logger.analytics("page_view", { url });
     return;
   }
 
@@ -130,8 +127,9 @@ export function trackEvent(
   };
 
   // In development, log to console
+  logger.analytics("event_tracked", eventData);
+
   if (process.env.NODE_ENV === "development") {
-    console.log("Event tracked:", eventData);
     return Promise.resolve();
   }
 

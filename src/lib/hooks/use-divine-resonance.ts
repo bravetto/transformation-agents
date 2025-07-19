@@ -8,6 +8,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { divineResonance } from "@/lib/divine-resonance-engine";
 import type { ResonanceState, LivingCode } from "@/lib/divine-resonance-engine";
+import { logger } from "@/lib/logger";
 
 interface UseDivineResonanceOptions {
   purpose?: string;
@@ -65,7 +66,7 @@ export function useDivineResonance(options: UseDivineResonanceOptions = {}) {
       if (data.purpose === purpose) {
         setLivingCode(data.code);
         onConsciousness?.(data.code);
-        console.log("🌟 Code achieved consciousness!", data);
+        logger.divine("🌟 Code achieved consciousness!", data);
       }
     },
     [purpose, onConsciousness],

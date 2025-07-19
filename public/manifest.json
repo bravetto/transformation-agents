@@ -1,26 +1,22 @@
 {
-  "name": "The Bridge Project",
-  "short_name": "The Bridge",
-  "description": "Transforming Justice Through Divine Technology - A restorative justice platform",
-  "start_url": "/",
+  "name": "July 28th Freedom Portal",
+  "short_name": "Freedom Portal",
+  "description": "Join thousands in prayer for divine justice on July 28th",
+  "theme_color": "#7C3AED",
+  "background_color": "#000000",
   "display": "standalone",
-  "background_color": "#FEFDF8",
-  "theme_color": "#F59E0B",
-  "orientation": "portrait-primary",
   "scope": "/",
-  "lang": "en-US",
-  "categories": ["social", "lifestyle", "utilities"],
+  "start_url": "/freedom-portal",
   "icons": [
     {
       "src": "/favicon.ico",
-      "sizes": "16x16 32x32",
+      "sizes": "32x32",
       "type": "image/x-icon"
     },
     {
       "src": "/apple-touch-icon.png",
       "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 } 

@@ -2,6 +2,7 @@
 
 import { useEffect, useCallback, useState } from "react";
 import type { DivineRole } from "@/lib/design-system";
+import { logger } from "@/lib/logger";
 
 interface UnifiedArchitecture {
   protection: {
@@ -25,7 +26,7 @@ export function useUnifiedArchitecture(
       console.error(`[${componentName}] Error:`, error, context);
     },
     log: (message: string, data = {}) => {
-      console.log(`[${componentName}] ${message}`, data);
+      logger.debug(`[${componentName}] ${message}`, data);
     },
   });
 
@@ -79,3 +80,9 @@ export function useUnifiedArchitecture(
     log,
   };
 }
+
+export const log = (componentName: string, message: string, data?: any) => {
+  if (process.env.NODE_ENV === "development") {
+    logger.debug(`[${componentName}] ${message}`, data);
+  }
+};

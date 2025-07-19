@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { logger } from "@/lib/logger";
 
 // Types for the component props
 export interface DecisionCountdownProps {
@@ -58,7 +59,7 @@ function DecisionCountdown({
 
   // For milestone reached callback
   const handleMilestoneReached = useCallback(() => {
-    console.log("Decision time has arrived!");
+    logger.divine("Decision time has arrived!");
     // Could trigger additional actions here
   }, []);
 
