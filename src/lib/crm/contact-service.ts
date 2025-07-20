@@ -33,7 +33,6 @@ function transformToClickUpContact(contact: ContactData): ClickUpContact {
   return {
     name:
       `${contact.firstName} ${contact.lastName}`.trim() || "Unknown Contact",
-    contactPerson: `${contact.firstName} ${contact.lastName}`.trim(),
     companyEmail: contact.email,
     contactEmail: contact.email,
     phoneNumber: contact.phone,

@@ -166,7 +166,12 @@ class CascadeErrorPrevention {
         if (response.status === 404) {
           this.healthMetrics.apiHealth.failedRequests++;
 
-          const url = typeof args[0] === "string" ? args[0] : args[0].url;
+          const url =
+            typeof args[0] === "string"
+              ? args[0]
+              : args[0] instanceof URL
+                ? args[0].toString()
+                : args[0].url;
           this.reportError({
             type: "api_404",
             severity: "medium",

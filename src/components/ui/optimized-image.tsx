@@ -58,7 +58,9 @@ export function OptimizedImage({
   const getOptimizedImageData = () => {
     // Remove leading slash and public/ prefix if present
     const normalizedSrc = src.replace(/^\/?(public\/)?/, "");
-    const imageData = optimizationManifest.files[normalizedSrc];
+    const imageData = (optimizationManifest.files as Record<string, any>)[
+      normalizedSrc
+    ];
 
     if (!imageData && fallbackToOriginal) {
       // Return original image data structure
@@ -184,7 +186,6 @@ export function OptimizedImage({
         height={height}
         fill={fill}
         sizes={sizes}
-        srcSet={srcSet}
         priority={priority}
         quality={quality}
         placeholder={placeholder === "blur" && blurDataURL ? "blur" : "empty"}

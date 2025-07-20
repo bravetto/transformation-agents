@@ -87,6 +87,4 @@ function withUnifiedErrorBoundary<P extends object>(
 
 export { UnifiedErrorBoundaryBase, withUnifiedErrorBoundary };
 
-export default withSafeUI(withUnifiedErrorBoundary, {
-  componentName: "withUnifiedErrorBoundary",
-});
+export default withUnifiedErrorBoundary;

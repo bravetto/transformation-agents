@@ -146,7 +146,7 @@ function UserTypeModal({
       setSelectedPath(pathId);
       trackModalInteraction({
         eventType: "path_selected",
-        userType: pathId,
+        userType: pathId as any,
         timestamp: Date.now(),
       });
 
@@ -172,7 +172,7 @@ function UserTypeModal({
         // Use direct call instead of memoized function
         trackModalInteraction({
           eventType: "card_hovered",
-          userType: pathId,
+          userType: pathId as any,
           timestamp: Date.now(),
         });
       } else if (!isHovering && hoveredPath === pathId) {

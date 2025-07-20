@@ -55,6 +55,7 @@ const DivineParticlesBase = ({
   density = "medium",
   interactive = true,
   intensity = "medium",
+  colors,
   className,
 }: DivineParticlesProps) => {
   // 🛡️ CRITICAL: ALL HOOKS MUST BE AT THE TOP - BEFORE ANY RETURNS
@@ -126,7 +127,7 @@ const DivineParticlesBase = ({
             enable: true,
             mode: "repulse",
           },
-          resize: true,
+          resize: { enable: true },
         },
         modes: {
           push: {
@@ -236,12 +237,11 @@ const DivineParticlesBase = ({
     return (
       <Particles
         id="divine-particles"
-        onInit={particlesInit}
         options={particleOptions}
         className={cn("absolute inset-0 pointer-events-none", className)}
       />
     );
-  }, [particlesInit, particleOptions, className]);
+  }, [particleOptions, className]);
 
   return ParticlesComponent;
 };

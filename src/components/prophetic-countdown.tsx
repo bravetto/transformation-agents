@@ -145,6 +145,7 @@ function PropheticCountdown({
   milestone = "Divine Moment",
   role = "lightworker",
   showProgress = true,
+  className,
 }: PropheticCountdownProps) {
   // 🛡️ CRITICAL: ALL HOOKS MUST BE AT THE TOP - BEFORE ANY RETURNS
   const componentName = `PropheticCountdown-${role}`;

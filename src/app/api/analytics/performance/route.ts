@@ -259,9 +259,11 @@ function analyzePerformance(data: PerformanceData): {
   }
 
   // Analyze component load times
-  const slowComponents = Object.entries(data.componentLoadTimes)
-    .filter(([_, time]) => time > 1000)
-    .map(([name]) => name);
+  const slowComponents = data.componentLoadTimes
+    ? Object.entries(data.componentLoadTimes)
+        .filter(([_, time]) => time > 1000)
+        .map(([name]) => name)
+    : [];
 
   if (slowComponents.length > 0) {
     score -= 10;
@@ -270,9 +272,11 @@ function analyzePerformance(data: PerformanceData): {
   }
 
   // Analyze API performance
-  const slowApis = Object.entries(data.apiResponseTimes)
-    .filter(([_, time]) => time > 500)
-    .map(([endpoint]) => endpoint);
+  const slowApis = data.apiResponseTimes
+    ? Object.entries(data.apiResponseTimes)
+        .filter(([_, time]) => time > 500)
+        .map(([endpoint]) => endpoint)
+    : [];
 
   if (slowApis.length > 0) {
     score -= 10;

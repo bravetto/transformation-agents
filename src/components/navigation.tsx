@@ -124,13 +124,11 @@ const navItems: NavItem[] = [
     href: "/impact",
     label: "Impact Dashboard",
     icon: <BarChart className="h-4 w-4" />,
-    description: "View real-time impact metrics and community growth",
   },
   {
     href: "/analytics-dashboard",
     label: "Analytics Command Center",
     icon: <Activity className="h-4 w-4" />,
-    description: "Championship-level analytics and system monitoring",
   },
 ];
 

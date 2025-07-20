@@ -87,7 +87,7 @@ export function setUserType(userType: UserType) {
 
     // Track user type selection as conversion
     trackConversion({
-      eventType: "path_selected",
+      eventType: "cta_clicked",
       userType,
       conversionType: "primary",
       metadata: {
