@@ -521,7 +521,7 @@ export default function AnalyticsDashboard() {
       clearInterval(intervalId);
       fetchInProgress.current = false;
     };
-  }, []); // Empty deps, fetchAnalytics is stable due to useCallback
+  }, [fetchAnalytics]); // Include fetchAnalytics since it's used in the effect
 
   // Loading state
   if (loading && !data) {

@@ -57,7 +57,6 @@
     "divine:optimize": "npm run docs:optimize && npm run docs:ai-suggestions"
   },
   "dependencies": {
-    "@formkit/auto-animate": "^0.8.2",
     "@hookform/resolvers": "^5.1.1",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-label": "^2.0.0",
@@ -66,7 +65,6 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-tabs": "^1.1.12",
-    "@react-spring/web": "^10.0.1",
     "@tsparticles/engine": "^3.8.1",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.8.1",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -65,8 +65,8 @@ export function UserJourneyDashboard({
   const [lastUpdate, setLastUpdate] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  // Fetch analytics data
-  const fetchAnalytics = async () => {
+  // 🛡️ CRITICAL FIX: Wrap fetchAnalytics in useCallback to prevent re-creation
+  const fetchAnalytics = useCallback(async () => {
     setIsLoading(true);
     setError("");
 
@@ -97,7 +97,7 @@ export function UserJourneyDashboard({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []); // Empty dependencies since function doesn't depend on any props/state
 
   // Generate mock metrics for development
   const generateMockMetrics = (): AnalyticsMetrics => {

@@ -32,12 +32,14 @@ jest.mock("../sacred-animations", () => ({
   FloatingElement: ({ children }: any) => <div>{children}</div>,
 }));
 
-// Mock auto-animate-wrapper
+// 🚀 Mock updated for new Framer Motion implementation
 jest.mock("../auto-animate-wrapper", () => ({
-  AutoAnimateList: ({ items, renderItem }: any) => (
-    <div>
+  AutoAnimateList: ({ items, renderItem, keyExtractor }: any) => (
+    <div data-testid="auto-animate-list">
       {items.map((item: any, index: number) => (
-        <div key={item.id}>{renderItem(item, index)}</div>
+        <div key={keyExtractor ? keyExtractor(item, index) : index}>
+          {renderItem(item, index)}
+        </div>
       ))}
     </div>
   ),

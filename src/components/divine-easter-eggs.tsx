@@ -427,30 +427,32 @@ export function EasterEggTracker() {
 }
 
 // Konami Code detector
+// 🛡️ CRITICAL FIX: Move konamiCode outside component to prevent recreation
+const KONAMI_CODE = [
+  "ArrowUp",
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowLeft",
+  "ArrowRight",
+  "KeyB",
+  "KeyA",
+];
+
 export function KonamiCodeEgg() {
   const { discoverEgg } = useEasterEggs();
   const sequence = useRef<string[]>([]);
-  const konamiCode = [
-    "ArrowUp",
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    "ArrowLeft",
-    "ArrowRight",
-    "KeyB",
-    "KeyA",
-  ];
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       sequence.current.push(e.code);
-      if (sequence.current.length > konamiCode.length) {
+      if (sequence.current.length > KONAMI_CODE.length) {
         sequence.current.shift();
       }
 
-      if (sequence.current.join(",") === konamiCode.join(",")) {
+      if (sequence.current.join(",") === KONAMI_CODE.join(",")) {
         discoverEgg("konami-code");
         sequence.current = [];
       }

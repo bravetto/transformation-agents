@@ -38,32 +38,13 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
-  // Simplified webpack configuration to prevent module loading failures
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // Only apply minimal optimizations to prevent webpack module errors
-    if (!isServer && !dev) {
-      // Production-only optimizations with safer chunk splitting
-      config.optimization.splitChunks = {
-        chunks: "all",
-        maxSize: 500000,
-        cacheGroups: {
-          default: {
-            minChunks: 2,
-            priority: -20,
-            reuseExistingChunk: true,
-          },
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: "vendors",
-            priority: -10,
-            chunks: "all",
-            reuseExistingChunk: true,
-          },
-        },
-      };
-    }
+  // 🚀 TURBOPACK OPTIMIZATION: Remove webpack config when using Turbopack
+  // Turbopack handles chunk splitting and optimizations natively
 
-    return config;
+  // Configure Turbopack-specific options
+  turbopack: {
+    // Turbopack handles module resolution and bundling automatically
+    // Better performance than manual webpack configuration
   },
 
   // Headers for performance optimization

@@ -40,7 +40,7 @@ function useDashboard() {
  * Dashboard Provider Component
  * Manages state and data fetching for the dashboard
  */
-export function DashboardProvider({
+export function DivineImpactProvider({
   children,
   refreshInterval = 30000, // default to 30 seconds
   autoRefresh = true,
@@ -51,31 +51,8 @@ export function DashboardProvider({
   renderCount++;
   console.warn(`🔍 DashboardProvider render #${renderCount}`);
 
-  // 🚨 EMERGENCY: Circuit breaker to prevent infinite loops
-  if (renderCount > 10) {
-    console.error("🚨 INFINITE RENDER LOOP DETECTED IN DASHBOARD PROVIDER!");
-    return (
-      <div className="p-8 bg-red-900/20 rounded-lg text-white">
-        <h2 className="text-xl text-red-400 mb-2">
-          Dashboard Temporarily Disabled
-        </h2>
-        <p className="text-gray-300 mb-4">
-          Infinite render loop detected ({renderCount} renders)
-        </p>
-        <button
-          onClick={() => {
-            renderCount = 0;
-            window.location.reload();
-          }}
-          className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded transition-colors"
-        >
-          Reset Dashboard
-        </button>
-      </div>
-    );
-  }
-
-  // State for metrics data
+  // 🛡️ CRITICAL FIX: ALL React hooks MUST come BEFORE any conditional returns
+  // State for metrics data (moved before conditional return)
   const [metrics, setMetrics] = useState<MetricCard[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
@@ -103,7 +80,7 @@ export function DashboardProvider({
       if (currentInitialMetrics.length > 0) {
         const mergedData = data.map((metric) => {
           const initialMetric = currentInitialMetrics.find(
-            (m) => m.id === metric.id,
+            (m: Partial<MetricCard>) => m.id === metric.id,
           );
           return initialMetric ? { ...metric, ...initialMetric } : metric;
         });
@@ -136,7 +113,7 @@ export function DashboardProvider({
     return () => {
       isMounted.current = false;
     };
-  }, []); // 🚨 CRITICAL: Empty dependency array - run only once on mount
+  }, [refreshData]); // Include refreshData dependency
 
   // 🛡️ CRITICAL FIX: Set up auto-refresh interval with stable dependencies
   useEffect(() => {
@@ -148,6 +125,30 @@ export function DashboardProvider({
 
     return () => clearInterval(intervalId);
   }, [autoRefresh, refreshInterval, refreshData]);
+
+  // 🚨 EMERGENCY: Circuit breaker to prevent infinite loops (AFTER all hooks)
+  if (renderCount > 10) {
+    console.error("🚨 INFINITE RENDER LOOP DETECTED IN DASHBOARD PROVIDER!");
+    return (
+      <div className="p-8 bg-red-900/20 rounded-lg text-white">
+        <h2 className="text-xl text-red-400 mb-2">
+          Dashboard Temporarily Disabled
+        </h2>
+        <p className="text-gray-300 mb-4">
+          Infinite render loop detected ({renderCount} renders)
+        </p>
+        <button
+          onClick={() => {
+            renderCount = 0;
+            window.location.reload();
+          }}
+          className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded transition-colors"
+        >
+          Reset Dashboard
+        </button>
+      </div>
+    );
+  }
 
   // Context value
   const value: DashboardContextType = {
