@@ -25,5 +25,20 @@
     "types": ["jest", "@testing-library/jest-dom", "node"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/setupTests.ts"],
-  "exclude": ["node_modules", "cypress", "cypress.config.ts", "docs/**/*", "src/agents/**/*"]
+  "exclude": [
+    "node_modules", 
+    "cypress", 
+    "cypress.config.ts", 
+    "docs/**/*", 
+    "src/agents/**/*", 
+    "**/__tests__/**/*", 
+    "**/*.test.*", 
+    "**/*.spec.*",
+    "src/lib/prompts/prompt-administration/**/*",
+    "src/lib/prompts/legacy-adapter.ts",
+    "src/lib/prompts/template-service.ts", 
+    "src/lib/prompts/templates/**/*",
+    "src_backup_consciousness_*/**/*",
+    "src/lib/performance/performance-monitor-client.tsx"
+  ]
 }

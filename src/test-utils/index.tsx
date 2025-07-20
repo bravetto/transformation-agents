@@ -1,5 +1,6 @@
 "use client";
 
+import "@testing-library/jest-dom";
 import React, { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import { AnimationProvider } from "@/components/animation-context";

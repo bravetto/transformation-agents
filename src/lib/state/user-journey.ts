@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { logger } from "@/lib/logger";
+import { logger } from "../logger";
 
 export type PathType = "champion" | "evidence" | "youth" | null;
 
@@ -212,7 +212,10 @@ export const useUserJourney = create<UserJourneyState>()(
 
       // Actions
       selectPath: (path: PathType) => {
-        logger.journey("Path selected", { path, timestamp: new Date() });
+        logger.journey("Path selected", "user", {
+          path,
+          timestamp: new Date(),
+        });
 
         set((state) => ({
           selectedPath: path,
@@ -236,7 +239,7 @@ export const useUserJourney = create<UserJourneyState>()(
       },
 
       resetPath: () => {
-        logger.journey("Path reset", { timestamp: new Date() });
+        logger.journey("Path reset", "user", { timestamp: new Date() });
 
         set((state) => ({
           selectedPath: null,
@@ -275,7 +278,7 @@ export const useUserJourney = create<UserJourneyState>()(
       },
 
       updateProgress: (step: string, metadata?: Record<string, any>) => {
-        logger.journey("Progress updated", {
+        logger.journey("Progress updated", "user", {
           step,
           metadata,
           timestamp: new Date(),
@@ -318,7 +321,7 @@ export const useUserJourney = create<UserJourneyState>()(
       },
 
       addMilestone: (milestone: string) => {
-        logger.journey("Milestone achieved", {
+        logger.journey("Milestone achieved", "user", {
           milestone,
           timestamp: new Date(),
         });

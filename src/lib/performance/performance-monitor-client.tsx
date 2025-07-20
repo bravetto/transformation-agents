@@ -156,7 +156,7 @@ class ClientPerformanceMonitor {
           this.metrics.ttfb =
             navigation.responseStart - navigation.requestStart;
           this.metrics.pageLoadTime =
-            navigation.loadEventEnd - navigation.navigationStart;
+            navigation.loadEventEnd - navigation.fetchStart;
           this.updatePerformanceScore();
           this.notifyCallbacks();
         }

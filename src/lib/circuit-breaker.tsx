@@ -207,3 +207,6 @@ export function CircuitBreakerFallback({
 }
 
 export default DivineCircuitBreaker;
+
+// Named export alias for compatibility
+export { DivineCircuitBreaker as CircuitBreaker };

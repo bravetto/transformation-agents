@@ -4,7 +4,12 @@
  */
 
 import { getCLS, getFID, getFCP, getLCP, getTTFB, Metric } from "web-vitals";
-import React, { useState, useEffect } from "react";
+// React imports removed - this is a pure TypeScript module
+
+// Type declaration for Google Analytics gtag function
+declare global {
+  function gtag(...args: any[]): void;
+}
 
 interface PerformanceMetrics {
   // Core Web Vitals
@@ -213,7 +218,9 @@ class RealTimePerformanceMonitor {
         const duration = endTime - startTime;
 
         // Track API response time
-        const endpoint = this.extractEndpoint(url);
+        const endpoint = this.extractEndpoint(
+          url instanceof URL ? url.toString() : url,
+        );
         this.metrics.apiResponseTimes[endpoint] = duration;
 
         // Track error rates
@@ -227,7 +234,9 @@ class RealTimePerformanceMonitor {
       } catch (error) {
         const endTime = performance.now();
         const duration = endTime - startTime;
-        const endpoint = this.extractEndpoint(url);
+        const endpoint = this.extractEndpoint(
+          url instanceof URL ? url.toString() : url,
+        );
 
         this.metrics.apiResponseTimes[endpoint] = duration;
         this.metrics.apiErrorRates[endpoint] =
@@ -468,49 +477,7 @@ export const performanceMonitor =
       (performanceMonitorInstance = new RealTimePerformanceMonitor())
     : null;
 
-// React hook for using performance metrics
-export function usePerformanceMetrics() {
-  const [metrics, setMetrics] = useState<PerformanceMetrics | null>(null);
-  const [performanceScore, setPerformanceScore] = useState<number>(0);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (!performanceMonitor) return;
-
-    const unsubscribe = performanceMonitor.onMetricsUpdate((newMetrics) => {
-      setMetrics(newMetrics);
-      setPerformanceScore(performanceMonitor.getPerformanceScore());
-      setSuggestions(performanceMonitor.getOptimizationSuggestions());
-    });
-
-    // Initial data
-    setMetrics(performanceMonitor.getMetrics());
-    setPerformanceScore(performanceMonitor.getPerformanceScore());
-    setSuggestions(performanceMonitor.getOptimizationSuggestions());
-
-    return unsubscribe;
-  }, []);
-
-  const trackCustomMetric = (name: string, value: number) => {
-    if (performanceMonitor) {
-      performanceMonitor.trackCustomMetric(name, value);
-    }
-  };
-
-  const trackComponentLoad = (componentName: string, duration: number) => {
-    if (performanceMonitor) {
-      performanceMonitor.trackComponentLoad(componentName, duration);
-    }
-  };
-
-  return {
-    metrics,
-    performanceScore,
-    suggestions,
-    trackCustomMetric,
-    trackComponentLoad,
-  };
-}
+// For React integration, import this class in a .tsx file and create the hook there
 
 // Export types
 export type { PerformanceMetrics };

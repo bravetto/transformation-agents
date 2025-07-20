@@ -1,34 +1,37 @@
 "use client";
 
-import React, {
-  useEffect,
+import {
   useState,
+  useEffect,
   useCallback,
-  useMemo,
   useRef,
+  useMemo,
+  Suspense,
 } from "react";
-import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import { cn } from "@/lib/utils";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
-import type { ISourceOptions, InteractivityDetect } from "@tsparticles/engine";
+import type {
+  Engine,
+  ISourceOptions,
+  InteractivityDetect,
+} from "@tsparticles/engine";
 import {
   useCircuitBreaker,
   CircuitBreakerFallback,
 } from "@/lib/circuit-breaker";
-import { Particles } from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim";
-import { Engine } from "@tsparticles/engine";
+import { logger } from "@/lib/logger";
 
-// Lazy load the actual particles to prevent SSR issues
-const ParticlesEngine = dynamic(
-  () => import("@tsparticles/react").then((mod) => mod.default),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="min-h-[100px] animate-pulse bg-gray-100/10 rounded-md"></div>
-    ),
-  },
-);
+// Dynamic import for tsParticles - major bundle size optimization
+const Particles = dynamic(() => import("@tsparticles/react"), {
+  ssr: false,
+  loading: () => (
+    <div className="absolute inset-0 bg-gradient-to-br from-hope-gold/5 to-courage-blue/5 opacity-50">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1)_0%,transparent_70%)]" />
+    </div>
+  ),
+});
 
 export interface DivineParticlesProps {
   variant?:
@@ -184,6 +187,8 @@ const DivineParticlesBase = ({
   // 🛡️ CRITICAL FIX: Stable callback to prevent re-initialization
   const particlesInit = useCallback(async (engine: Engine) => {
     try {
+      // Dynamic import for loadSlim to reduce initial bundle size
+      const { loadSlim } = await import("@tsparticles/slim");
       await loadSlim(engine);
     } catch (error) {
       console.error("Failed to load particles engine:", error);
