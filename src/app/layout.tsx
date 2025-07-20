@@ -77,28 +77,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        {/* 🚀 CRITICAL FONT PRELOADING FOR CHAMPIONSHIP PERFORMANCE */}
-        <link
-          rel="preload"
-          href="/_next/static/media/inter-latin-400-normal.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/_next/static/media/inter-latin-500-normal.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/_next/static/media/inter-latin-600-normal.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
+        {/* ✅ FONTS: Handled automatically by next/font/google - no manual preloading needed */}
 
         {/* 🎯 PERFORMANCE: Font Display Optimization */}
         <style>{`
