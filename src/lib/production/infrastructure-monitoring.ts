@@ -411,7 +411,7 @@ export class DivineInfrastructureMonitor {
     "healthy" | "unhealthy" | "degraded"
   > {
     try {
-      const response = await fetch("/api/health", { timeout: 5000 });
+      const response = await fetch("/api/health", {});
       return response.ok ? "healthy" : "unhealthy";
     } catch {
       return "unhealthy";
@@ -650,7 +650,7 @@ export class DivineInfrastructureMonitor {
           title: "Active Alerts",
           metric: "alerts",
           timeRange: "current",
-          visualization: "table",
+          visualization: "number",
           position: { x: 0, y: 4, width: 12, height: 4 },
         },
       ],

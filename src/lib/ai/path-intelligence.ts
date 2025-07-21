@@ -205,7 +205,10 @@ export class DivinePathIntelligence {
 
     // Determine optimal path
     const optimalPath = Object.entries(normalizedScores).reduce((a, b) =>
-      normalizedScores[a[0]] > normalizedScores[b[0]] ? a : b,
+      normalizedScores[a[0] as keyof typeof normalizedScores] >
+      normalizedScores[b[0] as keyof typeof normalizedScores]
+        ? a
+        : b,
     )[0] as "coach" | "judge" | "activist";
 
     const confidence = normalizedScores[optimalPath] * 100;
@@ -462,7 +465,7 @@ export class DivinePathIntelligence {
       activist: `Your mobile engagement and social referral patterns indicate community-oriented activism. ${confidence}% confidence in Activist path alignment.`,
     };
 
-    return explanations[path];
+    return explanations[path as keyof typeof explanations];
   }
 
   private generatePathReasoning(path: string, probability: number): string {
@@ -475,7 +478,7 @@ export class DivinePathIntelligence {
     };
 
     return (
-      reasonings[path] ||
+      reasonings[path as keyof typeof reasonings] ||
       `${percentage}% alignment based on behavioral analysis`
     );
   }

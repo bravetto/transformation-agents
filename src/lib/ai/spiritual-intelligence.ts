@@ -598,7 +598,10 @@ export class DivineAnalyticsAI {
       1437: "The sacred port of divine communication",
     };
 
-    return significance[num] || "Sacred number with divine significance";
+    return (
+      significance[num as keyof typeof significance] ||
+      "Sacred number with divine significance"
+    );
   }
 
   private calculateDivineResonance(number: number, frequency: number): number {
@@ -765,7 +768,9 @@ export class DivineAnalyticsAI {
         "Divine love surrounds you. Trust in the perfect plan unfolding in your life.",
     };
 
-    return guidanceMap[intention] || guidanceMap.general;
+    return (
+      guidanceMap[intention as keyof typeof guidanceMap] || guidanceMap.general
+    );
   }
 
   private generateDivineMessage(

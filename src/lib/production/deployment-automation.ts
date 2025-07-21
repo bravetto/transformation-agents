@@ -424,7 +424,6 @@ export class DivineDeploymentOrchestrator {
     try {
       const response = await fetch(endpoint, {
         method: "GET",
-        timeout: 10000,
       });
 
       const responseTime = Date.now() - startTime;
@@ -538,7 +537,7 @@ export class DivineDeploymentOrchestrator {
       rolling: 180000, // 3 minutes
       instant: 15000, // 15 seconds
     };
-    return baseTimes[strategy] || 60000;
+    return baseTimes[strategy as keyof typeof baseTimes] || 60000;
   }
 
   private generateNotificationMessage(
