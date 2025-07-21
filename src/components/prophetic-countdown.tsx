@@ -5,7 +5,7 @@
 
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Clock, Target, Zap, Sparkles } from "lucide-react";
 import { DivineParticles } from "./divine-particles";
@@ -78,6 +78,30 @@ function PropheticCountdown({
   showProgress = true,
   className,
 }: PropheticCountdownProps) {
+  // 🚨 EMERGENCY CIRCUIT BREAKER: Prevent infinite loops FIRST
+  const renderCountRef = useRef(0);
+  renderCountRef.current++;
+
+  // 🛡️ CRITICAL: If too many renders, show fallback BEFORE any other hooks
+  if (renderCountRef.current > 3) {
+    console.warn(
+      `🚨 PropheticCountdown: Circuit breaker activated (${renderCountRef.current} renders)`,
+    );
+    return (
+      <div className="countdown-resting bg-purple-900/90 backdrop-blur-sm border border-purple-500/30 rounded-lg p-4 shadow-xl">
+        <div className="text-purple-100 text-sm text-center">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+            <span>⏱️ Countdown Resting</span>
+          </div>
+          <div className="text-xs text-purple-300">
+            "Be still and know that I am God" - Psalm 46:10
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // 🛡️ CRITICAL: Production monitoring and leak prevention
   const componentName = `PropheticCountdown-${role}`;
   useRenderLoopDetection(componentName, 30); // Strict limit for production

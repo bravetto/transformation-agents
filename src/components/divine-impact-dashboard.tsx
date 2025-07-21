@@ -5,7 +5,7 @@
 
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   TrendingUp,
@@ -144,6 +144,30 @@ function DivineImpactDashboard({
   refreshInterval = 30000,
   defaultRole = "lightworker",
 }: DivineImpactDashboardProps) {
+  // 🚨 EMERGENCY CIRCUIT BREAKER: Prevent infinite loops
+  const renderCountRef = useRef(0);
+  renderCountRef.current++;
+
+  // 🛡️ CRITICAL: If too many renders, show fallback
+  if (renderCountRef.current > 5) {
+    console.warn(
+      `🚨 DivineImpactDashboard: Circuit breaker activated (${renderCountRef.current} renders)`,
+    );
+    return (
+      <div className="fixed bottom-4 right-4 bg-purple-900/90 backdrop-blur-sm border border-purple-500/30 rounded-lg p-4 shadow-xl z-50">
+        <div className="text-purple-100 text-sm">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+            <span>Dashboard Resting</span>
+          </div>
+          <div className="text-xs text-purple-300">
+            "Be still and know that I am God" - Psalm 46:10
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // 🛡️ CRITICAL: Production monitoring and leak prevention
   const componentName = "DivineImpactDashboard";
   useRenderLoopDetection(componentName, 25); // Strict limit for production
