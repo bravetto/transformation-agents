@@ -24,10 +24,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 
 // User Type Modal - this component works safely
-import UserTypeModal from "@/components/user-type-modal";
+import UserTypeModal, { UserType } from "@/components/user-type-modal";
 
 // 🛡️ PROGRESSIVE ENHANCEMENT WRAPPER - Safe pattern for client-only features
 function ClientOnlyWrapper({ children }: { children: React.ReactNode }) {
@@ -468,10 +467,25 @@ function StaticLetterPortal() {
 
 // 🌉 MAIN MVP PAGE COMPONENT - Static-first, progressive enhancement
 export default function MVPStaticCleanPage() {
+  const [showModal, setShowModal] = useState(true);
+  const [selectedUserType, setSelectedUserType] = useState<UserType | null>(
+    null,
+  );
+
+  const handleUserTypeSelect = (type: UserType) => {
+    setSelectedUserType(type);
+    setShowModal(false);
+    // You can add navigation logic here if needed
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* User Type Modal - Known working component */}
-      <UserTypeModal />
+      <UserTypeModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onUserTypeSelect={handleUserTypeSelect}
+      />
 
       {/* Static content that renders identically on server and client */}
       <StaticHero />
