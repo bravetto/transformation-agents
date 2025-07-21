@@ -1,5 +1,3 @@
-"use client";
-
 // 🌉 THE BRIDGE PROJECT - MVP STATIC CLEAN VERSION
 // Zero hydration issues, progressive enhancement, production-ready
 
