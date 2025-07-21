@@ -106,13 +106,31 @@ function DecisionCountdown({
               </h2>
 
               <div className="mb-6">
-                <PropheticCountdown
-                  targetDate={targetDate}
-                  milestone="Until Judge Ferrero's Decision"
-                  role="messenger"
-                  showProgress={true}
-                  onMilestoneReached={handleMilestoneReached}
-                />
+                {process.env.NODE_ENV !== "production" ? (
+                  <PropheticCountdown
+                    targetDate={targetDate}
+                    milestone="Until Judge Ferrero's Decision"
+                    role="messenger"
+                    showProgress={true}
+                    onMilestoneReached={handleMilestoneReached}
+                  />
+                ) : (
+                  <div className="bg-purple-900/90 backdrop-blur-sm border border-purple-500/30 rounded-lg p-4 shadow-xl text-center">
+                    <div className="text-purple-100 text-sm">
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <span>⚖️ Decision Timeline Protected</span>
+                      </div>
+                      <div className="text-xs text-purple-300 mb-2">
+                        Judge Ferrero's decision approaches in divine timing
+                      </div>
+                      <div className="text-xs text-purple-400">
+                        "He has made everything beautiful in its time" -
+                        Ecclesiastes 3:11
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <p className="text-center text-gray-600 dark:text-gray-400 mb-6">

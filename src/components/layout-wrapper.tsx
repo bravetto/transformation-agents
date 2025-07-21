@@ -71,15 +71,32 @@ function LayoutWrapperExported({ children }: { children: React.ReactNode }) {
       {/* Divine FAB for Mobile Letter Writing */}
       <DivineFAB />
 
-      {/* PropheticCountdown for Independence Day */}
-      <div className="fixed bottom-4 left-4 z-40 max-w-xs">
-        <PropheticCountdown
-          targetDate={independenceDay}
-          milestone="Independence Day"
-          role="guardian"
-          showProgress={true}
-        />
-      </div>
+      {/* PropheticCountdown for Independence Day - NUCLEAR PROTECTION */}
+      {process.env.NODE_ENV !== "production" && (
+        <div className="fixed bottom-4 left-4 z-40 max-w-xs">
+          <PropheticCountdown
+            targetDate={independenceDay}
+            milestone="Independence Day"
+            role="guardian"
+            showProgress={true}
+          />
+        </div>
+      )}
+
+      {/* Production Safe Mode Message */}
+      {process.env.NODE_ENV === "production" && (
+        <div className="fixed bottom-4 left-4 z-40 max-w-xs bg-purple-900/90 backdrop-blur-sm border border-purple-500/30 rounded-lg p-3 shadow-xl">
+          <div className="text-purple-100 text-xs text-center">
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+              <span>🗓️ Calendar Protected</span>
+            </div>
+            <div className="text-purple-400 text-xs">
+              "In His time" - Ecclesiastes 3:1
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </>

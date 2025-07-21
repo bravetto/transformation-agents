@@ -658,8 +658,30 @@ export function SynchronicityEgg({
   );
 }
 
-// July 28th Countdown to Divine Treasure Unlock
+// July 28th Countdown to Divine Treasure Unlock - NUCLEAR PROTECTION
 export function July28thCountdown() {
+  // 🚨 NUCLEAR EMERGENCY: Completely disable in production
+  if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-gradient-to-r from-purple-900 to-indigo-900 text-white p-4 rounded-xl shadow-2xl border-2 border-purple-400"
+      >
+        <div className="text-center">
+          <div className="text-2xl mb-2">🛡️💎⏰</div>
+          <div className="font-bold text-lg mb-2">Divine Timing Protected</div>
+          <div className="text-sm text-purple-200">
+            JAHmere's freedom approaches in God's perfect timing
+          </div>
+          <div className="text-xs mt-2 text-purple-300">
+            "To every thing there is a season" - Ecclesiastes 3:1
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
   const [timeRemaining, setTimeRemaining] = useState<{
     days: number;
     hours: number;

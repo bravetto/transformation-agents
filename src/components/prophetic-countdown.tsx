@@ -78,12 +78,32 @@ function PropheticCountdown({
   showProgress = true,
   className,
 }: PropheticCountdownProps) {
+  // 🚨 NUCLEAR EMERGENCY: Completely disable in production until fixed
+  if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
+    return (
+      <div className="countdown-safe-mode bg-purple-900/90 backdrop-blur-sm border border-purple-500/30 rounded-lg p-4 shadow-xl max-w-xs">
+        <div className="text-purple-100 text-sm text-center">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <span>⏱️ Countdown Safe Mode</span>
+          </div>
+          <div className="text-xs text-purple-300 mb-2">
+            System temporarily protected
+          </div>
+          <div className="text-xs text-purple-400">
+            "He gives power to the weak" - Isaiah 40:29
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // 🚨 EMERGENCY CIRCUIT BREAKER: Prevent infinite loops FIRST
   const renderCountRef = useRef(0);
   renderCountRef.current++;
 
   // 🛡️ CRITICAL: If too many renders, show fallback BEFORE any other hooks
-  if (renderCountRef.current > 3) {
+  if (renderCountRef.current > 2) {
     console.warn(
       `🚨 PropheticCountdown: Circuit breaker activated (${renderCountRef.current} renders)`,
     );

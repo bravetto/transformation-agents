@@ -293,7 +293,7 @@ export const EntryPortal: React.FC = () => {
             ))}
           </motion.div>
 
-          {/* Prophetic Countdown */}
+          {/* Prophetic Countdown - NUCLEAR PROTECTION */}
           <motion.div
             className="mt-16 max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
@@ -309,10 +309,29 @@ export const EntryPortal: React.FC = () => {
               </p>
             </div>
 
-            <PropheticCountdown
-              target="July 28, 2025 14:37:00"
-              onMilestone={handleCountdownMilestone}
-            />
+            {process.env.NODE_ENV !== "production" ? (
+              <PropheticCountdown
+                target="July 28, 2025 14:37:00"
+                onMilestone={handleCountdownMilestone}
+              />
+            ) : (
+              <div className="bg-purple-900/90 backdrop-blur-sm border border-purple-500/30 rounded-lg p-6 shadow-xl text-center">
+                <div className="text-purple-100">
+                  <div className="flex items-center justify-center gap-2 mb-3">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="font-semibold">
+                      ⏰ Divine Timing Protected
+                    </span>
+                  </div>
+                  <div className="text-sm text-purple-300 mb-2">
+                    JAHmere's freedom approaches in God's perfect timing
+                  </div>
+                  <div className="text-xs text-purple-400">
+                    "To every thing there is a season" - Ecclesiastes 3:1
+                  </div>
+                </div>
+              </div>
+            )}
           </motion.div>
 
           {/* Call to Action */}

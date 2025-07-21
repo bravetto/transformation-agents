@@ -60,11 +60,13 @@ function HeroCore() {
     );
   }
 
-  // 🛡️ DEFENSIVE FIX: Monitor render count
+  // 🛡️ DEFENSIVE FIX: Monitor render count (development only)
   const renderCount = useRef(0);
-  renderCount.current++;
-  if (renderCount.current > 10) {
-    console.warn(`🚨 HeroSection excessive renders: ${renderCount.current}`);
+  if (process.env.NODE_ENV === "development") {
+    renderCount.current++;
+    if (renderCount.current > 10) {
+      console.warn(`🚨 HeroSection excessive renders: ${renderCount.current}`);
+    }
   }
 
   if (renderCount.current > 50) {

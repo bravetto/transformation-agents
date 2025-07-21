@@ -129,11 +129,31 @@ export default function UnitePage() {
             </motion.div>
           )}
 
-          <PropheticCountdown
-            target="July 28, 2025 14:37:00"
-            onMilestone={handleUnityMilestone}
-            className="max-w-2xl mx-auto"
-          />
+          {process.env.NODE_ENV !== "production" ? (
+            <PropheticCountdown
+              target="July 28, 2025 14:37:00"
+              onMilestone={handleUnityMilestone}
+              className="max-w-2xl mx-auto"
+            />
+          ) : (
+            <div className="max-w-2xl mx-auto bg-purple-900/90 backdrop-blur-sm border border-purple-500/30 rounded-lg p-6 shadow-xl text-center">
+              <div className="text-purple-100">
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="font-semibold">
+                    🤝 Unity Timer Protected
+                  </span>
+                </div>
+                <div className="text-sm text-purple-300 mb-2">
+                  Our unity grows stronger each day toward JAHmere's freedom
+                </div>
+                <div className="text-xs text-purple-400">
+                  "How good and pleasant it is when God's people live together
+                  in unity!" - Psalm 133:1
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

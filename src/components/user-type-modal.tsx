@@ -105,12 +105,14 @@ function UserTypeModal({
   const renderCount = useRef(0);
   const componentName = "UserTypeModal";
 
-  // Increment render count and log if excessive
-  renderCount.current++;
-  if (renderCount.current > 10) {
-    console.warn(
-      `🚨 ${componentName} excessive renders: ${renderCount.current}`,
-    );
+  // Increment render count and log if excessive (development only)
+  if (process.env.NODE_ENV === "development") {
+    renderCount.current++;
+    if (renderCount.current > 10) {
+      console.warn(
+        `🚨 ${componentName} excessive renders: ${renderCount.current}`,
+      );
+    }
   }
 
   // State management with proper initialization
