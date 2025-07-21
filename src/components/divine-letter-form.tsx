@@ -51,7 +51,7 @@ import {
   Award,
   Send,
 } from "lucide-react";
-import { DivineParticles } from "./divine-particles";
+// DivineParticles removed for hydration stability
 import { withDivineErrorBoundary } from "./ui/divine-error-boundary";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -765,7 +765,9 @@ function DivineLetterForm({
 
   return (
     <div className="relative min-h-screen bg-gray-100">
-      <DivineParticles />
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-100/30 via-transparent to-blue-100/20">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(168,85,247,0.1),transparent)] animate-pulse"></div>
+      </div>
       <div className="container mx-auto p-4">
         <h1 className="text-4xl font-bold text-center mb-4">
           <Sparkles className="inline-block mr-2 text-purple-500" />

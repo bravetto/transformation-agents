@@ -3,7 +3,6 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
-import { EasterEgg } from "@/components/divine-easter-eggs";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 function HeroCore() {
@@ -113,7 +112,7 @@ function HeroCore() {
       {/* Main divine content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen">
         <div className="text-center text-white p-8 max-w-4xl">
-          <EasterEgg eggId="hero-title-sequence" className="mb-8">
+          <div className="mb-8">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -123,9 +122,9 @@ function HeroCore() {
                 THE BRIDGE
               </h1>
             </motion.div>
-          </EasterEgg>
+          </div>
 
-          <EasterEgg eggId="bridge-metaphor-scroll" className="mb-12">
+          <div className="mb-12">
             <motion.p
               className="text-2xl mb-4 opacity-90"
               initial={{ opacity: 0, y: 20 }}
@@ -145,9 +144,9 @@ function HeroCore() {
               for my glory"
               <div className="text-sm mt-2">- Isaiah 43:7</div>
             </motion.div>
-          </EasterEgg>
+          </div>
 
-          <EasterEgg eggId="bridge-metaphor-scroll" className="mb-12">
+          <div className="mb-12">
             <motion.div
               className="space-y-4"
               initial={{ opacity: 0, y: 20 }}
@@ -169,7 +168,7 @@ function HeroCore() {
                 Begin Your Journey
               </motion.button>
             </motion.div>
-          </EasterEgg>
+          </div>
         </div>
       </div>
 

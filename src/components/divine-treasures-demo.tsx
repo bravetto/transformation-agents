@@ -5,11 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  EasterEgg,
-  SynchronicityEgg,
-  useEasterEggs,
-} from "@/components/divine-easter-eggs";
+// EasterEgg, SynchronicityEgg, and useEasterEggs removed for hydration stability
 import {
   Search,
   MapPin,

@@ -8,7 +8,7 @@ import DivineTransformation from "./divine-transformation";
 
 import SacredContainer from "./sacred-container";
 
-import { DivineParticles } from "./divine-particles";
+// DivineParticles removed for hydration stability
 
 import { cn } from "@/lib/utils";
 

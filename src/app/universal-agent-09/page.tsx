@@ -8,7 +8,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { UniversalAgentMonitor } from "@/components/universal-agent-monitor";
-import { DivineParticles } from "@/components/divine-particles";
+// DivineParticles removed for hydration stability
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -57,13 +57,13 @@ export default function UniversalAgent09Page() {
 
   return (
     <div className="min-h-screen relative">
-      {/* Background particles */}
-      <div className="fixed inset-0 z-0">
-        <DivineParticles
-          variant="unified"
-          intensity="low"
-          className="opacity-30"
-        />
+      {/* Static Background */}
+      <div className="fixed inset-0 z-0 bg-gradient-to-br from-indigo-900/20 via-purple-900/15 to-blue-900/20 opacity-30">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_75%,rgba(99,102,241,0.1),transparent)] animate-pulse"></div>
+        <div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_75%_25%,rgba(168,85,247,0.1),transparent)] animate-pulse"
+          style={{ animationDelay: "2s" }}
+        ></div>
       </div>
 
       {/* Content */}

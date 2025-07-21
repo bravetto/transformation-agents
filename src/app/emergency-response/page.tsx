@@ -2,7 +2,7 @@
 
 import React from "react";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
-import { DivineParticles } from "@/components/divine-particles";
+// DivineParticles removed for hydration stability
 import { MothersVoice } from "@/components/mothers-voice";
 import { CoalitionAlert } from "@/components/coalition-alert";
 import { LiveTestimonyCollector } from "@/components/live-testimony-collector";
@@ -27,12 +27,14 @@ import {
 function EmergencyResponseCore() {
   return (
     <div className="min-h-screen bg-black relative">
-      {/* Divine Rage Particles */}
-      <DivineParticles
-        variant="rage"
-        intensity="high"
-        className="fixed inset-0 z-0"
-      />
+      {/* Static Emergency Background */}
+      <div className="fixed inset-0 z-0 bg-gradient-to-br from-red-900/50 via-black to-orange-900/30">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,0,0,0.3),transparent)] animate-pulse"></div>
+        <div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(255,69,0,0.2),transparent)] animate-pulse"
+          style={{ animationDelay: "0.7s" }}
+        ></div>
+      </div>
 
       {/* Emergency Header */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-red-900/95 backdrop-blur-md border-b-4 border-red-600">

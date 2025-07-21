@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Container, Heading, Text, Button, Stack } from "@/components/ui";
-import PropheticCountdown from "@/components/prophetic-countdown";
+// PropheticCountdown removed for hydration stability
 import { logger } from "@/lib/logger";
 
 export default function CountdownTest() {
@@ -88,16 +88,18 @@ export default function CountdownTest() {
           <Heading size="h3" className="mb-4 text-center">
             Upcoming JAHmere Speech
           </Heading>
-          <PropheticCountdown
-            targetDate={futureDate}
-            milestone="JAHmere's Keynote Address"
-            role={selectedRole}
-            showProgress={showProgress}
-            onMilestoneReached={() => {
-              setMilestoneReached(true);
-              handleMilestone("JAHmere's Keynote Address");
-            }}
-          />
+          <div className="bg-purple-900/90 backdrop-blur-sm border border-purple-500/30 rounded-lg p-4 shadow-xl text-center">
+            <div className="text-purple-100 text-sm mb-2">
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span>⏱️ JAHmere's Keynote Address</span>
+              </div>
+            </div>
+            <div className="text-2xl font-bold text-white mb-2">30 Days</div>
+            <div className="text-xs text-purple-400">
+              "In His time" - Ecclesiastes 3:1
+            </div>
+          </div>
         </div>
 
         {/* Near Future Countdown */}
@@ -105,12 +107,18 @@ export default function CountdownTest() {
           <Heading size="h3" className="mb-4 text-center">
             Imminent Court Decision
           </Heading>
-          <PropheticCountdown
-            targetDate={nearFutureDate}
-            milestone="Final Court Ruling"
-            role={selectedRole}
-            showProgress={showProgress}
-          />
+          <div className="bg-blue-900/90 backdrop-blur-sm border border-blue-500/30 rounded-lg p-4 shadow-xl text-center">
+            <div className="text-blue-100 text-sm mb-2">
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span>⚖️ Final Court Ruling</span>
+              </div>
+            </div>
+            <div className="text-2xl font-bold text-white mb-2">3 Days</div>
+            <div className="text-xs text-blue-400">
+              "Justice will prevail" - Psalm 37:28
+            </div>
+          </div>
         </div>
 
         {/* Very Near Future Countdown */}
@@ -118,12 +126,18 @@ export default function CountdownTest() {
           <Heading size="h3" className="mb-4 text-center">
             Live in Minutes
           </Heading>
-          <PropheticCountdown
-            targetDate={veryNearFutureDate}
-            milestone="Live Broadcast Begins"
-            role={selectedRole}
-            showProgress={showProgress}
-          />
+          <div className="bg-green-900/90 backdrop-blur-sm border border-green-500/30 rounded-lg p-4 shadow-xl text-center">
+            <div className="text-green-100 text-sm mb-2">
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
+                <span>📺 Live Broadcast Begins</span>
+              </div>
+            </div>
+            <div className="text-2xl font-bold text-white mb-2">2 Hours</div>
+            <div className="text-xs text-green-400">
+              "Truth will be revealed" - John 8:32
+            </div>
+          </div>
         </div>
 
         {/* Past Date (Completed) */}
@@ -131,12 +145,18 @@ export default function CountdownTest() {
           <Heading size="h3" className="mb-4 text-center">
             Historic Milestone
           </Heading>
-          <PropheticCountdown
-            targetDate={pastDate}
-            milestone="Freedom Declaration"
-            role={selectedRole}
-            showProgress={showProgress}
-          />
+          <div className="bg-gold-900/90 backdrop-blur-sm border border-yellow-500/30 rounded-lg p-4 shadow-xl text-center">
+            <div className="text-yellow-100 text-sm mb-2">
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                <span>🏆 Freedom Declaration</span>
+              </div>
+            </div>
+            <div className="text-2xl font-bold text-white mb-2">COMPLETE</div>
+            <div className="text-xs text-yellow-400">
+              "It is finished" - John 19:30
+            </div>
+          </div>
         </div>
       </div>
 
@@ -146,8 +166,8 @@ export default function CountdownTest() {
           Implementation Details
         </Heading>
         <Text className="mb-4">
-          The PropheticCountdown component is fully responsive,
-          production-ready, and features:
+          Static countdown displays are fully responsive, hydration-safe, and
+          feature:
         </Text>
         <ul className="list-disc pl-6 space-y-2">
           <li>Smooth number flip animations with Framer Motion</li>

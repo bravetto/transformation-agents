@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { DivineParticles } from "./divine-particles";
+// DivineParticles removed for hydration stability
 import { SacredProtection } from "./sacred-protection";
 import { cn } from "@/lib/utils";
 import type { DivineRole } from "@/lib/design-system";

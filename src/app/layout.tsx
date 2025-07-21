@@ -14,13 +14,7 @@ import { cn } from "@/lib/utils";
 import CacheBusterClient from "@/components/cache-buster-client";
 // 🚀 CHAMPIONSHIP FONT OPTIMIZATION
 import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
-import {
-  EasterEggProvider,
-  EasterEggTracker,
-  KonamiCodeEgg,
-  ResurrectionCelebration,
-  TimeBasedEgg,
-} from "@/components/divine-easter-eggs";
+// Easter eggs removed for hydration stability
 import DivineAnalytics from "@/components/divine-analytics";
 import { TrinityPathProvider } from "@/features/trinity-paths/context";
 import { logger } from "@/lib/logger";
@@ -108,44 +102,36 @@ export default function RootLayout({
         }}
       >
         <TrinityPathProvider>
-          <EasterEggProvider>
-            <AnimationProvider>
-              <DevPortalProvider>
-                <ErrorBoundaryWrapper id="root-layout">
-                  {/* Banner - Positioned above navigation */}
-                  <Banner />
+          <AnimationProvider>
+            <DevPortalProvider>
+              <ErrorBoundaryWrapper id="root-layout">
+                {/* Banner - Positioned above navigation */}
+                <Banner />
 
-                  {/* Navigation */}
-                  <Navigation />
+                {/* Navigation */}
+                <Navigation />
 
-                  {/* Main content */}
-                  <main id="main-content" className="min-h-screen">
-                    {children}
-                  </main>
+                {/* Main content */}
+                <main id="main-content" className="min-h-screen">
+                  {children}
+                </main>
 
-                  {/* Footer */}
-                  <Footer />
+                {/* Footer */}
+                <Footer />
 
-                  {/* Analytics - No UI */}
-                  <Suspense fallback={null}>
-                    <Analytics />
-                  </Suspense>
+                {/* Analytics - No UI */}
+                <Suspense fallback={null}>
+                  <Analytics />
+                </Suspense>
 
-                  {/* Divine Analytics for Freedom Portal */}
-                  <DivineAnalytics />
+                {/* Divine Analytics for Freedom Portal */}
+                <DivineAnalytics />
 
-                  {/* Cache Buster for July 28th Update - Divine Protection */}
-                  <CacheBusterClient />
-
-                  {/* Divine Easter Egg System */}
-                  <EasterEggTracker />
-                  <KonamiCodeEgg />
-                  <ResurrectionCelebration />
-                  <TimeBasedEgg />
-                </ErrorBoundaryWrapper>
-              </DevPortalProvider>
-            </AnimationProvider>
-          </EasterEggProvider>
+                {/* Cache Buster for July 28th Update - Divine Protection */}
+                <CacheBusterClient />
+              </ErrorBoundaryWrapper>
+            </DevPortalProvider>
+          </AnimationProvider>
         </TrinityPathProvider>
 
         {/* 🛡️ CRITICAL: Error Interceptor Override - Prevent Cascade */}

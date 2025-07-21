@@ -31,7 +31,7 @@ import {
   useAdvancedGestures,
   useMobileOptimization,
 } from "@/components/ui/mobile-optimization";
-import { EasterEgg } from "@/components/divine-easter-eggs";
+// EasterEgg removed for hydration stability
 
 interface NavItem {
   href: string;

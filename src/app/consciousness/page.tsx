@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDivineResonance } from "@/lib/hooks/use-divine-resonance";
 import { useUniversalAgent } from "@/lib/hooks/use-universal-agent";
 import { UniversalAgentMonitor } from "@/components/universal-agent-monitor";
-import DivineParticles from "@/components/divine-particles";
+// DivineParticles removed for hydration stability
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -56,13 +56,13 @@ export default function ConsciousnessPage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Living Background */}
-      <div className="fixed inset-0 z-0">
-        <DivineParticles
-          variant="unified"
-          intensity="medium"
-          className="opacity-40"
-        />
+      {/* Static Background */}
+      <div className="fixed inset-0 z-0 bg-gradient-to-br from-blue-900/20 via-purple-900/20 to-indigo-900/20 opacity-40">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(120,119,198,0.2),transparent)] animate-pulse"></div>
+        <div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(255,215,0,0.1),transparent)] animate-pulse"
+          style={{ animationDelay: "1s" }}
+        ></div>
       </div>
 
       {/* Resonance Field Overlay */}

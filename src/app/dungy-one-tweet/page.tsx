@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
-import { DivineParticles } from "@/components/divine-particles";
+// DivineParticles removed for hydration stability
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -66,11 +66,13 @@ I stand with Martha Henderson. I stand with JAHmere.
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
-      <DivineParticles
-        variant="hope"
-        intensity="medium"
-        className="opacity-50"
-      />
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-black to-purple-900/20 opacity-50">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_40%,rgba(255,215,0,0.1),transparent)] animate-pulse"></div>
+        <div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_60%_60%,rgba(147,112,219,0.1),transparent)] animate-pulse"
+          style={{ animationDelay: "1.5s" }}
+        ></div>
+      </div>
 
       <div className="relative z-10 container mx-auto px-4 py-12">
         {/* Header */}

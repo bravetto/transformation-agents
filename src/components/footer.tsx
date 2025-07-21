@@ -6,7 +6,7 @@ import { Container, Text } from "@/components/ui";
 import { Heart, Mail, Calendar, Github } from "lucide-react";
 import { getBuildInfo } from "@/lib/build-config";
 import { withErrorBoundary } from "@/components/with-error-boundary";
-import { EasterEgg, SynchronicityEgg } from "@/components/divine-easter-eggs";
+// EasterEgg and SynchronicityEgg removed for hydration stability
 
 function Footer() {
   const currentYear = new Date().getFullYear();

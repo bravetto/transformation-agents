@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
-import DivineParticles from "@/components/divine-particles";
+// DivineParticles removed for hydration stability
 import { type DivineRole } from "@/lib/design-system";
 
 // Updated variants to match the DivineParticles component
@@ -112,14 +112,26 @@ export default function ParticlesTestPage() {
           </Card>
         </div>
 
-        {/* Particle Display */}
+        {/* Static Particle Display */}
         <Card className="relative overflow-hidden h-[50vh] w-full">
-          <div className="absolute inset-0">
-            <DivineParticles
-              variant={selectedVariant}
-              intensity={selectedIntensity}
-              interactive={isInteractive}
-            />
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-purple-900/20 to-indigo-900/30">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_25%,rgba(255,255,255,0.1),transparent)] animate-pulse"></div>
+            <div
+              className="absolute inset-0 bg-[radial-gradient(circle_at_75%_25%,rgba(255,215,0,0.1),transparent)] animate-pulse"
+              style={{ animationDelay: "0.5s" }}
+            ></div>
+            <div
+              className="absolute inset-0 bg-[radial-gradient(circle_at_50%_75%,rgba(147,112,219,0.1),transparent)] animate-pulse"
+              style={{ animationDelay: "1s" }}
+            ></div>
+            <div className="flex items-center justify-center h-full">
+              <div className="text-white/60 text-center">
+                <div className="text-lg font-semibold mb-2">
+                  Static Particle Preview
+                </div>
+                <div className="text-sm">Hydration-safe background</div>
+              </div>
+            </div>
           </div>
           <div className="absolute bottom-4 right-4 bg-white/80 dark:bg-gray-900/80 p-2 rounded-lg text-xs font-mono">
             role: {selectedRole}, variant: {selectedVariant}, intensity:{" "}
@@ -157,13 +169,12 @@ export default function ParticlesTestPage() {
             </li>
           </ul>
 
-          <h3>Usage in Code</h3>
+          <h3>Static Background Alternative</h3>
           <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded overflow-auto">
-            {`<DivineParticles
-  role="lightworker"  // Divine role for color theme
-  variant="sacred"    // Animation style
-  intensity="medium"  // Performance setting
-  interactive={true}  // Enable hover/click effects
+            {`<!-- Hydration-safe static background -->
+<div className="bg-gradient-to-br from-blue-900/30 via-purple-900/20 to-indigo-900/30">
+  <div className="bg-[radial-gradient(...)] animate-pulse"></div>
+  <!-- Multiple gradient layers for visual interest -->
 />`}
           </pre>
         </div>
