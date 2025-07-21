@@ -1,11 +1,12 @@
-// hero.tsx - FIXING LINE 43:7 WITH DIVINE PURPOSE
+// hero.tsx - FIXING LINE 43:7 WITH DIVINE PURPOSE + PRODUCTION ERROR BOUNDARY
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import { EasterEgg } from "@/components/divine-easter-eggs";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
-export default function Hero() {
+function HeroCore() {
   // 🛡️ CRITICAL: ALL HOOKS MUST BE AT THE TOP - BEFORE ANY RETURNS
   // State for divine interaction
   const [mouseX, setMouseX] = useState(0);
@@ -179,3 +180,17 @@ export default function Hero() {
     </div>
   );
 }
+
+// 🛡️ PRODUCTION-GRADE ERROR BOUNDARY WRAPPER
+export default withDivineErrorBoundary(HeroCore, {
+  componentName: "Hero",
+  role: "lightworker",
+  fallback: (
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 to-blue-900 flex items-center justify-center">
+      <div className="text-white text-center">
+        <h1 className="text-4xl font-bold mb-4">The Bridge Project</h1>
+        <p className="text-purple-200">Loading divine experience...</p>
+      </div>
+    </div>
+  ),
+});

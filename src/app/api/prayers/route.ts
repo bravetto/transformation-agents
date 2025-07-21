@@ -2,12 +2,11 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import { createAPIHandler, rateLimits } from "@/lib/production/api-middleware";
 import {
-  createDatabase,
-  defaultDatabaseConfig,
-} from "@/lib/production/database-singleton";
-
-// Initialize database connection
-const db = createDatabase(defaultDatabaseConfig);
+  PrayerService,
+  AnalyticsService,
+  checkDatabaseHealth,
+} from "@/lib/database/prisma";
+import { logger } from "@/lib/logger";
 
 // Input validation schemas
 const prayerRequestSchema = z.object({
@@ -43,17 +42,105 @@ interface PrayerResponse {
   intention?: string;
 }
 
-interface PrayerRecord {
-  id: string;
-  name?: string;
-  location?: string;
-  message?: string;
-  intention?: string;
-  isAnonymous: boolean;
-  timestamp: string;
-  ipAddress: string;
-  userAgent: string;
-  status: "received" | "blessed" | "answered";
+// Helper functions for divine calculations
+function getSpiritualImpact(intention: string): string {
+  const impactMap: Record<string, string> = {
+    FREEDOM: "miraculous",
+    HEALING: "high",
+    PROTECTION: "high",
+    GUIDANCE: "medium",
+    PEACE: "medium",
+    OTHER: "low",
+  };
+  return impactMap[intention] || "low";
+}
+
+function calculateDivineAlignment(divineNumber: number): number {
+  // Calculate alignment based on sacred numerology
+  const sacred = [7, 28, 77, 777, 1337];
+  if (sacred.includes(divineNumber)) return 100;
+  if (divineNumber % 7 === 0) return 85;
+  if (divineNumber % 3 === 0) return 70;
+  return Math.min(50 + (divineNumber % 50), 95);
+}
+
+/**
+ * 🌟 DIVINE NUMBER GENERATION
+ * Sacred numerology for spiritual significance
+ */
+async function getNextDivineNumber(): Promise<number> {
+  try {
+    // Get current count and generate divine number
+    const totalPrayers = await PrayerService.getTotalPrayerCount();
+
+    // Sacred numbers for special significance
+    const sacredNumbers = [7, 28, 77, 777, 1337];
+    const nextNumber = totalPrayers + 1;
+
+    // Check if we're hitting a sacred number
+    if (sacredNumbers.includes(nextNumber)) {
+      logger.divine("🌟 Sacred Divine Number Generated", {
+        divineNumber: nextNumber,
+        significance: "Sacred numerology alignment",
+      });
+    }
+
+    return nextNumber;
+  } catch (error) {
+    // Fallback to timestamp-based number
+    return Math.floor(Date.now() / 1000) % 10000;
+  }
+}
+
+/**
+ * 📿 DIVINE RESPONSE GENERATION
+ * Personalized spiritual responses based on intention
+ */
+function getDivineResponse(divineNumber: number, intention: string): string {
+  const intentionResponses: Record<string, string[]> = {
+    FREEDOM: [
+      `Prayer #${divineNumber} for JAHmere's freedom received! Divine justice accelerates - July 28th victory approaches!`,
+      `Freedom warrior #${divineNumber} joins the battle! Chains of injustice crumble before our prayers!`,
+      `Divine prayer #${divineNumber} for freedom heard! Angels of justice mobilize for July 28th liberation!`,
+    ],
+    HEALING: [
+      `Healing prayer #${divineNumber} ascending! Divine restoration flows through every fiber of your being!`,
+      `Prayer warrior #${divineNumber} calls for healing! Miraculous recovery manifests in perfect timing!`,
+      `Divine healing activated through prayer #${divineNumber}! Body, mind, and spirit renewed completely!`,
+    ],
+    PROTECTION: [
+      `Protection prayer #${divineNumber} received! Divine shields activate around you and your loved ones!`,
+      `Guardian prayer #${divineNumber} answered! Angels of protection surround you with impenetrable light!`,
+      `Prayer #${divineNumber} for protection heard! Divine fortress of faith established around you now!`,
+    ],
+    GUIDANCE: [
+      `Guidance prayer #${divineNumber} received! Divine wisdom illuminates your path forward!`,
+      `Prayer #${divineNumber} for direction heard! Angels of wisdom guide every step you take!`,
+      `Divine guidance flows through prayer #${divineNumber}! Perfect clarity manifests in all decisions!`,
+    ],
+    PEACE: [
+      `Peace prayer #${divineNumber} ascending! Divine serenity fills every corner of your heart!`,
+      `Prayer #${divineNumber} for peace received! Heavenly calm settles over all your concerns!`,
+      `Divine peace flows through prayer #${divineNumber}! All anxiety dissolves in God's presence!`,
+    ],
+    OTHER: [
+      `Divine prayer #${divineNumber} received with love! God hears your heart's deepest desires!`,
+      `Prayer warrior #${divineNumber} joins the divine network! Your requests ascend on wings of faith!`,
+      `Sacred prayer #${divineNumber} acknowledged! Divine intervention activates for your needs!`,
+    ],
+  };
+
+  const responses = intentionResponses[intention] || intentionResponses.OTHER;
+  const selectedResponse =
+    responses[Math.floor(Math.random() * responses.length)];
+
+  // Add special messages for sacred numbers
+  const sacredNumbers = [7, 28, 77, 777, 1337];
+  if (sacredNumbers.includes(divineNumber)) {
+    return `🌟 SACRED DIVINE NUMBER ${divineNumber}! ${selectedResponse} This prayer carries extraordinary spiritual power!`;
+  }
+
+  return selectedResponse;
 }
 
 /**
@@ -73,46 +160,52 @@ export const POST = createAPIHandler({
         "unknown";
       const userAgent = req.headers.get("user-agent") || "unknown";
 
-      // Generate prayer ID and divine number
-      const prayerId = `prayer_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      // Generate divine number for spiritual significance
       const divineNumber = await getNextDivineNumber();
 
-      // Create prayer record
-      const prayerRecord: PrayerRecord = {
-        id: prayerId,
-        name: input.isAnonymous ? undefined : input.name,
-        location: input.isAnonymous ? undefined : input.location,
+      // Create prayer record using database service
+      const prayerRecord = await PrayerService.createPrayer({
+        name: input.name,
+        location: input.location,
         message: input.message,
-        intention: input.intention || "other",
+        intention: (input.intention?.toUpperCase() as any) || "OTHER",
         isAnonymous: input.isAnonymous ?? false,
-        timestamp: new Date().toISOString(),
+        divineNumber,
         ipAddress,
         userAgent,
-        status: "received",
-      };
+        sessionId: req.headers.get("x-session-id") || undefined,
+      });
 
-      // Store prayer in database
-      await savePrayerToDatabase(prayerRecord);
-
-      // Update prayer counter
-      await updatePrayerCounter();
+      // Track analytics event
+      await AnalyticsService.trackEvent({
+        eventType: "PRAYER_SUBMITTED",
+        userType: "DIVINE_WARRIOR",
+        sessionId:
+          req.headers.get("x-session-id") || `prayer_${prayerRecord.id}`,
+        path: "/api/prayers",
+        userAgent,
+        metadata: {
+          intention: prayerRecord.intention,
+          isAnonymous: prayerRecord.isAnonymous,
+          divineNumber: prayerRecord.divineNumber,
+        },
+        spiritualImpact: getSpiritualImpact(prayerRecord.intention),
+        divineAlignment: calculateDivineAlignment(divineNumber),
+      });
 
       // Generate divine response
       const response: PrayerResponse = {
-        id: prayerId,
+        id: prayerRecord.id,
         status: "received",
-        message: getDivineResponse(divineNumber, input.intention),
-        timestamp: prayerRecord.timestamp,
+        message: getDivineResponse(divineNumber, prayerRecord.intention),
+        timestamp: prayerRecord.createdAt.toISOString(),
         divineNumber,
-        intention: input.intention,
+        intention: prayerRecord.intention.toLowerCase(),
       };
-
-      // Track analytics event
-      await trackPrayerEvent(prayerRecord);
 
       return response;
     } catch (error) {
-      console.error("Prayer submission error:", error);
+      logger.error("Prayer submission error:", error);
       throw new Error("Failed to process prayer request");
     }
   },
@@ -128,215 +221,34 @@ export const GET = createAPIHandler({
   rateLimit: rateLimits.standard,
   handler: async (input) => {
     try {
-      // Get total prayer count
-      const totalPrayers = await getTotalPrayerCount();
-
-      // Get recent prayers (non-anonymous ones only)
-      const recentPrayers = await getRecentPrayers(
-        typeof input.limit === "string"
-          ? parseInt(input.limit, 10) || 10
-          : (input.limit ?? 10),
-        typeof input.offset === "string"
-          ? parseInt(input.offset, 10) || 0
-          : input.offset || 0,
-        input.intention,
-      );
-
-      // Get prayer statistics
-      const stats = await getPrayerStatistics();
+      // Get data from database services
+      const [totalPrayers, recentPrayers, stats] = await Promise.all([
+        PrayerService.getTotalPrayerCount(),
+        PrayerService.getRecentPrayers(
+          typeof input.limit === "string"
+            ? parseInt(input.limit, 10) || 10
+            : (input.limit ?? 10),
+          typeof input.offset === "string"
+            ? parseInt(input.offset, 10) || 0
+            : input.offset || 0,
+          input.intention,
+        ),
+        PrayerService.getPrayerStatistics(),
+      ]);
 
       return {
-        totalPrayers,
-        recentPrayers,
-        statistics: stats,
-        status: "active",
-        lastUpdated: new Date().toISOString(),
-        nextMilestone: getNextMilestone(totalPrayers),
-        divineMessage: getDivineResponse(totalPrayers),
+        success: true,
+        data: {
+          totalPrayers,
+          recentPrayers,
+          stats,
+          lastUpdated: new Date().toISOString(),
+        },
+        timestamp: new Date().toISOString(),
       };
     } catch (error) {
-      console.error("Prayer retrieval error:", error);
+      logger.error("Prayer data retrieval error:", error);
       throw new Error("Failed to retrieve prayer data");
     }
   },
 });
-
-// Database operations with proper error handling and caching
-async function savePrayerToDatabase(prayer: PrayerRecord): Promise<void> {
-  const query = `
-    INSERT INTO prayers (id, name, location, message, intention, is_anonymous, timestamp, ip_address, user_agent, status)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-  `;
-
-  const params = [
-    prayer.id,
-    prayer.name,
-    prayer.location,
-    prayer.message,
-    prayer.intention,
-    prayer.isAnonymous,
-    prayer.timestamp,
-    prayer.ipAddress,
-    prayer.userAgent,
-    prayer.status,
-  ];
-
-  await db.executeQuery(query, params, { timeout: 5000 });
-}
-
-async function getTotalPrayerCount(): Promise<number> {
-  const query = "SELECT COUNT(*) as count FROM prayers";
-  const result = await db.executeQuery<{ count: number }[]>(query, [], {
-    cache: true,
-    cacheKey: "prayer_count",
-    cacheTtl: 60000,
-  });
-
-  return parseInt(result[0]?.count?.toString() || "1337");
-}
-
-async function getRecentPrayers(
-  limit: number,
-  offset: number,
-  intention?: string,
-): Promise<PrayerRecord[]> {
-  let query = `
-    SELECT id, name, location, intention, timestamp, status
-    FROM prayers
-    WHERE is_anonymous = false
-  `;
-
-  const params: any[] = [];
-
-  if (intention) {
-    query += " AND intention = $1";
-    params.push(intention);
-    query += ` ORDER BY timestamp DESC LIMIT $${params.length + 1} OFFSET $${params.length + 2}`;
-    params.push(limit, offset);
-  } else {
-    query += ` ORDER BY timestamp DESC LIMIT $1 OFFSET $2`;
-    params.push(limit, offset);
-  }
-
-  return db.executeQuery<PrayerRecord[]>(query, params, {
-    cache: true,
-    cacheKey: `recent_prayers_${limit}_${offset}_${intention || "all"}`,
-    cacheTtl: 30000,
-  });
-}
-
-async function getPrayerStatistics(): Promise<any> {
-  const query = `
-    SELECT 
-      intention,
-      COUNT(*) as count,
-      DATE_TRUNC('day', timestamp::timestamp) as day
-    FROM prayers
-    WHERE timestamp > NOW() - INTERVAL '30 days'
-    GROUP BY intention, day
-    ORDER BY day DESC
-  `;
-
-  return db.executeQuery(query, [], {
-    cache: true,
-    cacheKey: "prayer_statistics",
-    cacheTtl: 300000, // 5 minutes
-  });
-}
-
-async function getNextDivineNumber(): Promise<number> {
-  const query =
-    "SELECT COALESCE(MAX(divine_number), 1336) + 1 as next_number FROM prayers";
-  const result = await db.executeQuery<{ next_number: number }[]>(query, []);
-  return result[0]?.next_number || 1337;
-}
-
-async function updatePrayerCounter(): Promise<void> {
-  // Update cached counter
-  db.clearCache();
-
-  // Could also update a separate counters table for better performance
-  const query = `
-    INSERT INTO prayer_counters (date, count) 
-    VALUES (CURRENT_DATE, 1)
-    ON CONFLICT (date) 
-    DO UPDATE SET count = prayer_counters.count + 1
-  `;
-
-  await db.executeQuery(query, [], { timeout: 3000 });
-}
-
-async function trackPrayerEvent(prayer: PrayerRecord): Promise<void> {
-  // Track prayer submission for analytics
-  try {
-    const eventData = {
-      eventType: "prayer_submitted",
-      timestamp: prayer.timestamp,
-      metadata: {
-        intention: prayer.intention,
-        isAnonymous: prayer.isAnonymous,
-        hasMessage: !!prayer.message,
-        location: prayer.isAnonymous ? undefined : prayer.location,
-      },
-    };
-
-    // This could be sent to an analytics service
-    console.log("Prayer event tracked:", eventData);
-  } catch (error) {
-    // Don't fail prayer submission if analytics fails
-    console.warn("Failed to track prayer event:", error);
-  }
-}
-
-// Divine response generation with enhanced personalization
-function getDivineResponse(count: number, intention?: string): string {
-  const intentionResponses = {
-    healing: [
-      `Prayer #${count} for healing received - Divine restoration flows to you now!`,
-      `${count} healing prayers ascending - Miracles manifest in perfect timing!`,
-      `Divine healing activated for prayer #${count} - Your body, mind, and spirit are renewed!`,
-    ],
-    freedom: [
-      `Prayer #${count} for freedom received - JAHmere's chains are breaking!`,
-      `${count} freedom prayers unite - July 28th liberation draws near!`,
-      `Prayer warrior #${count} joins the freedom battle - Victory is assured!`,
-    ],
-    guidance: [
-      `Prayer #${count} for divine guidance received - Your path illuminates before you!`,
-      `${count} seekers request wisdom - Divine direction flows to all!`,
-      `Guidance prayer #${count} heard - Angels dispatch with perfect timing!`,
-    ],
-    protection: [
-      `Prayer #${count} for protection activated - Divine shields surround you now!`,
-      `${count} protection prayers create an impenetrable fortress of faith!`,
-      `Guardian angels assigned to prayer #${count} - You are divinely covered!`,
-    ],
-    peace: [
-      `Prayer #${count} for peace received - Serenity flows into every situation!`,
-      `${count} peace prayers create ripples of harmony across the earth!`,
-      `Divine peace settles upon prayer #${count} - All anxiety melts away!`,
-    ],
-  };
-
-  const responses = intentionResponses[
-    intention as keyof typeof intentionResponses
-  ] || [
-    `Prayer #${count} received - Divine intervention activated!`,
-    `${count} prayers ascending - Heaven's attention focused on your need!`,
-    `Prayer warrior #${count} enlisted - Miracles are manifesting now!`,
-    `${count} voices crying out - The divine hears and responds!`,
-    `Prayer #${count} recorded in Heaven - Your breakthrough approaches!`,
-  ];
-
-  return responses[count % responses.length];
-}
-
-function getNextMilestone(count: number): { number: number; message: string } {
-  const milestones = [2000, 5000, 10000, 25000, 50000, 100000];
-  const nextMilestone = milestones.find((m) => m > count) || count + 10000;
-
-  return {
-    number: nextMilestone,
-    message: `${nextMilestone - count} prayers until next milestone!`,
-  };
-}
