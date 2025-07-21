@@ -1,5 +1,6 @@
 #!/bin/bash
-# 🔐 Vercel Environment Variables Upload Script
+# 🔐 Vercel Environment Variables Upload Script (Unix/Mac)
+# The Bridge Project - JAHmere Webb Freedom Portal
 # Generated on: 2025-07-21T03:18:00Z
 
 echo "🚀 Uploading environment variables to Vercel..."
@@ -12,20 +13,31 @@ if ! command -v vercel &> /dev/null; then
 fi
 
 # Check if logged in to Vercel
-vercel whoami &> /dev/null
-if [ $? -ne 0 ]; then
+if ! vercel whoami &> /dev/null; then
     echo "📝 Please login to Vercel:"
     vercel login
 fi
 
-# Function to add environment variable
+# Enhanced function to add environment variable to multiple environments
 add_env_var() {
-    local var_name=$1
-    local var_value=$2
-    local env_targets=$3
+    local var_name="$1"
+    local var_value="$2"
+    local env_targets="$3"
     
     echo "Adding $var_name to $env_targets..."
-    echo "$var_value" | vercel env add $var_name $env_targets --yes
+    
+    # Split environments and add to each one individually
+    for env in $env_targets; do
+        echo "  → Adding to $env environment..."
+        if [[ "$*" == *"--dry-run"* ]]; then
+            echo "  [DRY RUN] Would execute: echo '$var_value' | vercel env add '$var_name' '$env'"
+        else
+            echo "$var_value" | vercel env add "$var_name" "$env" || echo "  ⚠️  Failed to add to $env"
+        fi
+        
+        # Add delay to avoid rate limiting
+        sleep 0.5
+    done
 }
 
 # Check if .env.local exists
@@ -63,10 +75,10 @@ while IFS='=' read -r name value; do
     # Determine environments based on variable name and type
     if [[ $name == *"_TEST"* ]] || [[ $name == *"_DEV"* ]]; then
         # Development only
-        add_env_var "$name" "$value" "development"
+        add_env_var "$name" "$value" "development" "$@"
     elif [[ $name == "NEXT_PUBLIC_"* ]]; then
         # Public variables go to all environments
-        add_env_var "$name" "$value" "production preview development"
+        add_env_var "$name" "$value" "production preview development" "$@"
     elif [[ $name == "DATABASE_URL" ]]; then
         # Database URL - ask for environment
         echo ""
@@ -78,9 +90,9 @@ while IFS='=' read -r name value; do
         read -p "Choose (1-3): " choice
         
         case $choice in
-            1) add_env_var "$name" "$value" "production" ;;
-            2) add_env_var "$name" "$value" "preview development" ;;
-            3) add_env_var "$name" "$value" "production preview development" ;;
+            1) add_env_var "$name" "$value" "production" "$@" ;;
+            2) add_env_var "$name" "$value" "preview development" "$@" ;;
+            3) add_env_var "$name" "$value" "production preview development" "$@" ;;
             *) echo "Skipping $name..." ;;
         esac
     elif [[ $name == *"API_KEY"* ]] || [[ $name == *"SECRET"* ]] || [[ $name == *"TOKEN"* ]]; then
@@ -93,19 +105,15 @@ while IFS='=' read -r name value; do
         read -p "Choose (1-3): " choice
         
         case $choice in
-            1) add_env_var "$name" "$value" "production" ;;
-            2) add_env_var "$name" "$value" "preview development" ;;
-            3) add_env_var "$name" "$value" "production preview development" ;;
+            1) add_env_var "$name" "$value" "production" "$@" ;;
+            2) add_env_var "$name" "$value" "preview development" "$@" ;;
+            3) add_env_var "$name" "$value" "production preview development" "$@" ;;
             *) echo "Skipping $name..." ;;
         esac
     else
         # Other variables - default to all environments
-        add_env_var "$name" "$value" "production preview development"
+        add_env_var "$name" "$value" "production preview development" "$@"
     fi
-    
-    # Add small delay to avoid rate limiting
-    sleep 0.5
-    
 done < .env.local
 
 echo ""

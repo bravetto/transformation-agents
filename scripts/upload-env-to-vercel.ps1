@@ -110,7 +110,7 @@ function Add-EnvVar {
     
     try {
         # Use proper PowerShell pipeline for input
-        $Value | vercel env add $Name $Environments --yes
+        $Value | vercel env add $Name $Environments
         
         if ($LASTEXITCODE -eq 0) {
             Write-ChampionshipLog "✅ Successfully added $Name" "SUCCESS" "Green"
