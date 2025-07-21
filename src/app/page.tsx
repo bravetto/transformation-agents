@@ -37,6 +37,13 @@ import LossAversion from "@/components/loss-aversion";
 // 🔥 NEW: Phil's Miracle GoFundMe Component
 import { PhilsGoFundMeCompact } from "@/components/phils-miracle-gofundme";
 
+// 🚀 MVP Feature Flags - Surgical Component Control
+import {
+  FeatureGate,
+  ComingSoonCard,
+  isFeatureEnabled,
+} from "@/lib/feature-flags";
+
 // Critical above-the-fold components (immediate load)
 const Hero = OptimizedComponents.Hero;
 const UserTypeModal = OptimizedComponents.UserTypeModal;
@@ -339,7 +346,18 @@ export default function HomePage() {
         <RevealOnScroll>
           <Section padding="medium" className="bg-soft-cloud/10">
             <Container>
-              <DecisionCountdown />
+              <FeatureGate
+                feature="propheticCountdown"
+                fallback={
+                  <ComingSoonCard
+                    feature="countdown"
+                    title="July 28th Freedom Countdown"
+                    description="Powerful countdown timer building anticipation for JAHmere's court appearance and community mobilization."
+                  />
+                }
+              >
+                <DecisionCountdown />
+              </FeatureGate>
             </Container>
           </Section>
         </RevealOnScroll>
@@ -395,7 +413,18 @@ export default function HomePage() {
             className="bg-gradient-to-br from-elite-divine-amber/5 to-courage-blue/5"
           >
             <Container>
-              <DivineImpactDashboard />
+              <FeatureGate
+                feature="divineImpactDashboard"
+                fallback={
+                  <ComingSoonCard
+                    feature="analytics"
+                    title="Community Impact Analytics"
+                    description="Real-time metrics showing our growing community's power in supporting JAHmere's freedom."
+                  />
+                }
+              >
+                <DivineImpactDashboard />
+              </FeatureGate>
             </Container>
           </Section>
         </RevealOnScroll>
