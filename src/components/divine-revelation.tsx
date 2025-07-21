@@ -93,10 +93,7 @@ function DivineRevelation({
         animate="visible"
         className="absolute inset-0"
       >
-        <DivineParticles
-          variant="sacred"
-          className="h-full w-full opacity-40"
-        />
+        {/* DivineParticles removed for MVP hydration stability */}
       </motion.div>
 
       {/* Divine revelations */}

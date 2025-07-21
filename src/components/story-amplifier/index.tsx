@@ -4,7 +4,7 @@ import React, { useRef } from "react";
 import { AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
-import DivineParticles from "@/components/divine-particles";
+// DivineParticles removed for MVP hydration stability
 import { StoryAmplifierProps } from "./types";
 import { StoryProvider, useStory } from "./context";
 
@@ -22,7 +22,7 @@ import QuoteShareModal from "./components/quote-share-modal";
 
 /**
  * StoryAmplifierContent Component
- * 
+ *
  * Inner component that uses the StoryContext
  */
 const StoryAmplifierContent = ({ className }: { className?: string }) => {
@@ -38,12 +38,12 @@ const StoryAmplifierContent = ({ className }: { className?: string }) => {
     handleShare,
     formatReadingTime,
     copiedToClipboard,
-    setCopiedToClipboard
+    setCopiedToClipboard,
   } = useStory();
-  
+
   // Ref for content
   const contentRef = useRef<HTMLDivElement>(null);
-  
+
   // Generate sections for table of contents
   const sections = [
     { title: "Introduction", percent: 0 },
@@ -52,16 +52,12 @@ const StoryAmplifierContent = ({ className }: { className?: string }) => {
     { title: "Impact", percent: 60 },
     { title: "Conclusion", percent: 80 },
   ];
-  
+
   return (
     <>
       {/* Divine Particles Background */}
       <div className="fixed inset-0 -z-10 opacity-20">
-        <DivineParticles
-          variant="minimal"
-          intensity="low"
-          interactive={false}
-        />
+        {/* DivineParticles removed for MVP hydration stability */}
       </div>
 
       {/* Reading progress bar - fixed at top */}
@@ -71,10 +67,10 @@ const StoryAmplifierContent = ({ className }: { className?: string }) => {
       <SocialSharingBar />
 
       {/* Table of contents - fixed at right */}
-      <TableOfContents 
-        sections={sections} 
-        activeSection={activeSection} 
-        contentRef={contentRef} 
+      <TableOfContents
+        sections={sections}
+        activeSection={activeSection}
+        contentRef={contentRef}
       />
 
       {/* Engagement metrics floating panel */}
@@ -83,23 +79,17 @@ const StoryAmplifierContent = ({ className }: { className?: string }) => {
       {/* Main content container */}
       <div className={cn("max-w-4xl mx-auto px-4 py-12", className)}>
         {/* Header section */}
-        <StoryHeader 
-          story={story} 
-          formatReadingTime={formatReadingTime} 
-        />
+        <StoryHeader story={story} formatReadingTime={formatReadingTime} />
 
         {/* Main content */}
-        <StoryContent 
-          story={story} 
-          onQuoteShare={handleQuoteShare} 
-          contentRef={contentRef} 
+        <StoryContent
+          story={story}
+          onQuoteShare={handleQuoteShare}
+          contentRef={contentRef}
         />
 
         {/* Call to action section */}
-        <CallToAction 
-          onAction={handleCallToAction} 
-          onShare={handleShare} 
-        />
+        <CallToAction onAction={handleCallToAction} onShare={handleShare} />
 
         {/* Related stories section */}
         <RelatedStories />
@@ -141,4 +131,4 @@ const StoryAmplifier = (props: StoryAmplifierProps) => {
 export default withDivineErrorBoundary(StoryAmplifier, {
   componentName: "StoryAmplifier",
   role: "default",
-}); 
+});

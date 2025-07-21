@@ -118,10 +118,7 @@ function SacredUmlaut({ role = "lightworker", className }: SacredUmlautProps) {
       )}
     >
       {/* Playful particles */}
-      <DivineParticles
-        variant={isPlaying ? "divine" : "minimal"}
-        className="absolute inset-0 opacity-50"
-      />
+      {/* DivineParticles removed for MVP hydration stability */}
 
       {/* Sacred joy */}
       <div className="relative z-10 container mx-auto px-4">

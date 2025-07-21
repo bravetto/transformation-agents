@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileText, Send, Sparkles, TrendingUp } from "lucide-react";
 import { impactEvents } from "./impact-dashboard";
-import { DivineParticles } from "./divine-particles";
+// DivineParticles removed for MVP hydration stability
 import {
   SacredReveal,
   MagneticButton,

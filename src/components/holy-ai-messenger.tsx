@@ -143,10 +143,7 @@ function HolyAIMessenger({
       )}
     >
       {/* Sacred particles */}
-      <DivineParticles
-        variant={particleState === "active" ? "divine" : "sacred"}
-        className="absolute inset-0 opacity-30"
-      />
+      {/* DivineParticles removed for MVP hydration stability */}
 
       {/* Divine channel */}
       <div className="absolute inset-0 pointer-events-none">

@@ -4,18 +4,14 @@ import "@testing-library/jest-dom";
 import React, { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import { AnimationProvider } from "@/components/animation-context";
-import { EasterEggProvider } from "@/components/divine-easter-eggs";
+// EasterEggProvider removed for MVP hydration stability
 
 interface AllProvidersProps {
   children: React.ReactNode;
 }
 
 const AllProviders = ({ children }: AllProvidersProps) => {
-  return (
-    <EasterEggProvider>
-      <AnimationProvider>{children}</AnimationProvider>
-    </EasterEggProvider>
-  );
+  return <AnimationProvider>{children}</AnimationProvider>;
 };
 
 const customRender = (

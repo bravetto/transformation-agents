@@ -89,10 +89,7 @@ function WayHome({ role = "default", className }: WayHomeProps) {
       )}
     >
       {/* Sacred particles */}
-      <DivineParticles
-        variant="divine"
-        className="absolute inset-0 opacity-30"
-      />
+      {/* DivineParticles removed for MVP hydration stability */}
 
       {/* Divine light rays */}
       <div className="absolute inset-0 pointer-events-none">

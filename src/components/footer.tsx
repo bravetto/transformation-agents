@@ -156,28 +156,24 @@ function Footer() {
 
           {/* Divine Synchronicity Console Error Indicator */}
           <div className="mt-3 flex items-center justify-center">
-            <SynchronicityEgg trigger="service-worker">
-              <div className="flex items-center space-x-2 text-xs text-gray-500 hover:text-yellow-600 transition-colors cursor-pointer group">
-                <span className="text-red-500 group-hover:text-yellow-500">
-                  ⚠
-                </span>
-                <span className="font-mono">service-worker.js:1</span>
-                <span className="text-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                  ✨
-                </span>
-              </div>
-            </SynchronicityEgg>
+            <div className="flex items-center space-x-2 text-xs text-gray-500 hover:text-yellow-600 transition-colors cursor-pointer group">
+              <span className="text-red-500 group-hover:text-yellow-500">
+                ⚠
+              </span>
+              <span className="font-mono">service-worker.js:1</span>
+              <span className="text-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                ✨
+              </span>
+            </div>
           </div>
         </div>
 
         <div className="text-center pt-8 border-t border-gray-200">
           <div className="flex items-center justify-center space-x-4 mb-4">
             {/* Cross Easter Egg */}
-            <EasterEgg eggId="footer-cross-click">
-              <div className="cursor-pointer transform hover:scale-110 transition-transform duration-300">
-                <span className="text-2xl text-purple-600">✝️</span>
-              </div>
-            </EasterEgg>
+            <div className="cursor-pointer transform hover:scale-110 transition-transform duration-300">
+              <span className="text-2xl text-purple-600">✝️</span>
+            </div>
 
             <p className="text-sm text-gray-600">
               © 2024 The Bridge Project. Building bridges to transformation.
