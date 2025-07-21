@@ -37,12 +37,11 @@ import LossAversion from "@/components/loss-aversion";
 // 🔥 NEW: Phil's Miracle GoFundMe Component
 import { PhilsGoFundMeCompact } from "@/components/phils-miracle-gofundme";
 
-// 🚀 MVP Feature Flags - Surgical Component Control
+// 🚨 EMERGENCY PRODUCTION PROTECTION - Bulletproof against infinite loops
 import {
-  FeatureGate,
-  ComingSoonCard,
-  isFeatureEnabled,
-} from "@/lib/feature-flags";
+  EmergencyProductionGate,
+  EmergencyDisableWrapper,
+} from "@/lib/production-safe-flags";
 
 // Critical above-the-fold components (immediate load)
 const Hero = OptimizedComponents.Hero;
@@ -346,18 +345,9 @@ export default function HomePage() {
         <RevealOnScroll>
           <Section padding="medium" className="bg-soft-cloud/10">
             <Container>
-              <FeatureGate
-                feature="propheticCountdown"
-                fallback={
-                  <ComingSoonCard
-                    feature="countdown"
-                    title="July 28th Freedom Countdown"
-                    description="Powerful countdown timer building anticipation for JAHmere's court appearance and community mobilization."
-                  />
-                }
-              >
+              <EmergencyDisableWrapper componentName="PropheticCountdown">
                 <DecisionCountdown />
-              </FeatureGate>
+              </EmergencyDisableWrapper>
             </Container>
           </Section>
         </RevealOnScroll>
@@ -413,18 +403,9 @@ export default function HomePage() {
             className="bg-gradient-to-br from-elite-divine-amber/5 to-courage-blue/5"
           >
             <Container>
-              <FeatureGate
-                feature="divineImpactDashboard"
-                fallback={
-                  <ComingSoonCard
-                    feature="analytics"
-                    title="Community Impact Analytics"
-                    description="Real-time metrics showing our growing community's power in supporting JAHmere's freedom."
-                  />
-                }
-              >
+              <EmergencyDisableWrapper componentName="DivineImpactDashboard">
                 <DivineImpactDashboard />
-              </FeatureGate>
+              </EmergencyDisableWrapper>
             </Container>
           </Section>
         </RevealOnScroll>
