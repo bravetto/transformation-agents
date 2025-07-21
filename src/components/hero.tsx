@@ -42,7 +42,10 @@ function HeroCore() {
     };
   }, [handleMouseMove]);
 
-  // 🚨 SSR/CSR PROTECTION - Check after all hooks are defined
+  // 🛡️ SURGICAL FIX: ALL HOOKS MUST BE CALLED FIRST (Rules of Hooks)
+  const renderCount = useRef(0);
+
+  // 🚨 SSR/CSR PROTECTION - Check AFTER all hooks are defined
   if (typeof window === "undefined") {
     return (
       <div className="min-h-[90vh] bg-gradient-to-r from-hope-gold/10 to-courage-blue/10">
@@ -59,9 +62,6 @@ function HeroCore() {
       </div>
     );
   }
-
-  // 🛡️ DEFENSIVE FIX: Monitor render count (development only)
-  const renderCount = useRef(0);
   if (process.env.NODE_ENV === "development") {
     renderCount.current++;
     if (renderCount.current > 10) {

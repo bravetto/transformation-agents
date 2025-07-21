@@ -78,7 +78,16 @@ function PropheticCountdown({
   showProgress = true,
   className,
 }: PropheticCountdownProps) {
-  // 🚨 NUCLEAR EMERGENCY: Completely disable in production until fixed
+  // 🛡️ SURGICAL FIX: ALL HOOKS MUST BE CALLED FIRST (Rules of Hooks)
+  const componentName = `PropheticCountdown-${role}`;
+  const renderCountRef = useRef(0);
+
+  // 🛡️ CRITICAL: All hooks called unconditionally at component top
+  useRenderLoopDetection(componentName, 30); // Strict limit for production
+  const cleanup = useCleanupManager();
+  const performanceMetrics = usePerformanceMonitoring(componentName);
+
+  // 🚨 PRODUCTION PROTECTION: Check AFTER all hooks are called
   if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
     return (
       <div className="countdown-safe-mode bg-purple-900/90 backdrop-blur-sm border border-purple-500/30 rounded-lg p-4 shadow-xl max-w-xs">
@@ -98,11 +107,24 @@ function PropheticCountdown({
     );
   }
 
-  // 🚨 EMERGENCY CIRCUIT BREAKER: Prevent infinite loops FIRST
-  const renderCountRef = useRef(0);
+  // 🛡️ PRODUCTION STATE: Safe state management with cleanup
+  const [countdown, setCountdown] = useSafeState<CountdownValues>({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    totalSeconds: 0,
+    progress: 0,
+  });
+
+  const [isComplete, setIsComplete] = useSafeState(false);
+  const [showCelebration, setShowCelebration] = useSafeState(false);
+  const [hasError, setHasError] = useSafeState(false);
+
+  // 🚨 CIRCUIT BREAKER LOGIC: After all hooks are called
   renderCountRef.current++;
 
-  // 🛡️ CRITICAL: If too many renders, show fallback BEFORE any other hooks
+  // 🛡️ CRITICAL: Circuit breaker check AFTER hooks (preserves Rules of Hooks)
   if (renderCountRef.current > 2) {
     console.warn(
       `🚨 PropheticCountdown: Circuit breaker activated (${renderCountRef.current} renders)`,
@@ -121,26 +143,6 @@ function PropheticCountdown({
       </div>
     );
   }
-
-  // 🛡️ CRITICAL: Production monitoring and leak prevention
-  const componentName = `PropheticCountdown-${role}`;
-  useRenderLoopDetection(componentName, 30); // Strict limit for production
-  const cleanup = useCleanupManager();
-  const performanceMetrics = usePerformanceMonitoring(componentName);
-
-  // 🛡️ PRODUCTION STATE: Safe state management with cleanup
-  const [countdown, setCountdown] = useSafeState<CountdownValues>({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-    totalSeconds: 0,
-    progress: 0,
-  });
-
-  const [isComplete, setIsComplete] = useSafeState(false);
-  const [showCelebration, setShowCelebration] = useSafeState(false);
-  const [hasError, setHasError] = useSafeState(false);
 
   // 🔥 PERFORMANCE OPTIMIZATION: Memoized date calculations
   const dateCalculations = useMemo(() => {

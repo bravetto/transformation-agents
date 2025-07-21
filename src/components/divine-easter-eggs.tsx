@@ -660,7 +660,16 @@ export function SynchronicityEgg({
 
 // July 28th Countdown to Divine Treasure Unlock - NUCLEAR PROTECTION
 export function July28thCountdown() {
-  // 🚨 NUCLEAR EMERGENCY: Completely disable in production
+  // 🛡️ SURGICAL FIX: ALL HOOKS MUST BE CALLED FIRST (Rules of Hooks)
+  const [timeRemaining, setTimeRemaining] = useState<{
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
+  } | null>(null);
+  const [isUnlocked, setIsUnlocked] = useState(false);
+
+  // 🚨 CONDITIONAL LOGIC: After hooks are called
   if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
     return (
       <motion.div
@@ -681,14 +690,6 @@ export function July28thCountdown() {
       </motion.div>
     );
   }
-
-  const [timeRemaining, setTimeRemaining] = useState<{
-    days: number;
-    hours: number;
-    minutes: number;
-    seconds: number;
-  } | null>(null);
-  const [isUnlocked, setIsUnlocked] = useState(false);
 
   useEffect(() => {
     const calculateTimeRemaining = () => {

@@ -144,7 +144,28 @@ function DivineImpactDashboard({
   refreshInterval = 30000,
   defaultRole = "lightworker",
 }: DivineImpactDashboardProps) {
-  // 🚨 NUCLEAR EMERGENCY: Completely disable in production until fixed
+  // 🛡️ SURGICAL FIX: ALL HOOKS MUST BE CALLED FIRST (Rules of Hooks)
+  const componentName = "DivineImpactDashboard";
+  const renderCountRef = useRef(0);
+
+  // 🛡️ CRITICAL: All hooks called unconditionally at component top
+  useRenderLoopDetection(componentName, 25); // Strict limit for production
+  const cleanup = useCleanupManager();
+  const memoryInfo = useMemoryMonitoring(75); // 75MB warning threshold
+  const performanceMetrics = usePerformanceMonitoring(componentName);
+
+  // 🛡️ PRODUCTION STATE: Safe state management with cleanup
+  const [metricsData, setMetricsData] = useSafeState<MetricCard[]>(metrics);
+  const [isRefreshing, setIsRefreshing] = useSafeState(false);
+  const [lastRefreshed, setLastRefreshed] = useSafeState<Date>(new Date());
+  const [activeRole, setActiveRole] = useSafeState<DivineRole | "all">(
+    defaultRole,
+  );
+
+  // 🚨 CIRCUIT BREAKER LOGIC: After all hooks are called
+  renderCountRef.current++;
+
+  // 🚨 PRODUCTION PROTECTION: Check AFTER all hooks are called
   if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
     return (
       <div className="fixed bottom-4 right-4 bg-purple-900/90 backdrop-blur-sm border border-purple-500/30 rounded-lg p-4 shadow-xl z-50 max-w-xs">
@@ -164,11 +185,7 @@ function DivineImpactDashboard({
     );
   }
 
-  // 🚨 EMERGENCY CIRCUIT BREAKER: Prevent infinite loops
-  const renderCountRef = useRef(0);
-  renderCountRef.current++;
-
-  // 🛡️ CRITICAL: If too many renders, show fallback
+  // 🛡️ CRITICAL: Circuit breaker check AFTER hooks (preserves Rules of Hooks)
   if (renderCountRef.current > 2) {
     console.warn(
       `🚨 DivineImpactDashboard: Circuit breaker activated (${renderCountRef.current} renders)`,
@@ -187,21 +204,6 @@ function DivineImpactDashboard({
       </div>
     );
   }
-
-  // 🛡️ CRITICAL: Production monitoring and leak prevention
-  const componentName = "DivineImpactDashboard";
-  useRenderLoopDetection(componentName, 25); // Strict limit for production
-  const cleanup = useCleanupManager();
-  const memoryInfo = useMemoryMonitoring(75); // 75MB warning threshold
-  const performanceMetrics = usePerformanceMonitoring(componentName);
-
-  // 🛡️ PRODUCTION STATE: Safe state management with cleanup
-  const [metricsData, setMetricsData] = useSafeState<MetricCard[]>(metrics);
-  const [isRefreshing, setIsRefreshing] = useSafeState(false);
-  const [lastRefreshed, setLastRefreshed] = useSafeState<Date>(new Date());
-  const [activeRole, setActiveRole] = useSafeState<DivineRole | "all">(
-    defaultRole,
-  );
 
   // 🔥 PERFORMANCE OPTIMIZATION: Memoized data transformations
   const filteredMetrics = useMemo(() => {
