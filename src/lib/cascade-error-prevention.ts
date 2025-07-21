@@ -3,6 +3,9 @@
  * Implements comprehensive monitoring and prevention of cascading failures
  */
 
+import { logger } from "./logger";
+import { getPerformanceMemory } from "./utils";
+
 export interface CascadeError {
   id: string;
   timestamp: string;
@@ -253,14 +256,12 @@ class CascadeErrorPrevention {
    * Monitor memory usage
    */
   private monitorMemoryUsage() {
-    if (typeof window === "undefined" || !("performance" in window)) return;
+    if (typeof window === "undefined") return;
 
     const checkMemory = () => {
-      if ("memory" in performance) {
-        const memory = (performance as any).memory;
-        const usagePercent =
-          (memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100;
-
+      const memoryInfo = getPerformanceMemory();
+      if (memoryInfo) {
+        const usagePercent = (memoryInfo.used / memoryInfo.limit) * 100;
         this.healthMetrics.memoryUsage = usagePercent;
 
         if (usagePercent > 80) {
@@ -269,7 +270,7 @@ class CascadeErrorPrevention {
             severity: "high",
             component: "System",
             message: `High memory usage: ${usagePercent.toFixed(1)}%`,
-            stack: `Used: ${memory.usedJSHeapSize}, Limit: ${memory.jsHeapSizeLimit}`,
+            stack: `Used: ${memoryInfo.used}, Limit: ${memoryInfo.limit}`,
           });
         }
       }

@@ -1,5 +1,7 @@
 // Simplified hooks replacing consciousness system
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { logger } from "../logger";
+import { getPerformanceMemory } from "../utils";
 import type {
   ComponentHealth,
   PerformanceMetrics,
@@ -54,10 +56,11 @@ export function usePerformanceMetrics(
 
     return () => {
       const endTime = performance.now();
+      const memoryInfo = getPerformanceMemory();
       setMetrics((prev) => ({
         ...prev,
         renderTime: endTime - startTime,
-        memoryUsage: (performance as any).memory?.usedJSHeapSize || 0,
+        memoryUsage: memoryInfo?.used || 0,
       }));
     };
   }, []);

@@ -4,6 +4,7 @@
  */
 
 import { getCLS, getFID, getFCP, getLCP, getTTFB, Metric } from "web-vitals";
+import { getPerformanceMemory } from "../utils";
 // React imports removed - this is a pure TypeScript module
 
 // Type declaration for Google Analytics gtag function
@@ -259,11 +260,14 @@ class RealTimePerformanceMonitor {
   }
 
   private setupMemoryMonitoring(): void {
-    if ("memory" in performance) {
+    const memoryInfo = getPerformanceMemory();
+    if (memoryInfo) {
       const updateMemory = () => {
-        const memory = (performance as any).memory;
-        this.metrics.memoryUsage = memory.usedJSHeapSize / 1024 / 1024; // MB
-        this.notifyCallbacks();
+        const currentMemoryInfo = getPerformanceMemory();
+        if (currentMemoryInfo) {
+          this.metrics.memoryUsage = currentMemoryInfo.used / 1024 / 1024; // MB
+          this.notifyCallbacks();
+        }
       };
 
       updateMemory();

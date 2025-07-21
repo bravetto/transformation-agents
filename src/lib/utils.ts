@@ -256,6 +256,37 @@ export function memoize<T extends (...args: any[]) => any>(
 }
 
 /**
+ * Safely get performance memory information with cross-browser compatibility
+ * @returns Memory info object or null if not available
+ */
+export function getPerformanceMemory(): {
+  used: number;
+  total: number;
+  limit: number;
+} | null {
+  // Check if we're in browser environment
+  if (typeof window === "undefined" || typeof performance === "undefined") {
+    return null;
+  }
+
+  // Check if performance.memory is available (Chrome/Edge only)
+  if (
+    performance &&
+    typeof (performance as any).memory === "object" &&
+    (performance as any).memory !== null
+  ) {
+    const memory = (performance as any).memory;
+    return {
+      used: memory.usedJSHeapSize || 0,
+      total: memory.totalJSHeapSize || 0,
+      limit: memory.jsHeapSizeLimit || 0,
+    };
+  }
+
+  return null;
+}
+
+/**
  * Get device performance tier based on hardware capabilities
  * @returns 'low', 'medium', or 'high'
  */

@@ -3,7 +3,9 @@
  * Detects and prevents common memory leaks in React applications
  */
 
-import { useEffect, useRef, useCallback, useState } from "react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
+import { logger } from "../logger";
+import { getPerformanceMemory } from "../utils";
 
 interface ComponentMetrics {
   renderCount: number;
@@ -381,15 +383,15 @@ export function useMemoryMonitoring(warningThresholdMB = 50) {
 
   useEffect(() => {
     // Only monitor in browsers that support memory API
-    if (typeof window === "undefined" || !("memory" in performance)) {
+    if (typeof window === "undefined") {
       return;
     }
 
     const checkMemory = () => {
-      const memory = (performance as any).memory;
-      if (memory) {
-        const used = memory.usedJSHeapSize / 1024 / 1024; // Convert to MB
-        const limit = memory.jsHeapSizeLimit / 1024 / 1024; // Convert to MB
+      const memoryInfo = getPerformanceMemory();
+      if (memoryInfo) {
+        const used = memoryInfo.used / 1024 / 1024; // Convert to MB
+        const limit = memoryInfo.limit / 1024 / 1024; // Convert to MB
         const percentage = (used / limit) * 100;
 
         setMemoryInfo({ used, limit, percentage });
@@ -430,7 +432,7 @@ export class MemoryLeakDetector {
   }
 
   startDetection(): void {
-    if (typeof window === "undefined" || !("memory" in performance)) {
+    if (typeof window === "undefined" || !getPerformanceMemory()) {
       console.log("Memory leak detection not available in this environment");
       return;
     }
@@ -450,10 +452,10 @@ export class MemoryLeakDetector {
   }
 
   private checkForLeaks(): void {
-    const memory = (performance as any).memory;
-    if (!memory) return;
+    const memoryInfo = getPerformanceMemory();
+    if (!memoryInfo) return;
 
-    const currentHeapSize = memory.usedJSHeapSize;
+    const currentHeapSize = memoryInfo.used;
     const heapIncrease = currentHeapSize - this.lastHeapSize;
 
     // If memory increased by more than 5MB

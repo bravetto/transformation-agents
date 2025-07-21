@@ -3,6 +3,9 @@
  * Enterprise-grade logging with structured data, performance tracking, and alerting
  */
 
+import { cn } from "./utils";
+import { getPerformanceMemory } from "./utils";
+
 interface LogLevel {
   DEBUG: 0;
   INFO: 1;
@@ -153,13 +156,17 @@ export class ProductionLogger {
               viewport: `${window.innerWidth}x${window.innerHeight}`,
               timestamp: Date.now(),
               // Safe memory info from Performance API if available
-              ...(typeof (performance as any).memory !== "undefined"
-                ? {
-                    heapUsed: (performance as any).memory.usedJSHeapSize,
-                    heapTotal: (performance as any).memory.totalJSHeapSize,
-                    heapLimit: (performance as any).memory.jsHeapSizeLimit,
-                  }
-                : {}),
+              // 🛡️ CROSS-BROWSER SAFE: Use utility function for memory access
+              ...(() => {
+                const memoryInfo = getPerformanceMemory();
+                return memoryInfo
+                  ? {
+                      heapUsed: memoryInfo.used,
+                      heapTotal: memoryInfo.total,
+                      heapLimit: memoryInfo.limit,
+                    }
+                  : {};
+              })(),
             }
           : {}),
 
