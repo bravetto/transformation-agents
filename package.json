@@ -54,7 +54,15 @@
     "agents:certify": "npm run type-check && npm run test && npm run build && npm run docs:enhanced-health",
     "divine:precision": "npm run agents:certify && npm run docs:maintenance && npm run performance",
     "divine:health": "npm run docs:enhanced-health",
-    "divine:optimize": "npm run docs:optimize && npm run docs:ai-suggestions"
+    "divine:optimize": "npm run docs:optimize && npm run docs:ai-suggestions",
+    "env:setup": "node scripts/environment-setup.js",
+    "env:upload": "node scripts/detect-platform-and-upload.js",
+    "env:upload:bash": "./scripts/upload-env-to-vercel.sh",
+    "env:upload:windows": "powershell -ExecutionPolicy Bypass -File ./scripts/upload-env-to-vercel.ps1",
+    "env:pull": "vercel env pull",
+    "env:validate": "node scripts/validate-environment.js",
+    "env:check": "npm run env:validate && echo '📋 Environment check complete'",
+    "env:help": "node scripts/detect-platform-and-upload.js --help"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
