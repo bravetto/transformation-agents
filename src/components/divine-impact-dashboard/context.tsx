@@ -169,3 +169,6 @@ export function DivineImpactProvider({
 }
 
 export default useDashboard;
+
+// Export alias for backward compatibility
+export { DivineImpactProvider as DashboardProvider };

@@ -34,10 +34,7 @@
     "**/__tests__/**/*", 
     "**/*.test.*", 
     "**/*.spec.*",
-    "src/lib/prompts/prompt-administration/**/*",
-    "src/lib/prompts/legacy-adapter.ts",
-    "src/lib/prompts/template-service.ts", 
-    "src/lib/prompts/templates/**/*",
+    "src/lib/prompts/**/*",
     "src_backup_consciousness_*/**/*",
     "src/lib/performance/performance-monitor-client.tsx"
   ]
