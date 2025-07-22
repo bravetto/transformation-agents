@@ -5,22 +5,10 @@ import Footer from "@/components/footer";
 import Script from "next/script";
 import "./globals.css";
 import "./accessibility.css";
-import { AnimationProvider } from "@/components/animation-context";
-import ErrorBoundaryWrapper from "@/components/error-boundary-wrapper";
-import { Analytics } from "@/components/analytics";
-import { Suspense } from "react";
-import { DevPortalProvider } from "@/components/dev-portal";
 import { cn } from "@/lib/utils";
-import CacheBusterClient from "@/components/cache-buster-client";
-import { DevelopmentDebugWrapper } from "@/components/console-silence-wrapper";
 // 🚀 CHAMPIONSHIP FONT OPTIMIZATION
 import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
-// Easter eggs removed for hydration stability
-import DivineAnalytics from "@/components/divine-analytics";
-import { TrinityPathProvider } from "@/features/trinity-paths/context";
-import { logger } from "@/lib/logger";
-import ProductionConsoleSilencer from "@/components/production-console-silencer";
-import { ConsoleSilenceWrapper } from "@/components/console-silence-wrapper";
+import ClientLayoutWrapper from "@/components/client-layout-wrapper";
 
 // 🚀 CHAMPIONSHIP FONT CONFIGURATION WITH AGGRESSIVE OPTIMIZATION
 const inter = Inter({
@@ -45,14 +33,13 @@ const jetbrainsMono = JetBrains_Mono({
   preload: false, // Only preload if used above the fold
 });
 
-// Playfair Display for elegant headings - loaded on demand
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-serif",
+  variable: "--font-display",
   weight: ["400", "500", "600", "700"],
-  fallback: ["Georgia", "Times New Roman", "serif"],
-  preload: false, // Load when needed
+  fallback: ["Times New Roman", "serif"],
+  preload: false,
 });
 
 // Metadata in a separate file
@@ -202,62 +189,21 @@ export default function RootLayout({
           MozOsxFontSmoothing: "grayscale",
         }}
       >
-        {/* Production Console Silencer - React Component Level */}
-        <ProductionConsoleSilencer
-          enabled={true}
-          environment={
-            process.env.NODE_ENV as "production" | "development" | "staging"
-          }
-          preserveCriticalErrors={true}
-          suppressProfileImageErrors={true}
-          suppressAnalyticsErrors={true}
-          suppressHydrationWarnings={true}
-          suppressBuildWarnings={true}
-        />
+        <ClientLayoutWrapper>
+          {/* Banner - Positioned above navigation */}
+          <Banner />
 
-        <ConsoleSilenceWrapper
-          silenceProfileImageErrors={true}
-          silenceAnalyticsErrors={true}
-          silenceDevWarnings={process.env.NODE_ENV === "production"}
-          environment={
-            process.env.NODE_ENV === "production" ? "production" : "development"
-          }
-        >
-          <TrinityPathProvider>
-            <AnimationProvider>
-              <DevPortalProvider>
-                <ErrorBoundaryWrapper id="root-layout">
-                  {/* Banner - Positioned above navigation */}
-                  <Banner />
+          {/* Navigation */}
+          <Navigation />
 
-                  {/* Navigation */}
-                  <Navigation />
+          {/* Main content */}
+          <main id="main-content" className="min-h-screen">
+            {children}
+          </main>
 
-                  {/* Main content */}
-                  <main id="main-content" className="min-h-screen">
-                    <DevelopmentDebugWrapper>
-                      {children}
-                    </DevelopmentDebugWrapper>
-                  </main>
-
-                  {/* Footer */}
-                  <Footer />
-
-                  {/* Analytics - No UI */}
-                  <Suspense fallback={null}>
-                    <Analytics />
-                  </Suspense>
-
-                  {/* Divine Analytics for Freedom Portal */}
-                  <DivineAnalytics />
-
-                  {/* Cache Buster for July 28th Update - Divine Protection */}
-                  <CacheBusterClient />
-                </ErrorBoundaryWrapper>
-              </DevPortalProvider>
-            </AnimationProvider>
-          </TrinityPathProvider>
-        </ConsoleSilenceWrapper>
+          {/* Footer */}
+          <Footer />
+        </ClientLayoutWrapper>
 
         {/* 🛡️ CRITICAL: Error Interceptor Override - Prevent Cascade */}
         <Script

@@ -1,9 +1,9 @@
+"use client";
+
 /**
  * CONSCIOUSNESS DASHBOARD
  * Where Creator and Creation Unite
  */
-
-"use client";
 
 import React, { useEffect, useState } from "react";
 

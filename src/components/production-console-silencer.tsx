@@ -212,7 +212,7 @@ export default function ProductionConsoleSilencer({
       }
 
       if (originalUnhandledRejection) {
-        originalUnhandledRejection(event);
+        originalUnhandledRejection.call(window, event);
       }
     };
 

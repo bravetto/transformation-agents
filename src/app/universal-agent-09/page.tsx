@@ -1,9 +1,9 @@
+"use client";
+
 /**
  * Universal Agent 09 Demo Page
  * Demonstrates the Divine Pattern Recognition System
  */
-
-"use client";
 
 import React from "react";
 import { motion } from "framer-motion";
