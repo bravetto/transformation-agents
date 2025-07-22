@@ -25,6 +25,7 @@ import { Badge } from "@/components/ui/badge";
 
 // User Type Modal - this component works safely
 import UserTypeModal, { UserType } from "@/components/user-type-modal";
+import { SafeProfileImage } from "@/components/safe-profile-image";
 
 // 🛡️ PROGRESSIVE ENHANCEMENT WRAPPER - Safe pattern for client-only features
 function ClientOnlyWrapper({ children }: { children: React.ReactNode }) {
@@ -298,12 +299,14 @@ function StaticCharacterWitnesses() {
             >
               <Card className="h-full hover:shadow-lg transition-shadow duration-300">
                 <CardContent className="p-8 text-center">
-                  <div className="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden border-4 border-blue-200">
-                    <img
+                  <div className="mx-auto mb-6">
+                    <SafeProfileImage
                       src={witness.image}
                       alt={witness.name}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
+                      name={witness.name}
+                      role={witness.title}
+                      size="xl"
+                      priority={index === 0}
                     />
                   </div>
 
@@ -442,7 +445,7 @@ function StaticLetterPortal() {
           </div>
 
           <div className="space-y-4">
-            <Link href="/letter-portal">
+            <Link href="/letter-form-test">
               <Button
                 size="lg"
                 className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3"
