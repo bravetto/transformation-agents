@@ -24,6 +24,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import StaticCommunityStats from "@/components/ui/static-community-stats";
+import StaticCountdown from "@/components/ui/static-countdown";
 
 // User Type Modal - this component works safely
 import UserTypeModal, { UserType } from "@/components/user-type-modal";
@@ -42,25 +44,25 @@ function ClientOnlyWrapper({ children }: { children: React.ReactNode }) {
 // 🌟 STATIC HERO SECTION - No hydration issues
 function StaticHero() {
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen bg-gradient-to-br from-amber-50 via-white to-blue-50 flex items-center justify-center overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
 
       <div className="container mx-auto px-4 text-center z-10">
         <div className="max-w-4xl mx-auto">
-          {/* Main Heading */}
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+          {/* Main Heading - Design System Excellence */}
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-gray-900 mb-6 leading-tight tracking-tight">
             The Bridge Project
           </h1>
 
-          {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed">
+          {/* Subtitle - Enhanced Readability */}
+          <p className="text-xl md:text-2xl lg:text-3xl text-gray-700 mb-8 leading-relaxed font-medium max-w-5xl mx-auto">
             Building community support for JAHmere Webb's freedom through
             prayer, character witnesses, and direct advocacy.
           </p>
 
-          {/* Divine Timing Banner */}
-          <div className="bg-purple-600 text-white px-8 py-4 rounded-xl mb-8 inline-block shadow-lg">
+          {/* Divine Timing Banner - Brand Colors */}
+          <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-8 py-4 rounded-xl mb-8 inline-block shadow-lg">
             <div className="flex items-center justify-center space-x-3">
               <Calendar className="w-6 h-6" />
               <span className="text-lg font-semibold">
@@ -76,7 +78,7 @@ function StaticHero() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Button
               size="lg"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3"
+              className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-3 shadow-lg hover:shadow-xl transition-all duration-200"
             >
               Choose Your Path
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -86,33 +88,10 @@ function StaticHero() {
             </Button>
           </div>
 
-          {/* Community Stats - Static, no API calls */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-            <Card className="bg-blue-50 border-blue-200">
-              <CardContent className="p-6 text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-2">
-                  1,247+
-                </div>
-                <div className="text-blue-700">Letters of Support</div>
-              </CardContent>
-            </Card>
-            <Card className="bg-green-50 border-green-200">
-              <CardContent className="p-6 text-center">
-                <div className="text-3xl font-bold text-green-600 mb-2">
-                  10,000+
-                </div>
-                <div className="text-green-700">Prayers Submitted</div>
-              </CardContent>
-            </Card>
-            <Card className="bg-purple-50 border-purple-200">
-              <CardContent className="p-6 text-center">
-                <div className="text-3xl font-bold text-purple-600 mb-2">
-                  247+
-                </div>
-                <div className="text-purple-700">Community Supporters</div>
-              </CardContent>
-            </Card>
-          </div>
+          {/* Enhanced Community Stats - Divine Excellence */}
+          <ClientOnlyWrapper>
+            <StaticCommunityStats variant="hero" className="mt-12" />
+          </ClientOnlyWrapper>
         </div>
       </div>
     </section>
@@ -489,6 +468,41 @@ export default function MVPStaticCleanPage() {
 
       {/* Static content that renders identically on server and client */}
       <StaticHero />
+
+      {/* July 28th Urgency Section - Divine Timing */}
+      <section className="py-16 bg-gradient-to-r from-red-600 via-red-500 to-orange-500 text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            ⚡ CRITICAL MISSION TIMELINE ⚡
+          </h2>
+          <p className="text-xl mb-8 max-w-3xl mx-auto">
+            JAHmere's court hearing is July 28, 2025. Every voice, prayer, and
+            letter counts toward his freedom.
+          </p>
+
+          <ClientOnlyWrapper>
+            <StaticCountdown
+              targetDate="2025-07-28T09:00:00-05:00"
+              variant="dramatic"
+              className="mb-8"
+            />
+          </ClientOnlyWrapper>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button
+              size="lg"
+              className="bg-white text-red-600 hover:bg-gray-100 px-8 py-3 font-bold shadow-lg"
+            >
+              Take Action NOW
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+            <div className="text-white/90">
+              <strong>Goal:</strong> 1,050+ letters by July 28th
+            </div>
+          </div>
+        </div>
+      </section>
+
       <StaticThreePaths />
       <StaticCharacterWitnesses />
       <StaticPrayerNetwork />
