@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" class="w-full h-full">
+  <!-- Inspiring background gradient -->
+  <defs>
+    <linearGradient id="jahmereBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:0.15"/>
+      <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.05"/>
+    </linearGradient>
+    <radialGradient id="jahmereGlow" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.1"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="400" fill="#fffbeb"/>
+  <rect width="400" height="400" fill="url(#jahmereBg)"/>
+  <rect width="400" height="400" fill="url(#jahmereGlow)"/>
+  
+  <!-- Profile silhouette -->
+  <circle cx="200" cy="140" r="70" fill="#fed7aa" opacity="0.6"/>
+  <circle cx="200" cy="140" r="45" fill="#f59e0b" opacity="0.8"/>
+  
+  <!-- Body/shoulders -->
+  <path d="M130 320 C130 260, 150 220, 200 220 C250 220, 270 260, 270 320" 
+        fill="#f59e0b" opacity="0.6"/>
+  
+  <!-- Hope symbol - subtle cross -->
+  <path d="M195 240 L205 240 L205 245 L210 245 L210 255 L205 255 L205 265 L195 265 L195 255 L190 255 L190 245 L195 245 Z" 
+        fill="#ffffff" opacity="0.3"/>
+  
+  <!-- Text overlay -->
+  <text x="200" y="350" text-anchor="middle" fill="#92400e" 
+        font-family="Inter, system-ui" font-size="16" font-weight="600" opacity="0.8">
+    JAHMERE WEBB
+  </text>
+  <text x="200" y="370" text-anchor="middle" fill="#a16207" 
+        font-family="Inter, system-ui" font-size="12" font-weight="400" opacity="0.7">
+    Bridge to Freedom
+  </text>
+  <text x="200" y="385" text-anchor="middle" fill="#059669" 
+        font-family="Inter, system-ui" font-size="10" font-weight="500" opacity="0.6">
+    July 28, 2025
+  </text>
+</svg> 

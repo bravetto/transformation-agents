@@ -1,13 +1,10 @@
 "use client";
 
 import { Shield, Zap, Users, BarChart, Code, Palette } from "lucide-react";
-import {
-  BaseCard,
-  FeatureCard,
-  Container,
-  Heading,
-  Text,
-} from "@/components/ui";
+import { Container } from "@/components/ui";
+import { FeatureCard } from "@/components/ui/feature-card";
+import { BaseCard } from "@/components/ui/base-card";
+import { Heading, Text } from "@/components/ui/typography";
 import Section from "@/components/section";
 import { logger } from "@/lib/logger";
 

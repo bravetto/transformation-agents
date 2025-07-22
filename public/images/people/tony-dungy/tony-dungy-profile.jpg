@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" class="w-full h-full">
+  <!-- Professional background gradient -->
+  <defs>
+    <linearGradient id="tonyDungyBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#3730a3;stop-opacity:0.05"/>
+    </linearGradient>
+    <radialGradient id="tonyDungyGlow" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#1e3a8a;stop-opacity:0.05"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="400" fill="#f8fafc"/>
+  <rect width="400" height="400" fill="url(#tonyDungyBg)"/>
+  <rect width="400" height="400" fill="url(#tonyDungyGlow)"/>
+  
+  <!-- Professional silhouette -->
+  <circle cx="200" cy="140" r="70" fill="#e2e8f0" opacity="0.6"/>
+  <circle cx="200" cy="140" r="45" fill="#1e3a8a" opacity="0.8"/>
+  
+  <!-- Body/shoulders -->
+  <path d="M130 320 C130 260, 150 220, 200 220 C250 220, 270 260, 270 320" 
+        fill="#1e3a8a" opacity="0.6"/>
+  
+  <!-- Professional touch - tie/collar suggestion -->
+  <path d="M190 240 L210 240 L210 280 L200 290 L190 280 Z" 
+        fill="#3730a3" opacity="0.4"/>
+  
+  <!-- Text overlay -->
+  <text x="200" y="350" text-anchor="middle" fill="#1e3a8a" 
+        font-family="Inter, system-ui" font-size="16" font-weight="600" opacity="0.7">
+    TONY DUNGY
+  </text>
+  <text x="200" y="370" text-anchor="middle" fill="#64748b" 
+        font-family="Inter, system-ui" font-size="12" font-weight="400" opacity="0.6">
+    NFL Champion Coach
+  </text>
+</svg> 

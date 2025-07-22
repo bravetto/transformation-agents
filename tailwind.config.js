@@ -402,6 +402,6 @@ module.exports = {
     },
   },
   plugins: [
-    require("tailwindcss-animate"), // Make sure this plugin is installed
+    // Animation utilities now provided via tw-animate-css CSS import
   ],
 };

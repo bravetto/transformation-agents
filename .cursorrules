@@ -1,53 +1,104 @@
-# 🏆 BRIDGE PROJECT - CURSOR RULES
-# State Protection & Development Excellence Protocol
+# AI Assistant Context for JAHmere Webb Freedom Portal
 
-## 🛡️ CASCADE PREVENTION (SACRED LAW)
-- NEVER run multiple dev servers simultaneously
-- ALWAYS kill existing processes before starting new ones  
-- Clear cache on ANY import error
-- Commit working states immediately
-- Use manual precision methodology ONLY
+## Project Overview
+- **Purpose**: JAHmere Webb Freedom Advocacy Platform - Justice reform portal
+- **Status**: Production-ready, deployed on Vercel
+- **Performance**: Championship level (27-131ms API responses, 9.0s builds)
 
-## 🌐 PORT MANAGEMENT
-preferred_port: 1437  # Known clean state (v1.0-clean-state)
-proven_clean_ports: [1437]
-fallback_ports: [3000, 3001, 4000, 4242]
-avoid_ports: [3714]  # Known problematic state
+## Tech Stack (CRITICAL - Follow Exactly)
+- **Framework**: Next.js 15.4.2 (App Router) 
+- **Language**: TypeScript 5.0+ (strict mode)
+- **Runtime**: Node.js 20.x
+- **Styling**: Tailwind CSS 3.0
+- **Database**: Not implemented (static site)
+- **Hosting**: Vercel Edge Network
 
-## 🚀 DEVELOPMENT WORKFLOW
-1. Use `./scripts/clean-start.sh` for fresh starts
-2. Run `npm run build` before any commit
-3. Fix ESLint errors immediately (no @ts-ignore)
-4. Test analytics at /analytics-dashboard
-5. Preserve clean state with git tags
+## File Structure Patterns
+```
+src/app/                 # Next.js 15 App Router pages
+src/components/          # React components  
+src/components/ui/       # Reusable UI components (Radix + Tailwind)
+src/lib/                 # Utilities and helpers
+src/types/               # TypeScript type definitions
+public/                  # Static assets
+```
 
-## 📊 ANALYTICS PERFORMANCE STANDARDS
-- API response time: <50ms (current: 7ms ✅)
-- Event processing: <10ms
-- Modal selection rate: >30% (current: 33.33% ✅)
-- Build time: <10s
-- Zero TypeScript errors (MANDATORY)
+## Coding Conventions (MANDATORY)
+- **Components**: Use arrow functions, TypeScript interfaces
+- **Styling**: Tailwind classes only (no CSS modules/styled-components)
+- **Imports**: Use @/ path aliases (`import { X } from '@/components/ui'`)
+- **Client Components**: Add 'use client' only when needed
+- **Error Boundaries**: Wrap client components with error handling
 
-## 🎯 3-PATH SYSTEM PRIORITIES
-1. Coach Path: Complete leadership development tools
-2. Judge Path: Enhance evidence dashboard
-3. Activist Path: Finish letter portal templates
+## NEVER Generate These Patterns
+- ❌ Pages directory code (deprecated, use App Router)
+- ❌ Class components (use functional only)
+- ❌ CSS modules or styled-components (use Tailwind)
+- ❌ Redux/Context API (this is a static site)
+- ❌ API routes with databases (static site)
+- ❌ `any` types (use proper TypeScript)
 
-## ⚡ QUICK COMMANDS
-- Clean start: `./scripts/clean-start.sh`
-- Health check: `curl http://localhost:1437/api/health`
-- Analytics: `open http://localhost:1437/analytics-dashboard`
-- Cache clear: `rm -rf .next node_modules/.cache`
+## ALWAYS Use These Patterns
+- ✅ `'use client'` for interactive components
+- ✅ Server components for static content (default)
+- ✅ Proper TypeScript interfaces for props
+- ✅ Error boundaries for client components  
+- ✅ Tailwind for all styling
+- ✅ @/ imports for absolute paths
 
-## 🏆 SUCCESS METRICS
-- Zero import errors: ✅ ACHIEVED
-- Championship analytics: ✅ ACHIEVED (7ms)
-- Production build: ✅ ACHIEVED
-- Clean state tagged: ✅ v1.0-clean-state
+## Component Patterns
+```typescript
+// Server Component (default)
+export default function PageComponent() {
+  return <div className="container mx-auto">Content</div>
+}
 
-## 🚨 EMERGENCY RECOVERY
-If cascade failure occurs:
-1. `git checkout v1.0-clean-state`
-2. `./scripts/clean-start.sh`
-3. Verify at http://localhost:1437
-4. Proceed with manual precision only 
+// Client Component (interactive)
+'use client'
+export default function InteractiveComponent() {
+  const [state, setState] = useState('')
+  return <button onClick={() => setState('new')}>Click</button>
+}
+
+// Props with TypeScript
+interface ComponentProps {
+  title: string
+  optional?: boolean
+  children: React.ReactNode
+}
+```
+
+## Common Imports
+```typescript
+// Next.js
+import { Metadata } from 'next'
+import Link from 'next/link'
+import Image from 'next/image'
+
+// React  
+import { useState, useEffect } from 'react'
+
+// UI Components (existing)
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Container } from '@/components/ui/container'
+```
+
+## Project-Specific Context
+- **Mission**: Advocacy for JAHmere Webb's freedom case (July 28th court date)
+- **Audience**: Community supporters, legal professionals, advocates
+- **Content**: Legal case information, community support, petition systems
+- **Tone**: Professional, hopeful, action-oriented (not "divine" language)
+
+## Performance Requirements
+- API responses: <100ms (currently 27-131ms ✅)
+- Build time: <15s (currently 9.0s ✅)  
+- Core Web Vitals: Green scores required
+- Bundle size: Optimized for Vercel Edge
+
+## Deployment Context
+- **Platform**: Vercel (vercel.json configured)
+- **Domain**: july28freedom.vercel.app
+- **Environment**: Production-ready
+- **Cache**: Edge caching enabled
+- **Analytics**: Vercel analytics integrated 

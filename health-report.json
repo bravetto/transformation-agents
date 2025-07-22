@@ -1,0 +1,41 @@
+{
+  "timestamp": "2025-07-22T01:44:09.919Z",
+  "overall": "warning",
+  "checks": {
+    "filePermissions": {
+      "status": "healthy",
+      "issues": []
+    },
+    "nextConfig": {
+      "status": "healthy",
+      "configExists": true
+    },
+    "buildDirectory": {
+      "status": "warning",
+      "issues": [
+        "No build directory"
+      ]
+    },
+    "nodeModules": {
+      "status": "healthy"
+    },
+    "portAvailability": {
+      "status": "healthy",
+      "availablePorts": [
+        4242,
+        1437,
+        3000,
+        3001,
+        4000
+      ],
+      "recommendedPort": 4242
+    },
+    "imageAssets": {
+      "status": "healthy",
+      "missingImages": []
+    },
+    "typescript": {
+      "status": "healthy"
+    }
+  }
+}

@@ -1,47 +1,35 @@
 {
+  "version": 2,
+  
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
+  "installCommand": "npm ci",
+  
   "framework": "nextjs",
+  
+
+  
   "regions": ["iad1"],
-  "functions": {
-    "app/api/prayers/route.ts": {
-      "maxDuration": 10
-    },
-    "app/api/countdown/route.ts": {
-      "maxDuration": 5
-    },
-    "app/api/divine-status/route.ts": {
-      "maxDuration": 5
-    },
-    "app/dashboard/judge/page.tsx": {
-      "maxDuration": 30
-    }
-  },
+  
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
         {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
         },
         {
-          "key": "X-Frame-Options",
-          "value": "DENY"
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
         },
         {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        },
-        {
-          "key": "X-Divine-Portal",
-          "value": "July-28-Freedom"
-        },
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
         }
       ]
     },
@@ -49,10 +37,75 @@
       "source": "/api/(.*)",
       "headers": [
         {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "X-Requested-With, Content-Type, Authorization"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=60, s-maxage=300, stale-while-revalidate=60"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(js|css|woff|woff2)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(png|jpg|jpeg|gif|svg|webp|avif)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "source": "/api/health",
+      "headers": [
+        {
           "key": "Cache-Control",
           "value": "public, max-age=0, must-revalidate"
         }
       ]
     }
-  ]
+  ],
+  
+  "redirects": [],
+  
+  "rewrites": [
+    {
+      "source": "/health",
+      "destination": "/api/health"
+    }
+  ],
+  
+  "env": {
+    "NODE_ENV": "production",
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
+  
+  "build": {
+    "env": {
+      "NODE_OPTIONS": "--max_old_space_size=4096"
+    }
+  },
+  
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./"
 }

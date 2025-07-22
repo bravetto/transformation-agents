@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Container, Heading, Text, Button, Stack } from "@/components/ui";
+import { Container, Button, Stack } from "@/components/ui";
+import { Heading, Text } from "@/components/ui/typography";
 import DecisionCountdown from "@/components/decision-countdown";
 import MiniCountdown from "@/components/ui/mini-countdown";
 

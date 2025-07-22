@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Container, Text } from "@/components/ui";
+import { Container } from "@/components/ui/container";
+import { Text } from "@/components/ui/typography";
 import { Heart, Mail, Calendar, Github } from "lucide-react";
 import { getBuildInfo } from "@/lib/build-config";
 import { withErrorBoundary } from "@/components/with-error-boundary";

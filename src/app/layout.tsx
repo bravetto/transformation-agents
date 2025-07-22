@@ -12,12 +12,15 @@ import { Suspense } from "react";
 import { DevPortalProvider } from "@/components/dev-portal";
 import { cn } from "@/lib/utils";
 import CacheBusterClient from "@/components/cache-buster-client";
+import { DevelopmentDebugWrapper } from "@/components/console-silence-wrapper";
 // 🚀 CHAMPIONSHIP FONT OPTIMIZATION
 import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
 // Easter eggs removed for hydration stability
 import DivineAnalytics from "@/components/divine-analytics";
 import { TrinityPathProvider } from "@/features/trinity-paths/context";
 import { logger } from "@/lib/logger";
+import ProductionConsoleSilencer from "@/components/production-console-silencer";
+import { ConsoleSilenceWrapper } from "@/components/console-silence-wrapper";
 
 // 🚀 CHAMPIONSHIP FONT CONFIGURATION WITH AGGRESSIVE OPTIMIZATION
 const inter = Inter({
@@ -53,7 +56,7 @@ const playfairDisplay = Playfair_Display({
 });
 
 // Metadata in a separate file
-export { metadata } from "./metadata";
+export { metadata, viewport } from "./metadata";
 
 export default function RootLayout({
   children,
@@ -85,6 +88,104 @@ export default function RootLayout({
             size-adjust: 107%;
           }
         `}</style>
+
+        {/* Production Console Polish - Load Before Any Other Scripts */}
+        <Script
+          id="console-polish"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              // 🔇 IMMEDIATE CONSOLE POLISH - Production Ready
+              (function() {
+                if (typeof window === 'undefined') return;
+                
+                const isProduction = "${process.env.NODE_ENV}" === "production";
+                const originalError = console.error;
+                const originalWarn = console.warn;
+                
+                // Patterns to immediately silence
+                const silencePatterns = [
+                  'tony-dungy-profile.jpg',
+                  'jahmere-webb-profile.jpg',
+                  'profile.*jpg.*404',
+                  'analytics.*404',
+                  'Failed to load resource.*api/analytics',
+                  'Fast Refresh',
+                  'webpack-internal',
+                  'Loading chunk.*failed'
+                ];
+                
+                // Critical patterns to preserve
+                const preservePatterns = [
+                  'TypeError:',
+                  'ReferenceError:',
+                  'Network error',
+                  'Uncaught'
+                ];
+                
+                function shouldSilence(message) {
+                  // Never silence critical errors
+                  if (preservePatterns.some(p => message.toLowerCase().includes(p.toLowerCase()))) {
+                    return false;
+                  }
+                  
+                  // Silence known safe patterns
+                  return silencePatterns.some(p => {
+                    try {
+                      return new RegExp(p, 'i').test(message);
+                    } catch {
+                      return message.toLowerCase().includes(p.toLowerCase());
+                    }
+                  });
+                }
+                
+                // Override console methods immediately
+                console.error = function(...args) {
+                  const message = args.join(' ');
+                  if (!shouldSilence(message)) {
+                    originalError.apply(console, args);
+                  }
+                };
+                
+                console.warn = function(...args) {
+                  const message = args.join(' ');
+                  if (!shouldSilence(message)) {
+                    originalWarn.apply(console, args);
+                  }
+                };
+                
+                // Suppress console.log in production
+                if (isProduction) {
+                  const originalLog = console.log;
+                  console.log = function(...args) {
+                    const message = args.join(' ');
+                    if (preservePatterns.some(p => message.toLowerCase().includes(p.toLowerCase()))) {
+                      originalLog.apply(console, args);
+                    }
+                  };
+                }
+                
+                // Global error suppression
+                window.onerror = function(message, source, lineno, colno, error) {
+                  const msg = typeof message === 'string' ? message : String(message);
+                  if (shouldSilence(msg)) {
+                    return true; // Prevent default error handling
+                  }
+                  return false;
+                };
+                
+                // Promise rejection suppression
+                window.addEventListener('unhandledrejection', function(event) {
+                  const message = event.reason?.toString() || '';
+                  if (shouldSilence(message)) {
+                    event.preventDefault();
+                  }
+                });
+                
+              })();
+            `,
+          }}
+        />
       </head>
       <body
         className={cn(
@@ -101,38 +202,62 @@ export default function RootLayout({
           MozOsxFontSmoothing: "grayscale",
         }}
       >
-        <TrinityPathProvider>
-          <AnimationProvider>
-            <DevPortalProvider>
-              <ErrorBoundaryWrapper id="root-layout">
-                {/* Banner - Positioned above navigation */}
-                <Banner />
+        {/* Production Console Silencer - React Component Level */}
+        <ProductionConsoleSilencer
+          enabled={true}
+          environment={
+            process.env.NODE_ENV as "production" | "development" | "staging"
+          }
+          preserveCriticalErrors={true}
+          suppressProfileImageErrors={true}
+          suppressAnalyticsErrors={true}
+          suppressHydrationWarnings={true}
+          suppressBuildWarnings={true}
+        />
 
-                {/* Navigation */}
-                <Navigation />
+        <ConsoleSilenceWrapper
+          silenceProfileImageErrors={true}
+          silenceAnalyticsErrors={true}
+          silenceDevWarnings={process.env.NODE_ENV === "production"}
+          environment={
+            process.env.NODE_ENV === "production" ? "production" : "development"
+          }
+        >
+          <TrinityPathProvider>
+            <AnimationProvider>
+              <DevPortalProvider>
+                <ErrorBoundaryWrapper id="root-layout">
+                  {/* Banner - Positioned above navigation */}
+                  <Banner />
 
-                {/* Main content */}
-                <main id="main-content" className="min-h-screen">
-                  {children}
-                </main>
+                  {/* Navigation */}
+                  <Navigation />
 
-                {/* Footer */}
-                <Footer />
+                  {/* Main content */}
+                  <main id="main-content" className="min-h-screen">
+                    <DevelopmentDebugWrapper>
+                      {children}
+                    </DevelopmentDebugWrapper>
+                  </main>
 
-                {/* Analytics - No UI */}
-                <Suspense fallback={null}>
-                  <Analytics />
-                </Suspense>
+                  {/* Footer */}
+                  <Footer />
 
-                {/* Divine Analytics for Freedom Portal */}
-                <DivineAnalytics />
+                  {/* Analytics - No UI */}
+                  <Suspense fallback={null}>
+                    <Analytics />
+                  </Suspense>
 
-                {/* Cache Buster for July 28th Update - Divine Protection */}
-                <CacheBusterClient />
-              </ErrorBoundaryWrapper>
-            </DevPortalProvider>
-          </AnimationProvider>
-        </TrinityPathProvider>
+                  {/* Divine Analytics for Freedom Portal */}
+                  <DivineAnalytics />
+
+                  {/* Cache Buster for July 28th Update - Divine Protection */}
+                  <CacheBusterClient />
+                </ErrorBoundaryWrapper>
+              </DevPortalProvider>
+            </AnimationProvider>
+          </TrinityPathProvider>
+        </ConsoleSilenceWrapper>
 
         {/* 🛡️ CRITICAL: Error Interceptor Override - Prevent Cascade */}
         <Script

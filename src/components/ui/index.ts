@@ -10,7 +10,9 @@
 
 // Central export file for all UI components
 export * from "./badge";
-export * from "./base-card";
+// Explicit base-card export to fix build issues
+export { BaseCard } from "./base-card";
+export { default as BaseCardDefault } from "./base-card";
 export * from "./button";
 export * from "./calendar";
 export * from "./card";
@@ -39,7 +41,8 @@ export * from "./switch";
 export * from "./tabs";
 export * from "./textarea";
 export * from "./trust-banner";
-export * from "./typography";
+// Explicit typography exports to fix build issues
+export { Heading, Text, Quote } from "./typography";
 export * from "./urgency-banner";
 
 // Re-export commonly used together

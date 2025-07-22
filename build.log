@@ -1,0 +1,144 @@
+
+> july-28-freedom-portal@1.0.0 build
+> next build
+
+   ▲ Next.js 15.4.2
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ optimizeCss
+     · optimizePackageImports
+
+   Creating an optimized production build ...
+Webpack Bundle Analyzer saved report to /Users/michaelmataluni/Desktop/Websites/transformation-agents-JAHmere-bridge/.next/analyze/nodejs.html
+
+No bundles were parsed. Analyzer will show only original module sizes from stats file.
+
+Webpack Bundle Analyzer saved report to /Users/michaelmataluni/Desktop/Websites/transformation-agents-JAHmere-bridge/.next/analyze/edge.html
+Webpack Bundle Analyzer saved report to /Users/michaelmataluni/Desktop/Websites/transformation-agents-JAHmere-bridge/.next/analyze/client.html
+ ✓ Compiled successfully in 22.0s
+   Linting and checking validity of types ...
+
+./src/components/analytics/user-journey-dashboard.tsx
+100:6  Warning: React Hook useCallback has a missing dependency: 'generateMockMetrics'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/divine-synchronicity-analyzer.tsx
+207:6  Warning: React Hook useEffect has missing dependencies: 'generateCleansingReport', 'initializeCascadeVisualization', and 'initializeSynchronicityPatterns'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/ui/speculation-rules.tsx
+45:9  Warning: The 'finalConfig' object makes the dependencies of useEffect Hook (at line 111) change on every render. Move it inside the useEffect callback. Alternatively, wrap the initialization of 'finalConfig' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+183:5  Warning: React Hook "useEffect" is called in function "prefetchOnHover" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word "use".  react-hooks/rules-of-hooks
+
+./src/lib/circuit-breaker.tsx
+150:6  Warning: React Hook useEffect has a missing dependency: 'config'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/lib/performance/performance-monitor-client.tsx
+447:6  Warning: React Hook useEffect has a missing dependency: 'config'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+   Collecting page data ...
+   Generating static pages (0/96) ...
+   Generating static pages (24/96) 
+   Generating static pages (48/96) 
+   Generating static pages (72/96) 
+ ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+ ✓ Generating static pages (96/96)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                   Size  First Load JS
+┌ ○ /                                      14.7 kB         173 kB
+├ ○ /_not-found                               1 kB         101 kB
+├ ○ /admin/analytics                       2.04 kB         111 kB
+├ ○ /admin/settings                        5.21 kB         125 kB
+├ ○ /agents/performance                    3.19 kB         110 kB
+├ ○ /analytics-dashboard                   3.77 kB         153 kB
+├ ƒ /api/analytics/divine-events             171 B         100 kB
+├ ƒ /api/analytics/performance               171 B         100 kB
+├ ƒ /api/analytics/user-journey              171 B         100 kB
+├ ƒ /api/analytics/user-journey/dashboard    171 B         100 kB
+├ ƒ /api/countdown                           171 B         100 kB
+├ ƒ /api/divine-status                       171 B         100 kB
+├ ƒ /api/health                              171 B         100 kB
+├ ƒ /api/monitoring/health                   171 B         100 kB
+├ ƒ /api/monitoring/render-loop              171 B         100 kB
+├ ƒ /api/prayers                             171 B         100 kB
+├ ƒ /api/testimonies                         171 B         100 kB
+├ ○ /blue-ocean-navigator                  7.13 kB         159 kB
+├ ○ /campaign                              4.12 kB         157 kB
+├ ○ /champion                              4.52 kB         155 kB
+├ ○ /check-in                                166 B         103 kB
+├ ○ /clickup-crm-demo                      2.05 kB         111 kB
+├ ○ /community-release-plan                7.71 kB         154 kB
+├ ○ /consciousness                         4.07 kB         160 kB
+├ ○ /contact                               8.36 kB         149 kB
+├ ○ /daily-bread                           1.48 kB         156 kB
+├ ○ /dashboard/judge                       8.16 kB         155 kB
+├ ○ /debug/errors                          3.74 kB         116 kB
+├ ○ /debug/performance                     4.66 kB         111 kB
+├ ○ /dev-portal-test                       4.88 kB         158 kB
+├ ○ /divine-design-metrics                  121 kB         273 kB
+├ ○ /divine-design-metrics-enhanced        3.82 kB         160 kB
+├ ○ /divine-love                           2.07 kB         111 kB
+├ ○ /divine-revelation                     1.25 kB         153 kB
+├ ○ /divine-synchronicity                  5.98 kB         118 kB
+├ ○ /divine-transformation                 8.12 kB         155 kB
+├ ○ /divine-treasures                      10.2 kB         160 kB
+├ ○ /divine-witness                         2.6 kB         153 kB
+├ ○ /dungy-one-tweet                       4.68 kB         154 kB
+├ ○ /elite-test                            2.53 kB         118 kB
+├ ○ /elite-test-v10                        3.29 kB         156 kB
+├ ○ /emergency-response                    11.5 kB         167 kB
+├ ○ /entry                                 4.43 kB         155 kB
+├ ○ /evidence                              4.48 kB         154 kB
+├ ○ /experimental/ai-chat                  3.92 kB         116 kB
+├ ○ /freedom-portal                        7.28 kB         145 kB
+├ ○ /grand-unification                       185 B         151 kB
+├ ○ /greatness-zone                        10.7 kB         164 kB
+├ ○ /impact                                8.22 kB         161 kB
+├ ○ /impact-dashboard-test                 3.23 kB         110 kB
+├ ○ /jahmere-gofundme                      50.4 kB         188 kB
+├ ○ /jordan-letter                         6.92 kB         110 kB
+├ ○ /judge-ferrero-private                 5.41 kB         155 kB
+├ ○ /july-28-portal                        4.48 kB         157 kB
+├ ○ /july-28-strategy                      5.46 kB         158 kB
+├ ○ /july-9-strategy                       2.29 kB         114 kB
+├ ○ /justice-lab-proposal                   6.1 kB         151 kB
+├ ○ /letter-form-test                      4.85 kB         152 kB
+├ ○ /letter-portal                           13 kB         170 kB
+├ ○ /letter-to-dungy                       4.42 kB         145 kB
+├ ○ /particles-test                        2.83 kB         115 kB
+├ ○ /people                                  181 B         187 kB
+├ ● /people/[slug]                           171 B         100 kB
+├   ├ /people/jahmere-webb
+├   ├ /people/coach-dungy
+├   ├ /people/jordan-dungy
+├   └ [+11 more paths]
+├ ○ /people/jordan-dungy                    7.7 kB         163 kB
+├ ○ /people/loading-test                     956 B         188 kB
+├ ○ /prayer-room                            8.6 kB         162 kB
+├ ○ /prompt-demo                           3.43 kB         144 kB
+├ ○ /reset                                   497 B         100 kB
+├ ○ /revelation                            8.05 kB         169 kB
+├ ○ /sacred-experience                       183 B         152 kB
+├ ○ /sacred-weaving                         3.7 kB         150 kB
+├ ○ /story-amplifier-demo                  11.6 kB         170 kB
+├ ○ /test-animations                       2.12 kB         140 kB
+├ ○ /test-components                       6.22 kB         185 kB
+├ ○ /test-logo-assets                       2.2 kB         107 kB
+├ ○ /test-restored-content                 10.7 kB         155 kB
+├ ○ /the-case                              4.92 kB         158 kB
+├ ○ /twitter-campaign                       7.7 kB         161 kB
+├ ○ /unite                                 2.54 kB         157 kB
+├ ○ /universal-agent-09                    1.86 kB         161 kB
+├ ○ /way-home                              5.19 kB         152 kB
+└ ○ /youth                                 4.46 kB         154 kB
++ First Load JS shared by all              99.9 kB
+  ├ chunks/4bd1b696-9909f507f95988b8.js    54.1 kB
+  ├ chunks/5964-ff2f74db62e9e4fb.js        43.7 kB
+  └ other shared chunks (total)            2.08 kB
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

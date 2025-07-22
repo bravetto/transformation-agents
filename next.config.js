@@ -4,26 +4,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 🚀 TURBOPACK CONFIGURATION FOR MODULE RESOLUTION (2025 BEST PRACTICE)
-  turbopack: {
-    // Help Turbopack find Next.js package
-    resolveAlias: {
-      // Ensure Next.js is resolved correctly
-      next: require.resolve("next"),
-    },
-    // Additional module resolution settings
-    resolveExtensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
-  },
-  // 🖼️ ADVANCED IMAGE OPTIMIZATION (2025 STANDARD)
-  images: {
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    formats: ["image/webp", "image/avif"],
-    minimumCacheTTL: 31536000, // 1 year
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-  },
-
   // 📦 SERVER EXTERNAL PACKAGES (2025 BEST PRACTICE)
   serverExternalPackages: ["@prisma/client"],
 
@@ -37,8 +17,17 @@ const nextConfig = {
     ],
     // Advanced 2025 Performance Features
     typedRoutes: false, // Keep false until fully stable
-    // Performance Features from Research
     webVitalsAttribution: ["CLS", "LCP", "FCP", "FID", "TTFB", "INP"],
+  },
+
+  // 🖼️ ADVANCED IMAGE OPTIMIZATION (2025 STANDARD)
+  images: {
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    formats: ["image/webp", "image/avif"],
+    minimumCacheTTL: 31536000, // 1 year
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
   // 🛡️ PRODUCTION SECURITY & PERFORMANCE HEADERS (2025 STANDARD)
@@ -90,93 +79,6 @@ const nextConfig = {
     ];
   },
 
-  // Turbopack configuration (moved from experimental as it's now stable)
-  turbopack: {
-    rules: {
-      "*.svg": {
-        loaders: ["@svgr/webpack"],
-        as: "*.js",
-      },
-    },
-  },
-
-  // Move serverComponentsExternalPackages to root level
-  serverExternalPackages: [],
-
-  // 🚀 PERFORMANCE SUPREMACY CONFIGURATION
-  images: {
-    // Enable next-gen image formats
-    formats: ["image/avif", "image/webp"],
-    // Optimize image loading
-    minimumCacheTTL: 60 * 60 * 24 * 365, // 1 year
-    // Image optimization
-    dangerouslyAllowSVG: true,
-    contentDispositionType: "attachment",
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    domains: [],
-    // Responsive image breakpoints
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-  },
-
-  // 🚀 TURBOPACK OPTIMIZATION: Remove webpack config when using Turbopack
-  // Turbopack handles chunk splitting and optimizations natively
-
-  // Configure Turbopack-specific options
-  turbopack: {
-    // Turbopack handles module resolution and bundling automatically
-    // Better performance than manual webpack configuration
-  },
-
-  // Headers for performance optimization
-  async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: [
-          // Cache static assets aggressively
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-          // Security headers
-          {
-            key: "X-DNS-Prefetch-Control",
-            value: "on",
-          },
-          {
-            key: "X-XSS-Protection",
-            value: "1; mode=block",
-          },
-          {
-            key: "X-Frame-Options",
-            value: "SAMEORIGIN",
-          },
-          {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
-          },
-          // Performance headers
-          {
-            key: "X-Compress",
-            value: "1",
-          },
-        ],
-      },
-      {
-        source: "/api/:path*",
-        headers: [
-          // API-specific caching
-          {
-            key: "Cache-Control",
-            value:
-              "public, max-age=60, s-maxage=300, stale-while-revalidate=60",
-          },
-        ],
-      },
-    ];
-  },
-
   // Enable compression and optimization
   compress: true,
   poweredByHeader: false,
@@ -190,9 +92,6 @@ const nextConfig = {
     // Fallback for local development
     return "build-" + Date.now();
   },
-
-  // SWC minification is now enabled by default in Next.js 15
-  // swcMinify: true, // Removed - now default
 
   // Production optimizations
   ...(process.env.NODE_ENV === "production" && {

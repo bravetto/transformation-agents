@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Container } from "@/components/ui";
+import { Container } from "@/components/ui/container";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 /**

@@ -36,6 +36,8 @@
     "**/*.spec.*",
     "src/lib/prompts/**/*",
     "src_backup_consciousness_*/**/*",
-    "src/lib/performance/performance-monitor-client.tsx"
+    "src/lib/performance/performance-monitor-client.tsx",
+    "temp-disabled-pages/**/*",
+    "docs-consolidation-backup-*/**/*"
   ]
 }

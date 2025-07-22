@@ -18,12 +18,12 @@ import {
   Target,
   Activity,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
-  Button,
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from "@/components/ui";
+} from "@/components/ui/popover";
 import { Container } from "@/components/ui/container";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import MiniCountdown from "@/components/ui/mini-countdown";

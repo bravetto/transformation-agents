@@ -2,7 +2,8 @@
 
 import React from "react";
 import { withErrorBoundary } from "@/components/with-error-boundary";
-import { Card, Text, Quote } from "@/components/ui";
+import { Card } from "@/components/ui/card";
+import { Text, Quote } from "@/components/ui/typography";
 import { RevealOnScroll } from "@/components/ui/page-transition";
 import { cn } from "@/lib/utils";
 
