@@ -22,7 +22,7 @@ const COMMUNITY_STATS = {
   streak: 7,
   community: 342,
   prayersSubmitted: 1583,
-  lettersSent: 892,
+  lettersSubmitted: 892,
   daysUntilHearing: 167,
 };
 
