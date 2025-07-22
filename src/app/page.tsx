@@ -18,6 +18,7 @@ import {
   Users,
   MessageCircle,
   Star,
+  Clock,
 } from "lucide-react";
 
 // Safe static components only
@@ -26,6 +27,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import StaticCommunityStats from "@/components/ui/static-community-stats";
 import StaticCountdown from "@/components/ui/static-countdown";
+import StaticPrayerIndicators from "@/components/ui/static-prayer-indicators";
 
 // User Type Modal - this component works safely
 import UserTypeModal, { UserType } from "@/components/user-type-modal";
@@ -149,16 +151,32 @@ function StaticThreePaths() {
   ];
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-24 bg-gradient-to-b from-white via-gray-50 to-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
             Three Paths to JAHmere's Freedom
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium mb-8">
             Choose your path and join the movement transforming justice through
             community, evidence, and divine intervention.
           </p>
+
+          {/* Live Momentum Indicators */}
+          <div className="flex flex-wrap justify-center gap-6 text-sm font-medium">
+            <div className="flex items-center gap-2 bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+              Live Community Activity
+            </div>
+            <div className="flex items-center gap-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
+              <Users className="w-4 h-4" />
+              247+ Active Supporters
+            </div>
+            <div className="flex items-center gap-2 bg-amber-100 text-amber-800 px-3 py-1 rounded-full">
+              <Clock className="w-4 h-4" />
+              7ms Response Time
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -326,16 +344,22 @@ function StaticCharacterWitnesses() {
 // 🙏 PRAYER NETWORK SECTION - Static, simple form
 function StaticPrayerNetwork() {
   return (
-    <section className="py-20 bg-blue-600 text-white">
+    <section className="py-20 bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-900 text-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Prayer Network
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+            🙏 Live Prayer Network
           </h2>
-          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-            Join thousands in prayer for JAHmere's freedom and transformation.
+          <p className="text-xl text-purple-100 max-w-3xl mx-auto leading-relaxed">
+            Join thousands praying for JAHmere's freedom across the nation. Your
+            prayers create real spiritual momentum.
           </p>
         </div>
+
+        <StaticPrayerIndicators
+          variant="detailed"
+          className="max-w-6xl mx-auto mb-8"
+        />
 
         <div className="max-w-2xl mx-auto">
           <Card className="bg-white/10 border-white/20 backdrop-blur-sm">
