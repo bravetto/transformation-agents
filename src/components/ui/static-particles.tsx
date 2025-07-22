@@ -185,7 +185,7 @@ export default function StaticParticles({
         ))}
 
         {/* Large floating orbs for visual interest */}
-        {density !== "minimal" && (
+        {density !== "low" && (
           <>
             <div
               className={cn(
