@@ -28,163 +28,85 @@ const ErrorFallback = ({ componentName }: { componentName: string }) => (
   </div>
 );
 
-// Import custom components dynamically with better error handling
+// 🔧 SIMPLIFIED DYNAMIC IMPORTS - Fix for webpack module loading errors
+// Removed complex .then() chains that were causing circular dependencies
+
 const TimelineComponent = dynamic(
-  () =>
-    import("@/components/people/sections/timeline")
-      .then((mod) => (mod.default ? { default: mod.default } : mod))
-      .catch((error) => {
-        console.error("Failed to load TimelineComponent:", error);
-        return { default: () => <ErrorFallback componentName="Timeline" /> };
-      }),
+  () => import("@/components/people/sections/timeline"),
   {
-    ssr: false, // Disable SSR for faster initial load
+    ssr: false,
     loading: LoadingComponent,
   },
 );
 
 const SynchronicityMap = dynamic(
-  () =>
-    import("@/components/people/synchronicity-map")
-      .then((mod) => (mod.default ? { default: mod.default } : mod))
-      .catch((error) => {
-        console.error("Failed to load SynchronicityMap:", error);
-        return {
-          default: () => <ErrorFallback componentName="SynchronicityMap" />,
-        };
-      }),
+  () => import("@/components/people/synchronicity-map"),
   {
-    ssr: false, // Disable SSR for faster initial load
+    ssr: false,
     loading: LoadingComponent,
   },
 );
 
 const AssessmentAlignment = dynamic(
-  () =>
-    import("@/components/people/assessment-alignment")
-      .then((mod) => (mod.default ? { default: mod.default } : mod))
-      .catch((error) => {
-        console.error("Failed to load AssessmentAlignment:", error);
-        return {
-          default: () => <ErrorFallback componentName="AssessmentAlignment" />,
-        };
-      }),
+  () => import("@/components/people/assessment-alignment"),
   {
-    ssr: false, // Disable SSR for faster initial load
+    ssr: false,
     loading: LoadingComponent,
   },
 );
 
 const JayForteTestimony = dynamic(
-  () =>
-    import("@/components/people/jay-forte-testimony")
-      .then((mod) => (mod.default ? { default: mod.default } : mod))
-      .catch((error) => {
-        console.error("Failed to load JayForteTestimony:", error);
-        return {
-          default: () => <ErrorFallback componentName="JayForteTestimony" />,
-        };
-      }),
+  () => import("@/components/people/jay-forte-testimony"),
   {
-    ssr: false, // Disable SSR for faster initial load
+    ssr: false,
     loading: LoadingComponent,
   },
 );
 
 const HealingCircle = dynamic(
-  () =>
-    import("@/components/people/HealingCircle")
-      .then((mod) => (mod.default ? { default: mod.default } : mod))
-      .catch((error) => {
-        console.error("Failed to load HealingCircle:", error);
-        return {
-          default: () => <ErrorFallback componentName="HealingCircle" />,
-        };
-      }),
+  () => import("@/components/people/HealingCircle"),
   {
-    ssr: false, // Disable SSR for faster initial load
+    ssr: false,
     loading: LoadingComponent,
   },
 );
 
 const PatternWeaver = dynamic(
-  () =>
-    import("@/components/people/PatternWeaver")
-      .then((mod) => (mod.default ? { default: mod.default } : mod))
-      .catch((error) => {
-        console.error("Failed to load PatternWeaver:", error);
-        return {
-          default: () => <ErrorFallback componentName="PatternWeaver" />,
-        };
-      }),
+  () => import("@/components/people/PatternWeaver"),
   {
-    ssr: false, // Disable SSR for faster initial load
+    ssr: false,
     loading: LoadingComponent,
   },
 );
 
 const ArchitecturePrinciples = dynamic(
-  () =>
-    import("@/components/people/ArchitecturePrinciples")
-      .then((mod) => (mod.default ? { default: mod.default } : mod))
-      .catch((error) => {
-        console.error("Failed to load ArchitecturePrinciples:", error);
-        return {
-          default: () => (
-            <ErrorFallback componentName="ArchitecturePrinciples" />
-          ),
-        };
-      }),
+  () => import("@/components/people/ArchitecturePrinciples"),
   {
-    ssr: false, // Disable SSR for faster initial load
+    ssr: false,
     loading: LoadingComponent,
   },
 );
 
 const ClarityPrinciples = dynamic(
-  () =>
-    import("@/components/people/ClarityPrinciples")
-      .then((mod) => (mod.default ? { default: mod.default } : mod))
-      .catch((error) => {
-        console.error("Failed to load ClarityPrinciples:", error);
-        return {
-          default: () => <ErrorFallback componentName="ClarityPrinciples" />,
-        };
-      }),
+  () => import("@/components/people/ClarityPrinciples"),
   {
-    ssr: false, // Disable SSR for faster initial load
+    ssr: false,
     loading: LoadingComponent,
   },
 );
 
 const MischiefPrinciples = dynamic(
-  () =>
-    import("@/components/people/MischiefPrinciples")
-      .then((mod) => (mod.default ? { default: mod.default } : mod))
-      .catch((error) => {
-        console.error("Failed to load MischiefPrinciples:", error);
-        return {
-          default: () => <ErrorFallback componentName="MischiefPrinciples" />,
-        };
-      }),
+  () => import("@/components/people/MischiefPrinciples"),
   {
-    ssr: false, // Disable SSR for faster initial load
+    ssr: false,
     loading: LoadingComponent,
   },
 );
 
 const WisdomPrinciples = dynamic(
-  () =>
-    import("@/components/people/WisdomPrinciples")
-      .then((mod) => (mod.default ? { default: mod.default } : mod))
-      .catch((error) => {
-        console.error("Failed to load WisdomPrinciples:", error);
-        return {
-          default: () => <ErrorFallback componentName="WisdomPrinciples" />,
-        };
-      }),
+  () => import("@/components/people/WisdomPrinciples"),
   {
-    ssr: false, // Disable SSR for faster initial load
+    ssr: false,
     loading: LoadingComponent,
   },
 );
@@ -209,7 +131,7 @@ const COMPONENT_MAP: Record<string, DynamicComponent> = {
 // Define allowed component names for better type safety
 export type CustomComponentName = keyof typeof COMPONENT_MAP;
 
-export interface PersonCustomProps {
+interface PersonCustomProps {
   title: string;
   description?: string;
   component: CustomComponentName;
