@@ -337,7 +337,8 @@ describe("Mobile Navigation", () => {
       expect(bodyWidth).to.be.greaterThan(600); // Should use landscape space
 
       // Should not have horizontal scroll in landscape
-      const hasHorizontalScroll = $body[0].scrollWidth > bodyWidth;
+      const hasHorizontalScroll =
+        ($body[0] as HTMLElement).scrollWidth > bodyWidth;
       expect(hasHorizontalScroll).to.be.false;
     });
   });
