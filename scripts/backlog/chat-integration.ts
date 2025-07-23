@@ -79,7 +79,10 @@ export class ChatIntegration {
 
     if (foundKeywords.length === 0) return null;
 
-    return `Related Backlog Item Found: Enhanced ${foundKeywords[0]?.charAt(0).toUpperCase() + foundKeywords[0]?.slice(1)} System
+    const firstKeyword = foundKeywords[0];
+    if (!firstKeyword) return null;
+
+    return `Related Backlog Item Found: Enhanced ${firstKeyword.charAt(0).toUpperCase() + firstKeyword.slice(1)} System
 Why it matters now: This relates to your current work on ${foundKeywords.join(", ")}
 When to consider: When team performance data needs visualization`;
   }
