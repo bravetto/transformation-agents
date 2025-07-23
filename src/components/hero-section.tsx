@@ -16,8 +16,7 @@ import { Button } from "@/components/ui/button";
 import { DivineButton } from "@/components/ui/divine-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import AssessmentModal from "@/components/ui/assessment-modal";
-import { useAssessmentModal } from "@/hooks/useAssessmentModal";
+// Sardonic.ai imports removed - keeping JAHmere Webb content only
 import {
   trackConversion,
   getCurrentUserType,
@@ -47,13 +46,7 @@ export default function HeroSection() {
   const [currentSupporter, setCurrentSupporter] = useState(0);
   const [timeUntilCourt, setTimeUntilCourt] = useState("");
 
-  // Assessment modal state
-  const {
-    isOpen: isAssessmentOpen,
-    openModal: openAssessment,
-    closeModal: closeAssessment,
-    handleComplete,
-  } = useAssessmentModal();
+  // Sardonic assessment modal removed - focusing on JAHmere's freedom mission
 
   // Supporter counter animation
   useEffect(() => {
@@ -255,19 +248,19 @@ export default function HeroSection() {
                 📱 Share JAHmere's Story
               </DivineButton>
 
-              {/* Assessment Modal Trigger - Testing */}
+              {/* Third CTA - JAHmere Webb Focus */}
               <DivineButton
                 variant="outline"
                 size="lg"
-                onClick={openAssessment}
-                className="text-lg border-2 border-purple-600 text-purple-600 hover:bg-purple-50 font-semibold"
+                href="/prayer-room"
+                className="text-lg border-2 border-green-600 text-green-600 hover:bg-green-50 font-semibold"
                 trackingData={{
                   eventType: "cta_clicked",
-                  source: "hero_assessment_trigger",
-                  metadata: { conversionType: "assessment" },
+                  source: "hero_prayer_cta",
+                  metadata: { conversionType: "spiritual" },
                 }}
               >
-                🧠 Take Revolutionary Assessment
+                🙏 Join Prayer Warriors
               </DivineButton>
             </div>
           </motion.div>
@@ -385,12 +378,7 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Assessment Modal */}
-      <AssessmentModal
-        isOpen={isAssessmentOpen}
-        onClose={closeAssessment}
-        onComplete={handleComplete}
-      />
+      {/* Sardonic assessment modal removed - JAHmere Webb freedom focus maintained */}
     </section>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -201,14 +201,19 @@ function Navigation() {
     );
   };
 
-  // 🔥 CRITICAL FIX: Handle desktop popover state changes
-  const handlePopoverOpenChange = (isOpen: boolean, itemHref: string) => {
-    if (isOpen) {
-      setOpenPopover(itemHref);
-    } else {
-      setOpenPopover(null);
-    }
-  };
+  // 🔥 CRITICAL FIX: Handle desktop popover state changes with proper cleanup
+  const handlePopoverOpenChange = useCallback(
+    (isOpen: boolean, itemHref: string) => {
+      if (isOpen) {
+        // Close any other open popovers first
+        setOpenPopover(itemHref);
+      } else {
+        // Only close if this specific popover is currently open
+        setOpenPopover((prev) => (prev === itemHref ? null : prev));
+      }
+    },
+    [],
+  );
 
   // Handle keyboard navigation for the dropdown menu
   const handleKeyDown = (e: React.KeyboardEvent, href: string) => {
@@ -258,9 +263,10 @@ function Navigation() {
                     <Popover
                       key={item.href}
                       open={openPopover === item.href}
-                      onOpenChange={(isOpen) =>
-                        handlePopoverOpenChange(isOpen, item.href)
-                      }
+                      onOpenChange={(isOpen) => {
+                        // 🔥 CRITICAL FIX: Force proper state management
+                        handlePopoverOpenChange(isOpen, item.href);
+                      }}
                     >
                       <PopoverTrigger asChild>
                         <button
@@ -300,7 +306,11 @@ function Navigation() {
                               aria-current={
                                 pathname === child.href ? "page" : undefined
                               }
-                              onClick={() => setOpenPopover(null)} // 🔥 CRITICAL FIX: Close popover on click
+                              onClick={(e) => {
+                                // 🔥 CRITICAL FIX: Prevent event bubbling and ensure popover closes
+                                e.stopPropagation();
+                                setOpenPopover(null);
+                              }}
                             >
                               <span className="text-sm">{child.label}</span>
                             </Link>
