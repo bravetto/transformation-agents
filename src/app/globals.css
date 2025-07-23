@@ -35,12 +35,13 @@
   
   /* Predictable Z-Index Stack */
   --z-base: 1;
-  --z-dropdown: 100;
+  --z-dropdown: 1100;
   --z-sticky: 200;
   --z-banner: 900;
   --z-navigation: 1000;
   --z-modal: 2000;
   --z-tooltip: 3000;
+  --z-overlay: 3000;
   
   /* Mathematical Spacing Scale */
   --space-0: 0;
@@ -2023,3 +2024,24 @@ section > * {
 }
 
 /* 🎯 IMPORT STATEMENTS MOVED TO TOP OF FILE */
+
+/* Layout Component Z-Index Classes */
+.layout-navigation {
+  z-index: var(--z-navigation);
+}
+
+.layout-banner {
+  z-index: var(--z-banner);
+}
+
+.layout-dropdown {
+  z-index: var(--z-dropdown);
+}
+
+.layout-modal {
+  z-index: var(--z-modal);
+}
+
+.layout-overlay {
+  z-index: var(--z-overlay);
+}

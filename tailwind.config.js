@@ -39,6 +39,12 @@ module.exports = {
         modal: "var(--z-modal)",
         tooltip: "var(--z-tooltip)",
         fixed: "1000",
+        // Custom z-index values for proper layering
+        banner: "900",
+        navigation: "1000",
+        dropdown: "1100",
+        modal: "2000",
+        overlay: "3000",
       },
       colors: {
         background: "hsl(var(--background))",
@@ -172,6 +178,15 @@ module.exports = {
           700: "#b45309",
           800: "#92400e",
           900: "#78350f",
+        },
+        // Divine color palette
+        divine: {
+          blue: "#1e40af",
+          purple: "#7c3aed",
+          gold: "#f59e0b",
+          "blue-light": "#3b82f6",
+          "purple-light": "#8b5cf6",
+          "gold-light": "#fbbf24",
         },
       },
 
@@ -360,6 +375,11 @@ module.exports = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        // Gradient definitions for divine color scheme
+        "gradient-divine":
+          "linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #f59e0b 100%)",
+        "gradient-divine-hover":
+          "linear-gradient(135deg, #1d4ed8 0%, #8b5cf6 50%, #f97316 100%)",
       },
 
       // ELITE DESIGN SYSTEM V10 - Psychological Warfare
