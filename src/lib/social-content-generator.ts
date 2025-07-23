@@ -410,19 +410,29 @@ function isFreedomMissionFocused(person: PersonData): boolean {
 }
 
 // OG Image URL generators
+/**
+ * Generate Open Graph image URL for person
+ */
 function generatePersonOGImageUrl(person: PersonData): string {
+  const baseUrl =
+    typeof window !== "undefined"
+      ? window.location.origin
+      : "https://transformation-agents-jahmere-bridge.vercel.app";
+
+  // Use dynamic OG image generation
   const params = new URLSearchParams({
-    template: "person-profile",
-    title: person.name,
-    subtitle: person.role || "Bridge Builder",
-    authorName: person.name,
-    authorRole: person.role || "",
+    name: person.name,
     role: person.role || "lightworker",
-    divineGlow: person.id === "jahmere-webb" ? "true" : "false",
-    particles: "true",
   });
 
-  return `/api/social-share/og-image?${params.toString()}`;
+  // Add image if available
+  if (person.heroImage) {
+    params.set("image", person.heroImage);
+  } else if (person.image) {
+    params.set("image", person.image);
+  }
+
+  return `${baseUrl}/api/og/person?${params.toString()}`;
 }
 
 function generateTimelineOGImageUrl(person: PersonData, event: any): string {

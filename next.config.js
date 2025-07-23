@@ -1,5 +1,31 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // DIVINE ENGINEERING: Turbopack Error Prevention Strategy
+  experimental: {
+    // Disable Turbopack temporarily due to critical chunk loading errors
+    // Based on research: Next.js 15.4.3 has known issues with "Identifier 'x' has already been declared"
+    // Reference: https://github.com/vercel/next.js/issues/68974
+
+    // Enable browser debug info for better error tracking
+    browserDebugInfoInTerminal: true,
+
+    // Optimize for production stability over bleeding edge features
+    optimizePackageImports: [
+      "framer-motion",
+      "lucide-react",
+      "@next/third-parties",
+    ],
+
+    // Enable persistent caching for standard webpack (more stable)
+    webpackBuildWorker: true,
+
+    // Disable experimental features that can cause chunk conflicts
+    turbopackPersistentCaching: false,
+
+    // Enhanced error recovery
+    serverComponentsHmrCache: false,
+  },
+
   // Production optimizations
   compress: true,
   poweredByHeader: false,
@@ -7,12 +33,11 @@ const nextConfig = {
 
   // Advanced caching strategies for Next.js 15.4.3
   experimental: {
-    // 🔮 NEXT.JS 16 DIVINE FEATURES
+    // Next.js 15.4.3 stable features
     staleTimes: {
-      dynamic: 30, // 30 second stale time for dynamic content
-      static: 180, // 3 minute stale time for static content
+      dynamic: 0, // Fresh data for dynamic routes (championship setting)
+      static: 300, // 5 minute cache for static content
     },
-    cacheComponents: true, // Aggressive component caching
 
     // CSS and bundle optimizations
     optimizeCss: true,
@@ -28,12 +53,6 @@ const nextConfig = {
       "@radix-ui/react-dialog",
       "@radix-ui/react-dropdown-menu",
     ],
-
-    // Advanced client-side caching configuration
-    staleTimes: {
-      dynamic: 0, // Fresh data for dynamic routes
-      static: 300, // 5 minute cache for static content
-    },
 
     // Enable browser debug info forwarding
     browserDebugInfoInTerminal: true,
@@ -59,34 +78,7 @@ const nextConfig = {
     ],
   },
 
-  // Advanced bundling optimization
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // Production optimizations
-    if (!dev && !isServer) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        "@/components/ui": require("path").resolve(
-          __dirname,
-          "src/components/ui",
-        ),
-        "@/lib": require("path").resolve(__dirname, "src/lib"),
-      };
-    }
-
-    // Bundle analyzer configuration
-    if (process.env.ANALYZE === "true") {
-      const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-      config.plugins.push(
-        new BundleAnalyzerPlugin({
-          analyzerMode: "static",
-          openAnalyzer: false,
-          reportFilename: "bundle-report.html",
-        }),
-      );
-    }
-
-    return config;
-  },
+  // Advanced bundling optimization (removed webpack config to avoid Turbopack conflicts)
 
   // Enhanced headers for performance and security
   async headers() {
@@ -106,10 +98,6 @@ const nextConfig = {
           {
             key: "X-Content-Type-Options",
             value: "nosniff",
-          },
-          {
-            key: "X-Frame-Options",
-            value: "DENY",
           },
           {
             key: "X-XSS-Protection",

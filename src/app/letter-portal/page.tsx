@@ -120,7 +120,7 @@ export default function LetterPortalPage() {
           {/* Main Content Grid */}
           <div className="grid lg:grid-cols-2 gap-8 mb-12">
             {/* AI Letter Generator */}
-            <div>
+            <div id="ai-letter-generator">
               <div className="flex items-center gap-2 mb-6">
                 <FileText className="w-6 h-6 text-elite-divine-amber" />
                 <h2 className="text-2xl font-bold">AI Letter Assistant</h2>
@@ -130,18 +130,12 @@ export default function LetterPortalPage() {
               </div>
 
               <Suspense fallback={<AIGeneratorSkeleton />}>
-                <AILetterGenerator
-                  className="h-full"
-                  onLetterGenerated={(letter) => {
-                    console.log("Letter generated:", letter);
-                    // Could trigger real-time update to impact dashboard
-                  }}
-                />
+                <AILetterGenerator className="h-full" />
               </Suspense>
             </div>
 
             {/* Real-Time Impact Dashboard */}
-            <div>
+            <div id="real-time-impact">
               <div className="flex items-center gap-2 mb-6">
                 <Target className="w-6 h-6 text-elite-emerald" />
                 <h2 className="text-2xl font-bold">Live Campaign Impact</h2>
@@ -213,29 +207,23 @@ export default function LetterPortalPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button
-                  onClick={() =>
-                    document
-                      .querySelector(".ai-letter-generator")
-                      ?.scrollIntoView({ behavior: "smooth" })
-                  }
-                  className="px-8 py-3 bg-elite-divine-amber hover:bg-elite-divine-amber/90 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+                <a
+                  href="#ai-letter-generator"
+                  className="px-8 py-3 bg-elite-divine-amber hover:bg-elite-divine-amber/90 text-white font-semibold rounded-lg transition-colors flex items-center gap-2 justify-center"
+                  style={{ scrollBehavior: "smooth" }}
                 >
                   <Sparkles className="w-5 h-5" />
                   Start Writing with AI
-                </button>
+                </a>
 
-                <button
-                  onClick={() =>
-                    document
-                      .querySelector(".real-time-impact")
-                      ?.scrollIntoView({ behavior: "smooth" })
-                  }
-                  className="px-8 py-3 bg-elite-emerald hover:bg-elite-emerald/90 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+                <a
+                  href="#real-time-impact"
+                  className="px-8 py-3 bg-elite-emerald hover:bg-elite-emerald/90 text-white font-semibold rounded-lg transition-colors flex items-center gap-2 justify-center"
+                  style={{ scrollBehavior: "smooth" }}
                 >
                   <Target className="w-5 h-5" />
                   View Live Impact
-                </button>
+                </a>
               </div>
             </Card>
           </div>

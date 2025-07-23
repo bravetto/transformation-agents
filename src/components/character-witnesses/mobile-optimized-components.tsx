@@ -36,7 +36,7 @@ export const MobileFloatingCTA: React.FC<{
   const handleClick = () => {
     // Track CTA click and redirect to action page
     if (typeof window !== "undefined") {
-      window.location.href = "/letter-portal";
+      window.open("/letter-portal", "_self");
     }
   };
 

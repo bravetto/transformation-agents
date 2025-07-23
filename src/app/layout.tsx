@@ -41,44 +41,37 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "The Bridge Project - JAHmere Webb Freedom Portal",
+  metadataBase: new URL(
+    process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : process.env.NODE_ENV === "production"
+        ? "https://transformation-agents-jahmere-bridge.vercel.app"
+        : "http://localhost:3000",
+  ),
+  title: {
+    default: "The Bridge Project - JAHmere Webb Freedom Portal",
+    template: "%s | The Bridge Project - JAHmere Webb Freedom",
+  },
   description:
     "Advocating for JAHmere Webb's freedom through divine justice, community support, and transformational change. July 28th, 2025 - A day of divine intervention.",
   keywords: [
     "JAHmere Webb",
     "Tony Dungy",
     "Jordan Dungy",
-    "Freedom Portal",
-    "Divine Justice",
+    "Michael Mataluni",
+    "Bridge Project",
+    "criminal justice reform",
+    "transformation",
+    "character witness",
     "July 28 2025",
-    "The Bridge Project",
-    "Criminal Justice Reform",
-    "Faith-Based Transformation",
-    "Character Witness Letters",
-    "Prison Ministry",
-    "NFL Authority",
-    "Second Chances",
+    "freedom mission",
+    "second chances",
+    "divine intervention",
+    "prayer warriors",
   ],
-  authors: [{ name: "The Bridge Project Team" }],
-  openGraph: {
-    title: "JAHmere Webb Freedom Portal - July 28th, 2025",
-    description:
-      "Join the divine mission for JAHmere Webb's freedom through prayer, advocacy, and community support.",
-    images: ["/images/og-image.png"],
-    url: "https://transformation-agents-jahmere-bridge.vercel.app",
-    siteName: "JAHmere Webb Freedom Portal",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "JAHmere Webb Freedom Portal",
-    description:
-      "Divine justice, community support, and transformational change for JAHmere Webb's freedom.",
-    images: ["/images/twitter-image.png"],
-  },
-  verification: {
-    google: "your-google-site-verification-code",
-  },
+  authors: [{ name: "The Bridge Project" }],
+  creator: "The Bridge Project",
+  publisher: "The Bridge Project",
   robots: {
     index: true,
     follow: true,
@@ -90,10 +83,56 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: {
-    canonical: "https://transformation-agents-jahmere-bridge.vercel.app",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    siteName: "The Bridge Project - JAHmere Webb Freedom Mission",
+    title: "The Bridge Project - JAHmere Webb Freedom Portal",
+    description:
+      "Join the mission to free JAHmere Webb. Every voice matters in the fight for justice and transformation. July 28th, 2025 - A day of divine intervention.",
+    images: [
+      {
+        url: "/images/og/bridge-project-home.jpg",
+        width: 1200,
+        height: 630,
+        alt: "The Bridge Project - JAHmere Webb Freedom Mission",
+        type: "image/jpeg",
+      },
+      {
+        url: "/images/og/bridge-project-default.jpg",
+        width: 1200,
+        height: 630,
+        alt: "The Bridge Project Logo",
+        type: "image/jpeg",
+      },
+    ],
   },
-  category: "Social Justice",
+  twitter: {
+    card: "summary_large_image",
+    site: "@BridgeProject",
+    creator: "@July28Freedom",
+    title: "The Bridge Project - JAHmere Webb Freedom Portal",
+    description:
+      "Join the mission to free JAHmere Webb. Every voice matters in the fight for justice and transformation.",
+    images: ["/images/og/bridge-project-home.jpg"],
+  },
+  verification: {
+    google: process.env.GOOGLE_VERIFICATION,
+    yandex: process.env.YANDEX_VERIFICATION,
+    yahoo: process.env.YAHOO_VERIFICATION,
+  },
+  alternates: {
+    canonical: "/",
+  },
+  other: {
+    "fb:app_id": process.env.FACEBOOK_APP_ID || "",
+    "theme-color": "#667eea",
+    "msapplication-TileColor": "#667eea",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "default",
+    "format-detection": "telephone=no",
+  },
 };
 
 export default function RootLayout({

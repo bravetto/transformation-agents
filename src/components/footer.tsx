@@ -50,7 +50,7 @@ function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/contact"
+                  href="/letter-portal"
                   className="text-soft-shadow hover:text-hope-gold transition-colors"
                 >
                   Write a Letter
@@ -58,7 +58,7 @@ function Footer() {
               </li>
               <li>
                 <Link
-                  href="#truth"
+                  href="/the-case"
                   className="text-soft-shadow hover:text-hope-gold transition-colors"
                 >
                   See Our Truth
@@ -91,7 +91,7 @@ function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/dashboard/judge"
+                  href="/judge-ferrero-private"
                   className="text-soft-shadow hover:text-hope-gold transition-colors"
                 >
                   Judge Dashboard
@@ -99,10 +99,10 @@ function Footer() {
               </li>
               <li>
                 <Link
-                  href="/check-in"
+                  href="/july-28-strategy"
                   className="text-soft-shadow hover:text-hope-gold transition-colors"
                 >
-                  Daily Check-In
+                  July 28th Strategy
                 </Link>
               </li>
               <li>

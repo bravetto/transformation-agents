@@ -33,26 +33,116 @@ export async function generateMetadata({
     };
   }
 
+  // Generate enhanced metadata
+  const title = `${personData.name} | The Bridge Project - JAHmere Webb Freedom Mission`;
+  const description =
+    personData.impact?.description ||
+    personData.testimony?.quote ||
+    `Join ${personData.name} in supporting JAHmere Webb's journey to freedom. Every voice matters in the fight for justice and transformation.`;
+
+  // Enhanced Open Graph image URL with parameters for dynamic generation
+  const ogImageUrl = personData.heroImage
+    ? personData.heroImage
+    : `/images/og/person-${slug}.jpg`;
+
+  // Fallback to default if specific image doesn't exist
+  const fallbackOgImage = "/images/og/bridge-project-default.jpg";
+
+  const personUrl = `/people/${slug}`;
+
   return {
-    title: `${personData.name} | The Bridge Project`,
-    description:
-      personData.impact?.description ||
-      personData.testimony?.quote ||
-      `Learn about ${personData.name}`,
+    title,
+    description,
+    keywords: [
+      personData.name,
+      "JAHmere Webb",
+      "Tony Dungy",
+      "Bridge Project",
+      "criminal justice reform",
+      "transformation",
+      "July 28 2025",
+      "freedom mission",
+      "character witness",
+      "second chances",
+      personData.role || "lightworker",
+    ],
+    authors: [{ name: "The Bridge Project" }],
+    creator: "The Bridge Project",
+    publisher: "The Bridge Project",
+
+    // Enhanced Open Graph
     openGraph: {
-      title: `${personData.name} | The Bridge Project`,
-      description:
-        personData.impact?.description ||
-        personData.testimony?.quote ||
-        `Learn about ${personData.name}`,
+      title,
+      description,
+      url: personUrl,
+      siteName: "The Bridge Project - JAHmere Webb Freedom Mission",
+      type: "profile",
+      locale: "en_US",
       images: [
         {
-          url: personData.heroImage || "/images/fallbacks/default-fallback.jpg",
+          url: ogImageUrl,
           width: 1200,
           height: 630,
-          alt: `${personData.name} - The Bridge Project`,
+          alt: `${personData.name} - Supporting JAHmere Webb's Freedom Mission`,
+          type: "image/jpeg",
+        },
+        {
+          url: fallbackOgImage,
+          width: 1200,
+          height: 630,
+          alt: "The Bridge Project - JAHmere Webb Freedom Mission",
+          type: "image/jpeg",
+        },
+        {
+          url: personData.heroImage || "/images/fallbacks/default-fallback.jpg",
+          width: 800,
+          height: 600,
+          alt: `${personData.name} profile photo`,
+          type: "image/jpeg",
         },
       ],
+    },
+
+    // Enhanced Twitter Card
+    twitter: {
+      card: "summary_large_image",
+      site: "@BridgeProject",
+      creator: "@July28Freedom",
+      title,
+      description,
+      images: [ogImageUrl],
+    },
+
+    // Additional metadata for better SEO and sharing
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+
+    // Verification and canonical
+    alternates: {
+      canonical: personUrl,
+    },
+
+    // Additional metadata
+    other: {
+      "fb:app_id": "your-facebook-app-id", // Replace with actual FB app ID
+      "article:author": personData.name,
+      "article:section": "Transformation Stories",
+      "article:tag": [
+        "JAHmere Webb",
+        "Tony Dungy",
+        "Criminal Justice Reform",
+        "Transformation",
+        "Bridge Project",
+      ].join(","),
     },
   };
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Clock, Star, Zap, Heart, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,29 +21,32 @@ export function JAHmereFreedomCountdown() {
 
   const targetDate = new Date("2025-07-28T09:00:00-05:00"); // 9 AM EST court time
 
-  function calculateTimeLeft(): TimeLeft | null {
-    const difference = targetDate.getTime() - new Date().getTime();
+  const calculateTimeLeft = useCallback(() => {
+    const now = new Date().getTime();
+    const difference = targetDate.getTime() - now;
 
     if (difference > 0) {
       return {
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
+        hours: Math.floor(
+          (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        ),
+        minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((difference % (1000 * 60)) / 1000),
       };
     }
     return null;
-  }
+  }, [targetDate]);
 
   useEffect(() => {
     setMounted(true);
 
     const updateCountdown = () => {
-      const time = calculateTimeLeft();
-      setTimeLeft(time);
+      const newTimeLeft = calculateTimeLeft();
+      setTimeLeft(newTimeLeft);
 
       // Set urgency if less than 30 days
-      if (time && time.days <= 30) {
+      if (newTimeLeft && newTimeLeft.days <= 30) {
         setIsUrgent(true);
       }
     };
@@ -52,7 +55,7 @@ export function JAHmereFreedomCountdown() {
     const timer = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [calculateTimeLeft]);
 
   const handleUrgentAction = () => {
     trackDivineEvent({

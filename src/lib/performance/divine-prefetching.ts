@@ -482,7 +482,7 @@ class DivinePrefetchingEngine {
  */
 class UserIntentPredictor {
   private callbacks: ((path: string) => void)[] = [];
-  private hoverTimer: number | null = null;
+  private hoverTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
     this.setupIntentDetection();

@@ -8,11 +8,11 @@ interface RateLimitResult {
 
 class InMemoryRateLimit {
   private requests = new Map<string, { count: number; resetTime: number }>();
-  private readonly limit: number;
+  public readonly maxRequests: number; // Renamed to avoid conflict
   private readonly windowMs: number;
 
   constructor(limit: number = 5, windowMs: number = 60 * 60 * 1000) {
-    this.limit = limit;
+    this.maxRequests = limit;
     this.windowMs = windowMs;
   }
 
@@ -31,17 +31,17 @@ class InMemoryRateLimit {
       this.requests.set(key, { count: 1, resetTime: now + this.windowMs });
       return {
         success: true,
-        limit: this.limit,
-        remaining: this.limit - 1,
+        limit: this.maxRequests,
+        remaining: this.maxRequests - 1,
         reset: now + this.windowMs,
       };
     }
 
-    if (current.count >= this.limit) {
+    if (current.count >= this.maxRequests) {
       // Rate limit exceeded
       return {
         success: false,
-        limit: this.limit,
+        limit: this.maxRequests,
         remaining: 0,
         reset: current.resetTime,
       };
@@ -51,8 +51,8 @@ class InMemoryRateLimit {
     current.count++;
     return {
       success: true,
-      limit: this.limit,
-      remaining: this.limit - current.count,
+      limit: this.maxRequests,
+      remaining: this.maxRequests - current.count,
       reset: current.resetTime,
     };
   }

@@ -1,98 +1,20 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "installCommand": "npm ci",
   "framework": "nextjs",
-  
   "functions": {
-    "app/api/analytics/**/*.ts": {
-      "runtime": "edge",
-      "memory": 128,
-      "maxDuration": 10
-    },
-    "app/api/social-share/**/*.ts": {
-      "runtime": "edge", 
-      "memory": 128,
-      "maxDuration": 15
-    },
-    "app/api/monitoring/**/*.ts": {
-      "runtime": "edge",
-      "memory": 256,
-      "maxDuration": 10
-    },
-    "app/api/**/*.ts": {
-      "runtime": "nodejs20.x",
-      "memory": 512,
+    "src/app/api/**/*.ts": {
       "maxDuration": 30
     }
   },
-
-  "regions": ["iad1", "sfo1", "fra1", "hnd1"],
-
+  "crons": [],
   "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options", 
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        },
-        {
-          "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=()"
-        },
-        {
-          "key": "Strict-Transport-Security",
-          "value": "max-age=63072000; includeSubDomains; preload"
-        },
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.vercel-analytics.com *.vercel.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' *.vercel-analytics.com vitals.vercel-analytics.com; frame-ancestors 'none';"
-        },
-        {
-          "key": "Cross-Origin-Opener-Policy",
-          "value": "same-origin"
-        },
-        {
-          "key": "Cross-Origin-Resource-Policy", 
-          "value": "cross-origin"
-        },
-        {
-          "key": "Cross-Origin-Embedder-Policy",
-          "value": "unsafe-none"
-        }
-      ]
-    },
     {
       "source": "/api/(.*)",
       "headers": [
         {
-          "key": "Access-Control-Allow-Origin",
-          "value": "https://transformation-agent-bridge-*.vercel.app"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, PUT, DELETE, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization, X-Requested-With"
-        },
-        {
-          "key": "Access-Control-Max-Age",
-          "value": "86400"
+          "key": "Cache-Control",
+          "value": "s-maxage=1, stale-while-revalidate=59"
         }
       ]
     },
@@ -109,53 +31,24 @@
       "source": "/images/(.*)",
       "headers": [
         {
-          "key": "Cache-Control", 
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/(.*\\.(js|css|woff|woff2|ttf|otf|eot))",
-      "headers": [
-        {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
         }
       ]
     }
   ],
-
-  "rewrites": [
-    {
-      "source": "/robots.txt",
-      "destination": "/api/robots"
-    },
-    {
-      "source": "/sitemap.xml",
-      "destination": "/api/sitemap"
-    }
-  ],
-
   "redirects": [
     {
-      "source": "/admin",
-      "destination": "/admin/analytics",
-      "permanent": false
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
     }
   ],
-
-  "crons": [
-    {
-      "path": "/api/monitoring/health",
-      "schedule": "*/5 * * * *"
-    }
-  ],
-
-  "edge-config": {
-    "id": "$EDGE_CONFIG_ID"
-  },
-
+  "rewrites": [],
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "regions": ["iad1"],
   "env": {
-    "NEXT_RUNTIME": "edge"
+    "NODE_ENV": "production"
   }
 }

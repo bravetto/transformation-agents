@@ -32,7 +32,7 @@ interface InteractionMetrics {
 class EnhancedINPOptimizer {
   private config: INPOptimizationConfig;
   private abortControllers = new Map<string, AbortController>();
-  private debouncedTasks = new Map<string, number>();
+  private debouncedTasks = new Map<string, ReturnType<typeof setTimeout>>();
   private metrics: InteractionMetrics[] = [];
   private observer: PerformanceObserver | null = null;
 
@@ -184,6 +184,7 @@ class EnhancedINPOptimizer {
 
   private optimizeEventListeners(): void {
     const originalAddEventListener = EventTarget.prototype.addEventListener;
+    const optimizer = this; // Capture the INPOptimizer instance
 
     EventTarget.prototype.addEventListener = function (
       type: string,
@@ -191,7 +192,10 @@ class EnhancedINPOptimizer {
       options?: boolean | AddEventListenerOptions,
     ) {
       if (["click", "pointerdown", "keydown"].includes(type)) {
-        const optimizedListener = this.createOptimizedListener(listener, type);
+        const optimizedListener = optimizer.createOptimizedListener(
+          listener,
+          type,
+        );
         return originalAddEventListener.call(
           this,
           type,
@@ -201,7 +205,7 @@ class EnhancedINPOptimizer {
       }
 
       return originalAddEventListener.call(this, type, listener, options);
-    }.bind(this);
+    };
   }
 
   private createOptimizedListener(
@@ -293,8 +297,16 @@ class EnhancedINPOptimizer {
       const result = listener.call(event.target, event);
 
       // If it returns a promise, handle it with yielding
-      if (result instanceof Promise) {
-        await this.executeAsyncWithYielding(result, controller?.signal);
+      if (
+        result !== undefined &&
+        result !== null &&
+        typeof result === "object" &&
+        "then" in result
+      ) {
+        await this.executeAsyncWithYielding(
+          result as Promise<any>,
+          controller?.signal,
+        );
       }
     } else if (listener?.handleEvent) {
       listener.handleEvent(event);

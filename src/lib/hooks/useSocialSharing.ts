@@ -20,6 +20,14 @@ import {
 } from "@/lib/analytics/user-journey";
 import { logger } from "@/lib/logger";
 
+// Local types
+interface ShareResult {
+  success: boolean;
+  platform: SocialPlatform;
+  url: string;
+  timestamp: number;
+}
+
 /**
  * 🚀 SOCIAL SHARING HOOK
  * Complete social sharing functionality with analytics and A/B testing
@@ -136,6 +144,74 @@ export function useSocialSharing(content: ShareableContent) {
   );
 
   /**
+   * Share content on social platform with tracking
+   */
+  const shareContent = useCallback(
+    async (
+      platform: SocialPlatform,
+      customMessage?: string,
+    ): Promise<ShareResult | null> => {
+      try {
+        const shareUrl = generateShareUrl(platform, customMessage);
+        setShareCount((prev) => prev + 1);
+        setShareSuccess(true);
+
+        // Track the share with enhanced analytics
+        trackConversion({
+          eventType: "social_shared",
+          userType,
+          conversionType: "primary",
+          metadata: {
+            platform,
+            url: shareUrl,
+            hasCustomMessage: !!customMessage,
+            abTestVariant: abTestVariants["share-message-urgency-2024"]?.id,
+            sessionId,
+            component: "SocialSharing",
+          },
+        });
+
+        // Open share URL
+        if (typeof window !== "undefined") {
+          window.open(shareUrl, "_blank", "width=600,height=400");
+        }
+
+        return {
+          success: true,
+          platform,
+          url: shareUrl,
+          timestamp: Date.now(),
+        };
+      } catch (error) {
+        logger.error("Failed to share content", { error });
+      }
+
+      return null;
+    },
+    [content, userType, sessionId, abTestVariants],
+  );
+
+  /**
+   * Get default message for platform
+   */
+  const getDefaultMessage = useCallback(
+    (platform: SocialPlatform): string => {
+      const platformConfig = PLATFORM_CONFIGS[platform];
+      const style = platformConfig.messageStyle;
+
+      const messages = {
+        casual: `Check out ${content.title} - ${content.description}`,
+        professional: `I wanted to share this important story: ${content.title}. ${content.description}`,
+        emotional: `This powerful story touched my heart: ${content.title}. ${content.description} Please share to help spread awareness.`,
+        urgent: `🚨 URGENT: ${content.title} - Your share could make a real difference. ${content.description}`,
+      };
+
+      return messages[style] || messages.casual;
+    },
+    [content],
+  );
+
+  /**
    * Generate platform-specific share URL
    */
   const generateShareUrl = useCallback(
@@ -184,7 +260,7 @@ export function useSocialSharing(content: ShareableContent) {
           return content.url;
       }
     },
-    [content, abTestVariants],
+    [content, abTestVariants, getDefaultMessage],
   );
 
   /**
@@ -510,26 +586,6 @@ export function useSocialSharing(content: ShareableContent) {
       return [...new Set(baseHashtags)].slice(0, 10);
     },
     [],
-  );
-
-  /**
-   * Get default message for platform
-   */
-  const getDefaultMessage = useCallback(
-    (platform: SocialPlatform): string => {
-      const platformConfig = PLATFORM_CONFIGS[platform];
-      const style = platformConfig.messageStyle;
-
-      const messages = {
-        casual: `Check out ${content.title} - ${content.description}`,
-        professional: `I wanted to share this important story: ${content.title}. ${content.description}`,
-        emotional: `This powerful story touched my heart: ${content.title}. ${content.description} Please share to help spread awareness.`,
-        urgent: `🚨 URGENT: ${content.title} - Your share could make a real difference. ${content.description}`,
-      };
-
-      return messages[style] || messages.casual;
-    },
-    [content],
   );
 
   return {

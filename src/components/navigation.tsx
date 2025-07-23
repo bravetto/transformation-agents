@@ -102,7 +102,7 @@ const navItems: NavItem[] = [
     icon: <Heart className="h-4 w-4" />,
     children: [
       {
-        href: "/letter-form-test",
+        href: "/letter-portal",
         label: "📝 Write Letter to Judge",
         icon: <FileText className="h-4 w-4" />,
       },
@@ -489,14 +489,12 @@ function Navigation() {
                 className="mt-8 pt-8 border-t border-gray-200"
               >
                 <div className="grid grid-cols-2 gap-4 mb-6">
-                  <Link
-                    href="/letter-form-test"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <Button className="w-full bg-gradient-divine text-white hover:bg-gradient-divine-hover font-semibold py-3 rounded-lg transform hover:scale-105 transition-all duration-200">
-                      ✍️ Write Letter
-                    </Button>
-                  </Link>
+                  <Button asChild className="w-full">
+                    <Link href="/letter-portal">
+                      <FileText className="h-4 w-4 mr-2" />
+                      Write Letter to Judge
+                    </Link>
+                  </Button>
                   <Link href="/prayer-room" onClick={() => setIsOpen(false)}>
                     <Button
                       variant="outline"
@@ -522,7 +520,7 @@ function Navigation() {
           animate={{ opacity: 1, y: 0 }}
           className="fixed bottom-4 right-4 z-dropdown md:hidden"
         >
-          <Link href="/letter-form-test">
+          <Link href="/letter-portal">
             <Button
               size="lg"
               className="bg-gradient-divine text-white hover:bg-gradient-divine-hover shadow-xl rounded-full w-14 h-14 flex items-center justify-center transform hover:scale-110 transition-all duration-200"

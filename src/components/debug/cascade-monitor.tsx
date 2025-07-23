@@ -403,9 +403,7 @@ function CascadeMonitor({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() =>
-                      (window.location.href = "/analytics-dashboard")
-                    }
+                    onClick={() => window.open("/analytics-dashboard", "_self")}
                     className="flex-1"
                   >
                     <Activity className="w-3 h-3 mr-1" />
