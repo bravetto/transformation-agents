@@ -1,104 +1,183 @@
-# AI Assistant Context for JAHmere Webb Freedom Portal
+# JAHmere Webb Freedom Portal - AI Assistant Rules
+# This file controls AI behavior for maximum productivity and code quality
 
-## Project Overview
-- **Purpose**: JAHmere Webb Freedom Advocacy Platform - Justice reform portal
-- **Status**: Production-ready, deployed on Vercel
-- **Performance**: Championship level (27-131ms API responses, 9.0s builds)
+## Project Context
+Tech Stack: Next.js 15.4.3 (App Router), TypeScript 5.0+ (strict), Tailwind CSS 3.0, Vercel Edge
+Architecture: Server Components default, Client Components explicit, Advanced Analytics, Social Sharing
+Mission: JAHmere Webb freedom advocacy platform (July 28th, 2025 court date)
 
-## Tech Stack (CRITICAL - Follow Exactly)
-- **Framework**: Next.js 15.4.2 (App Router) 
-- **Language**: TypeScript 5.0+ (strict mode)
-- **Runtime**: Node.js 20.x
-- **Styling**: Tailwind CSS 3.0
-- **Database**: Not implemented (static site)
-- **Hosting**: Vercel Edge Network
+## ALWAYS Generate These Patterns
 
-## File Structure Patterns
+### Component Patterns
+```typescript
+// ✅ Server Component (default)
+export default async function ServerComponent() {
+  const data = await getData(); // Direct async/await
+  return <div className="container mx-auto">{data.title}</div>;
+}
+
+// ✅ Client Component (explicit)
+'use client';
+import { useState } from 'react';
+export default function ClientComponent() {
+  const [state, setState] = useState('');
+  return <button onClick={() => setState('new')}>Click</button>;
+}
+
+// ✅ Props with TypeScript interfaces
+interface ComponentProps {
+  title: string;
+  optional?: boolean;
+  children: React.ReactNode;
+}
 ```
-src/app/                 # Next.js 15 App Router pages
-src/components/          # React components  
-src/components/ui/       # Reusable UI components (Radix + Tailwind)
-src/lib/                 # Utilities and helpers
-src/types/               # TypeScript type definitions
-public/                  # Static assets
+
+### API Route Patterns
+```typescript
+// ✅ API Route with comprehensive error handling
+import { NextRequest, NextResponse } from "next/server";
+import { logger } from "@/lib/logger";
+
+export async function POST(request: NextRequest) {
+  try {
+    const data = await request.json();
+    // Validate with Zod if needed
+    const result = await processData(data);
+    
+    logger.analytics("API Success", { endpoint: "/api/example", data });
+    
+    return NextResponse.json({
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    logger.error("API Error", { error, endpoint: "/api/example" });
+    return NextResponse.json(
+      { error: "Processing failed" },
+      { status: 500 }
+    );
+  }
+}
 ```
 
-## Coding Conventions (MANDATORY)
-- **Components**: Use arrow functions, TypeScript interfaces
-- **Styling**: Tailwind classes only (no CSS modules/styled-components)
-- **Imports**: Use @/ path aliases (`import { X } from '@/components/ui'`)
-- **Client Components**: Add 'use client' only when needed
-- **Error Boundaries**: Wrap client components with error handling
+### Analytics Integration
+```typescript
+// ✅ Always track user interactions
+import { trackConversion, getCurrentUserType } from '@/lib/analytics/user-journey';
+
+const handleUserAction = () => {
+  trackConversion({
+    eventType: 'cta_clicked',
+    userType: getCurrentUserType(),
+    conversionType: 'primary',
+    metadata: { component: 'ShareButton', platform: 'twitter' }
+  });
+};
+```
+
+### Error Boundaries
+```typescript
+// ✅ Wrap client components
+import { DivineErrorBoundary } from '@/components/ui/divine-error-boundary';
+
+<DivineErrorBoundary
+  componentName="SocialSharing"
+  role="messenger"
+  fallback={<div>Sharing temporarily unavailable</div>}
+>
+  <SocialShareSuite content={content} />
+</DivineErrorBoundary>
+```
 
 ## NEVER Generate These Patterns
-- ❌ Pages directory code (deprecated, use App Router)
-- ❌ Class components (use functional only)
-- ❌ CSS modules or styled-components (use Tailwind)
-- ❌ Redux/Context API (this is a static site)
-- ❌ API routes with databases (static site)
+- ❌ Pages directory code (use App Router)
+- ❌ getServerSideProps/getStaticProps (use Server Components)
+- ❌ Class components (use functional)
+- ❌ CSS modules/styled-components (use Tailwind)
+- ❌ Redux (use Zustand if needed, or React state)
 - ❌ `any` types (use proper TypeScript)
+- ❌ API routes without error handling
+- ❌ Client components without error boundaries
 
-## ALWAYS Use These Patterns
-- ✅ `'use client'` for interactive components
-- ✅ Server components for static content (default)
-- ✅ Proper TypeScript interfaces for props
-- ✅ Error boundaries for client components  
-- ✅ Tailwind for all styling
-- ✅ @/ imports for absolute paths
-
-## Component Patterns
+## Import Patterns
 ```typescript
-// Server Component (default)
-export default function PageComponent() {
-  return <div className="container mx-auto">Content</div>
-}
-
-// Client Component (interactive)
-'use client'
-export default function InteractiveComponent() {
-  const [state, setState] = useState('')
-  return <button onClick={() => setState('new')}>Click</button>
-}
-
-// Props with TypeScript
-interface ComponentProps {
-  title: string
-  optional?: boolean
-  children: React.ReactNode
-}
+// Standard order:
+import { Metadata } from 'next';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { SocialShareSuite } from '@/components/social-sharing';
+import { trackConversion } from '@/lib/analytics/user-journey';
 ```
 
-## Common Imports
+## Project-Specific Features
+
+### Social Sharing System
+- Use `SocialShareSuite` for complete sharing interfaces
+- Use `generatePersonShareableContent()` for person profiles  
+- Always track shares with analytics
+- Enable A/B testing with `enableAbTesting={true}`
+
+### People Profiles
+- Use `EnhancedPersonTimeline` for interactive timelines
+- Generate shareable content with `generatePersonShareableContent()`
+- Include divine features for JAHmere Webb (`showPrayerCall`, `highlightFreedomMission`)
+
+### Analytics Tracking
+- Track all user interactions with appropriate event types
+- Use divine event tracking for prayer/spiritual content
+- Include user type context and metadata
+- Integrate with existing analytics system
+
+### Performance Requirements
+- API responses: <100ms target
+- Build time: <15s
+- Use Next.js Image optimization
+- Implement proper error boundaries
+- Follow Core Web Vitals guidelines
+
+## Divine/Spiritual Context
+- JAHmere Webb content gets special treatment (freedom mission focus)
+- Prayer warrior activation for spiritual content
+- Divine analytics tracking for transformation stories
+- Use appropriate urgency levels ('normal', 'urgent', 'critical', 'divine')
+
+## Common Component Imports
 ```typescript
-// Next.js
-import { Metadata } from 'next'
-import Link from 'next/link'
-import Image from 'next/image'
+// UI Components
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
-// React  
-import { useState, useEffect } from 'react'
+// Social Sharing
+import { SocialShareSuite, SocialShareButton } from '@/components/social-sharing';
 
-// UI Components (existing)
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Container } from '@/components/ui/container'
+// People System  
+import { EnhancedPersonTimeline } from '@/components/people/enhanced-person-timeline';
+
+// Analytics
+import { trackConversion, trackModalInteraction } from '@/lib/analytics/user-journey';
 ```
 
-## Project-Specific Context
-- **Mission**: Advocacy for JAHmere Webb's freedom case (July 28th court date)
-- **Audience**: Community supporters, legal professionals, advocates
-- **Content**: Legal case information, community support, petition systems
-- **Tone**: Professional, hopeful, action-oriented (not "divine" language)
+## File Structure Context
+```
+src/app/                    # Next.js App Router pages
+src/components/ui/          # Reusable UI (Button, Card, etc.)
+src/components/people/      # People profile system
+src/components/social-sharing/  # Advanced social sharing
+src/lib/analytics/          # Analytics system
+src/lib/hooks/              # Custom React hooks
+src/types/                  # TypeScript definitions
+public/images/              # Optimized images
+```
 
-## Performance Requirements
-- API responses: <100ms (currently 27-131ms ✅)
-- Build time: <15s (currently 9.0s ✅)  
-- Core Web Vitals: Green scores required
-- Bundle size: Optimized for Vercel Edge
+## Success Metrics
+- Zero TypeScript errors
+- Sub-100ms API responses  
+- Proper error boundary coverage
+- Analytics integration on all interactions
+- Mobile-first responsive design
+- Accessibility compliance (ARIA labels)
 
-## Deployment Context
-- **Platform**: Vercel (vercel.json configured)
-- **Domain**: july28freedom.vercel.app
-- **Environment**: Production-ready
-- **Cache**: Edge caching enabled
-- **Analytics**: Vercel analytics integrated 
+Remember: This is a production advocacy platform for JAHmere Webb's freedom case. Every component should be production-ready, properly typed, and include appropriate analytics tracking. 

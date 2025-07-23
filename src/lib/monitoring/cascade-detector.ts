@@ -170,7 +170,8 @@ class CascadeDetector {
         return true; // Can't check from server
       }
 
-      const response = await fetch(route, { method: "HEAD" });
+      const absoluteUrl = `${window.location.origin}${route}`;
+      const response = await fetch(absoluteUrl, { method: "HEAD" });
       return response.ok;
     } catch (error) {
       return false;
@@ -201,7 +202,8 @@ class CascadeDetector {
     try {
       if (typeof window === "undefined") return;
 
-      await fetch("/api/analytics/user-journey", {
+      const endpoint = `${window.location.origin}/api/analytics/user-journey`;
+      await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

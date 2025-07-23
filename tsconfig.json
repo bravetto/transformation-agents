@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2015",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "dom.iterable", "es2023"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -9,11 +9,19 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "tsBuildInfoFile": ".next/cache/tsbuildinfo",
+    "extendedDiagnostics": true,
+    "generateCpuProfile": "profile.cpuprofile",
+    "listEmittedFiles": true,
+    "listFiles": false,
+    "useDefineForClassFields": true,
+    "verbatimModuleSyntax": false,
+    
     "plugins": [
       {
         "name": "next"

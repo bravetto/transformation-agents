@@ -7,6 +7,11 @@ import EnhancedPersonHero from "@/components/people/enhanced-person-hero-simple"
 import PersonTestimony from "@/components/people/person-testimony";
 import PersonImpact from "@/components/people/person-impact";
 import PersonLetter from "@/components/people/person-letter";
+import EnhancedPersonTimeline from "@/components/people/enhanced-person-timeline";
+import {
+  SocialShareSuite,
+  generatePersonShareableContent,
+} from "@/components/social-sharing";
 import Link from "next/link";
 import { PersonRole } from "@/types/person";
 
@@ -237,6 +242,77 @@ export default async function PersonPage({ params }: PersonPageParams) {
             </DivineErrorBoundary>
           </Suspense>
         )}
+
+        {/* Social Sharing Section - ADVANCED VIRAL OPTIMIZATION! */}
+        <section className="w-full bg-gradient-to-r from-blue-50 to-purple-50 py-12">
+          <div className="container mx-auto px-4">
+            <Suspense
+              fallback={
+                <div className="h-32 bg-white rounded-lg animate-pulse" />
+              }
+            >
+              <DivineErrorBoundary
+                componentName={`${personData.name}SocialSharing`}
+                role="messenger"
+                fallback={
+                  <div className="p-6 bg-white rounded-lg shadow-sm">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Share {personData.name}'s Story
+                    </h3>
+                    <p className="text-gray-600">
+                      Sharing is temporarily unavailable. Please copy the URL to
+                      share manually.
+                    </p>
+                  </div>
+                }
+              >
+                <SocialShareSuite
+                  content={generatePersonShareableContent(personData)}
+                  showPrayerCall={
+                    personData.id === "jahmere-webb" ||
+                    personData.role === "lightworker"
+                  }
+                  showUrgency={personData.id === "jahmere-webb"}
+                  highlightFreedomMission={personData.id === "jahmere-webb"}
+                  trackViralCoefficient={true}
+                  trackEngagement={true}
+                  enableAbTesting={true}
+                  layout="horizontal"
+                  showLabels={true}
+                  showCounts={false}
+                  className="max-w-4xl mx-auto"
+                />
+              </DivineErrorBoundary>
+            </Suspense>
+          </div>
+        </section>
+
+        {/* Interactive Timeline Section - NEW! */}
+        <section className="w-full bg-gray-50 py-16">
+          <div className="container-wide">
+            <Suspense fallback={<PersonPageSkeleton />}>
+              <DivineErrorBoundary
+                componentName={`${personData.name}Timeline`}
+                role="messenger"
+                fallback={
+                  <div className="p-8 text-center">
+                    <h3 className="text-lg font-semibold">
+                      Error loading timeline section
+                    </h3>
+                    <p>The interactive timeline could not be displayed.</p>
+                  </div>
+                }
+              >
+                <EnhancedPersonTimeline
+                  person={personData}
+                  variant="detailed"
+                  showFilters={true}
+                  showStats={true}
+                />
+              </DivineErrorBoundary>
+            </Suspense>
+          </div>
+        </section>
       </main>
     </DivineErrorBoundary>
   );
