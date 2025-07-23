@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es2015",
-    "lib": ["dom", "dom.iterable", "es2023"],
+    // TypeScript 5.9 enhanced configuration
+    "target": "ES2023",
+    "lib": ["dom", "dom.iterable", "es6", "ES2023"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -10,6 +11,7 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
+    "moduleDetection": "force",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -20,7 +22,18 @@
     "listEmittedFiles": true,
     "listFiles": false,
     "useDefineForClassFields": true,
-    "verbatimModuleSyntax": false,
+    "verbatimModuleSyntax": true,
+    
+    // Enhanced strictness for divine type safety
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    
+    // Performance optimizations for TS 5.9
+    "assumeChangesOnlyAffectDirectDependencies": true,
+    "composite": false,
     
     "plugins": [
       {
@@ -28,24 +41,27 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/app/*": ["./src/app/*"]
     },
     "types": ["jest", "@testing-library/jest-dom", "node"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/setupTests.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
   "exclude": [
-    "node_modules", 
-    "cypress", 
-    "cypress.config.ts", 
-    "docs/**/*", 
-    "src/agents/**/*", 
-    "**/__tests__/**/*", 
-    "**/*.test.*", 
-    "**/*.spec.*",
-    "src/lib/prompts/**/*",
-    "src_backup_consciousness_*/**/*",
-    "src/lib/performance/performance-monitor-client.tsx",
-    "temp-disabled-pages/**/*",
-    "docs-consolidation-backup-*/**/*"
+    "node_modules",
+    ".next",
+    "dist",
+    "build",
+    "temp-disabled-pages",
+    "temp-disabled-routes"
   ]
 }

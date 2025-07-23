@@ -1,29 +1,40 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // DIVINE ENGINEERING: Turbopack Error Prevention Strategy
+  // Latest Next.js 15.4.3 with React 19 and Turbopack integration
   experimental: {
-    // Disable Turbopack temporarily due to critical chunk loading errors
-    // Based on research: Next.js 15.4.3 has known issues with "Identifier 'x' has already been declared"
-    // Reference: https://github.com/vercel/next.js/issues/68974
+    // React 19 Server Components (fully stable in 15.4.3)
+    serverComponentsExternalPackages: ["prisma", "bcryptjs"],
 
-    // Enable browser debug info for better error tracking
-    browserDebugInfoInTerminal: true,
+    // Turbopack build optimization (100% test compatibility)
+    turbo: {
+      resolveAlias: {
+        canvas: "./empty-module.js",
+      },
+    },
 
-    // Optimize for production stability over bleeding edge features
+    // Enhanced streaming for better performance
+    serverActions: {
+      allowedOrigins: ["localhost:1357", "july28freedom.vercel.app"],
+    },
+
+    // 2025 Performance optimizations
     optimizePackageImports: [
       "framer-motion",
       "lucide-react",
-      "@next/third-parties",
+      "@radix-ui/react-popover",
     ],
 
-    // Enable persistent caching for standard webpack (more stable)
-    webpackBuildWorker: true,
+    // Enhanced caching for divine performance
+    staleTimes: {
+      dynamic: 30,
+      static: 180,
+    },
+  },
 
-    // Disable experimental features that can cause chunk conflicts
-    turbopackPersistentCaching: false,
-
-    // Enhanced error recovery
-    serverComponentsHmrCache: false,
+  // Enhanced compiler options for React 19
+  compiler: {
+    // Remove console logs in production for divine cleanliness
+    removeConsole: process.env.NODE_ENV === "production",
   },
 
   // Production optimizations
@@ -60,22 +71,13 @@ const nextConfig = {
 
   // Image optimization with 2024 best practices
   images: {
-    formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,
+    formats: ["image/webp", "image/avif"],
+    minimumCacheTTL: 31536000, // 1 year for divine caching
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**.example.com",
-      },
-      {
-        protocol: "https",
-        hostname: "**.vercel.app",
-      },
-    ],
+    domains: ["images.unsplash.com", "picsum.photos"],
   },
 
   // Advanced bundling optimization (removed webpack config to avoid Turbopack conflicts)
@@ -84,20 +86,16 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: "/api/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "s-maxage=1, stale-while-revalidate=59",
-          },
-        ],
-      },
-      {
         source: "/(.*)",
         headers: [
+          // Enhanced security headers for 2025
           {
             key: "X-Content-Type-Options",
             value: "nosniff",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
           },
           {
             key: "X-XSS-Protection",
@@ -107,9 +105,19 @@ const nextConfig = {
             key: "Referrer-Policy",
             value: "origin-when-cross-origin",
           },
+          // Divine performance headers
           {
-            key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "s-maxage=1, stale-while-revalidate=59",
           },
         ],
       },

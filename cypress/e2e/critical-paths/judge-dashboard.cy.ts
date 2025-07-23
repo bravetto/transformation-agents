@@ -228,7 +228,8 @@ describe("Judge Dashboard Access", () => {
       expect(bodyWidth).to.be.lessThan(500);
 
       // Content should not overflow
-      const hasHorizontalScroll = $body[0].scrollWidth > $body.width();
+      const hasHorizontalScroll =
+        ($body[0] as HTMLElement).scrollWidth > ($body.width() || 0);
       expect(hasHorizontalScroll).to.be.false;
     });
   });
@@ -300,7 +301,7 @@ describe("Judge Dashboard Access", () => {
     cy.visit("/the-case");
 
     // Test keyboard navigation
-    cy.get("body").tab();
+    cy.get("body").type("{tab}");
     cy.focused().should("be.visible");
 
     // Check for proper ARIA labels and roles
