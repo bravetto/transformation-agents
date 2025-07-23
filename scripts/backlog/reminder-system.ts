@@ -150,6 +150,7 @@ class BacklogReminderSystem {
       try {
         const lines = section.split("\n");
         const titleLine = lines[0];
+        if (!titleLine) continue;
         const title = titleLine.replace(/\[.*\]/, "").trim();
         const priority = titleLine.match(
           /\[(.*?)\]/,
