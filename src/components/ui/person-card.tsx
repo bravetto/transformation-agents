@@ -6,6 +6,11 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { PersonRole } from "@/types/person";
 import { cn } from "@/lib/utils";
+import {
+  resolvePersonImage,
+  getResponsiveSizes,
+  hasPersonImages,
+} from "@/lib/image-utils";
 
 export interface PersonCardProps {
   id: string;
@@ -50,22 +55,22 @@ const roleStyles: Record<
 // Size-based configuration
 const sizeConfig = {
   small: {
-    card: "h-60",
-    imageContainer: "h-32",
+    card: "h-72",
+    imageContainer: "h-36",
     title: "text-sm",
     name: "text-lg",
-    description: "line-clamp-2 text-xs",
+    description: "line-clamp-3 text-sm",
   },
   medium: {
     card: "h-80",
-    imageContainer: "h-40",
+    imageContainer: "h-44",
     title: "text-sm",
     name: "text-xl",
     description: "line-clamp-3 text-sm",
   },
   large: {
     card: "h-96",
-    imageContainer: "h-48",
+    imageContainer: "h-52",
     title: "text-base",
     name: "text-2xl",
     description: "line-clamp-4 text-base",
@@ -100,28 +105,30 @@ function PersonCard({
   // Get size-specific styling
   const sizeStyle = useMemo(() => sizeConfig[size], [size]);
 
-  // Generate the appropriate image path
-  const getImagePath = useCallback(() => {
-    if (!imageSrc) {
-      // Fallback to role-specific default image
-      return `/images/fallbacks/${role}-fallback.jpg`;
-    }
+  // Enhanced image resolution using the new system
+  const imageConfig = useMemo(() => {
+    // Map card size to image size
+    const imageSize =
+      size === "small"
+        ? "thumbnail"
+        : size === "featured"
+          ? "display"
+          : "display";
 
-    if (!localImage) {
-      // External image
-      return imageSrc;
-    }
+    return {
+      personId: id,
+      size: imageSize as "thumbnail" | "display" | "full",
+      fallbackRole: role,
+    };
+  }, [id, size, role]);
 
-    // Local image - handle both relative and absolute paths
-    if (imageSrc.startsWith("/")) {
-      return imageSrc;
-    }
+  const resolvedImage = useMemo(
+    () => resolvePersonImage(imageConfig),
+    [imageConfig],
+  );
 
-    return `/images/people/thumbnails/${imageSrc}`;
-  }, [imageSrc, localImage, role]);
-
-  // Memoize the image path to prevent recalculation
-  const imagePath = useMemo(() => getImagePath(), [getImagePath]);
+  // Check if this person has professional images
+  const hasProfessionalImages = useMemo(() => hasPersonImages(id), [id]);
 
   // Handle image load
   const handleImageLoad = useCallback(() => {
@@ -166,14 +173,11 @@ function PersonCard({
           />
 
           <Image
-            src={imagePath}
-            alt={name}
-            fill
-            sizes={
-              size === "featured"
-                ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            }
+            src={resolvedImage.src}
+            alt={resolvedImage.alt}
+            width={resolvedImage.width}
+            height={resolvedImage.height}
+            sizes={getResponsiveSizes(imageConfig.size)}
             className={cn(
               "object-cover transition-all duration-700",
               isLoaded ? "opacity-100 scale-100" : "opacity-0 scale-105",
@@ -181,8 +185,17 @@ function PersonCard({
             onLoad={handleImageLoad}
             onError={handleImageError}
             loading="lazy"
-            quality={80}
+            quality={imageConfig.size === "thumbnail" ? 85 : 90}
+            placeholder={resolvedImage.blurDataURL ? "blur" : "empty"}
+            blurDataURL={resolvedImage.blurDataURL}
           />
+
+          {/* Professional Image Indicator */}
+          {hasProfessionalImages && (
+            <div className="absolute top-2 left-2 px-2 py-1 text-xs font-medium bg-green-500/80 backdrop-blur-md rounded-full text-white">
+              ✨ Pro
+            </div>
+          )}
 
           {/* Role indicator */}
           <div className="absolute bottom-2 right-2 px-2 py-1 text-xs font-medium bg-black/30 backdrop-blur-md rounded-full">
@@ -198,33 +211,34 @@ function PersonCard({
             {title}
           </div>
 
-          <h3 className={cn("font-bold text-white mb-2", sizeStyle.name)}>
+          <h3
+            className={cn(
+              "font-bold text-white mb-2 leading-tight",
+              sizeStyle.name,
+            )}
+          >
             {name}
           </h3>
 
           {description && (
-            <p className={cn("text-white/90 mt-auto", sizeStyle.description)}>
+            <p
+              className={cn(
+                "text-white/70 leading-relaxed flex-grow",
+                sizeStyle.description,
+              )}
+            >
               {description}
             </p>
           )}
 
-          <div className="mt-auto pt-3">
-            <span className="inline-flex items-center text-sm font-medium text-white/90">
-              View Profile
-              <svg
-                className="ml-1 h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+          {/* Professional Images Status */}
+          <div className="mt-3 flex items-center justify-between text-xs text-white/60">
+            <span>
+              {hasProfessionalImages
+                ? "Professional Photo"
+                : "Generated Avatar"}
             </span>
+            <span className="capitalize">{role}</span>
           </div>
         </div>
       </motion.article>

@@ -5,6 +5,7 @@ import { DivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import EnhancedPersonHero from "@/components/people/enhanced-person-hero-simple";
 import { JordanFullTestimony } from "@/components/people/jordan-testimony";
 import Link from "next/link";
+import { PersonRole } from "@/types/person";
 
 export const metadata: Metadata = {
   title: "Jordan Dungy - The Bridge Project",
@@ -52,7 +53,7 @@ export default function JordanDungyPage() {
     imageAlt: "Jordan Dungy profile photo",
     personId: "jordan-dungy",
     localImage: true,
-    role: "advocate",
+    role: "messenger" as PersonRole,
     variant: "primary" as const,
   };
 

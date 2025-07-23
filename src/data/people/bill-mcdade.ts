@@ -5,7 +5,7 @@ export const billMcDade: PersonData = {
   slug: "bill-mcdade",
   name: "Bill McDade",
   title: "Senior Executive & Community Volunteer",
-  heroImage: "/images/profiles/bill-mcdade.svg",
+  heroImage: "/images/people/bill-mcdade.svg",
   localImage: true,
 
   // Filter properties

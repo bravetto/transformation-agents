@@ -5,7 +5,7 @@ export const brooksLopez: PersonData = {
   slug: "brooks-lopez",
   name: "Brooks Lopez",
   title: "NBA Center & Community Leader",
-  heroImage: "/images/profiles/brooks-lopez.svg",
+  heroImage: "/images/people/brooks-lopez.svg",
   localImage: true,
 
   // Filter properties

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
-import { Card } from "@/components/ui";
+import { Card } from "@/components/ui/card";
 
 export interface ImpactStat {
   id: string;

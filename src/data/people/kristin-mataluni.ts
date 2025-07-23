@@ -5,7 +5,7 @@ export const kristinMataluni: PersonData = {
   slug: "kristin-mataluni",
   name: "Kristin Mataluni",
   title: "Special Education Teaching Assistant",
-  heroImage: "/images/profiles/kristin-mataluni.svg",
+  heroImage: "/images/people/kristin-mataluni.svg",
   localImage: true,
 
   // Filter properties
