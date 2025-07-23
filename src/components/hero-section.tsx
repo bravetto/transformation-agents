@@ -4,11 +4,23 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Calendar, Users, Clock, Star, Quote } from "lucide-react";
+import {
+  Calendar,
+  Users,
+  Clock,
+  Star,
+  Quote,
+  Play,
+  ExternalLink,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { RealtimeSupporterCounter } from "@/components/ui/realtime-supporter-counter";
-import { TonyDungyVideoIntegration } from "@/components/ui/tony-dungy-video-integration";
+import {
+  trackConversion,
+  getCurrentUserType,
+} from "@/lib/analytics/user-journey";
+import TonyDungyVideoIntegration from "@/components/ui/tony-dungy-video-integration";
 
 // Character witness data - Jordan Dungy featured prominently
 const featuredWitness = {
@@ -271,35 +283,111 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        {/* Tony Dungy Video Integration - Maximum Authority Impact */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-16"
-        >
-          <TonyDungyVideoIntegration
-            selectedCategory="leadership"
-            showJordanConnection={true}
-            maxVideos={1}
-            layout="featured"
-            className="max-w-4xl mx-auto"
-          />
-        </motion.div>
+        {/* NFL Authority Section - Enhanced with Tony Dungy Content */}
+        <div className="bg-gradient-to-r from-blue-50 to-green-50 border-2 border-blue-200 rounded-xl p-6 mb-8">
+          <div className="text-center space-y-4">
+            <div className="flex justify-center items-center gap-3 mb-4">
+              <Badge className="bg-blue-600 text-white text-lg px-4 py-2">
+                🏆 NFL Hall of Fame Authority
+              </Badge>
+              <Badge className="bg-green-600 text-white text-lg px-4 py-2">
+                Prison Ministry Expert
+              </Badge>
+            </div>
+
+            <h2 className="text-2xl font-bold text-blue-900">
+              Tony Dungy: Championship Coach Advocates for Second Chances
+            </h2>
+
+            <div className="bg-white border-2 border-yellow-300 rounded-lg p-4 max-w-4xl mx-auto">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <Quote className="w-5 h-5 text-yellow-600" />
+                <span className="font-bold text-yellow-800">
+                  Powerful Words on Redemption
+                </span>
+              </div>
+
+              <blockquote className="text-lg text-gray-800 italic text-center mb-3">
+                "We have roughly 4,000 inmates who come back to Indianapolis and
+                we wanted to structure things for those young men who made a
+                mistake and be productive."
+              </blockquote>
+              <cite className="text-center block font-semibold text-blue-700">
+                — Tony Dungy, Indianapolis Reentry Program
+              </cite>
+
+              <div className="mt-4 p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                <p className="text-sm text-green-800 font-medium">
+                  <strong>Direct Parallel:</strong> Tony Dungy mentored Michael
+                  Vick in PRISON at Leavenworth Federal Penitentiary and
+                  advocated for his NFL return. The same philosophy now supports
+                  JAHmere's transformation.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-4 mt-6">
+              <Button
+                size="lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={() => {
+                  trackConversion({
+                    eventType: "cta_clicked",
+                    userType: getCurrentUserType(),
+                    conversionType: "primary",
+                    metadata: {
+                      action: "watch_tony_dungy_videos",
+                      context: "hero_nfl_authority",
+                      content: "second_chances_advocacy",
+                    },
+                  });
+                }}
+              >
+                <Play className="w-4 h-4 mr-2" />
+                Watch Tony Dungy on Second Chances
+              </Button>
+
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-green-600 text-green-700 hover:bg-green-50"
+                onClick={() => {
+                  window.open(
+                    "https://www.npr.org/templates/story/story.php?storyId=111782935",
+                    "_blank",
+                  );
+                  trackConversion({
+                    eventType: "cta_clicked",
+                    userType: getCurrentUserType(),
+                    conversionType: "secondary",
+                    metadata: {
+                      url: "npr_dungy_interview",
+                      context: "hero_authority_validation",
+                      action: "external_link_clicked",
+                    },
+                  });
+                }}
+              >
+                <ExternalLink className="w-4 h-4 mr-2" />
+                NPR: "I Would Take A Chance On Him"
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Tony Dungy Video Integration */}
+        <div className="mb-8">
+          <TonyDungyVideoIntegration />
+        </div>
 
         {/* Additional Tony Dungy Content Grid */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-16"
+          className="mt-12"
         >
-          <TonyDungyVideoIntegration
-            showJordanConnection={true}
-            maxVideos={3}
-            layout="grid"
-            className="max-w-6xl mx-auto"
-          />
+          <TonyDungyVideoIntegration />
         </motion.div>
       </div>
     </section>
