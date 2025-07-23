@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import "./accessibility.css";
 import { cn } from "@/lib/utils";
@@ -9,23 +10,32 @@ import Banner from "@/components/banner";
 import Footer from "@/components/footer";
 import ClientLayoutWrapper from "@/components/client-layout-wrapper";
 
-// Font configurations
+// Optimized font loading with 2024 best practices
 const inter = Inter({
   subsets: ["latin"],
+  display: "swap", // Prevents FOIT (Flash of Invisible Text)
   variable: "--font-inter",
-  display: "swap",
+  preload: true,
+  adjustFontFallback: true, // Reduces layout shift
+  fallback: ["system-ui", "arial"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
   display: "swap",
+  variable: "--font-jetbrains-mono",
+  preload: false, // Only preload when needed
+  adjustFontFallback: true,
+  fallback: ["ui-monospace", "Consolas", "Monaco"],
 });
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-serif",
   display: "swap",
+  variable: "--font-playfair-display",
+  preload: false, // Only preload when needed
+  adjustFontFallback: true,
+  fallback: ["Georgia", "Times New Roman"],
 });
 
 export const metadata: Metadata = {
@@ -130,6 +140,9 @@ export default function RootLayout({
             <Footer />
           </AnalyticsWrapper>
         </ClientLayoutWrapper>
+
+        {/* Vercel Speed Insights for Core Web Vitals monitoring */}
+        <SpeedInsights />
       </body>
     </html>
   );

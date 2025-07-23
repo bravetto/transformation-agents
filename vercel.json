@@ -5,10 +5,6 @@
   "installCommand": "npm install",
   "devCommand": "npm run dev",
   "regions": ["iad1"],
-  "env": {
-    "NEXT_PUBLIC_POSTHOG_KEY": "@posthog_key",
-    "NEXT_PUBLIC_POSTHOG_HOST": "@posthog_host"
-  },
   "headers": [
     {
       "source": "/api/(.*)",

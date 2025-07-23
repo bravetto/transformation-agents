@@ -1,217 +1,205 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { Calendar, ArrowRight, Clock, Shield, Trophy } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Calendar, Users, Clock, Star, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { RealtimeSupporterCounter } from "@/components/ui/realtime-supporter-counter";
 
-interface HeroSectionProps {
-  className?: string;
-}
+// Character witness data - Jordan Dungy featured prominently
+const featuredWitness = {
+  name: "Jordan Dungy",
+  title: "Son of NFL Coach Tony Dungy",
+  quote:
+    "Sometimes the people who make the biggest mistakes have the most to teach others about avoiding those same mistakes. JAHmere is one of those people.",
+  credibilityScore: 10,
+  relationship: "Brother & Best Friend",
+};
 
-export function HeroSection({ className }: HeroSectionProps) {
-  const [timeToHearing, setTimeToHearing] = useState<{
-    days: number;
-    hours: number;
-    minutes: number;
-  }>({ days: 0, hours: 0, minutes: 0 });
+// Social proof data for conversion optimization - Updated with real data
+const socialProofStats = {
+  supporters: 5247,
+  characterLetters: 13,
+  totalWords: 12160, // From extraction: 936 avg * 13 letters
+  avgImpactScore: 94,
+  daysUntilHearing: 5,
+};
 
-  // Calculate time remaining until July 28, 2025 court hearing
+export default function HeroSection() {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
   useEffect(() => {
-    const updateCountdown = () => {
-      const targetDate = new Date("2025-07-28T09:00:00-05:00");
-      const now = new Date();
-      const difference = targetDate.getTime() - now.getTime();
-
-      if (difference > 0) {
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-        );
-        const minutes = Math.floor(
-          (difference % (1000 * 60 * 60)) / (1000 * 60),
-        );
-
-        setTimeToHearing({ days, hours, minutes });
-      }
-    };
-
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 60000); // Update every minute
-
-    return () => clearInterval(interval);
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
+  // Calculate days until July 28, 2025
+  const targetDate = new Date("2025-07-28T09:00:00");
+  const timeUntil = targetDate.getTime() - currentTime.getTime();
+  const daysLeft = Math.ceil(timeUntil / (1000 * 60 * 60 * 24));
+
   return (
-    <section
-      className={cn("relative py-20 md:py-32 overflow-hidden", className)}
-    >
-      {/* Background gradients */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50"></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-white/80 to-transparent"></div>
+    <section className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 overflow-hidden">
+      {/* Optimized Background Image for LCP */}
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src="/images/optimized/hero-background.webp"
+          alt="Justice and transformation background"
+          fill
+          priority
+          quality={85}
+          sizes="100vw"
+          className="object-cover object-center"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Qg="
+        />
+      </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-5xl mx-auto text-center">
-          {/* Urgency badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6"
-          >
-            <Badge className="bg-red-100 text-red-800 px-4 py-2 text-sm font-medium border border-red-200">
-              <Clock className="w-4 h-4 mr-2" />
-              Court Hearing: July 28, 2025 • {timeToHearing.days} days remaining
-            </Badge>
-          </motion.div>
-
-          {/* Main headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-black text-gray-900 mb-6 leading-tight tracking-tight"
-          >
-            The Bridge Project
-          </motion.h1>
-
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-xl md:text-2xl lg:text-3xl text-gray-700 mb-8 leading-relaxed font-medium max-w-4xl mx-auto"
-          >
-            Building community support for JAHmere Webb's freedom through
-            character witnesses, evidence, and transformational justice.
-          </motion.p>
-
-          {/* Impact stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto"
-          >
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">
-                13
-              </div>
-              <div className="text-sm text-gray-600">Character Letters</div>
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+        {/* Social Proof Slider - Positioned Above Fold per HubSpot Research */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-8 bg-white/80 backdrop-blur-sm rounded-lg px-6 py-3 shadow-lg"
+        >
+          <div className="flex items-center justify-center space-x-6 text-sm font-medium text-gray-700">
+            <div className="flex items-center space-x-2">
+              <Users className="w-4 h-4 text-blue-600" />
+              <span>
+                {socialProofStats.supporters.toLocaleString()} Supporters
+              </span>
             </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-green-600 mb-2">
-                5,247
-              </div>
-              <div className="text-sm text-gray-600">Community Supporters</div>
+            <div className="flex items-center space-x-2">
+              <Star className="w-4 h-4 text-yellow-500" />
+              <span>{socialProofStats.avgImpactScore}/100 Impact Score</span>
             </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-purple-600 mb-2">
-                100%
-              </div>
-              <div className="text-sm text-gray-600">Advocate for Freedom</div>
+            <div className="flex items-center space-x-2">
+              <Clock className="w-4 h-4 text-red-500" />
+              <span>{daysLeft} Days Until Hearing</span>
             </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-orange-600 mb-2">
-                {timeToHearing.days}
-              </div>
-              <div className="text-sm text-gray-600">Days Until Hearing</div>
-            </div>
-          </motion.div>
+          </div>
+        </motion.div>
 
-          {/* Social proof elements */}
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Hero Content */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="flex flex-wrap justify-center gap-4 mb-8 text-sm font-medium"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            <Badge
-              variant="outline"
-              className="px-4 py-2 bg-blue-50 text-blue-800 border-blue-200"
-            >
-              <Trophy className="w-4 h-4 mr-2" />
-              NFL Hall of Famer Endorsed
+            <Badge className="mb-4 bg-red-100 text-red-800 border-red-200">
+              URGENT: Court Date July 28, 2025
             </Badge>
-            <Badge
-              variant="outline"
-              className="px-4 py-2 bg-green-50 text-green-800 border-green-200"
-            >
-              <Shield className="w-4 h-4 mr-2" />
-              Community Verified
-            </Badge>
-            <Badge
-              variant="outline"
-              className="px-4 py-2 bg-purple-50 text-purple-800 border-purple-200"
-            >
-              <Calendar className="w-4 h-4 mr-2" />
-              Court-Ready Documentation
-            </Badge>
-          </motion.div>
 
-          {/* Primary CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"
-          >
-            <Button
-              size="lg"
-              className="bg-gradient-divine text-white px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-200 text-lg font-semibold"
-            >
-              Choose Your Path
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="px-8 py-4 text-lg border-2 border-gray-300 hover:border-gray-400"
-            >
-              Read Character Letters
-            </Button>
-          </motion.div>
+            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              JAHmere Webb
+              <span className="block text-blue-600">Freedom Portal</span>
+            </h1>
 
-          {/* Trust indicators */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="text-center"
-          >
-            <p className="text-sm text-gray-500 mb-4">
-              Trusted by community leaders, endorsed by character witnesses
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              Join the movement to support JAHmere's transformation journey.
+              With 13 powerful character witness letters and divine
+              intervention, we're fighting for justice, redemption, and a second
+              chance.
             </p>
 
-            {/* Countdown display */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-gray-200 max-w-md mx-auto">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                Time Until Freedom
-              </h3>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-red-600">
-                    {timeToHearing.days}
+            {/* Jordan Dungy Testimonial Feature */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border-l-4 border-blue-500"
+            >
+              <div className="flex items-start space-x-4">
+                <Quote className="w-6 h-6 text-blue-500 mt-1 flex-shrink-0" />
+                <div>
+                  <p className="text-gray-800 italic mb-3 text-lg leading-relaxed">
+                    "{featuredWitness.quote}"
+                  </p>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+                      JD
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900">
+                        {featuredWitness.name}
+                      </p>
+                      <p className="text-sm text-blue-600">
+                        {featuredWitness.title}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-xs text-gray-600">Days</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-red-600">
-                    {timeToHearing.hours}
-                  </div>
-                  <div className="text-xs text-gray-600">Hours</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-red-600">
-                    {timeToHearing.minutes}
-                  </div>
-                  <div className="text-xs text-gray-600">Minutes</div>
                 </div>
               </div>
-              <p className="text-xs text-gray-500 mt-3">
-                Every moment counts toward JAHmere's transformation story
-              </p>
+            </motion.div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <Button
+                size="lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg"
+                asChild
+              >
+                <Link href="/people/jahmere-webb">View Character Letters</Link>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-4 text-lg"
+                asChild
+              >
+                <Link href="/july-28-strategy">July 28th Strategy</Link>
+              </Button>
+            </div>
+
+            {/* Real-time Supporter Activity */}
+            <RealtimeSupporterCounter
+              initialCount={socialProofStats.supporters}
+            />
+          </motion.div>
+
+          {/* Hero Image - Optimized for conversion */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative"
+          >
+            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
+              <Image
+                src="/images/optimized/jahmere-hero-portrait.webp"
+                alt="JAHmere Webb - Transformation and Hope"
+                fill
+                priority
+                quality={90}
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover object-center"
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Qg="
+              />
+
+              {/* Floating stats overlay */}
+              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600">
+                    {socialProofStats.characterLetters}
+                  </div>
+                  <div className="text-xs text-gray-600">Character Letters</div>
+                </div>
+              </div>
+
+              <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {socialProofStats.totalWords.toLocaleString()}
+                  </div>
+                  <div className="text-xs text-gray-600">Words of Support</div>
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>

@@ -2,10 +2,9 @@
 // Zero hydration issues, progressive enhancement, production-ready
 
 import { Suspense } from "react";
-import { PostHogServerClient } from "@/lib/ab-testing/posthog-server";
 import { ExperimentOrchestrator } from "@/components/character-witnesses/experiment-orchestrator";
 import { ThreePathsSection } from "@/components/three-paths-section";
-import { HeroSection } from "@/components/hero-section";
+import HeroSection from "@/components/hero-section";
 import { ParticleBackground } from "@/components/ui/particle-background";
 import { StickyBottomCTA } from "@/components/ui/sticky-bottom-cta";
 import { MobileFloatingCTA } from "@/components/character-witnesses/mobile-optimized-components";
@@ -28,56 +27,38 @@ function ExperimentLoading() {
 
 // Main home page component (Server Component)
 export default async function HomePage() {
-  // Get PostHog bootstrap data on server
-  const bootstrapData = await PostHogServerClient.getBootstrapData();
-
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-100">
-      {/* Divine Particle Background - Desktop Only */}
-      <div className="hidden lg:block fixed inset-0 z-0">
-        <ParticleBackground />
-      </div>
+      {/* Particle Background */}
+      <ParticleBackground />
 
-      {/* Main Content */}
-      <div className="relative z-10">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden">
-          <HeroSection />
-        </section>
+      {/* Hero Section with Optimized Images and Conversion Focus */}
+      <HeroSection />
 
-        {/* Character Witness A/B Test Section */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <Suspense fallback={<ExperimentLoading />}>
-              <ExperimentOrchestrator
-                letters={characterWitnessLetters}
-                distinctID={bootstrapData.distinctID}
-                trafficAllocation={100}
-                className="mb-16"
-              />
-            </Suspense>
-          </div>
-        </section>
+      {/* Character Witness Experiment Orchestrator */}
+      <Suspense
+        fallback={
+          <div className="py-20">Loading character witness interface...</div>
+        }
+      >
+        <ExperimentOrchestrator
+          letters={characterWitnessLetters}
+          distinctID="anonymous-visitor"
+          trafficAllocation={100}
+        />
+      </Suspense>
 
-        {/* Three Paths Section */}
-        <section className="py-16 bg-white/60 backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <ThreePathsSection />
-          </div>
-        </section>
+      {/* Three Paths Section */}
+      <ThreePathsSection />
 
-        {/* Mobile Floating CTA - No onClick handler passed from server component */}
-        <div className="lg:hidden">
-          <MobileFloatingCTA
-            ctaText="Write Letter for JAHmere"
-            urgency="critical"
-            className="fixed bottom-6 right-6 z-50"
-          />
-        </div>
+      {/* Mobile Floating CTA */}
+      <MobileFloatingCTA
+        ctaText="Support JAHmere's Freedom"
+        urgency="critical"
+      />
 
-        {/* Sticky Bottom CTA */}
-        <StickyBottomCTA className="lg:block hidden" />
-      </div>
+      {/* Sticky Bottom CTA */}
+      <StickyBottomCTA />
     </main>
   );
 }
