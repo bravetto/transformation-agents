@@ -3,55 +3,64 @@ const nextConfig = {
   // 📦 SERVER EXTERNAL PACKAGES
   serverExternalPackages: ["@prisma/client"],
 
+  // 🚀 TURBOPACK CONFIGURATION (SIMPLIFIED - BUILT-IN CSS PROCESSING)
   experimental: {
-    // Next.js 15.4 Production Optimizations
+    // ✅ STABLE FEATURES ONLY (Next.js 15.4.3 compatible)
     optimizeCss: true,
-    // Disable aggressive optimization that causes webpack issues
-    optimizePackageImports: [],
-    // Advanced performance features
-    typedRoutes: false,
-    webVitalsAttribution: ["CLS", "LCP", "FCP", "FID", "TTFB", "INP"],
+    optimizePackageImports: ["lucide-react", "framer-motion"],
   },
 
-  // 🛡️ MINIMAL WEBPACK CONFIGURATION - Fix for factory undefined error
-  webpack: (config, { isServer }) => {
-    // Essential fixes only
-    config.resolve.fallback = {
-      ...config.resolve.fallback,
-      fs: false,
-    };
+  // 🔧 TURBOPACK RULES (SIMPLIFIED FOR BUILT-IN SUPPORT)
+  turbopack: {
+    rules: {
+      // CSS processing handled automatically by Turbopack
+      // No need to specify postcss-loader explicitly
+    },
+    resolveAlias: {
+      "@": "./src",
+    },
+  },
 
-    // CRITICAL: Must return config
+  // 🔧 WEBPACK CONFIGURATION FALLBACK
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Ensure PostCSS is properly configured for both webpack and turbopack
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      };
+    }
+
     return config;
   },
 
-  // 🖼️ IMAGE OPTIMIZATION
-  images: {
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    formats: ["image/webp", "image/avif"],
-    minimumCacheTTL: 31536000,
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-  },
-
-  // Enable compression and optimization
+  // 📊 PERFORMANCE OPTIMIZATIONS
   compress: true,
   poweredByHeader: false,
 
-  // Environment configuration
-  env: {
-    NEXT_TELEMETRY_DISABLED: "1",
-  },
-
-  // TypeScript configuration
-  typescript: {
-    ignoreBuildErrors: false,
-  },
-
-  // ESLint configuration
-  eslint: {
-    ignoreDuringBuilds: false,
+  // 🌐 HEADERS FOR PRODUCTION PERFORMANCE
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "X-XSS-Protection",
+            value: "1; mode=block",
+          },
+        ],
+      },
+    ];
   },
 };
 
