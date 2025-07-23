@@ -136,6 +136,8 @@ function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  // 🔥 CRITICAL FIX: Add state for desktop popover management
+  const [openPopover, setOpenPopover] = useState<string | null>(null);
   const pathname = usePathname();
 
   // Mobile optimization hooks
@@ -184,9 +186,11 @@ function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu when pathname changes
+  // 🔥 CRITICAL FIX: Close both mobile menu and desktop popovers when pathname changes
   useEffect(() => {
     setIsOpen(false);
+    setOpenPopover(null); // Close any open desktop popovers
+    setExpandedItems([]); // Reset mobile expanded items
   }, [pathname]);
 
   const toggleExpanded = (href: string) => {
@@ -195,6 +199,15 @@ function Navigation() {
         ? prev.filter((item) => item !== href)
         : [...prev, href],
     );
+  };
+
+  // 🔥 CRITICAL FIX: Handle desktop popover state changes
+  const handlePopoverOpenChange = (isOpen: boolean, itemHref: string) => {
+    if (isOpen) {
+      setOpenPopover(itemHref);
+    } else {
+      setOpenPopover(null);
+    }
   };
 
   // Handle keyboard navigation for the dropdown menu
@@ -242,7 +255,13 @@ function Navigation() {
               <div className="hidden md:flex items-center gap-3" role="menubar">
                 {navItems.map((item) =>
                   item.children ? (
-                    <Popover key={item.href}>
+                    <Popover
+                      key={item.href}
+                      open={openPopover === item.href}
+                      onOpenChange={(isOpen) =>
+                        handlePopoverOpenChange(isOpen, item.href)
+                      }
+                    >
                       <PopoverTrigger asChild>
                         <button
                           className={`flex items-center gap-2 transition-colors h-10 min-h-[40px] px-3 py-2 rounded-md ${
@@ -250,7 +269,7 @@ function Navigation() {
                               ? "text-elite-justice-indigo font-semibold bg-blue-50"
                               : "text-gentle-charcoal hover:text-elite-justice-indigo hover:bg-gray-50"
                           }`}
-                          aria-expanded={expandedItems.includes(item.href)}
+                          aria-expanded={openPopover === item.href}
                           aria-haspopup="true"
                           aria-controls={`dropdown-${item.label}`}
                           role="menuitem"
@@ -281,6 +300,7 @@ function Navigation() {
                               aria-current={
                                 pathname === child.href ? "page" : undefined
                               }
+                              onClick={() => setOpenPopover(null)} // 🔥 CRITICAL FIX: Close popover on click
                             >
                               <span className="text-sm">{child.label}</span>
                             </Link>

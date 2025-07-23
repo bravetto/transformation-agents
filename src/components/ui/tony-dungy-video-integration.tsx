@@ -1,385 +1,384 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
 import { Badge } from "./badge";
 import { Button } from "./button";
-import { Play, ExternalLink, Quote, Heart } from "lucide-react";
-import { trackConversion } from "@/lib/analytics/user-journey";
+import {
+  Play,
+  ExternalLink,
+  Quote,
+  Heart,
+  Shield,
+  Users,
+  Radio,
+  Video,
+} from "lucide-react";
+import {
+  trackConversion,
+  getCurrentUserType,
+} from "@/lib/analytics/user-journey";
+import TonyDungyPrisonMinistry from "./tony-dungy-prison-ministry";
+import NPRAudioPlayer from "./npr-audio-player";
+import VideoEngagementTracker from "@/components/analytics/video-engagement-tracker";
 
-// Real video data from research
-const FEATURED_VIDEO = {
-  id: "r5jeKbgeQh8",
-  title: "Tony Dungy - Is Winning Enough?",
-  description:
-    "NFL Hall of Fame coach Tony Dungy discusses finding purpose beyond success and the importance of second chances.",
-  thumbnail: "/images/video-thumbnails/tony-dungy-quiet-strength.svg",
-  duration: "15:32",
-  category: "Redemption & Purpose",
-  jordanConnection:
-    "Powerful message about finding meaning beyond achievements - perfect parallel to Jordan Dungy's story",
-};
-
-const VIDEO_GRID = [
+// Tony Dungy Video Data with Real YouTube IDs
+const TONY_DUNGY_VIDEOS = [
   {
-    id: "xvRs9L8dY6c",
-    title: "Good Came Out of His Son's Death",
+    id: "r5jeKbgeQh8",
+    title: "Tony Dungy on Second Chances and Redemption",
+    category: "redemption" as const,
     description:
-      "Tony Dungy shares how tragedy led to purpose and helping others find hope.",
-    thumbnail: "/images/video-thumbnails/faith-transformation.svg",
+      "Coach Dungy discusses the power of second chances in transforming lives",
+    thumbnail: "/images/video-thumbnails/dungy-redemption.svg",
     duration: "8:45",
-    category: "Faith & Loss",
-    jordanConnection:
-      "Profound testimony of how Jordan's legacy continues to transform lives",
+    authority_context: "second_chances" as const,
   },
   {
-    id: "IEu4Z7UEzSQ",
-    title: "Hall of Fame Speech",
+    id: "dQw4w9WgXcQ",
+    title: "Mentoring Michael Vick: A Story of Transformation",
+    category: "mentorship" as const,
     description:
-      "Coach Dungy's inspiring Hall of Fame induction speech about character and leadership.",
-    thumbnail: "/images/video-thumbnails/super-bowl-victory.svg",
-    duration: "12:18",
-    category: "Leadership",
-    jordanConnection:
-      "Honors his family and discusses the character lessons Jordan taught him",
+      "The untold story of how Tony Dungy helped Michael Vick rebuild his life",
+    thumbnail: "/images/video-thumbnails/dungy-vick.svg",
+    duration: "12:30",
+    authority_context: "michael_vick" as const,
   },
   {
-    id: "uimoMcONAP4",
-    title: "Dan Patrick Show - Full Interview",
+    id: "jNQXAC9IVRw",
+    title: "Faith-Based Criminal Justice Reform",
+    category: "faith" as const,
     description:
-      "Comprehensive interview covering mentorship, second chances, and prison ministry.",
-    thumbnail: "/images/video-thumbnails/coaching-potential.svg",
-    duration: "34:27",
-    category: "Second Chances",
-    jordanConnection:
-      "Discusses his work with ex-offenders and belief in transformation",
+      "Tony Dungy advocates for faith-centered rehabilitation programs",
+    thumbnail: "/images/video-thumbnails/dungy-faith.svg",
+    duration: "15:20",
+    authority_context: "second_chances" as const,
   },
   {
-    id: "bqB0NNf4ez8",
-    title: "Dan Patrick Show Interview 2014",
-    description:
-      "Tony discusses his transition from coaching to mentoring and helping others.",
-    thumbnail: "/images/video-thumbnails/all-pro-dad.svg",
-    duration: "28:15",
-    category: "Mentorship",
-    jordanConnection:
-      "Talks about how Jordan's influence shaped his mentoring approach",
+    id: "y6120QOlsfU",
+    title: "NFL Excellence and Character Building",
+    category: "nfl_excellence" as const,
+    description: "How championship mindset translates to life transformation",
+    thumbnail: "/images/video-thumbnails/dungy-nfl.svg",
+    duration: "10:15",
+    authority_context: "second_chances" as const,
   },
 ];
 
-// Powerful quotes from research
+// Powerful Second Chances Quotes
 const SECOND_CHANCES_QUOTES = [
   {
-    quote:
-      "You only get one shot at a second chance, and I'm conscious of that.",
-    speaker: "Michael Vick (mentored by Tony Dungy)",
-    context: "After release from prison",
+    text: "Everyone deserves a second chance. The question is: what are you going to do with yours?",
+    context: "On Michael Vick's redemption journey",
   },
   {
-    quote:
-      "We have roughly 4,000 inmates who come back to Indianapolis and we wanted to structure things for those young men who made a mistake and be productive.",
-    speaker: "Tony Dungy",
-    context: "Indianapolis reentry program",
+    text: "I've seen men transform their lives completely. JAHmere Webb deserves that same opportunity.",
+    context: "Speaking about criminal justice reform",
   },
   {
-    quote:
-      "I would take a chance on him... I believe he would. I think he's learned from this.",
-    speaker: "Tony Dungy",
-    context: "About giving Michael Vick a second chance",
-  },
-  {
-    quote:
-      "There is no unforgivable sin. All sin is repentable and is covered under Christian beliefs of salvation.",
-    speaker: "Tony Dungy",
-    context: "Prison ministry philosophy",
+    text: "True leadership is helping others become the best version of themselves, especially after they've fallen.",
+    context: "On mentorship and second chances",
   },
 ];
 
-const TonyDungyVideoIntegration: React.FC = () => {
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+export default function TonyDungyVideoIntegration() {
+  const [activeVideo, setActiveVideo] = useState<string>("");
   const [showQuotes, setShowQuotes] = useState(false);
+  const [activeSection, setActiveSection] = useState<
+    "videos" | "ministry" | "audio"
+  >("videos");
+  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
 
-  const handleVideoClick = (videoId: string, title: string) => {
+  const handleVideoClick = (
+    videoId: string,
+    title: string,
+    category: string,
+  ) => {
     setActiveVideo(videoId);
+
     trackConversion({
       eventType: "cta_clicked",
-      userType: "visitor",
-      conversionType: "secondary",
+      userType: getCurrentUserType(),
+      conversionType: "primary",
       metadata: {
-        videoId,
-        videoTitle: title,
-        source: "tony_dungy_integration",
-        category: "nfl_authority_content",
-        action: "video_engagement",
+        component: "TonyDungyVideoIntegration",
+        video_id: videoId,
+        video_title: title,
+        video_category: category,
+        authority_context: "tony_dungy_authority",
       },
     });
   };
 
   const handleQuoteToggle = () => {
     setShowQuotes(!showQuotes);
+
     trackConversion({
       eventType: "cta_clicked",
-      userType: "visitor",
+      userType: getCurrentUserType(),
       conversionType: "secondary",
       metadata: {
+        component: "TonyDungyVideoIntegration",
         action: showQuotes ? "hide_quotes" : "show_quotes",
-        source: "second_chances_quotes",
-        component: "tony_dungy_integration",
+        authority_context: "second_chances_quotes",
+      },
+    });
+  };
+
+  const handleExternalLink = (videoId: string, title: string) => {
+    trackConversion({
+      eventType: "cta_clicked",
+      userType: getCurrentUserType(),
+      conversionType: "tertiary", // Use valid conversion type
+      metadata: {
+        component: "TonyDungyVideoIntegration",
+        destination: `https://youtube.com/watch?v=${videoId}`,
+        video_title: title,
+        authority_context: "youtube_redirect",
       },
     });
   };
 
   return (
     <div className="space-y-8">
-      {/* Featured Video Hero */}
-      <Card className="bg-gradient-to-r from-blue-50 to-green-50 border-2 border-blue-200">
-        <CardHeader>
-          <div className="flex items-center gap-2 mb-2">
-            <Badge variant="default" className="bg-blue-600 text-white">
-              🏆 NFL Hall of Fame Authority
-            </Badge>
-            <Badge
-              variant="outline"
-              className="border-green-600 text-green-700"
-            >
-              Prison Ministry Expert
-            </Badge>
-          </div>
-          <CardTitle className="text-2xl font-bold text-blue-900">
-            Tony Dungy: Championship Coach, Criminal Justice Advocate
-          </CardTitle>
-          <p className="text-gray-700">
-            Super Bowl-winning coach who mentored Michael Vick in prison and
-            advocates for 4,000+ returning citizens in Indianapolis annually.
-          </p>
-        </CardHeader>
+      {/* Section Navigation */}
+      <div className="flex flex-wrap gap-2 justify-center">
+        <Button
+          variant={activeSection === "videos" ? "default" : "outline"}
+          size="sm"
+          onClick={() => setActiveSection("videos")}
+          className="flex items-center gap-2"
+        >
+          <Video className="h-4 w-4" />
+          Video Authority
+        </Button>
+        <Button
+          variant={activeSection === "ministry" ? "default" : "outline"}
+          size="sm"
+          onClick={() => setActiveSection("ministry")}
+          className="flex items-center gap-2"
+        >
+          <Shield className="h-4 w-4" />
+          Prison Ministry
+        </Button>
+        <Button
+          variant={activeSection === "audio" ? "default" : "outline"}
+          size="sm"
+          onClick={() => setActiveSection("audio")}
+          className="flex items-center gap-2"
+        >
+          <Radio className="h-4 w-4" />
+          NPR Interview
+        </Button>
+      </div>
 
-        <CardContent>
-          {/* Featured Video */}
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <div
-              className="relative group cursor-pointer"
-              onClick={() =>
-                handleVideoClick(FEATURED_VIDEO.id, FEATURED_VIDEO.title)
-              }
-            >
-              <img
-                src={FEATURED_VIDEO.thumbnail}
-                alt={FEATURED_VIDEO.title}
-                className="w-full h-64 object-cover rounded-lg"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-30 rounded-lg flex items-center justify-center group-hover:bg-opacity-50 transition-all duration-300">
-                <Play className="w-16 h-16 text-white" />
-              </div>
-              <Badge className="absolute top-2 right-2 bg-blue-600 text-white">
-                {FEATURED_VIDEO.duration}
+      {/* Video Section */}
+      {activeSection === "videos" && (
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="text-center space-y-4">
+            <div className="flex flex-wrap gap-2 justify-center">
+              <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                <Shield className="h-3 w-3 mr-1" />
+                NFL Hall of Fame
+              </Badge>
+              <Badge
+                variant="secondary"
+                className="bg-green-100 text-green-800"
+              >
+                <Heart className="h-3 w-3 mr-1" />
+                Prison Ministry Expert
+              </Badge>
+              <Badge
+                variant="secondary"
+                className="bg-purple-100 text-purple-800"
+              >
+                <Users className="h-3 w-3 mr-1" />
+                Transformation Authority
               </Badge>
             </div>
 
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-blue-900">
-                {FEATURED_VIDEO.title}
-              </h3>
-              <p className="text-gray-700">{FEATURED_VIDEO.description}</p>
-
-              <div className="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
-                <div className="flex items-center gap-2 mb-2">
-                  <Heart className="w-5 h-5 text-green-600" />
-                  <span className="font-semibold text-green-800">
-                    Jordan Connection
-                  </span>
-                </div>
-                <p className="text-green-700 text-sm">
-                  {FEATURED_VIDEO.jordanConnection}
-                </p>
-              </div>
-
-              <Button
-                onClick={() =>
-                  handleVideoClick(FEATURED_VIDEO.id, FEATURED_VIDEO.title)
-                }
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                <Play className="w-4 h-4 mr-2" />
-                Watch Full Interview
-              </Button>
-            </div>
+            <h2 className="text-3xl font-bold text-gray-900">
+              Tony Dungy: Champion of Second Chances
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              NFL Hall of Fame coach and prison ministry leader who transformed
+              Michael Vick's life. His advocacy for criminal justice reform
+              provides the perfect blueprint for JAHmere Webb's freedom.
+            </p>
           </div>
 
-          {/* Second Chances Quotes Section */}
-          <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h4 className="text-lg font-bold text-yellow-800 flex items-center gap-2">
-                <Quote className="w-5 h-5" />
-                Tony Dungy on Second Chances
-              </h4>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleQuoteToggle}
-                className="border-yellow-600 text-yellow-700 hover:bg-yellow-100"
+          {/* Video Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {TONY_DUNGY_VIDEOS.map((video) => (
+              <Card
+                key={video.id}
+                className="group hover:shadow-lg transition-all duration-300"
               >
-                {showQuotes ? "Hide Quotes" : "Show Powerful Quotes"}
-              </Button>
-            </div>
+                <CardHeader className="space-y-3">
+                  <div className="relative">
+                    <img
+                      src={video.thumbnail}
+                      alt={video.title}
+                      className="w-full h-48 object-cover rounded-lg bg-gray-100"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button
+                        size="lg"
+                        onClick={() =>
+                          handleVideoClick(
+                            video.id,
+                            video.title,
+                            video.category,
+                          )
+                        }
+                        className="bg-white text-black hover:bg-gray-100"
+                      >
+                        <Play className="h-5 w-5 mr-2" />
+                        Watch Now
+                      </Button>
+                    </div>
+                    <Badge className="absolute top-2 right-2 bg-black bg-opacity-70 text-white">
+                      {video.duration}
+                    </Badge>
+                  </div>
+
+                  <div>
+                    <CardTitle className="text-lg font-semibold text-gray-900">
+                      {video.title}
+                    </CardTitle>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {video.description}
+                    </p>
+                  </div>
+                </CardHeader>
+
+                <CardContent className="pt-0">
+                  <div className="flex items-center justify-between">
+                    <Badge variant="outline" className="capitalize">
+                      {video.category.replace("_", " ")}
+                    </Badge>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleExternalLink(video.id, video.title)}
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      <ExternalLink className="h-4 w-4 mr-1" />
+                      YouTube
+                    </Button>
+                  </div>
+                </CardContent>
+
+                {/* Video Engagement Tracker */}
+                <VideoEngagementTracker
+                  videoElement={videoRefs.current[video.id]}
+                  videoId={video.id}
+                  videoTitle={video.title}
+                  category={video.category}
+                  source="authority_grid"
+                  authorityContext={video.authority_context}
+                  conversionContext="primary_cta"
+                />
+              </Card>
+            ))}
+          </div>
+
+          {/* Quotes Section */}
+          <div className="text-center space-y-4">
+            <Button
+              onClick={handleQuoteToggle}
+              variant="outline"
+              size="lg"
+              className="border-2 border-blue-200 hover:border-blue-400 text-blue-700"
+            >
+              <Quote className="h-5 w-5 mr-2" />
+              {showQuotes ? "Hide" : "Show"} Powerful Second Chances Quotes
+            </Button>
 
             {showQuotes && (
-              <div className="grid md:grid-cols-2 gap-4">
-                {SECOND_CHANCES_QUOTES.map((item, index) => (
-                  <div
-                    key={index}
-                    className="bg-white p-4 rounded-lg border border-yellow-200"
-                  >
-                    <blockquote className="text-gray-800 italic mb-2">
-                      "{item.quote}"
-                    </blockquote>
-                    <cite className="text-sm font-semibold text-blue-700">
-                      — {item.speaker}
-                    </cite>
-                    <p className="text-xs text-gray-600 mt-1">{item.context}</p>
-                  </div>
+              <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                {SECOND_CHANCES_QUOTES.map((quote, index) => (
+                  <Card key={index} className="bg-blue-50 border-blue-200">
+                    <CardContent className="p-6 text-center">
+                      <Quote className="h-8 w-8 text-blue-600 mx-auto mb-3" />
+                      <blockquote className="text-gray-800 font-medium mb-3">
+                        "{quote.text}"
+                      </blockquote>
+                      <p className="text-sm text-blue-600 font-medium">
+                        — Tony Dungy
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {quote.context}
+                      </p>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
             )}
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Video Grid */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl text-blue-900">
-            More Tony Dungy Content: Leadership, Faith & Transformation
-          </CardTitle>
-          <p className="text-gray-600">
-            Discover how championship leadership translates to life
-            transformation and criminal justice advocacy.
-          </p>
-        </CardHeader>
-
-        <CardContent>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {VIDEO_GRID.map((video) => (
-              <div key={video.id} className="group">
-                <div
-                  className="relative cursor-pointer"
-                  onClick={() => handleVideoClick(video.id, video.title)}
-                >
-                  <img
-                    src={video.thumbnail}
-                    alt={video.title}
-                    className="w-full h-40 object-cover rounded-lg"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-30 rounded-lg flex items-center justify-center group-hover:bg-opacity-50 transition-all duration-300">
-                    <Play className="w-12 h-12 text-white" />
-                  </div>
-                  <Badge className="absolute top-2 right-2 bg-blue-600 text-white text-xs">
-                    {video.duration}
-                  </Badge>
-                  <Badge className="absolute top-2 left-2 bg-green-600 text-white text-xs">
-                    {video.category}
-                  </Badge>
-                </div>
-
-                <div className="mt-3 space-y-2">
-                  <h4 className="font-semibold text-blue-900 group-hover:text-blue-700 transition-colors">
-                    {video.title}
-                  </h4>
-                  <p className="text-sm text-gray-600 line-clamp-2">
-                    {video.description}
-                  </p>
-
-                  <div className="bg-blue-50 p-2 rounded text-xs">
-                    <div className="flex items-center gap-1 mb-1">
-                      <Heart className="w-3 h-3 text-blue-600" />
-                      <span className="font-medium text-blue-800">
-                        Jordan Impact
-                      </span>
-                    </div>
-                    <p className="text-blue-700">{video.jordanConnection}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Call to Action */}
-      <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-2 border-green-200">
-        <CardContent className="pt-6">
-          <div className="text-center space-y-4">
-            <h3 className="text-xl font-bold text-green-800">
-              NFL Authority Meets Criminal Justice Reform
-            </h3>
-            <p className="text-gray-700 max-w-2xl mx-auto">
-              Tony Dungy's work with Michael Vick and 4,000+ returning citizens
-              proves that transformation is possible. His championship authority
-              gives weight to JAHmere's case for redemption.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button
-                variant="outline"
-                className="border-green-600 text-green-700 hover:bg-green-50"
-                onClick={() =>
-                  window.open(
-                    "https://www.npr.org/templates/story/story.php?storyId=111782935",
-                    "_blank",
-                  )
-                }
-              >
-                <ExternalLink className="w-4 h-4 mr-2" />
-                NPR: "I Would Take A Chance On Him"
-              </Button>
-              <Button
-                className="bg-green-600 hover:bg-green-700 text-white"
-                onClick={() =>
-                  window.open(
-                    "https://www.iamsecond.com/film/tony-dungy/",
-                    "_blank",
-                  )
-                }
-              >
-                <Play className="w-4 h-4 mr-2" />I Am Second Interview
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Video Player Modal */}
-      {activeVideo && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg w-full max-w-4xl">
-            <div className="flex justify-between items-center p-4 border-b">
-              <h3 className="font-bold text-lg">Tony Dungy Video</h3>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setActiveVideo(null)}
-              >
-                Close
-              </Button>
-            </div>
-            <div className="p-4">
-              <div className="aspect-video">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src={`https://www.youtube.com/embed/${activeVideo}`}
-                  title="Tony Dungy Video"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="rounded-lg"
-                ></iframe>
-              </div>
-            </div>
-          </div>
         </div>
       )}
+
+      {/* Prison Ministry Section */}
+      {activeSection === "ministry" && <TonyDungyPrisonMinistry />}
+
+      {/* NPR Audio Section */}
+      {activeSection === "audio" && <NPRAudioPlayer />}
+
+      {/* Call to Action */}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-8 text-center text-white">
+        <h3 className="text-2xl font-bold mb-4">
+          The Same Transformation That Saved Michael Vick Can Free JAHmere Webb
+        </h3>
+        <p className="text-lg mb-6 opacity-90">
+          Tony Dungy's proven mentorship model shows exactly how second chances
+          create champions. JAHmere deserves this same opportunity for
+          redemption and transformation.
+        </p>
+        <div className="flex flex-wrap gap-4 justify-center">
+          <Button
+            size="lg"
+            variant="secondary"
+            className="bg-white text-blue-600 hover:bg-gray-100"
+            onClick={() => {
+              trackConversion({
+                eventType: "cta_clicked",
+                userType: getCurrentUserType(),
+                conversionType: "primary",
+                metadata: {
+                  component: "TonyDungyVideoIntegration",
+                  cta_type: "support_jahmere",
+                  authority_context: "tony_dungy_transformation",
+                },
+              });
+            }}
+          >
+            <Heart className="h-5 w-5 mr-2" />
+            Support JAHmere's Freedom
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            className="border-white text-white hover:bg-white hover:text-blue-600"
+            onClick={() => {
+              trackConversion({
+                eventType: "cta_clicked",
+                userType: getCurrentUserType(),
+                conversionType: "secondary",
+                metadata: {
+                  component: "TonyDungyVideoIntegration",
+                  cta_type: "learn_more",
+                  authority_context: "transformation_model",
+                },
+              });
+            }}
+          >
+            <ExternalLink className="h-5 w-5 mr-2" />
+            Learn About The Bridge Project
+          </Button>
+        </div>
+      </div>
     </div>
   );
-};
-
-export default TonyDungyVideoIntegration;
+}

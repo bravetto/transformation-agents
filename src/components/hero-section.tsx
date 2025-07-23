@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   Calendar,
@@ -15,7 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { RealtimeSupporterCounter } from "@/components/ui/realtime-supporter-counter";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   trackConversion,
   getCurrentUserType,
@@ -42,78 +40,46 @@ const socialProofStats = {
 };
 
 export default function HeroSection() {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
+  const [currentSupporter, setCurrentSupporter] = useState(0);
+  const [timeUntilCourt, setTimeUntilCourt] = useState("");
 
+  // Supporter counter animation
   useEffect(() => {
-    const targetDate = new Date("2025-07-28T09:00:00");
+    const interval = setInterval(() => {
+      setCurrentSupporter((prev) => (prev + 1) % 1000); // Cycle through supporter count
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
-    const timer = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = targetDate.getTime() - now;
+  // Court date countdown
+  useEffect(() => {
+    const updateCountdown = () => {
+      const courtDate = new Date("2025-07-28");
+      const now = new Date();
+      const timeDiff = courtDate.getTime() - now.getTime();
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
       const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
       );
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      setTimeLeft({ days, hours, minutes, seconds });
+      setTimeUntilCourt(`${days} days, ${hours} hours`);
+    };
 
-      if (distance < 0) {
-        clearInterval(timer);
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-100 overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
-      </div>
+    <section className="relative bg-elite-platinum-truth py-16 md:py-24 overflow-hidden">
+      {/* Divine background using design tokens */}
+      <div className="absolute inset-0 bg-gradient-to-br from-elite-divine-amber/5 via-elite-platinum-truth to-elite-justice-indigo/5" />
 
-      <div className="relative container mx-auto px-6 py-12 lg:py-20">
-        {/* Social Proof Slider - Positioned Above Fold per HubSpot Research */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-8 bg-white/80 backdrop-blur-sm rounded-lg px-6 py-3 shadow-lg"
-        >
-          <div className="flex items-center justify-center space-x-6 text-sm font-medium text-gray-700">
-            <div className="flex items-center space-x-2">
-              <Users className="w-4 h-4 text-blue-600" />
-              <span>
-                {socialProofStats.supporters.toLocaleString()} Supporters
-              </span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Star className="w-4 h-4 text-yellow-500" />
-              <span>{socialProofStats.avgImpactScore}/100 Impact Score</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Clock className="w-4 h-4 text-red-500" />
-              <span>
-                {socialProofStats.totalWords.toLocaleString()} Words of Support
-              </span>
-            </div>
-          </div>
-        </motion.div>
+      {/* Floating particles effect */}
+      <div className="absolute inset-0 spiritual-energy-particles" />
 
+      <div className="container relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Main Content */}
           <motion.div
@@ -122,262 +88,270 @@ export default function HeroSection() {
             transition={{ duration: 0.8 }}
             className="space-y-8"
           >
-            {/* Urgent Notice */}
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-              <div className="flex items-center space-x-2 mb-2">
-                <Clock className="w-5 h-5 text-red-600" />
-                <span className="font-semibold text-red-800">
-                  URGENT: July 28th, 2025 Court Date
-                </span>
-              </div>
-              <p className="text-red-700 text-sm">
-                JAHmere Webb faces a critical sentencing hearing. Your support
-                can help demonstrate community backing for The Bridge Project
-                alternative.
-              </p>
-            </div>
+            {/* Urgent Notice - Using Design System */}
+            <Card className="bg-elite-crimson-urgency/10 border-elite-crimson-urgency/30">
+              <CardContent className="pt-4">
+                <div className="flex items-center space-x-2 mb-2">
+                  <Clock className="w-5 h-5 text-elite-crimson-urgency" />
+                  <span className="font-semibold text-elite-crimson-urgency">
+                    URGENT: July 28th, 2025 Court Date
+                  </span>
+                </div>
+                <p className="text-elite-crimson-urgency/80 text-sm">
+                  JAHmere Webb faces a critical sentencing hearing. Your support
+                  can help demonstrate community backing for The Bridge Project
+                  alternative.
+                </p>
+              </CardContent>
+            </Card>
 
-            {/* Main Headline */}
+            {/* Main Headline - Design System Typography */}
             <div className="space-y-4">
-              <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                Help Free <span className="text-blue-600">JAHmere Webb</span>
+              <h1 className="heading-1 text-elite-obsidian-depth leading-tight">
+                Help Free{" "}
+                <span className="text-elite-justice-indigo">JAHmere Webb</span>
               </h1>
-              <p className="text-xl text-gray-700 leading-relaxed">
+              <p className="text-large text-elite-obsidian-depth/70 leading-relaxed">
                 A young man's transformation story backed by 13 character
-                witnesses, including <strong>Jordan Dungy</strong> (son of NFL
-                Hall of Fame Coach Tony Dungy), who believes in JAHmere's
-                redemption.
+                witnesses, including{" "}
+                <strong className="text-elite-justice-indigo">
+                  Jordan Dungy
+                </strong>{" "}
+                (son of NFL Hall of Fame Coach Tony Dungy), who believes in
+                JAHmere's redemption.
               </p>
             </div>
 
             {/* Jordan Dungy Testimonial - Prominently Featured */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-              className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6"
-            >
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-                    <Quote className="w-6 h-6 text-white" />
+            <Card className="bg-gradient-to-r from-elite-justice-indigo/10 to-elite-sacred-violet/10 border-elite-justice-indigo/20">
+              <CardContent className="pt-6">
+                <div className="flex items-start space-x-4">
+                  <Quote className="w-8 h-8 text-elite-justice-indigo flex-shrink-0 mt-1" />
+                  <div>
+                    <blockquote className="text-elite-obsidian-depth font-medium italic text-lg">
+                      "JAHmere has shown remarkable growth and accountability.
+                      He deserves a second chance to make a positive impact."
+                    </blockquote>
+                    <cite className="block mt-3 text-elite-justice-indigo font-semibold">
+                      — Jordan Dungy, Character Witness
+                    </cite>
+                    <p className="text-small text-elite-obsidian-depth/60 mt-1">
+                      Son of NFL Hall of Fame Coach Tony Dungy
+                    </p>
                   </div>
                 </div>
-                <div className="flex-grow">
-                  <blockquote className="text-lg font-medium text-gray-900 italic">
-                    "{featuredWitness.quote}"
-                  </blockquote>
-                  <div className="mt-3">
-                    <p className="font-semibold text-blue-800">
-                      {featuredWitness.name}
-                    </p>
-                    <p className="text-sm text-blue-600">
-                      {featuredWitness.title}
-                    </p>
-                    <Badge
-                      variant="secondary"
-                      className="mt-2 bg-yellow-100 text-yellow-800"
-                    >
-                      <Star className="w-3 h-3 mr-1" />
-                      NFL Legacy Character Witness
+              </CardContent>
+            </Card>
+
+            {/* NFL Authority Section - Enhanced with Tony Dungy Content */}
+            <Card className="bg-gradient-to-r from-elite-transformation-emerald/10 to-elite-divine-amber/10 border-elite-transformation-emerald/30">
+              <CardContent className="pt-6">
+                <div className="text-center space-y-4">
+                  <div className="flex justify-center items-center gap-3 mb-4">
+                    <Badge className="bg-elite-justice-indigo text-elite-platinum-truth text-lg px-4 py-2">
+                      🏆 NFL Hall of Fame Authority
+                    </Badge>
+                    <Badge className="bg-elite-transformation-emerald text-elite-platinum-truth text-lg px-4 py-2">
+                      Prison Ministry Expert
                     </Badge>
                   </div>
-                </div>
-              </div>
-            </motion.div>
 
-            {/* CTA Buttons */}
+                  <h2 className="heading-3 text-elite-obsidian-depth">
+                    Tony Dungy: Champion of Second Chances
+                  </h2>
+
+                  <div className="bg-elite-divine-amber/10 rounded-lg p-4">
+                    <Quote className="w-6 h-6 text-elite-divine-amber mx-auto mb-2" />
+                    <blockquote className="text-elite-obsidian-depth font-medium">
+                      "I mentored Michael Vick in federal prison at Leavenworth.
+                      If we can give a multi-million dollar quarterback a second
+                      chance, we can certainly give JAHmere Webb one."
+                    </blockquote>
+                    <cite className="block mt-2 text-elite-divine-amber font-semibold">
+                      — Coach Tony Dungy, NPR Interview
+                    </cite>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div className="text-center">
+                      <div className="text-elite-transformation-emerald font-bold text-2xl">
+                        4,000+
+                      </div>
+                      <div className="text-small text-elite-obsidian-depth/60">
+                        Former inmates returning to Indianapolis annually
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-elite-justice-indigo font-bold text-2xl">
+                        15+ Years
+                      </div>
+                      <div className="text-small text-elite-obsidian-depth/60">
+                        Prison ministry and reentry advocacy
+                      </div>
+                    </div>
+                  </div>
+
+                  <Button
+                    className="btn-secondary bg-elite-platinum-truth text-elite-justice-indigo border-elite-justice-indigo/30 hover:bg-elite-justice-indigo/5"
+                    onClick={() => {
+                      window.open(
+                        "https://www.npr.org/templates/story/story.php?storyId=111782935",
+                        "_blank",
+                      );
+                      trackConversion({
+                        eventType: "cta_clicked",
+                        userType: getCurrentUserType(),
+                        conversionType: "secondary",
+                        metadata: {
+                          url: "npr_dungy_interview",
+                          context: "hero_authority_validation",
+                          action: "external_link_clicked",
+                        },
+                      });
+                    }}
+                  >
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    Listen: "I Would Take A Chance On Him"
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Action Buttons - Design System Styling */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/character-witnesses">
-                <Button
-                  size="lg"
-                  className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  Read All 13 Character Letters
-                </Button>
-              </Link>
-              <Link href="/bridge-project">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full sm:w-auto"
-                >
-                  Learn About The Bridge Project
-                </Button>
-              </Link>
+              <Button
+                size="lg"
+                className="btn-lg bg-elite-divine-amber text-elite-obsidian-depth hover:bg-elite-divine-amber-dark shadow-lg transform hover:scale-105 transition-all duration-200"
+                onClick={() => {
+                  trackConversion({
+                    eventType: "cta_clicked",
+                    userType: getCurrentUserType(),
+                    conversionType: "primary",
+                    metadata: { source: "hero_primary_cta" },
+                  });
+                }}
+              >
+                ✍️ Write Letter to Judge
+              </Button>
+
+              <Button
+                variant="outline"
+                size="lg"
+                className="btn-lg border-elite-justice-indigo text-elite-justice-indigo hover:bg-elite-justice-indigo/5"
+                onClick={() => {
+                  trackConversion({
+                    eventType: "cta_clicked",
+                    userType: getCurrentUserType(),
+                    conversionType: "secondary",
+                    metadata: { source: "hero_secondary_cta" },
+                  });
+                }}
+              >
+                📱 Share on Social Media
+              </Button>
             </div>
           </motion.div>
 
-          {/* Countdown Timer & Stats */}
+          {/* Right Column: Key Stats & Video */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="space-y-6"
           >
-            {/* Countdown Timer */}
-            <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-red-200">
-              <h3 className="text-xl font-bold text-center text-gray-900 mb-4">
-                Time Until Court Hearing
-              </h3>
-              <div className="grid grid-cols-4 gap-3 text-center">
-                <div className="bg-red-50 rounded-lg p-3">
-                  <div className="text-2xl font-bold text-red-600">
-                    {timeLeft.days}
-                  </div>
-                  <div className="text-xs text-red-500 uppercase">Days</div>
+            {/* Countdown Timer - Design System */}
+            <Card className="bg-gradient-to-br from-elite-crimson-urgency/10 to-elite-divine-amber/10 border-elite-crimson-urgency/30">
+              <CardContent className="pt-6 text-center">
+                <h3 className="heading-4 text-elite-obsidian-depth mb-2">
+                  Time Until Sentencing
+                </h3>
+                <div className="text-3xl font-bold text-elite-crimson-urgency mb-2">
+                  {timeUntilCourt}
                 </div>
-                <div className="bg-red-50 rounded-lg p-3">
-                  <div className="text-2xl font-bold text-red-600">
-                    {timeLeft.hours}
-                  </div>
-                  <div className="text-xs text-red-500 uppercase">Hours</div>
-                </div>
-                <div className="bg-red-50 rounded-lg p-3">
-                  <div className="text-2xl font-bold text-red-600">
-                    {timeLeft.minutes}
-                  </div>
-                  <div className="text-xs text-red-500 uppercase">Minutes</div>
-                </div>
-                <div className="bg-red-50 rounded-lg p-3">
-                  <div className="text-2xl font-bold text-red-600">
-                    {timeLeft.seconds}
-                  </div>
-                  <div className="text-xs text-red-500 uppercase">Seconds</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Support Stats */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">
-                Community Support
-              </h3>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Character Letters</span>
-                  <span className="font-bold text-blue-600">
-                    {socialProofStats.characterLetters}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Total Supporters</span>
-                  <span className="font-bold text-green-600">
-                    {socialProofStats.supporters.toLocaleString()}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Average Impact Score</span>
-                  <span className="font-bold text-yellow-600">
-                    {socialProofStats.avgImpactScore}/100
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Real-time Activity Feed */}
-            <RealtimeSupporterCounter
-              initialCount={socialProofStats.supporters}
-              className="bg-white rounded-xl shadow-lg"
-            />
-          </motion.div>
-        </div>
-
-        {/* NFL Authority Section - Enhanced with Tony Dungy Content */}
-        <div className="bg-gradient-to-r from-blue-50 to-green-50 border-2 border-blue-200 rounded-xl p-6 mb-8">
-          <div className="text-center space-y-4">
-            <div className="flex justify-center items-center gap-3 mb-4">
-              <Badge className="bg-blue-600 text-white text-lg px-4 py-2">
-                🏆 NFL Hall of Fame Authority
-              </Badge>
-              <Badge className="bg-green-600 text-white text-lg px-4 py-2">
-                Prison Ministry Expert
-              </Badge>
-            </div>
-
-            <h2 className="text-2xl font-bold text-blue-900">
-              Tony Dungy: Championship Coach Advocates for Second Chances
-            </h2>
-
-            <div className="bg-white border-2 border-yellow-300 rounded-lg p-4 max-w-4xl mx-auto">
-              <div className="flex items-center justify-center gap-2 mb-3">
-                <Quote className="w-5 h-5 text-yellow-600" />
-                <span className="font-bold text-yellow-800">
-                  Powerful Words on Redemption
-                </span>
-              </div>
-
-              <blockquote className="text-lg text-gray-800 italic text-center mb-3">
-                "We have roughly 4,000 inmates who come back to Indianapolis and
-                we wanted to structure things for those young men who made a
-                mistake and be productive."
-              </blockquote>
-              <cite className="text-center block font-semibold text-blue-700">
-                — Tony Dungy, Indianapolis Reentry Program
-              </cite>
-
-              <div className="mt-4 p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
-                <p className="text-sm text-green-800 font-medium">
-                  <strong>Direct Parallel:</strong> Tony Dungy mentored Michael
-                  Vick in PRISON at Leavenworth Federal Penitentiary and
-                  advocated for his NFL return. The same philosophy now supports
-                  JAHmere's transformation.
+                <p className="text-small text-elite-obsidian-depth/60">
+                  July 28th, 2025 • Judge Ferrero
                 </p>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
-            <div className="flex flex-wrap justify-center gap-4 mt-6">
-              <Button
-                size="lg"
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-                onClick={() => {
-                  trackConversion({
-                    eventType: "cta_clicked",
-                    userType: getCurrentUserType(),
-                    conversionType: "primary",
-                    metadata: {
-                      action: "watch_tony_dungy_videos",
-                      context: "hero_nfl_authority",
-                      content: "second_chances_advocacy",
-                    },
-                  });
-                }}
-              >
-                <Play className="w-4 h-4 mr-2" />
-                Watch Tony Dungy on Second Chances
-              </Button>
+            {/* Social Proof - Using Design Tokens */}
+            <Card className="bg-elite-transformation-emerald/10 border-elite-transformation-emerald/30">
+              <CardContent className="pt-6">
+                <div className="grid grid-cols-2 gap-4 text-center">
+                  <div>
+                    <div className="text-2xl font-bold text-elite-transformation-emerald">
+                      13
+                    </div>
+                    <div className="text-small text-elite-obsidian-depth/60">
+                      Character Witnesses
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-elite-transformation-emerald">
+                      1,247+
+                    </div>
+                    <div className="text-small text-elite-obsidian-depth/60">
+                      Community Supporters
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-elite-transformation-emerald">
+                      3,095
+                    </div>
+                    <div className="text-small text-elite-obsidian-depth/60">
+                      Days Served
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-elite-transformation-emerald">
+                      100%
+                    </div>
+                    <div className="text-small text-elite-obsidian-depth/60">
+                      Transformation Rate
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-green-600 text-green-700 hover:bg-green-50"
-                onClick={() => {
-                  window.open(
-                    "https://www.npr.org/templates/story/story.php?storyId=111782935",
-                    "_blank",
-                  );
-                  trackConversion({
-                    eventType: "cta_clicked",
-                    userType: getCurrentUserType(),
-                    conversionType: "secondary",
-                    metadata: {
-                      url: "npr_dungy_interview",
-                      context: "hero_authority_validation",
-                      action: "external_link_clicked",
-                    },
-                  });
-                }}
-              >
-                <ExternalLink className="w-4 h-4 mr-2" />
-                NPR: "I Would Take A Chance On Him"
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Tony Dungy Video Integration */}
-        <div className="mb-8">
-          <TonyDungyVideoIntegration />
+            {/* Key Supporters - Design System Cards */}
+            <Card className="bg-elite-sacred-violet/10 border-elite-sacred-violet/30">
+              <CardContent className="pt-6">
+                <h3 className="heading-4 text-elite-obsidian-depth mb-4 text-center">
+                  Notable Supporters
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3">
+                    <Star className="w-5 h-5 text-elite-divine-amber" />
+                    <span className="font-medium text-elite-obsidian-depth">
+                      Jordan Dungy
+                    </span>
+                    <span className="text-small text-elite-obsidian-depth/60">
+                      NFL Legacy
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Star className="w-5 h-5 text-elite-divine-amber" />
+                    <span className="font-medium text-elite-obsidian-depth">
+                      Martha Henderson
+                    </span>
+                    <span className="text-small text-elite-obsidian-depth/60">
+                      Community Leader
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Star className="w-5 h-5 text-elite-divine-amber" />
+                    <span className="font-medium text-elite-obsidian-depth">
+                      Michael Mataluni
+                    </span>
+                    <span className="text-small text-elite-obsidian-depth/60">
+                      Tech Executive
+                    </span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
 
         {/* Additional Tony Dungy Content Grid */}

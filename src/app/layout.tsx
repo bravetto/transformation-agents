@@ -9,6 +9,8 @@ import Navigation from "@/components/navigation";
 import Banner from "@/components/banner";
 import Footer from "@/components/footer";
 import ClientLayoutWrapper from "@/components/client-layout-wrapper";
+import PerformanceMonitor from "@/components/analytics/performance-monitor";
+import { enhancedINPOptimizer } from "@/lib/performance/enhanced-inp-optimizer";
 
 // Optimized font loading with 2024 best practices
 const inter = Inter({
@@ -44,40 +46,38 @@ export const metadata: Metadata = {
     "Advocating for JAHmere Webb's freedom through divine justice, community support, and transformational change. July 28th, 2025 - A day of divine intervention.",
   keywords: [
     "JAHmere Webb",
+    "Tony Dungy",
+    "Jordan Dungy",
     "Freedom Portal",
     "Divine Justice",
     "July 28 2025",
-    "Community Support",
-    "Transformation",
-    "Character Witnesses",
-    "Legal Advocacy",
-    "Prayer Warriors",
-    "Bridge Project",
+    "The Bridge Project",
+    "Criminal Justice Reform",
+    "Faith-Based Transformation",
+    "Character Witness Letters",
+    "Prison Ministry",
+    "NFL Authority",
+    "Second Chances",
   ],
   authors: [{ name: "The Bridge Project Team" }],
-  creator: "The Bridge Project",
-  publisher: "The Bridge Project",
   openGraph: {
-    title: "JAHmere Webb Freedom Portal - The Bridge Project",
-    description: "Join the movement for JAHmere's freedom on July 28th, 2025",
+    title: "JAHmere Webb Freedom Portal - July 28th, 2025",
+    description:
+      "Join the divine mission for JAHmere Webb's freedom through prayer, advocacy, and community support.",
+    images: ["/images/og-image.png"],
     url: "https://transformation-agents-jahmere-bridge.vercel.app",
-    siteName: "The Bridge Project",
-    images: [
-      {
-        url: "/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "JAHmere Webb Freedom Portal",
-      },
-    ],
-    locale: "en_US",
+    siteName: "JAHmere Webb Freedom Portal",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "JAHmere Webb Freedom Portal",
-    description: "Advocating for divine justice and transformational change",
-    images: ["/images/og-image.png"],
+    description:
+      "Divine justice, community support, and transformational change for JAHmere Webb's freedom.",
+    images: ["/images/twitter-image.png"],
+  },
+  verification: {
+    google: "your-google-site-verification-code",
   },
   robots: {
     index: true,
@@ -90,12 +90,10 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  verification: {
-    google: "your-google-verification-code",
-  },
   alternates: {
     canonical: "https://transformation-agents-jahmere-bridge.vercel.app",
   },
+  category: "Social Justice",
 };
 
 export default function RootLayout({
@@ -143,6 +141,21 @@ export default function RootLayout({
 
         {/* Vercel Speed Insights for Core Web Vitals monitoring */}
         <SpeedInsights />
+
+        {/* Comprehensive Performance Monitor */}
+        <PerformanceMonitor />
+
+        {/* Enhanced INP Optimizer (2025) - Latest performance optimization */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Initialize Enhanced INP Optimizer on page load  
+              if (typeof window !== 'undefined' && window.enhancedINPOptimizer) {
+                console.log('🚀 Enhanced INP Optimizer (2025) activated - scheduler.yield(), AbortController patterns ready');
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );

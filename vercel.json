@@ -1,20 +1,35 @@
 {
-  "framework": "nextjs",
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "installCommand": "npm install",
-  "devCommand": "npm run dev",
-  "regions": ["iad1"],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "s-maxage=86400"
-        }
-      ]
+  "installCommand": "npm ci",
+  "framework": "nextjs",
+  
+  "functions": {
+    "app/api/analytics/**/*.ts": {
+      "runtime": "edge",
+      "memory": 128,
+      "maxDuration": 10
     },
+    "app/api/social-share/**/*.ts": {
+      "runtime": "edge", 
+      "memory": 128,
+      "maxDuration": 15
+    },
+    "app/api/monitoring/**/*.ts": {
+      "runtime": "edge",
+      "memory": 256,
+      "maxDuration": 10
+    },
+    "app/api/**/*.ts": {
+      "runtime": "nodejs20.x",
+      "memory": 512,
+      "maxDuration": 30
+    }
+  },
+
+  "regions": ["iad1", "sfo1", "fra1", "hnd1"],
+
+  "headers": [
     {
       "source": "/(.*)",
       "headers": [
@@ -23,7 +38,7 @@
           "value": "nosniff"
         },
         {
-          "key": "X-Frame-Options",
+          "key": "X-Frame-Options", 
           "value": "DENY"
         },
         {
@@ -36,15 +51,111 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=(), payment=()"
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.vercel-analytics.com *.vercel.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' *.vercel-analytics.com vitals.vercel-analytics.com; frame-ancestors 'none';"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "Cross-Origin-Resource-Policy", 
+          "value": "cross-origin"
+        },
+        {
+          "key": "Cross-Origin-Embedder-Policy",
+          "value": "unsafe-none"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://transformation-agent-bridge-*.vercel.app"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization, X-Requested-With"
+        },
+        {
+          "key": "Access-Control-Max-Age",
+          "value": "86400"
+        }
+      ]
+    },
+    {
+      "source": "/_next/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/images/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control", 
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.(js|css|woff|woff2|ttf|otf|eot))",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     }
   ],
+
   "rewrites": [
     {
-      "source": "/ingest/:path*",
-      "destination": "https://us.i.posthog.com/:path*"
+      "source": "/robots.txt",
+      "destination": "/api/robots"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
     }
-  ]
+  ],
+
+  "redirects": [
+    {
+      "source": "/admin",
+      "destination": "/admin/analytics",
+      "permanent": false
+    }
+  ],
+
+  "crons": [
+    {
+      "path": "/api/monitoring/health",
+      "schedule": "*/5 * * * *"
+    }
+  ],
+
+  "edge-config": {
+    "id": "$EDGE_CONFIG_ID"
+  },
+
+  "env": {
+    "NEXT_RUNTIME": "edge"
+  }
 }

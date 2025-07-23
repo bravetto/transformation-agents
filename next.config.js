@@ -7,6 +7,13 @@ const nextConfig = {
 
   // Advanced caching strategies for Next.js 15.4.3
   experimental: {
+    // 🔮 NEXT.JS 16 DIVINE FEATURES
+    staleTimes: {
+      dynamic: 30, // 30 second stale time for dynamic content
+      static: 180, // 3 minute stale time for static content
+    },
+    cacheComponents: true, // Aggressive component caching
+
     // CSS and bundle optimizations
     optimizeCss: true,
     webVitalsAttribution: ["CLS", "LCP", "INP"],
