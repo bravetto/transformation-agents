@@ -90,16 +90,12 @@ export default function RootLayout({
                 const originalError = console.error;
                 const originalWarn = console.warn;
                 
-                // Patterns to immediately silence
+                // ✅ REDUCED: Only silence truly safe patterns (we fixed the image issues)
                 const silencePatterns = [
-                  'tony-dungy-profile.jpg',
-                  'jahmere-webb-profile.jpg',
-                  'profile.*jpg.*404',
-                  'analytics.*404',
-                  'Failed to load resource.*api/analytics',
-                  'Fast Refresh',
-                  'webpack-internal',
-                  'Loading chunk.*failed'
+                  'analytics.*404', // Analytics endpoints may not exist in dev
+                  'Fast Refresh', // Development-only noise
+                  'webpack-internal', // Development-only noise
+                  'HMR' // Hot module reload noise
                 ];
                 
                 // Critical patterns to preserve
@@ -144,7 +140,7 @@ export default function RootLayout({
                 // Suppress console.log in production
                 if (isProduction) {
                   const originalLog = console.log;
-                  console.log = function(...args) {
+                  console.log = function() {
                     const message = args.join(' ');
                     if (preservePatterns.some(p => message.toLowerCase().includes(p.toLowerCase()))) {
                       originalLog.apply(console, args);

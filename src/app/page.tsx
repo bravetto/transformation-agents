@@ -250,7 +250,7 @@ function StaticCharacterWitnesses() {
     {
       name: "Tony Dungy",
       title: "NFL Hall of Fame Coach",
-      image: "/images/people/tony-dungy/tony-dungy-profile.jpg",
+      image: "/images/people/tony-dungy-profile.svg",
       endorsement:
         "JAHmere's transformation demonstrates the power of second chances and mentorship in creating positive change.",
       credentials: [
@@ -263,7 +263,7 @@ function StaticCharacterWitnesses() {
     {
       name: "JAHmere Webb",
       title: "The Bridge Project Founder",
-      image: "/images/people/jahmere-webb/jahmere-webb-profile.jpg",
+      image: "/images/people/jahmere-webb-profile.svg",
       endorsement:
         "Every person deserves the opportunity to transform their life and serve their community with purpose.",
       credentials: [
@@ -302,10 +302,10 @@ function StaticCharacterWitnesses() {
                     <SafeProfileImage
                       src={witness.image}
                       alt={witness.name}
-                      name={witness.name}
-                      role={witness.title}
-                      size="xl"
+                      width={192}
+                      height={192}
                       priority={index === 0}
+                      className="rounded-full mx-auto"
                     />
                   </div>
 

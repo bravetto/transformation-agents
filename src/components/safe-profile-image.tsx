@@ -1,142 +1,166 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface SafeProfileImageProps {
   src: string;
   alt: string;
-  name: string;
-  role?: string;
-  size?: "sm" | "md" | "lg" | "xl";
+  width?: number;
+  height?: number;
   className?: string;
+  sizes?: string;
   priority?: boolean;
+  quality?: number;
+  fill?: boolean;
+  containerClassName?: string;
 }
 
-const sizeClasses = {
-  sm: "w-12 h-12",
-  md: "w-20 h-20",
-  lg: "w-32 h-32",
-  xl: "w-48 h-48",
-};
-
-const sizeDimensions = {
-  sm: { width: 48, height: 48 },
-  md: { width: 80, height: 80 },
-  lg: { width: 128, height: 128 },
-  xl: { width: 192, height: 192 },
-};
-
 /**
- * 🏆 PRODUCTION-READY PROFILE IMAGE COMPONENT
- * Handles SVG fallbacks elegantly with zero 404 errors or console noise
+ * 🖼️ SAFE PROFILE IMAGE COMPONENT - Production Ready
+ * Handles SVG files with .jpg extensions and provides elegant fallbacks
  */
 export function SafeProfileImage({
   src,
   alt,
-  name,
-  role = "Champion",
-  size = "md",
+  width = 400,
+  height = 400,
   className,
+  sizes = "(max-width: 768px) 100vw, 400px",
   priority = false,
+  quality = 85,
+  fill = false,
+  containerClassName,
+  ...props
 }: SafeProfileImageProps) {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [currentSrc, setCurrentSrc] = useState(src);
   const [isSvgFallback, setIsSvgFallback] = useState(false);
 
-  // Check if source is SVG (our fallback system)
+  // 🔍 PRODUCTION FIX: Detect SVG files with .jpg extensions
   useEffect(() => {
-    setIsSvgFallback(src.includes(".svg") || src.startsWith("<svg"));
+    // Check if this is actually an SVG file with wrong extension
+    const checkIfSvg = async () => {
+      try {
+        // First check if the file path suggests it's an SVG
+        if (
+          src.includes(".svg") ||
+          src.startsWith("<svg") ||
+          src.startsWith("data:image/svg")
+        ) {
+          setIsSvgFallback(true);
+          return;
+        }
+
+        // For potential SVG files with wrong extensions, do a lightweight check
+        const response = await fetch(src, { method: "HEAD" });
+        const contentType = response.headers.get("content-type");
+
+        // If it's actually an SVG but has .jpg extension
+        if (contentType?.includes("svg")) {
+          setIsSvgFallback(true);
+        } else if (
+          contentType?.includes("text") ||
+          response.headers.get("content-length") === "2048"
+        ) {
+          // Small file size or text content suggests SVG
+          setIsSvgFallback(true);
+        }
+      } catch {
+        // If HEAD request fails, we'll handle it in onError
+      }
+    };
+
+    if (src && !src.startsWith("data:")) {
+      checkIfSvg();
+    }
   }, [src]);
 
-  // Generate initials for text overlay
-  const initials = name
-    .split(" ")
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
+  const handleLoad = useCallback(() => {
+    setIsLoading(false);
+    setHasError(false);
+  }, []);
 
-  const handleImageLoad = () => {
-    setImageLoaded(true);
-    setImageError(false);
-  };
-
-  const handleImageError = () => {
-    setImageError(true);
-    setImageLoaded(false);
-  };
-
-  // For SVG fallbacks, show them directly without Next/Image
-  if (isSvgFallback) {
-    return (
-      <div
-        className={cn(
-          "relative overflow-hidden rounded-full bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-2 border-white/20",
-          sizeClasses[size],
-          className,
-        )}
-      >
-        <div
-          className="w-full h-full"
-          dangerouslySetInnerHTML={{
-            __html: src.startsWith("<svg") ? src : "",
-          }}
-        />
-        {/* Professional overlay for SVG fallbacks */}
-        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-600/90 to-purple-600/90 rounded-full">
-          <div className="text-center text-white">
-            <div className="font-bold text-lg">{initials}</div>
-            <div className="text-xs opacity-75">{role}</div>
-          </div>
-        </div>
-      </div>
+  const handleError = useCallback(() => {
+    console.warn(
+      `Image failed to load: ${src}, falling back to SVG placeholder`,
     );
-  }
+
+    // Generate initials-based fallback with better styling
+    const initials = alt
+      .split(" ")
+      .map((word) => word.charAt(0))
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+
+    // Create professional SVG data URL for fallback
+    const svgFallback = `data:image/svg+xml,${encodeURIComponent(`
+      <svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gradient-${initials}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#1E40AF;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#1E3A8A;stop-opacity:1" />
+          </linearGradient>
+          <filter id="shadow-${initials}">
+            <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.3)"/>
+          </filter>
+        </defs>
+        <rect width="400" height="400" fill="url(#gradient-${initials})" rx="12"/>
+        <text x="50%" y="50%" font-family="system-ui, -apple-system, sans-serif" 
+              font-size="120" font-weight="700" fill="white" text-anchor="middle" 
+              dominant-baseline="middle" filter="url(#shadow-${initials})">${initials}</text>
+        <rect width="400" height="400" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" rx="12"/>
+      </svg>
+    `)}`;
+
+    setCurrentSrc(svgFallback);
+    setIsSvgFallback(true);
+    setHasError(false);
+    setIsLoading(false);
+  }, [alt, src]);
 
   return (
-    <div
-      className={cn(
-        "relative overflow-hidden rounded-full",
-        sizeClasses[size],
-        className,
-      )}
-    >
-      {/* Loading state */}
-      {!imageLoaded && !imageError && (
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 animate-pulse rounded-full flex items-center justify-center">
-          <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    <div className={cn("relative overflow-hidden", containerClassName)}>
+      {/* Loading State */}
+      {isLoading && (
+        <div className="absolute inset-0 bg-gray-100 animate-pulse flex items-center justify-center z-10">
+          <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
         </div>
       )}
 
-      {/* Error state with professional fallback */}
-      {imageError && (
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white">
-          <div className="text-center">
-            <div className="font-bold text-lg">{initials}</div>
-            <div className="text-xs opacity-75">{role}</div>
-          </div>
-        </div>
-      )}
-
-      {/* Main image */}
+      {/* Main Image */}
       <Image
-        src={src}
+        src={currentSrc}
         alt={alt}
-        fill
-        sizes={`${sizeDimensions[size].width}px`}
+        width={width}
+        height={height}
+        fill={fill}
+        sizes={sizes}
         priority={priority}
+        quality={quality}
         className={cn(
-          "object-cover transition-opacity duration-300",
-          imageLoaded ? "opacity-100" : "opacity-0",
+          "transition-opacity duration-300",
+          isLoading ? "opacity-0" : "opacity-100",
+          isSvgFallback ? "ring-2 ring-blue-200 ring-opacity-30" : "",
+          className,
         )}
-        onLoad={handleImageLoad}
-        onError={handleImageError}
+        onLoad={handleLoad}
+        onError={handleError}
+        {...props}
       />
 
-      {/* Professional border overlay */}
-      <div className="absolute inset-0 rounded-full border-2 border-white/30 shadow-lg" />
+      {/* Development Indicator */}
+      {process.env.NODE_ENV === "development" && isSvgFallback && (
+        <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded z-20">
+          SVG
+        </div>
+      )}
     </div>
   );
 }
+
+export default SafeProfileImage;

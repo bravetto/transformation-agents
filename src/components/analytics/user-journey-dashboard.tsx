@@ -65,6 +65,44 @@ export function UserJourneyDashboard({
   const [lastUpdate, setLastUpdate] = useState<string>("");
   const [error, setError] = useState<string>("");
 
+  // Generate mock metrics for development - moved above useCallback to fix dependency
+  const generateMockMetrics = useCallback((): AnalyticsMetrics => {
+    return {
+      totalSessions: Math.floor(Math.random() * 1000) + 500,
+      modalViewRate: 0.85 + Math.random() * 0.15,
+      pathSelectionRate: 0.65 + Math.random() * 0.25,
+      averageSessionDuration: 2500 + Math.random() * 2000,
+      pathDistribution: {
+        coach: 0.35 + Math.random() * 0.15,
+        judge: 0.25 + Math.random() * 0.15,
+        activist: 0.3 + Math.random() * 0.15,
+      },
+      conversionFunnel: {
+        modalViewed: 100,
+        cardHovered: 85 + Math.random() * 10,
+        pathSelected: 65 + Math.random() * 15,
+        journeyCompleted: 45 + Math.random() * 15,
+      },
+      deviceBreakdown: {
+        desktop: 0.6 + Math.random() * 0.2,
+        mobile: 0.3 + Math.random() * 0.2,
+        tablet: 0.1 + Math.random() * 0.1,
+      },
+      engagementMetrics: {
+        averageHoverTime: 1500 + Math.random() * 1000,
+        selectionSpeed: 3000 + Math.random() * 2000,
+        returnVisitors: Math.floor(Math.random() * 200) + 50,
+      },
+      realtimeEvents: Array.from({ length: 10 }, (_, i) => ({
+        timestamp: new Date(Date.now() - i * 60000).toISOString(),
+        eventType: ["view", "hover", "click", "selection"][
+          Math.floor(Math.random() * 4)
+        ],
+        userType: ["coach", "judge", "activist"][Math.floor(Math.random() * 3)],
+      })),
+    };
+  }, []);
+
   // 🛡️ CRITICAL FIX: Wrap fetchAnalytics in useCallback to prevent re-creation
   const fetchAnalytics = useCallback(async () => {
     setIsLoading(true);
@@ -97,39 +135,7 @@ export function UserJourneyDashboard({
     } finally {
       setIsLoading(false);
     }
-  }, []); // Empty dependencies since function doesn't depend on any props/state
-
-  // Generate mock metrics for development
-  const generateMockMetrics = (): AnalyticsMetrics => {
-    return {
-      totalSessions: Math.floor(Math.random() * 1000) + 500,
-      modalViewRate: 0.85 + Math.random() * 0.15,
-      pathSelectionRate: 0.65 + Math.random() * 0.25,
-      averageSessionDuration: 2500 + Math.random() * 2000,
-      pathDistribution: {
-        coach: 0.35 + Math.random() * 0.15,
-        judge: 0.25 + Math.random() * 0.15,
-        activist: 0.3 + Math.random() * 0.15,
-      },
-      conversionFunnel: {
-        modalViewed: 100,
-        cardHovered: 85 + Math.random() * 10,
-        pathSelected: 65 + Math.random() * 15,
-        journeyCompleted: 45 + Math.random() * 15,
-      },
-      deviceBreakdown: {
-        desktop: 0.65 + Math.random() * 0.15,
-        mobile: 0.25 + Math.random() * 0.15,
-        tablet: 0.1 + Math.random() * 0.05,
-      },
-      engagementMetrics: {
-        averageHoverTime: 1500 + Math.random() * 1000,
-        selectionSpeed: 3000 + Math.random() * 2000,
-        returnVisitors: 0.25 + Math.random() * 0.15,
-      },
-      realtimeEvents: generateMockEvents(10),
-    };
-  };
+  }, [generateMockMetrics]); // ✅ FIXED: Include generateMockMetrics in dependencies
 
   const generateMockEvents = (count: number) => {
     const eventTypes = ["modal_viewed", "card_hovered", "path_selected"];

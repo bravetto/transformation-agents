@@ -204,7 +204,11 @@ export default function DivineSynchronicityAnalyzer() {
     initializeSynchronicityPatterns();
     initializeCascadeVisualization();
     generateCleansingReport();
-  }, []); // Empty dependency array to run only once on mount
+  }, [
+    initializeSynchronicityPatterns,
+    initializeCascadeVisualization,
+    generateCleansingReport,
+  ]); // ✅ FIXED: Include all function dependencies
 
   // 🎨 Get status color for synchronicity patterns
   const getStatusColor = (status: SynchronicityPattern["cleansingStatus"]) => {

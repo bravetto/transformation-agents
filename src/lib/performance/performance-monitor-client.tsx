@@ -444,7 +444,7 @@ export function usePerformanceMonitoring(config?: Partial<PerformanceConfig>) {
       unsubscribe();
       performanceMonitor.destroy();
     };
-  }, []);
+  }, [config]); // Added config to dependency array
 
   const trackCustomMetric = useCallback(
     (name: string, value: number) => {

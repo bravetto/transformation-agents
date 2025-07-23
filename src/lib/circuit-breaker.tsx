@@ -147,7 +147,7 @@ export function useCircuitBreaker(
       componentName,
       config,
     );
-  }, [componentName]);
+  }, [componentName, config]); // Added config to dependency array
 
   // Record render on every call
   renderCountRef.current++;

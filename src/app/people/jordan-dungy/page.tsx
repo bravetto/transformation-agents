@@ -48,7 +48,7 @@ export default function JordanDungyPage() {
     subtitle: "Son of NFL Hall of Famer Tony Dungy",
     description:
       "Advocate for second chances and believer in the power of mentorship",
-    imageSrc: "/images/people/display/jordan-dungy.jpg",
+    imageSrc: "/images/people/jordan-dungy-profile.svg",
     imageAlt: "Jordan Dungy profile photo",
     personId: "jordan-dungy",
     localImage: true,
