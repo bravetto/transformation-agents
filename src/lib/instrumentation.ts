@@ -9,7 +9,6 @@ export function register() {
   // Register OpenTelemetry for Vercel
   registerOTel({
     serviceName: "jahmere-webb-freedom-portal",
-    serviceVersion: process.env.npm_package_version || "1.0.0",
   });
 
   // Additional custom telemetry setup
@@ -43,6 +42,5 @@ function setupCustomMetrics() {
 // Export for custom telemetry usage
 export const telemetryConfig = {
   serviceName: "jahmere-webb-freedom-portal",
-  version: "1.0.0",
   environment: process.env.NODE_ENV || "development",
 };
