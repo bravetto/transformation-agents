@@ -338,7 +338,7 @@ describe("Mobile Navigation", () => {
 
       // Should not have horizontal scroll in landscape
       const hasHorizontalScroll =
-        ($body[0] as HTMLElement).scrollWidth > bodyWidth;
+        ($body[0] as HTMLElement).scrollWidth > (bodyWidth || 0);
       expect(hasHorizontalScroll).to.be.false;
     });
   });
@@ -375,7 +375,7 @@ describe("Mobile Navigation", () => {
       req.reply((res) => {
         // Add delay to simulate slow network
         return new Promise((resolve) => {
-          setTimeout(() => resolve(res), 1000);
+          setTimeout(() => resolve(), 1000);
         });
       });
     });

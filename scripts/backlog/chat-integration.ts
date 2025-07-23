@@ -1,4 +1,4 @@
-import { BacklogItem, BacklogContext } from "./types";
+import type { BacklogItem, BacklogContext } from "./types";
 
 interface ChatIntegrationConfig {
   apiKey: string;
@@ -79,7 +79,7 @@ export class ChatIntegration {
 
     if (foundKeywords.length === 0) return null;
 
-    return `Related Backlog Item Found: Enhanced ${foundKeywords[0].charAt(0).toUpperCase() + foundKeywords[0].slice(1)} System
+    return `Related Backlog Item Found: Enhanced ${foundKeywords[0]?.charAt(0).toUpperCase() + foundKeywords[0]?.slice(1)} System
 Why it matters now: This relates to your current work on ${foundKeywords.join(", ")}
 When to consider: When team performance data needs visualization`;
   }
