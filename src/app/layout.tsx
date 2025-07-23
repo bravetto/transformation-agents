@@ -1,49 +1,92 @@
 import type { Metadata } from "next";
-import Navigation from "@/components/navigation";
-import Banner from "@/components/banner";
-import Footer from "@/components/footer";
-import Script from "next/script";
+import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import "./accessibility.css";
 import { cn } from "@/lib/utils";
-// 🚀 CHAMPIONSHIP FONT OPTIMIZATION
-import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
+import { AnalyticsWrapper } from "@/components/analytics-wrapper";
+import Navigation from "@/components/navigation";
+import Banner from "@/components/banner";
+import Footer from "@/components/footer";
 import ClientLayoutWrapper from "@/components/client-layout-wrapper";
 
-// 🚀 CHAMPIONSHIP FONT CONFIGURATION WITH AGGRESSIVE OPTIMIZATION
+// Font configurations
 const inter = Inter({
   subsets: ["latin"],
-  display: "swap", // Critical for performance
   variable: "--font-inter",
-  // Preload critical font weights
-  weight: ["400", "500", "600", "700"],
-  // Reduce layout shift
-  fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
-  // Performance optimizations
-  preload: true,
-  adjustFontFallback: false, // Let Next.js handle this
+  display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  display: "swap",
   variable: "--font-mono",
-  weight: ["400", "500", "600"],
-  fallback: ["Menlo", "Monaco", "Consolas", "monospace"],
-  preload: false, // Only preload if used above the fold
+  display: "swap",
 });
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
+  variable: "--font-serif",
   display: "swap",
-  variable: "--font-display",
-  weight: ["400", "500", "600", "700"],
-  fallback: ["Times New Roman", "serif"],
-  preload: false,
 });
 
-// Metadata in a separate file
-export { metadata, viewport } from "./metadata";
+export const metadata: Metadata = {
+  title: "The Bridge Project - JAHmere Webb Freedom Portal",
+  description:
+    "Advocating for JAHmere Webb's freedom through divine justice, community support, and transformational change. July 28th, 2025 - A day of divine intervention.",
+  keywords: [
+    "JAHmere Webb",
+    "Freedom Portal",
+    "Divine Justice",
+    "July 28 2025",
+    "Community Support",
+    "Transformation",
+    "Character Witnesses",
+    "Legal Advocacy",
+    "Prayer Warriors",
+    "Bridge Project",
+  ],
+  authors: [{ name: "The Bridge Project Team" }],
+  creator: "The Bridge Project",
+  publisher: "The Bridge Project",
+  openGraph: {
+    title: "JAHmere Webb Freedom Portal - The Bridge Project",
+    description: "Join the movement for JAHmere's freedom on July 28th, 2025",
+    url: "https://transformation-agents-jahmere-bridge.vercel.app",
+    siteName: "The Bridge Project",
+    images: [
+      {
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "JAHmere Webb Freedom Portal",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "JAHmere Webb Freedom Portal",
+    description: "Advocating for divine justice and transformational change",
+    images: ["/images/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: "your-google-verification-code",
+  },
+  alternates: {
+    canonical: "https://transformation-agents-jahmere-bridge.vercel.app",
+  },
+};
 
 export default function RootLayout({
   children,
@@ -58,300 +101,35 @@ export default function RootLayout({
         jetbrainsMono.variable,
         playfairDisplay.variable,
       )}
-      suppressHydrationWarning
+      suppressHydrationWarning={true}
     >
       <head>
-        {/* ✅ FONTS: Handled automatically by next/font/google - no manual preloading needed */}
-
-        {/* 🎯 PERFORMANCE: Font Display Optimization */}
-        <style>{`
-          @font-face {
-            font-family: 'Inter Fallback';
-            src: local('Arial'), local('Helvetica'), local('sans-serif');
-            font-display: swap;
-            ascent-override: 90%;
-            descent-override: 22%;
-            line-gap-override: 0%;
-            size-adjust: 107%;
-          }
-        `}</style>
-
-        {/* Production Console Polish - Load Before Any Other Scripts */}
-        <Script
-          id="console-polish"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              // 🔇 IMMEDIATE CONSOLE POLISH - Production Ready
-              (function() {
-                if (typeof window === 'undefined') return;
-                
-                const isProduction = "${process.env.NODE_ENV}" === "production";
-                const originalError = console.error;
-                const originalWarn = console.warn;
-                
-                // ✅ REDUCED: Only silence truly safe patterns (we fixed the image issues)
-                const silencePatterns = [
-                  'analytics.*404', // Analytics endpoints may not exist in dev
-                  'Fast Refresh', // Development-only noise
-                  'webpack-internal', // Development-only noise
-                  'HMR' // Hot module reload noise
-                ];
-                
-                // Critical patterns to preserve
-                const preservePatterns = [
-                  'TypeError:',
-                  'ReferenceError:',
-                  'Network error',
-                  'Uncaught'
-                ];
-                
-                function shouldSilence(message) {
-                  // Never silence critical errors
-                  if (preservePatterns.some(p => message.toLowerCase().includes(p.toLowerCase()))) {
-                    return false;
-                  }
-                  
-                  // Silence known safe patterns
-                  return silencePatterns.some(p => {
-                    try {
-                      return new RegExp(p, 'i').test(message);
-                    } catch {
-                      return message.toLowerCase().includes(p.toLowerCase());
-                    }
-                  });
-                }
-                
-                // Override console methods immediately
-                console.error = function(...args) {
-                  const message = args.join(' ');
-                  if (!shouldSilence(message)) {
-                    originalError.apply(console, args);
-                  }
-                };
-                
-                console.warn = function(...args) {
-                  const message = args.join(' ');
-                  if (!shouldSilence(message)) {
-                    originalWarn.apply(console, args);
-                  }
-                };
-                
-                // Suppress console.log in production
-                if (isProduction) {
-                  const originalLog = console.log;
-                  console.log = function() {
-                    const message = args.join(' ');
-                    if (preservePatterns.some(p => message.toLowerCase().includes(p.toLowerCase()))) {
-                      originalLog.apply(console, args);
-                    }
-                  };
-                }
-                
-                // Global error suppression
-                window.onerror = function(message, source, lineno, colno, error) {
-                  const msg = typeof message === 'string' ? message : String(message);
-                  if (shouldSilence(msg)) {
-                    return true; // Prevent default error handling
-                  }
-                  return false;
-                };
-                
-                // Promise rejection suppression
-                window.addEventListener('unhandledrejection', function(event) {
-                  const message = event.reason?.toString() || '';
-                  if (shouldSilence(message)) {
-                    event.preventDefault();
-                  }
-                });
-                
-              })();
-            `,
-          }}
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <meta name="theme-color" content="#1e40af" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover, user-scalable=yes"
         />
       </head>
-      <body
-        className={cn(
-          inter.className,
-          "antialiased font-sans",
-          // Prevent font loading flicker
-          "min-h-screen",
-        )}
-        style={{
-          // Critical CSS to prevent FOUC
-          fontFeatureSettings: '"cv02", "cv03", "cv04", "cv11"',
-          textRendering: "optimizeLegibility",
-          WebkitFontSmoothing: "antialiased",
-          MozOsxFontSmoothing: "grayscale",
-        }}
-      >
+      <body className={cn(inter.className, "min-h-screen antialiased")}>
         <ClientLayoutWrapper>
-          {/* Banner - Positioned above navigation */}
-          <Banner />
+          <AnalyticsWrapper>
+            {/* Banner - Positioned above navigation */}
+            <Banner />
 
-          {/* Navigation */}
-          <Navigation />
+            {/* Navigation */}
+            <Navigation />
 
-          {/* Main content */}
-          <main id="main-content" className="min-h-screen">
-            {children}
-          </main>
+            {/* Main content */}
+            <main id="main-content" className="min-h-screen">
+              {children}
+            </main>
 
-          {/* Footer */}
-          <Footer />
+            {/* Footer */}
+            <Footer />
+          </AnalyticsWrapper>
         </ClientLayoutWrapper>
-
-        {/* 🛡️ CRITICAL: Error Interceptor Override - Prevent Cascade */}
-        <Script
-          id="error-interceptor-override"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              // Prevent Next.js error interceptor from causing analytics cascade
-              (function() {
-                if (typeof window === 'undefined') return;
-                
-                // Store original console methods
-                const originalError = console.error;
-                const originalWarn = console.warn;
-                
-                // Override console.error to prevent analytics cascade
-                console.error = function(...args) {
-                  // Check if this is a 404 error from analytics
-                  const message = args.join(' ');
-                  if (message.includes('404') && message.includes('analytics')) {
-                    // Log once but don't cascade
-                    if (!window._analyticsErrorLogged) {
-                      originalError('Analytics endpoint not ready, using fallback');
-                      window._analyticsErrorLogged = true;
-                    }
-                    return;
-                  }
-                  
-                  // Check if this is the intercept-console-error causing issues
-                  if (message.includes('intercept-console-error') || 
-                      message.includes('Failed to load resource') && message.includes('api/analytics')) {
-                    // Silent ignore to prevent cascade
-                    return;
-                  }
-                  
-                  // Call original for other errors
-                  originalError.apply(console, args);
-                };
-                
-                // Override window.onerror to prevent cascade
-                const originalOnError = window.onerror;
-                window.onerror = function(message, source, lineno, colno, error) {
-                  // Don't track errors from analytics endpoints
-                  if (source && source.includes('analytics')) {
-                    return true; // Prevent default error handling
-                  }
-                  
-                  // Don't track 404 errors
-                  if (message && message.includes('404')) {
-                    return true;
-                  }
-                  
-                  // Call original handler for other errors
-                  if (originalOnError) {
-                    return originalOnError(message, source, lineno, colno, error);
-                  }
-                  
-                  return false;
-                };
-              })();
-            `,
-          }}
-        />
-
-        {/* Divine Service Worker Registration - Cascade Immune */}
-        <Script
-          id="divine-service-worker"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                'use strict';
-                
-                // Only run in secure contexts and modern browsers
-                if (!('serviceWorker' in navigator) || 
-                    typeof window === 'undefined' || 
-                    !window.location.protocol.startsWith('http')) {
-                  return;
-                }
-
-                // Divine protection against errors
-                function safeLog(message, data) {
-                  try {
-                    if (typeof console !== 'undefined' && console.log) {
-                      console.log('[Divine SW]', message, data || '');
-                    }
-                  } catch (e) {
-                    // Silent fail
-                  }
-                }
-
-                // Listen for service worker messages with error protection
-                try {
-                  navigator.serviceWorker.addEventListener('message', (event) => {
-                    try {
-                      if (event.data && event.data.type === 'CACHE_UPDATED') {
-                        safeLog('Cache updated - preparing refresh...');
-                        setTimeout(() => {
-                          try {
-                            window.location.reload();
-                          } catch (e) {
-                            safeLog('Reload failed gracefully');
-                          }
-                        }, 1000);
-                      }
-                    } catch (e) {
-                      safeLog('Message handling failed gracefully');
-                    }
-                  });
-                } catch (e) {
-                  safeLog('Message listener setup failed gracefully');
-                }
-
-                // Register service worker with divine protection
-                window.addEventListener('load', async () => {
-                  try {
-                    // Check if service worker file exists
-                    const swResponse = await fetch('/service-worker.js', { 
-                      method: 'HEAD',
-                      cache: 'no-cache'
-                    });
-                    
-                    if (!swResponse.ok) {
-                      safeLog('Service worker file not found, skipping registration');
-                      return;
-                    }
-
-                    const registration = await navigator.serviceWorker.register('/service-worker.js', {
-                      scope: '/',
-                      updateViaCache: 'none'
-                    });
-                    
-                    safeLog('Divine Service Worker registered successfully', registration.scope);
-                    
-                    // Check for updates with error protection
-                    if (registration && typeof registration.update === 'function') {
-                      try {
-                        await registration.update();
-                        safeLog('Service worker update check completed');
-                      } catch (updateError) {
-                        safeLog('Update check failed gracefully');
-                      }
-                    }
-                  } catch (registrationError) {
-                    safeLog('Service worker registration failed gracefully', registrationError.message);
-                    // Continue without service worker - app should still work
-                  }
-                });
-              })();
-            `,
-          }}
-        />
       </body>
     </html>
   );
