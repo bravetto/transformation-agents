@@ -1,5 +1,5 @@
 import { BaseDivineAgent } from "./base-agent";
-import { CascadeRiskAssessment } from "../types";
+import type { CascadeRiskAssessment } from "../types";
 import * as fs from "fs/promises";
 import * as path from "path";
 import { glob } from "glob";
@@ -22,12 +22,19 @@ interface RuntimeError {
 
 export class RuntimeErrorDetector extends BaseDivineAgent {
   constructor() {
-    super("RuntimeErrorDetector");
-    this.role = "guardian";
+    super({
+      name: "RuntimeErrorDetector",
+      mission:
+        "Detect and prevent runtime errors in JAHmere Webb Freedom Portal",
+      spiritualLevel: "guardian",
+      alertThreshold: "critical",
+    });
   }
 
   scan(): void {
-    logger.debug(`🚨 [${this.name}] Scanning for runtime error patterns...`);
+    logger.debug(
+      `🚨 [${this.config.name}] Scanning for runtime error patterns...`,
+    );
 
     // Implementation would go here
     // This is a placeholder for the actual scanning logic
@@ -274,7 +281,8 @@ export class RuntimeErrorDetector extends BaseDivineAgent {
   private findLineNumber(content: string, pattern: RegExp): number {
     const lines = content.split("\n");
     for (let i = 0; i < lines.length; i++) {
-      if (pattern.test(lines[i])) {
+      const line = lines[i];
+      if (line && pattern.test(line)) {
         return i + 1;
       }
     }
@@ -310,7 +318,12 @@ export class RuntimeErrorDetector extends BaseDivineAgent {
       "Implement performance monitoring",
     ];
 
-    return { overallRisk, factors, mitigations };
+    return {
+      level: overallRisk,
+      overallRisk,
+      factors,
+      mitigations,
+    };
   }
 
   private generateRuntimeRecommendations(findings: RuntimeError[]): string[] {
@@ -386,5 +399,62 @@ export class RuntimeErrorDetector extends BaseDivineAgent {
       console.warn(`Failed to read file ${filePath}:`, error);
       return null;
     }
+  }
+
+  // Implement required abstract methods from BaseDivineAgent
+  public async execute(): Promise<void> {
+    this.logDivineEvent("Starting runtime error detection sweep", "info");
+
+    try {
+      const allFindings: RuntimeError[] = [];
+
+      // Execute all detection methods
+      const hooksViolations = await this.detectHooksViolations();
+      const infiniteLoops = await this.detectInfiniteLoopPatterns();
+      const performanceIssues = await this.detectPerformanceAntiPatterns();
+      const unusedImports = await this.detectUnusedComponentImports();
+
+      allFindings.push(
+        ...hooksViolations,
+        ...infiniteLoops,
+        ...performanceIssues,
+        ...unusedImports,
+      );
+
+      // Assess cascade risk
+      const riskAssessment = this.assessCascadeRisk(allFindings);
+
+      if (allFindings.length > 0) {
+        this.logDivineEvent(
+          `Detected ${allFindings.length} runtime issues. Risk level: ${riskAssessment.level}`,
+          riskAssessment.level === "critical" ? "error" : "warn",
+          { findings: allFindings.length, riskLevel: riskAssessment.level },
+        );
+      } else {
+        this.logDivineEvent(
+          "Runtime error detection complete - no issues found",
+          "divine",
+        );
+      }
+    } catch (error) {
+      this.logDivineEvent(`Runtime error detection failed: ${error}`, "error", {
+        error,
+      });
+      throw error;
+    }
+  }
+
+  public getStatus(): { healthy: boolean; message: string; lastRun?: Date } {
+    const now = new Date();
+    const timeSinceLastRun = now.getTime() - this.lastHeartbeat.getTime();
+    const healthy = this.isRunning() && timeSinceLastRun < 300000; // 5 minutes
+
+    return {
+      healthy,
+      message: healthy
+        ? `Runtime Error Detector operational - last scan: ${this.lastHeartbeat.toLocaleTimeString()}`
+        : `Runtime Error Detector inactive or stale - last scan: ${this.lastHeartbeat.toLocaleTimeString()}`,
+      lastRun: this.lastHeartbeat,
+    };
   }
 }
