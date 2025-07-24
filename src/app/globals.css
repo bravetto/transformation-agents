@@ -2045,3 +2045,10 @@ section > * {
 .layout-overlay {
   z-index: var(--z-overlay);
 }
+
+/* JAHmere Webb Freedom Portal - Divine Styling */
+/* Deployment trigger: Testing Vercel header fix */
+
+html {
+  color-scheme: light;
+}
