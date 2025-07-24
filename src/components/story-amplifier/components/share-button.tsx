@@ -9,7 +9,7 @@ import { useStory } from "../context";
 
 /**
  * ShareButton Component
- * 
+ *
  * A flexible button for sharing content on various social platforms
  */
 const ShareButton = ({
@@ -20,11 +20,11 @@ const ShareButton = ({
   className,
 }: ShareButtonProps) => {
   const { handleShare, copiedToClipboard } = useStory();
-  
+
   // Get icon based on platform
   const getIcon = () => {
     const iconSize = size === "sm" ? 14 : size === "md" ? 18 : 24;
-    
+
     switch (platform) {
       case "twitter":
         return <Twitter size={iconSize} />;
@@ -35,12 +35,16 @@ const ShareButton = ({
       case "email":
         return <Mail size={iconSize} />;
       case "copy":
-        return copiedToClipboard ? <Check size={iconSize} /> : <Link size={iconSize} />;
+        return copiedToClipboard ? (
+          <Check size={iconSize} />
+        ) : (
+          <Link size={iconSize} />
+        );
       default:
         return <Twitter size={iconSize} />;
     }
   };
-  
+
   // Get color classes based on platform
   const getColorClasses = () => {
     switch (platform) {
@@ -58,7 +62,7 @@ const ShareButton = ({
         return "hover:bg-gray-600 hover:text-white";
     }
   };
-  
+
   // Get size classes
   const getSizeClasses = () => {
     switch (size) {
@@ -72,7 +76,7 @@ const ShareButton = ({
         return variant === "icon" ? "p-3" : "px-3 py-2 text-sm";
     }
   };
-  
+
   // Get variant classes
   const getVariantClasses = () => {
     switch (variant) {
@@ -86,20 +90,20 @@ const ShareButton = ({
         return "rounded-full";
     }
   };
-  
+
   // Get background classes
   const getBackgroundClasses = () => {
-    return variant === "button" 
-      ? "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm" 
+    return variant === "button"
+      ? "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm"
       : "bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm";
   };
-  
+
   // Get the label to display
   const getDisplayLabel = () => {
     if (variant === "icon") return null;
-    
+
     if (label) return label;
-    
+
     switch (platform) {
       case "twitter":
         return "Twitter";
@@ -115,7 +119,7 @@ const ShareButton = ({
         return "Share";
     }
   };
-  
+
   return (
     <button
       onClick={() => handleShare(platform)}
@@ -125,19 +129,21 @@ const ShareButton = ({
         getSizeClasses(),
         getVariantClasses(),
         "transition-colors",
-        className
+        className,
       )}
       aria-label={`Share on ${platform}`}
     >
       {variant === "icon-label" && (
         <>
           {getIcon()}
-          <span className={size === "sm" ? "ml-1" : "ml-2"}>{getDisplayLabel()}</span>
+          <span className={size === "sm" ? "ml-1" : "ml-2"}>
+            {getDisplayLabel()}
+          </span>
         </>
       )}
-      
+
       {variant === "button" && getDisplayLabel()}
-      
+
       {variant === "icon" && getIcon()}
     </button>
   );
@@ -145,4 +151,4 @@ const ShareButton = ({
 
 export default withSafeUI(ShareButton, {
   componentName: "ShareButton",
-}); 
+});

@@ -97,8 +97,8 @@ function PersonalInfo() {
             <p className="text-red-500 text-sm mt-1">{errors.address}</p>
           )}
           <p className="text-xs text-gray-500 mt-1">
-            Your address is required for legal documentation and will be included
-            in your letter
+            Your address is required for legal documentation and will be
+            included in your letter
           </p>
         </div>
       </div>
@@ -116,4 +116,4 @@ function PersonalInfo() {
 
 export default withSafeUI(PersonalInfo, {
   componentName: "PersonalInfo",
-}); 
+});

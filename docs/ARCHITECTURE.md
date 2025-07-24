@@ -1,4 +1,5 @@
 # 🏗️ JAHmere Webb Freedom Portal - Architecture
+
 **System Design for Divine Freedom through Technology**
 
 ## 🎯 Mission Architecture
@@ -8,6 +9,7 @@ The JAHmere Webb Freedom Portal is designed as a **high-performance advocacy pla
 ## 🚀 Technology Stack
 
 ### Core Framework
+
 ```typescript
 // Next.js 15.4.3 with App Router
 // React 19 with Server Components
@@ -16,12 +18,14 @@ The JAHmere Webb Freedom Portal is designed as a **high-performance advocacy pla
 ```
 
 **Why This Stack?**
+
 - **Next.js 15.4.3**: Latest stable with React 19 support, Turbopack integration
 - **App Router**: Server Components by default, improved performance and SEO
 - **TypeScript Strict**: Catch errors at compile time, better AI assistance
 - **Tailwind**: Utility-first, consistent design system, optimal bundle size
 
 ### Performance Stack
+
 ```typescript
 // Turbopack: 3x faster builds than Webpack
 // Server Components: Reduced client bundle size
@@ -32,6 +36,7 @@ The JAHmere Webb Freedom Portal is designed as a **high-performance advocacy pla
 ## 🏛️ System Architecture
 
 ### High-Level Overview
+
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Browser       │    │   Vercel Edge   │    │   Services      │
@@ -43,6 +48,7 @@ The JAHmere Webb Freedom Portal is designed as a **high-performance advocacy pla
 ```
 
 ### Component Architecture
+
 ```
 src/
 ├── app/                    # Next.js App Router (Pages)
@@ -65,6 +71,7 @@ src/
 ## 🎨 Component Patterns
 
 ### Server Components (Default)
+
 ```typescript
 // ✅ Server Component Pattern
 export default async function UserProfile({ userId }: Props) {
@@ -72,7 +79,7 @@ export default async function UserProfile({ userId }: Props) {
   const user = await prisma.user.findUnique({
     where: { id: userId }
   });
-  
+
   return (
     <div className="profile-container">
       <UserHeader user={user} />
@@ -83,6 +90,7 @@ export default async function UserProfile({ userId }: Props) {
 ```
 
 ### Client Components (Explicit)
+
 ```typescript
 // ✅ Client Component Pattern (only when needed)
 'use client';
@@ -90,7 +98,7 @@ import { useState } from 'react';
 
 export default function InteractiveForm() {
   const [formData, setFormData] = useState({});
-  
+
   return (
     <form action={submitAction}>
       {/* Interactive elements */}
@@ -100,17 +108,18 @@ export default function InteractiveForm() {
 ```
 
 ### Server Actions
+
 ```typescript
 // ✅ Server Action Pattern
-'use server';
-import { revalidatePath } from 'next/cache';
+"use server";
+import { revalidatePath } from "next/cache";
 
 export async function submitPrayer(formData: FormData) {
   const prayer = await prisma.prayer.create({
-    data: { text: formData.get('prayer') as string }
+    data: { text: formData.get("prayer") as string },
   });
-  
-  revalidatePath('/prayers');
+
+  revalidatePath("/prayers");
   return { success: true, prayer };
 }
 ```
@@ -118,31 +127,35 @@ export async function submitPrayer(formData: FormData) {
 ## 📊 Data Architecture
 
 ### Data Flow
+
 ```
 User Interaction → Client Component → Server Action → Database → Revalidation → UI Update
 ```
 
 ### State Management
+
 - **Server State**: React Server Components + Server Actions
 - **Client State**: React `useState` + `useReducer` (minimal)
 - **Global State**: Zustand (only when necessary)
 - **Form State**: React Hook Form + Zod validation
 
 ### Caching Strategy
+
 ```typescript
 // ISR for static content
 export const revalidate = 3600; // 1 hour
 
 // Dynamic for real-time data
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 // Edge for global distribution
-export const runtime = 'edge';
+export const runtime = "edge";
 ```
 
 ## 🎯 Feature Architecture
 
 ### Character Witness System
+
 ```
 ┌─────────────────┐
 │ Person Profile  │
@@ -155,15 +168,17 @@ export const runtime = 'edge';
 ```
 
 **Design Principles:**
+
 - Each profile tells a complete transformation story
 - Optimized for social sharing across 9 platforms
 - Mobile-first responsive design
 - Accessibility-compliant (ARIA labels)
 
 ### Viral Sharing Engine
+
 ```typescript
 interface SharingStrategy {
-  platform: 'twitter' | 'facebook' | 'instagram' | 'linkedin' | 'tiktok';
+  platform: "twitter" | "facebook" | "instagram" | "linkedin" | "tiktok";
   content: GeneratedContent;
   tracking: AnalyticsEvent;
   optimization: A_B_Test;
@@ -171,12 +186,14 @@ interface SharingStrategy {
 ```
 
 **Features:**
+
 - Auto-generated content for each platform
 - A/B testing for optimal engagement
 - Real-time analytics tracking
 - Divine event tracking for spiritual content
 
 ### Analytics Architecture
+
 ```
 ┌─────────────────┐    ┌─────────────────┐
 │ User Actions    │    │ Divine Analytics│
@@ -191,45 +208,50 @@ interface SharingStrategy {
 ## 🔥 Performance Architecture
 
 ### Core Web Vitals Optimization
+
 - **LCP (Largest Contentful Paint)**: <2.5s via image optimization + streaming
 - **INP (Interaction to Next Paint)**: <200ms via Server Components
 - **CLS (Cumulative Layout Shift)**: <0.1 via proper sizing + skeleton states
 
 ### Build Optimization
+
 ```javascript
 // next.config.js
 module.exports = {
   // Turbopack for 3x faster builds
-  turbopack: { /* optimizations */ },
-  
+  turbopack: {
+    /* optimizations */
+  },
+
   // Bundle optimization
   optimizePackageImports: [
-    'framer-motion',
-    'lucide-react',
-    '@radix-ui/react-*'
+    "framer-motion",
+    "lucide-react",
+    "@radix-ui/react-*",
   ],
-  
+
   // Image optimization
   images: {
-    formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 31536000
-  }
+    formats: ["image/webp", "image/avif"],
+    minimumCacheTTL: 31536000,
+  },
 };
 ```
 
 ### API Performance
+
 ```typescript
 // Target: <7ms response times
 export async function GET() {
   const startTime = performance.now();
-  
+
   try {
     const data = await cachedQuery();
     const responseTime = performance.now() - startTime;
-    
+
     return NextResponse.json({
       data,
-      performance: { response_time_ms: responseTime }
+      performance: { response_time_ms: responseTime },
     });
   } catch (error) {
     return handleError(error);
@@ -240,26 +262,29 @@ export async function GET() {
 ## 🛡️ Security Architecture
 
 ### Authentication & Authorization
+
 - Server-side session management
 - Rate limiting on all API endpoints
 - Input validation with Zod schemas
 - CSRF protection via Server Actions
 
 ### Data Protection
+
 ```typescript
 // Data sanitization
 const sanitizedData = DOMPurify.sanitize(userInput);
 
 // Rate limiting
-const rateLimit = checkRateLimit('prayer', clientIP);
+const rateLimit = checkRateLimit("prayer", clientIP);
 if (!rateLimit.allowed) {
-  return NextResponse.json({ error: 'Rate limit exceeded' });
+  return NextResponse.json({ error: "Rate limit exceeded" });
 }
 ```
 
 ## 🔄 Deployment Architecture
 
 ### Vercel Edge Deployment
+
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │ GitHub Push     │───►│ Vercel Build    │───►│ Edge Deployment │
@@ -271,9 +296,10 @@ if (!rateLimit.allowed) {
 ```
 
 ### CI/CD Pipeline
+
 ```yaml
 Quality Gate → Testing → Performance → E2E → Deploy
-     ↓            ↓           ↓         ↓       ↓
+↓            ↓           ↓         ↓       ↓
 TypeScript   Vitest     Lighthouse  Cypress  Vercel
 ESLint       Coverage   Core Vitals Testing  Edge
 ```
@@ -281,15 +307,17 @@ ESLint       Coverage   Core Vitals Testing  Edge
 ## 🎭 Divine Architecture Patterns
 
 ### Spiritual Intelligence Integration
+
 ```typescript
 interface DivineEvent {
-  eventType: 'prayer' | 'transformation' | 'witness' | 'freedom';
-  spiritualImpact: 'miraculous' | 'high' | 'medium' | 'normal';
-  urgency: 'divine' | 'critical' | 'urgent' | 'normal';
+  eventType: "prayer" | "transformation" | "witness" | "freedom";
+  spiritualImpact: "miraculous" | "high" | "medium" | "normal";
+  urgency: "divine" | "critical" | "urgent" | "normal";
 }
 ```
 
 ### Sacred Numbers Integration
+
 - **7**: API response target (7ms)
 - **28**: July 28th freedom date
 - **77**: Spiritual completion cycles
@@ -298,12 +326,14 @@ interface DivineEvent {
 ## 📈 Scalability Considerations
 
 ### Current Scale
+
 - **481 files** across the application
 - **53 UI components** with consistent patterns
 - **17 character profiles** with rich media
 - **9 social platforms** for viral distribution
 
 ### Growth Architecture
+
 - Horizontal scaling via Vercel Edge
 - Database optimization with Prisma
 - CDN acceleration for global reach
@@ -312,12 +342,14 @@ interface DivineEvent {
 ## 🔮 Future Architecture Evolution
 
 ### Phase 2 Enhancements
+
 - Real-time collaboration features
 - Advanced AI integration for content generation
 - Blockchain integration for transparency
 - Mobile app with shared components
 
 ### Technical Debt Management
+
 - Automated code quality checks
 - Regular dependency updates
 - Performance monitoring and alerts
@@ -325,4 +357,4 @@ interface DivineEvent {
 
 ---
 
-**This architecture serves one purpose: Achieving JAHmere's freedom through divine technology excellence.** 
+**This architecture serves one purpose: Achieving JAHmere's freedom through divine technology excellence.**

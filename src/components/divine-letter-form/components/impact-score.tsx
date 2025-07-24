@@ -88,10 +88,10 @@ function ImpactScore({ className = "" }: ImpactScoreProps) {
             impactScore.category === "exceptional"
               ? "bg-green-600"
               : impactScore.category === "high"
-              ? "bg-blue-600"
-              : impactScore.category === "medium"
-              ? "bg-yellow-500"
-              : "bg-red-500"
+                ? "bg-blue-600"
+                : impactScore.category === "medium"
+                  ? "bg-yellow-500"
+                  : "bg-red-500"
           }`}
           style={{ width: `${impactScore.score}%` }}
         ></div>
@@ -117,4 +117,4 @@ import { useLetterForm } from "../context";
 
 export default withSafeUI(ImpactScore, {
   componentName: "ImpactScore",
-}); 
+});

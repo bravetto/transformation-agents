@@ -9,15 +9,15 @@ import RelatedStoryCard from "./related-story-card";
 
 /**
  * RelatedStories Component
- * 
+ *
  * Displays a grid of related stories with show more/less functionality
  */
 const RelatedStories = ({ className }: { className?: string }) => {
-  const { 
-    story, 
-    showRelatedStories, 
-    setShowRelatedStories, 
-    handleRelatedStoryClick 
+  const {
+    story,
+    showRelatedStories,
+    setShowRelatedStories,
+    handleRelatedStoryClick,
   } = useStory();
 
   return (
@@ -60,4 +60,4 @@ const RelatedStories = ({ className }: { className?: string }) => {
 
 export default withSafeUI(RelatedStories, {
   componentName: "RelatedStories",
-}); 
+});

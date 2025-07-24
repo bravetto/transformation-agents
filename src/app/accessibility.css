@@ -8,7 +8,7 @@
 
 /* Enhanced focus indicators for all interactive elements */
 *:focus-visible {
-  outline: 3px solid #2563EB !important; /* Ensure high visibility */
+  outline: 3px solid #2563eb !important; /* Ensure high visibility */
   outline-offset: 3px !important;
   border-radius: 2px;
   /* Add box-shadow for even greater visibility */
@@ -28,7 +28,7 @@ a:focus-visible {
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  border-color: #2563EB !important;
+  border-color: #2563eb !important;
 }
 
 /* Skip link styling */
@@ -38,7 +38,7 @@ select:focus-visible {
   left: -9999px;
   z-index: 9999;
   padding: 1rem;
-  background-color: #2563EB;
+  background-color: #2563eb;
   color: white;
   font-weight: bold;
   text-decoration: none;
@@ -59,7 +59,7 @@ select:focus-visible {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  
+
   /* Disable background animations */
   .animate-float,
   .animate-pulse,
@@ -67,7 +67,7 @@ select:focus-visible {
   [class*="animate-"] {
     animation: none !important;
   }
-  
+
   /* Disable parallax effects */
   [class*="parallax"],
   [class*="floating"] {
@@ -83,24 +83,24 @@ select:focus-visible {
   [role="button"] {
     border: 2px solid ButtonText;
   }
-  
+
   /* Ensure links are underlined in high contrast mode */
   a {
     text-decoration: underline;
   }
-  
+
   /* Ensure form fields have clear borders */
   input,
   textarea,
   select {
     border: 1px solid ButtonText;
   }
-  
+
   /* Fix SVG icons to ensure they're visible */
   svg {
     forced-color-adjust: auto;
   }
-  
+
   /* Add outlines to cards and interactive containers */
   .card,
   [class*="card"],
@@ -140,20 +140,20 @@ select:focus-visible {
 /* Enhanced form field validation styles */
 [aria-invalid="true"],
 .input-error {
-  border-color: #EF4444 !important;
-  outline-color: #EF4444 !important;
+  border-color: #ef4444 !important;
+  outline-color: #ef4444 !important;
 }
 
 [aria-invalid="true"]:focus-visible,
 .input-error:focus-visible {
-  outline-color: #EF4444 !important;
+  outline-color: #ef4444 !important;
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.5) !important;
 }
 
 /* Error message for form fields */
 [role="alert"],
 .error-message {
-  color: #EF4444;
+  color: #ef4444;
   font-size: 0.875rem;
   margin-top: 0.25rem;
   display: flex;
@@ -191,7 +191,7 @@ input[type="radio"] {
     min-width: 44px;
     padding: 0.5rem 1rem;
   }
-  
+
   input,
   textarea,
   select {
@@ -222,7 +222,8 @@ th {
   font-weight: bold;
 }
 
-th, td {
+th,
+td {
   padding: 0.5rem;
   border: 1px solid ButtonText;
 }
@@ -241,7 +242,7 @@ td:focus-visible {
   background-color: white;
   color: #374151;
   /* Add clear border for focus */
-  border: 1px solid #E5E7EB;
+  border: 1px solid #e5e7eb;
 }
 
 /* Improve dialog close button visibility */
@@ -269,6 +270,6 @@ td:focus-visible {
   position: absolute;
   inset: -3px;
   border-radius: 4px;
-  box-shadow: 0 0 0 2px #2563EB;
+  box-shadow: 0 0 0 2px #2563eb;
   z-index: -1;
-} 
+}

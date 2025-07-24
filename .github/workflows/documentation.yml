@@ -2,57 +2,57 @@ name: Documentation CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'src/**'
-      - 'public/**'
-      - 'scripts/**'
+      - "src/**"
+      - "public/**"
+      - "scripts/**"
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'src/**'
-      - 'public/**'
-      - 'scripts/**'
+      - "src/**"
+      - "public/**"
+      - "scripts/**"
 
 jobs:
   documentation:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Run documentation tests
-      run: npm run test:docs
+      - name: Run documentation tests
+        run: npm run test:docs
 
-    - name: Generate documentation
-      run: npm run docs:update
+      - name: Generate documentation
+        run: npm run docs:update
 
-    - name: Run documentation validation
-      run: npm run docs:validate
+      - name: Run documentation validation
+        run: npm run docs:validate
 
-    - name: Check for broken links
-      run: npm run docs:check-links
+      - name: Check for broken links
+        run: npm run docs:check-links
 
-    - name: Commit documentation changes
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: |
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git add WEBSITE_UX_UI_STATE.md
-        git diff --quiet && git diff --staged --quiet || git commit -m "docs: update UX/UI documentation [skip ci]"
+      - name: Commit documentation changes
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add WEBSITE_UX_UI_STATE.md
+          git diff --quiet && git diff --staged --quiet || git commit -m "docs: update UX/UI documentation [skip ci]"
 
-    - name: Push changes
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: main 
+      - name: Push changes
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main

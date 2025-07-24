@@ -2,14 +2,14 @@
   "version": 2,
   "name": "jahmere-bridge-freedom-portal",
   "alias": ["jahmerebridge.com", "jahmerebridgeapp.vercel.app"],
-  
+
   "build": {
     "env": {
       "NEXT_TELEMETRY_DISABLED": "1",
       "NODE_OPTIONS": "--max-old-space-size=4096"
     }
   },
-  
+
   "functions": {
     "src/app/api/**/*.ts": {
       "maxDuration": 10
@@ -18,9 +18,9 @@
       "maxDuration": 30
     }
   },
-  
+
   "regions": ["iad1", "sfo1"],
-  
+
   "headers": [
     {
       "source": "/(.*)",
@@ -66,7 +66,7 @@
       ]
     }
   ],
-  
+
   "redirects": [
     {
       "source": "/old-url",
@@ -74,14 +74,14 @@
       "permanent": true
     }
   ],
-  
+
   "rewrites": [
     {
       "source": "/healthz",
       "destination": "/api/health"
     }
   ],
-  
+
   "crons": [
     {
       "path": "/api/monitoring/health",
@@ -98,11 +98,11 @@
     "OPENAI_API_KEY": "@openai-api-key",
     "DIVINE_SECURITY_SALT": "@divine-security-salt"
   },
-  
+
   "installCommand": "npm ci",
   "buildCommand": "npm run build:prod",
   "outputDirectory": ".next",
-  
+
   "github": {
     "autoAlgorithm": "ort"
   }

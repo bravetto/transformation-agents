@@ -12,22 +12,14 @@
     },
     "buildDirectory": {
       "status": "warning",
-      "issues": [
-        "No build directory"
-      ]
+      "issues": ["No build directory"]
     },
     "nodeModules": {
       "status": "healthy"
     },
     "portAvailability": {
       "status": "healthy",
-      "availablePorts": [
-        4242,
-        1437,
-        3000,
-        3001,
-        4000
-      ],
+      "availablePorts": [4242, 1437, 3000, 3001, 4000],
       "recommendedPort": 4242
     },
     "imageAssets": {

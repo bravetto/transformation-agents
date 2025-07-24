@@ -1,5 +1,11 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import { LetterFormProvider, useLetterForm } from "../context";
 import { FormStep } from "../types";
 
@@ -51,7 +57,7 @@ describe("LetterFormProvider", () => {
     render(
       <LetterFormProvider onSubmit={mockOnSubmit} onSave={mockOnSave}>
         <TestComponent />
-      </LetterFormProvider>
+      </LetterFormProvider>,
     );
 
     expect(screen.getByText("Test Component")).toBeInTheDocument();
@@ -63,7 +69,7 @@ describe("LetterFormProvider", () => {
     render(
       <LetterFormProvider onSubmit={mockOnSubmit} onSave={mockOnSave}>
         <TestComponent />
-      </LetterFormProvider>
+      </LetterFormProvider>,
     );
 
     fireEvent.click(screen.getByText("Update Name"));
@@ -74,7 +80,7 @@ describe("LetterFormProvider", () => {
     render(
       <LetterFormProvider onSubmit={mockOnSubmit} onSave={mockOnSave}>
         <TestComponent />
-      </LetterFormProvider>
+      </LetterFormProvider>,
     );
 
     expect(screen.getByTestId("current-step")).toHaveTextContent("0");
@@ -86,17 +92,17 @@ describe("LetterFormProvider", () => {
     render(
       <LetterFormProvider onSubmit={mockOnSubmit} onSave={mockOnSave}>
         <TestComponent />
-      </LetterFormProvider>
+      </LetterFormProvider>,
     );
 
     // First, update required fields for the first step
     fireEvent.click(screen.getByText("Update Name"));
-    
+
     // Then try to move to next step
     await act(async () => {
       fireEvent.click(screen.getByText("Next Step"));
     });
-    
+
     // Check if step was incremented
     expect(screen.getByTestId("current-step")).toHaveTextContent("1");
   });
@@ -105,13 +111,13 @@ describe("LetterFormProvider", () => {
     render(
       <LetterFormProvider onSubmit={mockOnSubmit} onSave={mockOnSave}>
         <TestComponent />
-      </LetterFormProvider>
+      </LetterFormProvider>,
     );
 
     // First set step to 1
     fireEvent.click(screen.getByText("Set Step"));
     expect(screen.getByTestId("current-step")).toHaveTextContent("1");
-    
+
     // Then move back
     fireEvent.click(screen.getByText("Previous Step"));
     expect(screen.getByTestId("current-step")).toHaveTextContent("0");
@@ -121,21 +127,23 @@ describe("LetterFormProvider", () => {
     render(
       <LetterFormProvider onSubmit={mockOnSubmit} onSave={mockOnSave}>
         <TestComponent />
-      </LetterFormProvider>
+      </LetterFormProvider>,
     );
 
     // Update form data
     fireEvent.click(screen.getByText("Update Name"));
-    
+
     // Fast-forward time
     act(() => {
       jest.advanceTimersByTime(31000); // 31 seconds
     });
-    
+
     // Check if onSave was called
     expect(mockOnSave).toHaveBeenCalled();
-    expect(mockOnSave).toHaveBeenCalledWith(expect.objectContaining({
-      name: "John Doe"
-    }));
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: "John Doe",
+      }),
+    );
   });
-}); 
+});

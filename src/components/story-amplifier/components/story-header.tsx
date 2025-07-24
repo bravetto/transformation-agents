@@ -12,17 +12,21 @@ import ShareButton from "./share-button";
 
 /**
  * StoryHeader Component
- * 
+ *
  * Displays the header section of a story with title, author info, and metadata
  */
-const StoryHeader = ({ story, formatReadingTime, className }: StoryHeaderProps) => {
-  const { 
-    shareVisible, 
-    setShareVisible, 
-    showRelatedStories, 
+const StoryHeader = ({
+  story,
+  formatReadingTime,
+  className,
+}: StoryHeaderProps) => {
+  const {
+    shareVisible,
+    setShareVisible,
+    showRelatedStories,
     setShowRelatedStories,
     isAtTop,
-    readingProgress
+    readingProgress,
   } = useStory();
 
   // Transform values based on scroll position
@@ -31,8 +35,8 @@ const StoryHeader = ({ story, formatReadingTime, className }: StoryHeaderProps) 
   const scale = isAtTop ? 1 : Math.max(0.9, 1 - readingProgress / 200);
 
   return (
-    <motion.header 
-      style={{ opacity, y, scale }} 
+    <motion.header
+      style={{ opacity, y, scale }}
       className={cn("relative mb-8", className)}
     >
       {/* Hero image with parallax */}
@@ -147,7 +151,12 @@ const StoryHeader = ({ story, formatReadingTime, className }: StoryHeaderProps) 
             <ShareButton platform="facebook" variant="icon-label" size="sm" />
             <ShareButton platform="linkedin" variant="icon-label" size="sm" />
             <ShareButton platform="email" variant="icon-label" size="sm" />
-            <ShareButton platform="copy" variant="icon-label" size="sm" className="col-span-4" />
+            <ShareButton
+              platform="copy"
+              variant="icon-label"
+              size="sm"
+              className="col-span-4"
+            />
           </div>
         </motion.div>
       )}
@@ -157,4 +166,4 @@ const StoryHeader = ({ story, formatReadingTime, className }: StoryHeaderProps) 
 
 export default withSafeUI(StoryHeader, {
   componentName: "StoryHeader",
-}); 
+});

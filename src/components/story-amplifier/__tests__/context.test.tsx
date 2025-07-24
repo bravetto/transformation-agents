@@ -79,31 +79,27 @@ const TestComponent = () => {
         Toggle Share Panel
       </button>
       <div data-testid="share-visible">{shareVisible.toString()}</div>
-      
+
       <button onClick={() => setShowRelatedStories(!showRelatedStories)}>
         Toggle Related Stories
       </button>
-      <div data-testid="show-related-stories">{showRelatedStories.toString()}</div>
-      
-      <button onClick={() => handleShare("twitter")}>
-        Share on Twitter
-      </button>
-      
+      <div data-testid="show-related-stories">
+        {showRelatedStories.toString()}
+      </div>
+
+      <button onClick={() => handleShare("twitter")}>Share on Twitter</button>
+
       <button onClick={() => handleQuoteShare(story.quotes[0])}>
         Share Quote
       </button>
-      
+
       <button onClick={() => handleRelatedStoryClick(story.relatedStories[0])}>
         Click Related Story
       </button>
-      
-      <button onClick={handleCallToAction}>
-        Call To Action
-      </button>
-      
-      <div data-testid="reading-time">
-        {formatReadingTime(10)}
-      </div>
+
+      <button onClick={handleCallToAction}>Call To Action</button>
+
+      <div data-testid="reading-time">{formatReadingTime(10)}</div>
     </div>
   );
 };
@@ -113,43 +109,45 @@ describe("StoryContext", () => {
     render(
       <StoryProvider story={mockStory}>
         <TestComponent />
-      </StoryProvider>
+      </StoryProvider>,
     );
-    
+
     expect(screen.getByText("Test Story Title")).toBeInTheDocument();
   });
-  
+
   it("toggles share visibility state", () => {
     render(
       <StoryProvider story={mockStory}>
         <TestComponent />
-      </StoryProvider>
+      </StoryProvider>,
     );
-    
+
     expect(screen.getByTestId("share-visible").textContent).toBe("false");
-    
+
     fireEvent.click(screen.getByText("Toggle Share Panel"));
-    
+
     expect(screen.getByTestId("share-visible").textContent).toBe("true");
   });
-  
+
   it("toggles related stories visibility state", () => {
     render(
       <StoryProvider story={mockStory}>
         <TestComponent />
-      </StoryProvider>
+      </StoryProvider>,
     );
-    
-    expect(screen.getByTestId("show-related-stories").textContent).toBe("false");
-    
+
+    expect(screen.getByTestId("show-related-stories").textContent).toBe(
+      "false",
+    );
+
     fireEvent.click(screen.getByText("Toggle Related Stories"));
-    
+
     expect(screen.getByTestId("show-related-stories").textContent).toBe("true");
   });
-  
+
   it("calls external handlers when actions are triggered", () => {
     render(
-      <StoryProvider 
+      <StoryProvider
         story={mockStory}
         onShare={mockOnShare}
         onQuoteShare={mockOnQuoteShare}
@@ -157,29 +155,31 @@ describe("StoryContext", () => {
         onCallToAction={mockOnCallToAction}
       >
         <TestComponent />
-      </StoryProvider>
+      </StoryProvider>,
     );
-    
+
     fireEvent.click(screen.getByText("Share on Twitter"));
     expect(mockOnShare).toHaveBeenCalledWith("twitter");
-    
+
     fireEvent.click(screen.getByText("Share Quote"));
     expect(mockOnQuoteShare).toHaveBeenCalledWith(mockStory.quotes[0]);
-    
+
     fireEvent.click(screen.getByText("Click Related Story"));
-    expect(mockOnRelatedStoryClick).toHaveBeenCalledWith(mockStory.relatedStories[0]);
-    
+    expect(mockOnRelatedStoryClick).toHaveBeenCalledWith(
+      mockStory.relatedStories[0],
+    );
+
     fireEvent.click(screen.getByText("Call To Action"));
     expect(mockOnCallToAction).toHaveBeenCalled();
   });
-  
+
   it("formats reading time correctly", () => {
     render(
       <StoryProvider story={mockStory}>
         <TestComponent />
-      </StoryProvider>
+      </StoryProvider>,
     );
-    
+
     expect(screen.getByTestId("reading-time").textContent).toBe("10 minutes");
   });
-}); 
+});

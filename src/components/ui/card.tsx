@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/lib/utils';
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
 /**
  * Card component using the design system
@@ -9,54 +9,54 @@ import { cn } from '@/lib/utils';
 
 const cardVariants = cva(
   // Base styles applied to all cards
-  'rounded-lg overflow-hidden',
+  "rounded-lg overflow-hidden",
   {
     variants: {
       // Visual variants
       variant: {
-        default: 'bg-pure-white border border-quiet-stone',
-        primary: 'bg-soft-cloud border border-quiet-stone',
-        secondary: 'bg-moon-glow border border-quiet-stone',
-        outline: 'border-2 border-hope-gold bg-transparent',
-        ghost: 'bg-transparent',
+        default: "bg-pure-white border border-quiet-stone",
+        primary: "bg-soft-cloud border border-quiet-stone",
+        secondary: "bg-moon-glow border border-quiet-stone",
+        outline: "border-2 border-hope-gold bg-transparent",
+        ghost: "bg-transparent",
         // Updated divine and glow for better contrast
-        divine: 'bg-comfort-cream border border-hope-gold/30',
-        glow: 'bg-pure-white border border-hope-gold shadow-md shadow-gray-200',
-        light: 'bg-soft-cloud border border-quiet-stone',
+        divine: "bg-comfort-cream border border-hope-gold/30",
+        glow: "bg-pure-white border border-hope-gold shadow-md shadow-gray-200",
+        light: "bg-soft-cloud border border-quiet-stone",
         // Add accent as an alias for primary
-        accent: 'bg-soft-cloud border border-quiet-stone',
+        accent: "bg-soft-cloud border border-quiet-stone",
         // Add subtle as an alias for ghost
-        subtle: 'bg-transparent',
+        subtle: "bg-transparent",
       },
-      
+
       // Padding variants
       padding: {
-        none: '',
-        sm: 'p-4',
-        md: 'p-6',
-        lg: 'p-8',
-        xl: 'p-10',
+        none: "",
+        sm: "p-4",
+        md: "p-6",
+        lg: "p-8",
+        xl: "p-10",
         // Add aliases for semantic names
-        small: 'p-4',
-        medium: 'p-6',
-        large: 'p-8',
+        small: "p-4",
+        medium: "p-6",
+        large: "p-8",
       },
-      
+
       // Shadow variants
       shadow: {
-        none: '',
-        sm: 'shadow-sm',
-        md: 'shadow-md',
-        lg: 'shadow-lg',
-        xl: 'shadow-xl',
+        none: "",
+        sm: "shadow-sm",
+        md: "shadow-md",
+        lg: "shadow-lg",
+        xl: "shadow-xl",
       },
     },
     defaultVariants: {
-      variant: 'default',
-      padding: 'md',
-      shadow: 'none',
+      variant: "default",
+      padding: "md",
+      shadow: "none",
     },
-  }
+  },
 );
 
 export interface CardProps
@@ -75,9 +75,9 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         {...props}
       />
     );
-  }
+  },
 );
-Card.displayName = 'Card';
+Card.displayName = "Card";
 
 /**
  * Card Header component
@@ -88,11 +88,11 @@ const CardHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex flex-col space-y-1.5', className)}
+    className={cn("flex flex-col space-y-1.5", className)}
     {...props}
   />
 ));
-CardHeader.displayName = 'CardHeader';
+CardHeader.displayName = "CardHeader";
 
 /**
  * Card Title component
@@ -103,11 +103,14 @@ const CardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn('text-2xl font-semibold leading-none tracking-tight text-gentle-charcoal', className)}
+    className={cn(
+      "text-2xl font-semibold leading-none tracking-tight text-gentle-charcoal",
+      className,
+    )}
     {...props}
   />
 ));
-CardTitle.displayName = 'CardTitle';
+CardTitle.displayName = "CardTitle";
 
 /**
  * Card Description component
@@ -118,11 +121,11 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn('text-sm text-soft-shadow', className)}
+    className={cn("text-sm text-soft-shadow", className)}
     {...props}
   />
 ));
-CardDescription.displayName = 'CardDescription';
+CardDescription.displayName = "CardDescription";
 
 /**
  * Card Content component
@@ -131,9 +134,9 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('', className)} {...props} />
+  <div ref={ref} className={cn("", className)} {...props} />
 ));
-CardContent.displayName = 'CardContent';
+CardContent.displayName = "CardContent";
 
 /**
  * Card Footer component
@@ -144,10 +147,21 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex items-center pt-4 border-t border-quiet-stone', className)}
+    className={cn(
+      "flex items-center pt-4 border-t border-quiet-stone",
+      className,
+    )}
     {...props}
   />
 ));
-CardFooter.displayName = 'CardFooter';
+CardFooter.displayName = "CardFooter";
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, cardVariants }; 
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  cardVariants,
+};

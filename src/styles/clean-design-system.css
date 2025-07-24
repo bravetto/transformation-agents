@@ -12,7 +12,7 @@
    ✅ Performance-optimized animations
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 
 /* ======================
    DESIGN TOKENS - SINGLE SOURCE OF TRUTH
@@ -22,63 +22,63 @@
   /* 🎨 PRIMARY PALETTE - Professional & Trustworthy */
   --primary-50: #eff6ff;
   --primary-100: #dbeafe;
-  --primary-500: #3b82f6;   /* Main brand blue */
-  --primary-600: #2563eb;   /* Hover states */
-  --primary-700: #1d4ed8;   /* Active states */
-  --primary-900: #1e3a8a;   /* Dark text on light backgrounds */
-  
+  --primary-500: #3b82f6; /* Main brand blue */
+  --primary-600: #2563eb; /* Hover states */
+  --primary-700: #1d4ed8; /* Active states */
+  --primary-900: #1e3a8a; /* Dark text on light backgrounds */
+
   /* 🟡 ACCENT PALETTE - Call-to-Action & Highlights */
   --accent-50: #fffbeb;
   --accent-100: #fef3c7;
-  --accent-500: #f59e0b;    /* Main accent gold */
-  --accent-600: #d97706;    /* Hover states */
-  --accent-700: #b45309;    /* Active states */
-  
+  --accent-500: #f59e0b; /* Main accent gold */
+  --accent-600: #d97706; /* Hover states */
+  --accent-700: #b45309; /* Active states */
+
   /* 🔘 NEUTRAL PALETTE - Text & Backgrounds */
-  --neutral-0: #ffffff;     /* Pure white */
-  --neutral-50: #f9fafb;    /* Light background */
-  --neutral-100: #f3f4f6;   /* Card backgrounds */
-  --neutral-200: #e5e7eb;   /* Borders */
-  --neutral-400: #9ca3af;   /* Muted text */
-  --neutral-600: #4b5563;   /* Secondary text */
-  --neutral-900: #111827;   /* Primary text */
-  
+  --neutral-0: #ffffff; /* Pure white */
+  --neutral-50: #f9fafb; /* Light background */
+  --neutral-100: #f3f4f6; /* Card backgrounds */
+  --neutral-200: #e5e7eb; /* Borders */
+  --neutral-400: #9ca3af; /* Muted text */
+  --neutral-600: #4b5563; /* Secondary text */
+  --neutral-900: #111827; /* Primary text */
+
   /* 🟢 SUCCESS PALETTE */
   --success-50: #ecfdf5;
   --success-500: #10b981;
   --success-600: #059669;
-  
+
   /* 🔴 ERROR PALETTE */
   --error-50: #fef2f2;
   --error-500: #ef4444;
   --error-600: #dc2626;
-  
+
   /* 📐 SPACING SCALE - Mathematical progression */
-  --space-1: 0.25rem;   /* 4px */
-  --space-2: 0.5rem;    /* 8px */
-  --space-3: 0.75rem;   /* 12px */
-  --space-4: 1rem;      /* 16px - Base unit */
-  --space-5: 1.25rem;   /* 20px */
-  --space-6: 1.5rem;    /* 24px */
-  --space-8: 2rem;      /* 32px */
-  --space-10: 2.5rem;   /* 40px */
-  --space-12: 3rem;     /* 48px */
-  --space-16: 4rem;     /* 64px */
-  --space-20: 5rem;     /* 80px */
-  --space-24: 6rem;     /* 96px */
-  
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px - Base unit */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.5rem; /* 24px */
+  --space-8: 2rem; /* 32px */
+  --space-10: 2.5rem; /* 40px */
+  --space-12: 3rem; /* 48px */
+  --space-16: 4rem; /* 64px */
+  --space-20: 5rem; /* 80px */
+  --space-24: 6rem; /* 96px */
+
   /* 📝 TYPOGRAPHY SCALE - Perfect readability */
-  --text-xs: 0.75rem;      /* 12px */
-  --text-sm: 0.875rem;     /* 14px */
-  --text-base: 1rem;       /* 16px - Base */
-  --text-lg: 1.125rem;     /* 18px */
-  --text-xl: 1.25rem;      /* 20px */
-  --text-2xl: 1.5rem;      /* 24px */
-  --text-3xl: 1.875rem;    /* 30px */
-  --text-4xl: 2.25rem;     /* 36px */
-  --text-5xl: 3rem;        /* 48px */
-  --text-6xl: 3.75rem;     /* 60px */
-  
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px - Base */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+  --text-4xl: 2.25rem; /* 36px */
+  --text-5xl: 3rem; /* 48px */
+  --text-6xl: 3.75rem; /* 60px */
+
   /* 📏 LAYOUT CONSTANTS */
   --max-width-prose: 65ch;
   --max-width-container: 1280px;
@@ -87,14 +87,16 @@
   --border-radius: 0.5rem;
   --border-radius-lg: 0.75rem;
   --border-radius-xl: 1rem;
-  
+
   /* 🎭 SHADOWS - Subtle depth */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  
+  --shadow-lg:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl:
+    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
   /* ⚡ TRANSITIONS - Smooth & performant */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 200ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -112,7 +114,12 @@
 }
 
 html {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
   font-size: 16px;
   line-height: 1.5;
   color: var(--neutral-900);
@@ -344,7 +351,7 @@ body {
   .grid-2 {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .grid-3 {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -399,65 +406,153 @@ body {
    ====================== */
 
 /* Spacing */
-.mt-0 { margin-top: 0; }
-.mt-2 { margin-top: var(--space-2); }
-.mt-4 { margin-top: var(--space-4); }
-.mt-6 { margin-top: var(--space-6); }
-.mt-8 { margin-top: var(--space-8); }
-.mt-12 { margin-top: var(--space-12); }
+.mt-0 {
+  margin-top: 0;
+}
+.mt-2 {
+  margin-top: var(--space-2);
+}
+.mt-4 {
+  margin-top: var(--space-4);
+}
+.mt-6 {
+  margin-top: var(--space-6);
+}
+.mt-8 {
+  margin-top: var(--space-8);
+}
+.mt-12 {
+  margin-top: var(--space-12);
+}
 
-.mb-0 { margin-bottom: 0; }
-.mb-2 { margin-bottom: var(--space-2); }
-.mb-4 { margin-bottom: var(--space-4); }
-.mb-6 { margin-bottom: var(--space-6); }
-.mb-8 { margin-bottom: var(--space-8); }
-.mb-12 { margin-bottom: var(--space-12); }
+.mb-0 {
+  margin-bottom: 0;
+}
+.mb-2 {
+  margin-bottom: var(--space-2);
+}
+.mb-4 {
+  margin-bottom: var(--space-4);
+}
+.mb-6 {
+  margin-bottom: var(--space-6);
+}
+.mb-8 {
+  margin-bottom: var(--space-8);
+}
+.mb-12 {
+  margin-bottom: var(--space-12);
+}
 
 /* Text alignment */
-.text-left { text-align: left; }
-.text-center { text-align: center; }
-.text-right { text-align: right; }
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
 
 /* Colors */
-.text-primary { color: var(--primary-600); }
-.text-accent { color: var(--accent-600); }
-.text-muted { color: var(--neutral-400); }
-.text-error { color: var(--error-500); }
-.text-success { color: var(--success-500); }
+.text-primary {
+  color: var(--primary-600);
+}
+.text-accent {
+  color: var(--accent-600);
+}
+.text-muted {
+  color: var(--neutral-400);
+}
+.text-error {
+  color: var(--error-500);
+}
+.text-success {
+  color: var(--success-500);
+}
 
 /* Background colors */
-.bg-white { background-color: var(--neutral-0); }
-.bg-gray-50 { background-color: var(--neutral-50); }
-.bg-primary { background-color: var(--primary-500); }
-.bg-accent { background-color: var(--accent-500); }
+.bg-white {
+  background-color: var(--neutral-0);
+}
+.bg-gray-50 {
+  background-color: var(--neutral-50);
+}
+.bg-primary {
+  background-color: var(--primary-500);
+}
+.bg-accent {
+  background-color: var(--accent-500);
+}
 
 /* Borders */
-.border { border: 1px solid var(--neutral-200); }
-.border-primary { border-color: var(--primary-500); }
-.border-accent { border-color: var(--accent-500); }
+.border {
+  border: 1px solid var(--neutral-200);
+}
+.border-primary {
+  border-color: var(--primary-500);
+}
+.border-accent {
+  border-color: var(--accent-500);
+}
 
 /* Shadows */
-.shadow-sm { box-shadow: var(--shadow-sm); }
-.shadow { box-shadow: var(--shadow); }
-.shadow-md { box-shadow: var(--shadow-md); }
-.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+.shadow {
+  box-shadow: var(--shadow);
+}
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+.shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
 
 /* Display */
-.hidden { display: none; }
-.block { display: block; }
-.inline-block { display: inline-block; }
-.flex { display: flex; }
-.grid { display: grid; }
+.hidden {
+  display: none;
+}
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.flex {
+  display: flex;
+}
+.grid {
+  display: grid;
+}
 
 /* Flex utilities */
-.flex-col { flex-direction: column; }
-.flex-row { flex-direction: row; }
-.items-center { align-items: center; }
-.justify-center { justify-content: center; }
-.justify-between { justify-content: space-between; }
-.gap-2 { gap: var(--space-2); }
-.gap-4 { gap: var(--space-4); }
-.gap-6 { gap: var(--space-6); }
+.flex-col {
+  flex-direction: column;
+}
+.flex-row {
+  flex-direction: row;
+}
+.items-center {
+  align-items: center;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-2 {
+  gap: var(--space-2);
+}
+.gap-4 {
+  gap: var(--space-4);
+}
+.gap-6 {
+  gap: var(--space-6);
+}
 
 /* ======================
    RESPONSIVE DESIGN - MOBILE FIRST
@@ -468,11 +563,11 @@ body {
   .heading-1 {
     font-size: var(--text-4xl);
   }
-  
+
   .heading-2 {
     font-size: var(--text-3xl);
   }
-  
+
   .heading-3 {
     font-size: var(--text-2xl);
   }
@@ -526,8 +621,8 @@ body {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --neutral-0: #ffffff;     /* Keep white for now */
-    --neutral-900: #111827;   /* Keep dark text for now */
+    --neutral-0: #ffffff; /* Keep white for now */
+    --neutral-900: #111827; /* Keep dark text for now */
     /* Add dark mode colors later if needed */
   }
-} 
+}

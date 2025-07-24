@@ -23,18 +23,18 @@
     "listFiles": false,
     "useDefineForClassFields": true,
     "verbatimModuleSyntax": false,
-    
+
     // Enhanced strictness for divine type safety (temporarily relaxed for build)
     "noUncheckedIndexedAccess": false,
     "exactOptionalPropertyTypes": false,
     "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    
+
     // Performance optimizations for TS 5.9
     "assumeChangesOnlyAffectDirectDependencies": true,
     "composite": false,
-    
+
     "plugins": [
       {
         "name": "next"
@@ -50,12 +50,7 @@
     },
     "types": ["jest", "@testing-library/jest-dom", "node"]
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": [
     "node_modules",
     ".next",

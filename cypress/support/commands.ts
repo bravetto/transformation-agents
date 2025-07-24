@@ -6,8 +6,8 @@
 // ***********************************************
 
 // -- Example custom command
-Cypress.Commands.add('clickButton', (text: string) => {
-  cy.contains('button', text).click();
+Cypress.Commands.add("clickButton", (text: string) => {
+  cy.contains("button", text).click();
 });
 
 // -- Example of overwriting an existing command
@@ -29,4 +29,4 @@ declare global {
   }
 }
 
-export {}; 
+export {};

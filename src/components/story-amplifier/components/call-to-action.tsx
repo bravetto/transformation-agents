@@ -10,7 +10,7 @@ import { CallToActionProps } from "../types";
 
 /**
  * CallToAction Component
- * 
+ *
  * Displays a call to action section with buttons for user engagement
  */
 const CallToAction = ({ onAction, onShare, className }: CallToActionProps) => {
@@ -21,12 +21,10 @@ const CallToAction = ({ onAction, onShare, className }: CallToActionProps) => {
       viewport={{ once: true, margin: "-100px" }}
       className={cn(
         "mt-16 mb-12 bg-gradient-to-r from-blue-600 to-indigo-800 text-white p-8 rounded-xl shadow-lg",
-        className
+        className,
       )}
     >
-      <h2 className="text-2xl font-bold mb-4">
-        Be Part of The Bridge Project
-      </h2>
+      <h2 className="text-2xl font-bold mb-4">Be Part of The Bridge Project</h2>
       <p className="mb-6">
         Share your own story, submit a letter, or volunteer to help others
         connect with their divine purpose.
@@ -55,4 +53,4 @@ const CallToAction = ({ onAction, onShare, className }: CallToActionProps) => {
 
 export default withSafeUI(CallToAction, {
   componentName: "CallToAction",
-}); 
+});

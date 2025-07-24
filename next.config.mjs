@@ -3,13 +3,13 @@ const nextConfig = {
   // Production optimizations
   poweredByHeader: false,
   compress: true,
-  
+
   // Build performance
   swcMinify: true,
-  
+
   // Image optimization
   images: {
-    formats: ['image/avif', 'image/webp'],
+    formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     dangerouslyAllowSVG: true,
@@ -20,34 +20,35 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: "X-Frame-Options",
+            value: "DENY",
           },
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
           {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
           },
           {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+            key: "Permissions-Policy",
+            value:
+              "camera=(), microphone=(), geolocation=(), interest-cohort=()",
           },
           {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
+            key: "X-XSS-Protection",
+            value: "1; mode=block",
           },
           {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=31536000; includeSubDomains; preload',
+            key: "Strict-Transport-Security",
+            value: "max-age=31536000; includeSubDomains; preload",
           },
           {
-            key: 'Content-Security-Policy',
+            key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
               "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://app.posthog.com https://www.googletagmanager.com",
@@ -58,7 +59,7 @@ const nextConfig = {
               "frame-ancestors 'none'",
               "form-action 'self'",
               "base-uri 'self'",
-            ].join('; '),
+            ].join("; "),
           },
         ],
       },
@@ -68,20 +69,24 @@ const nextConfig = {
   // Performance optimizations
   experimental: {
     // Stable features
-    serverComponentsExternalPackages: ['@prisma/client'],
-    optimizePackageImports: ['lucide-react', 'date-fns', '@radix-ui/react-icons'],
-    
+    serverComponentsExternalPackages: ["@prisma/client"],
+    optimizePackageImports: [
+      "lucide-react",
+      "date-fns",
+      "@radix-ui/react-icons",
+    ],
+
     // Advanced caching
     staleTimes: {
       dynamic: 30,
       static: 180,
     },
-    
-    // Development improvements  
-    browserDebugInfoInTerminal: process.env.NODE_ENV === 'development',
-    
+
+    // Development improvements
+    browserDebugInfoInTerminal: process.env.NODE_ENV === "development",
+
     // Future-ready features (use with caution)
-    ...(process.env.ENABLE_EXPERIMENTAL_FEATURES === 'true' && {
+    ...(process.env.ENABLE_EXPERIMENTAL_FEATURES === "true" && {
       dynamicIO: true,
       clientSegmentCache: true,
       turbopackPersistentCaching: true,
@@ -89,7 +94,7 @@ const nextConfig = {
   },
 
   // Bundle analyzer
-  ...(process.env.ANALYZE === 'true' && {
+  ...(process.env.ANALYZE === "true" && {
     webpack: (config, { isServer }) => {
       if (!isServer) {
         config.resolve.fallback = {
@@ -117,16 +122,16 @@ const nextConfig = {
   },
 
   // Output configuration for different deployment targets
-  ...(process.env.BUILD_STANDALONE === 'true' && {
-    output: 'standalone',
+  ...(process.env.BUILD_STANDALONE === "true" && {
+    output: "standalone",
   }),
 
   // Redirects for legacy URLs
   async redirects() {
     return [
       {
-        source: '/old-path',
-        destination: '/new-path',
+        source: "/old-path",
+        destination: "/new-path",
         permanent: true,
       },
     ];
@@ -138,11 +143,11 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
 
-  // ESLint configuration  
+  // ESLint configuration
   eslint: {
     // Production builds will fail on lint errors
     ignoreDuringBuilds: false,
   },
 };
 
-export default nextConfig; 
+export default nextConfig;

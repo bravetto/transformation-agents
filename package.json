@@ -43,7 +43,8 @@
     "production:validate": "npm run agents:certify && npm run test:e2e",
     "divine:deploy-ready": "node scripts/production-validation.js",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "docs:update": "echo 'Docs update not implemented yet' && exit 0"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -146,5 +147,6 @@
       "eslint --fix",
       "prettier --write"
     ]
-  }
+  },
+  "type": "module"
 }

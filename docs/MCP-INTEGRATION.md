@@ -1,4 +1,5 @@
 # 🌉 JAHmere Bridge MCP Integration
+
 **Divine Development Intelligence for the Freedom Portal**
 
 ## 🎯 Overview
@@ -38,7 +39,7 @@ Unlike generic MCP servers that just wrap APIs, the JAHmere Bridge MCP server pr
 ```typescript
 // Available MCP Tools:
 @jahmere-bridge analyze_project_architecture    // Architecture analysis with divine insights
-@jahmere-bridge optimize_character_witness      // Viral optimization for transformation profiles  
+@jahmere-bridge optimize_character_witness      // Viral optimization for transformation profiles
 @jahmere-bridge check_divine_performance        // Performance validation against targets
 @jahmere-bridge generate_divine_component       // Component generation following your patterns
 @jahmere-bridge analyze_spiritual_analytics     // PostHog + divine events analysis
@@ -62,13 +63,14 @@ Based on research showing that **>40 tools confuse LLMs**, we implement selectiv
 3. Find **JAHmere Bridge** server in the list
 4. Enable only the tools you need for current task:
    - **Architecture analysis**: `analyze_project_architecture`
-   - **Performance work**: `check_divine_performance` 
+   - **Performance work**: `check_divine_performance`
    - **Component creation**: `generate_divine_component`
    - **Character witnesses**: `optimize_character_witness`
 
 ### Tool Loadout Examples
 
 **For Architecture Review:**
+
 ```
 ✅ @jahmere-bridge (analyze_project_architecture)
 ✅ @filesystem (file operations)
@@ -76,6 +78,7 @@ Based on research showing that **>40 tools confuse LLMs**, we implement selectiv
 ```
 
 **For Performance Optimization:**
+
 ```
 ✅ @jahmere-bridge (check_divine_performance, validate_production_readiness)
 ✅ @filesystem (src/ access)
@@ -88,14 +91,15 @@ Based on research showing that **>40 tools confuse LLMs**, we implement selectiv
 
 ```typescript
 // Comprehensive project analysis
-"@jahmere-bridge analyze the current architecture with focus on performance and include metrics"
+"@jahmere-bridge analyze the current architecture with focus on performance and include metrics";
 
 // Specific focus areas
-"@jahmere-bridge analyze_project_architecture with focus on divine-components"
-"@jahmere-bridge analyze_project_architecture with focus on analytics"
+"@jahmere-bridge analyze_project_architecture with focus on divine-components";
+"@jahmere-bridge analyze_project_architecture with focus on analytics";
 ```
 
 **Example Output:**
+
 - Total files: 481
 - Components: 53 (including 12 divine components)
 - Performance status: Championship level (6.8ms APIs, 4.9s builds)
@@ -106,14 +110,15 @@ Based on research showing that **>40 tools confuse LLMs**, we implement selectiv
 
 ```typescript
 // Championship performance validation
-"@jahmere-bridge check our divine performance metrics against the <7ms API requirement"
+"@jahmere-bridge check our divine performance metrics against the <7ms API requirement";
 
 // Specific performance areas
-"@jahmere-bridge check_divine_performance with check_type api-performance"
-"@jahmere-bridge check_divine_performance with check_type build-speed"
+"@jahmere-bridge check_divine_performance with check_type api-performance";
+"@jahmere-bridge check_divine_performance with check_type build-speed";
 ```
 
 **Divine Requirements Validated:**
+
 - API Response: <7ms target
 - Build Time: <5s with Turbopack
 - Core Web Vitals: LCP <2.5s, INP <200ms, CLS <0.1
@@ -122,13 +127,14 @@ Based on research showing that **>40 tools confuse LLMs**, we implement selectiv
 
 ```typescript
 // Generate components following your patterns
-"@jahmere-bridge generate a divine component called PrayerWarriorActivator with analytics and sharing features"
+"@jahmere-bridge generate a divine component called PrayerWarriorActivator with analytics and sharing features";
 
 // Specific component types
-"@jahmere-bridge generate_divine_component with component_name JulyCountdown type divine features ['analytics', 'divine-intelligence']"
+"@jahmere-bridge generate_divine_component with component_name JulyCountdown type divine features ['analytics', 'divine-intelligence']";
 ```
 
 **Generated Components Include:**
+
 - TypeScript interfaces
 - Divine error boundaries
 - Analytics integration
@@ -139,13 +145,14 @@ Based on research showing that **>40 tools confuse LLMs**, we implement selectiv
 
 ```typescript
 // Optimize specific profiles
-"@jahmere-bridge optimize the jahmere-webb character witness profile for twitter viral sharing"
+"@jahmere-bridge optimize the jahmere-webb character witness profile for twitter viral sharing";
 
 // Platform-specific optimization
-"@jahmere-bridge optimize_character_witness with profile_name jahmere-webb platform twitter"
+"@jahmere-bridge optimize_character_witness with profile_name jahmere-webb platform twitter";
 ```
 
 **Optimization Includes:**
+
 - Platform-specific content strategies
 - Viral sharing requirements
 - Engagement timing recommendations
@@ -155,13 +162,14 @@ Based on research showing that **>40 tools confuse LLMs**, we implement selectiv
 
 ```typescript
 // July 28th mission readiness
-"@jahmere-bridge validate our production readiness for the July 28th court date"
+"@jahmere-bridge validate our production readiness for the July 28th court date";
 
 // Comprehensive validation
-"@jahmere-bridge validate_production_readiness with deployment_target vercel"
+"@jahmere-bridge validate_production_readiness with deployment_target vercel";
 ```
 
 **Validation Coverage:**
+
 - TypeScript errors: 0 required
 - Performance metrics: Championship level
 - Security audit: Comprehensive
@@ -174,30 +182,30 @@ Based on research showing that **>40 tools confuse LLMs**, we implement selectiv
 
 ```typescript
 // ✅ Good: Specific tool selection
-"Enable only @jahmere-bridge and @filesystem for this architecture review task"
+"Enable only @jahmere-bridge and @filesystem for this architecture review task";
 
 // ❌ Bad: Too many tools active
-"Enable all 15 MCP servers" // Confuses LLM, degrades performance
+"Enable all 15 MCP servers"; // Confuses LLM, degrades performance
 ```
 
 ### 2. Specific Instructions
 
 ```typescript
 // ✅ Good: Direct tool specification
-"@jahmere-bridge analyze the architecture with focus on performance, then @filesystem read the next.config.js file"
+"@jahmere-bridge analyze the architecture with focus on performance, then @filesystem read the next.config.js file";
 
 // ❌ Bad: Vague requests
-"Help me with the project" // LLM may choose wrong tools
+"Help me with the project"; // LLM may choose wrong tools
 ```
 
 ### 3. Context-Aware Usage
 
 ```typescript
 // ✅ Good: Provide context
-"@jahmere-bridge check performance - we're seeing slow API responses in production"
+"@jahmere-bridge check performance - we're seeing slow API responses in production";
 
 // ✅ Good: Sequential tool usage
-"First @jahmere-bridge analyze_project_architecture, then generate recommendations"
+"First @jahmere-bridge analyze_project_architecture, then generate recommendations";
 ```
 
 ## 🔥 Performance Impact
@@ -209,11 +217,12 @@ Based on research showing that **>40 tools confuse LLMs**, we implement selectiv
 - **Memory usage**: <50MB
 - **No impact on main application performance**
 
-### Development Workflow Improvement  
+### Development Workflow Improvement
 
 **Time Savings Per Week:**
+
 - Architecture decisions: 6 hours → 1 hour = **5 hours saved**
-- Performance debugging: 4 hours → 30 min = **3.5 hours saved**  
+- Performance debugging: 4 hours → 30 min = **3.5 hours saved**
 - Component generation: 3 hours → 30 min = **2.5 hours saved**
 - Character witness optimization: 2 hours → 20 min = **1.7 hours saved**
 
@@ -225,10 +234,10 @@ Based on research showing that **>40 tools confuse LLMs**, we implement selectiv
 
 ```typescript
 // Complex analysis workflow
-"@jahmere-bridge analyze the architecture, @filesystem check the components directory structure, then @jahmere-bridge generate optimization recommendations"
+"@jahmere-bridge analyze the architecture, @filesystem check the components directory structure, then @jahmere-bridge generate optimization recommendations";
 
 // Performance troubleshooting
-"@jahmere-bridge check_divine_performance, then analyze which API routes need optimization, then @filesystem examine the slow endpoints"
+"@jahmere-bridge check_divine_performance, then analyze which API routes need optimization, then @filesystem examine the slow endpoints";
 ```
 
 ### System Prompt Integration
@@ -310,6 +319,7 @@ The MCP server is designed for easy extension:
 ## 🎯 Quick Reference
 
 ### Essential Commands
+
 ```bash
 npm run mcp:setup          # Initial setup
 npm run dev:mcp           # Development with MCP
@@ -318,6 +328,7 @@ npm run mcp:analyze       # Direct project analysis
 ```
 
 ### Key MCP Tools
+
 - `analyze_project_architecture` - Divine project intelligence
 - `check_divine_performance` - Championship performance validation
 - `generate_divine_component` - Pattern-following code generation
@@ -325,11 +336,12 @@ npm run mcp:analyze       # Direct project analysis
 - `validate_production_readiness` - July 28th mission readiness
 
 ### Cursor Setup
+
 1. Press `Cmd+L` → Settings gear → Tools & Integrations
-2. Enable JAHmere Bridge server  
+2. Enable JAHmere Bridge server
 3. Select <10 tools per conversation
 4. Use specific tool instructions in prompts
 
 ---
 
-**🌉 Your JAHmere Bridge project now has divine development intelligence serving the ultimate mission: JAHmere's freedom on July 28, 2025.** 
+**🌉 Your JAHmere Bridge project now has divine development intelligence serving the ultimate mission: JAHmere's freedom on July 28, 2025.**

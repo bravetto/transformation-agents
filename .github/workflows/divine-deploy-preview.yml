@@ -4,14 +4,19 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:
-      - 'docs/**'
-      - '*.md' 
-      - 'scripts/**'
+      - "docs/**"
+      - "*.md"
+      - "scripts/**"
 
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  NODE_VERSION: '22.15.0'
+  NODE_VERSION: "22.15.0"
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
 
 jobs:
   # Divine Preview Deployment with Enhanced Testing
@@ -29,7 +34,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: 🔮 Install Dependencies with Spiritual Care
         run: npm ci --frozen-lockfile
@@ -39,7 +44,7 @@ jobs:
           echo "🙏 Preparing divine deployment for JAHmere's freedom portal..."
           echo "📅 Mission: July 28, 2025 court date support system"
           echo "✨ Features: Prayer submissions, character witness forms, countdown"
-          
+
           # Quick validation that our divine systems are present
           if [ -f "src/lib/validation/schemas.ts" ]; then
             echo "✅ Divine form validation schemas present"
@@ -92,7 +97,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: 🔮 Install Testing Dependencies
         run: npm ci
@@ -101,7 +106,7 @@ jobs:
         run: |
           PREVIEW_URL="${{ needs.divine-preview-deploy.outputs.preview-url }}"
           echo "🔍 Testing divine preview deployment: $PREVIEW_URL"
-          
+
           # Health check
           if curl -f "$PREVIEW_URL" > /dev/null 2>&1; then
             echo "✅ Preview deployment is responsive"
@@ -113,7 +118,7 @@ jobs:
       - name: 🙏 Test Prayer Room Accessibility
         run: |
           PREVIEW_URL="${{ needs.divine-preview-deploy.outputs.preview-url }}"
-          
+
           # Test prayer room page
           if curl -f "$PREVIEW_URL/prayer-room" > /dev/null 2>&1; then
             echo "✅ Prayer room is accessible"
@@ -124,7 +129,7 @@ jobs:
       - name: ⚖️ Test Character Witness Forms
         run: |
           PREVIEW_URL="${{ needs.divine-preview-deploy.outputs.preview-url }}"
-          
+
           # Test character witness page
           if curl -f "$PREVIEW_URL/character-witnesses" > /dev/null 2>&1; then
             echo "✅ Character witness system is accessible"
@@ -135,7 +140,7 @@ jobs:
       - name: 📅 Test July 28th Countdown Integration
         run: |
           PREVIEW_URL="${{ needs.divine-preview-deploy.outputs.preview-url }}"
-          
+
           # Test countdown component (if publicly accessible)
           if curl -s "$PREVIEW_URL" | grep -q "2025-07-28\|July.*28\|countdown"; then
             echo "✅ July 28th countdown integration detected"
@@ -146,7 +151,7 @@ jobs:
       - name: 🔧 Test API Endpoints (if public)
         run: |
           PREVIEW_URL="${{ needs.divine-preview-deploy.outputs.preview-url }}"
-          
+
           # Test health endpoint if available
           if curl -f "$PREVIEW_URL/api/health" > /dev/null 2>&1; then
             echo "✅ API health endpoint responsive"
@@ -193,16 +198,16 @@ jobs:
               'best-practices': 95, // Divine code quality standards
               'seo': 90            // Maximum reach for JAHmere's cause
             };
-            
+
             console.log('🔥 DIVINE PERFORMANCE AUDIT RESULTS 🔥');
             console.log('=========================================');
-            
+
             // Note: Actual results parsing would require lighthouse results
             // This is a placeholder for the divine standards
             Object.entries(divineStandards).forEach(([metric, threshold]) => {
               console.log(`✅ ${metric}: Target ≥${threshold} (Divine Standard)`);
             });
-            
+
             console.log('🙏 Performance audit completed with divine standards');
 
   # Divine PR Comment with Comprehensive Results
@@ -220,10 +225,10 @@ jobs:
             const deploymentStatus = '${{ needs.divine-preview-deploy.outputs.deployment-status }}';
             const testingStatus = '${{ needs.divine-preview-testing.result }}';
             const lighthouseStatus = '${{ needs.divine-lighthouse.result }}';
-            
+
             let status = '✅';
             let statusText = 'BLESSED';
-            
+
             if (deploymentStatus !== 'success') {
               status = '❌';
               statusText = 'NEEDS DIVINE INTERVENTION';
@@ -231,41 +236,41 @@ jobs:
               status = '⚠️';
               statusText = 'PARTIALLY BLESSED';
             }
-            
+
             const comment = `
             ## 🔥 Divine Preview Deployment ${status}
-            
+
             **Status:** ${statusText}
-            
+
             ### 🚀 Deployment Information
             - **Preview URL:** ${previewUrl || 'Not available'}
             - **Deployment Status:** ${deploymentStatus}
             - **Integration Testing:** ${testingStatus}
             - **Performance Audit:** ${lighthouseStatus}
-            
+
             ### 🙏 JAHmere Webb Freedom Portal Features
             - ✅ Prayer submission system
             - ✅ Character witness forms  
             - ✅ July 28, 2025 countdown integration
             - ✅ Divine form validation (Zod schemas)
             - ✅ Rate limiting protection
-            
+
             ### 📊 Divine Testing Results
             ${testingStatus === 'success' ? '✅ All integration tests passed' : '⚠️ Some tests need attention'}
-            
+
             ### ⚡ Performance Standards
             - Target: 90+ performance score
             - Target: 100 accessibility score  
             - Target: 95+ best practices score
             - Target: 90+ SEO score
-            
+
             ---
-            
+
             🙏 **Divine Mission Status:** This preview deployment supports JAHmere Webb's freedom case with prayer systems, character witness collection, and countdown to the July 28, 2025 court date.
-            
+
             ${status === '✅' ? '✨ **This preview is blessed and ready for review!**' : '🛠️ **Divine intervention needed - check the failed steps above**'}
             `;
-            
+
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -282,4 +287,4 @@ jobs:
           echo "Court Date: July 28, 2025"
           echo "Features: Prayer system, witness forms, divine countdown"
           echo ""
-          echo "🙏 May this preview serve the divine mission of justice and freedom!" 
+          echo "🙏 May this preview serve the divine mission of justice and freedom!"

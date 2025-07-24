@@ -8,7 +8,7 @@ import { QuoteShareModalProps } from "../types";
 
 /**
  * QuoteShareModal Component
- * 
+ *
  * Displays a modal for sharing a specific quote from the story
  */
 const QuoteShareModal = ({
@@ -45,9 +45,7 @@ const QuoteShareModal = ({
 
           <div className="text-center">
             <Quote size={30} className="text-blue-500 mx-auto mb-4" />
-            <p className="text-xl font-serif italic mb-4">
-              "{quote.text}"
-            </p>
+            <p className="text-xl font-serif italic mb-4">"{quote.text}"</p>
 
             {quote.attribution && (
               <p className="text-gray-600 dark:text-gray-400 mb-6">
@@ -59,7 +57,8 @@ const QuoteShareModal = ({
               <button
                 onClick={() => {
                   const quoteText = `"${quote.text}" ${quote.attribution ? `- ${quote.attribution}` : ""}`;
-                  const url = typeof window !== "undefined" ? window.location.href : "";
+                  const url =
+                    typeof window !== "undefined" ? window.location.href : "";
                   const shareText = `${quoteText}\n\nFrom: ${storyTitle}\n${url}`;
 
                   // Share on Twitter
@@ -77,7 +76,8 @@ const QuoteShareModal = ({
               <button
                 onClick={() => {
                   const quoteText = `"${quote.text}" ${quote.attribution ? `- ${quote.attribution}` : ""}`;
-                  const url = typeof window !== "undefined" ? window.location.href : "";
+                  const url =
+                    typeof window !== "undefined" ? window.location.href : "";
 
                   navigator.clipboard.writeText(
                     `${quoteText}\n\nFrom: ${storyTitle}\n${url}`,
@@ -87,11 +87,7 @@ const QuoteShareModal = ({
                 }}
                 className="p-2 rounded-full bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-600 hover:text-white transition-colors"
               >
-                {copiedToClipboard ? (
-                  <Check size={18} />
-                ) : (
-                  <Copy size={18} />
-                )}
+                {copiedToClipboard ? <Check size={18} /> : <Copy size={18} />}
               </button>
             </div>
           </div>
@@ -103,4 +99,4 @@ const QuoteShareModal = ({
 
 export default withSafeUI(QuoteShareModal, {
   componentName: "QuoteShareModal",
-}); 
+});

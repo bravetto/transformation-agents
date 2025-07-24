@@ -17,12 +17,15 @@ import { getGuidanceForRelationship } from "../../utils/relationship-guidance";
  */
 function Relationship() {
   const { formData, updateFormData, errors } = useLetterForm();
-  
+
   // Get relationship-specific guidance
-  const relationshipType = formData.relationship as RelationshipType || "other";
+  const relationshipType =
+    (formData.relationship as RelationshipType) || "other";
   const guidance = getGuidanceForRelationship(relationshipType);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     updateFormData({ [name]: value });
   };
@@ -45,7 +48,9 @@ function Relationship() {
       className="space-y-6"
     >
       <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Your Relationship with JAHmere</h2>
+        <h2 className="text-2xl font-bold text-gray-800">
+          Your Relationship with JAHmere
+        </h2>
         <p className="text-gray-600 mt-2">
           Please describe your relationship and how you know JAHmere
         </p>
@@ -61,35 +66,51 @@ function Relationship() {
         >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="youth_helped" id="youth_helped" />
-            <Label htmlFor="youth_helped" className="cursor-pointer">Youth JAHmere Helped</Label>
+            <Label htmlFor="youth_helped" className="cursor-pointer">
+              Youth JAHmere Helped
+            </Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="employer" id="employer" />
-            <Label htmlFor="employer" className="cursor-pointer">Employer</Label>
+            <Label htmlFor="employer" className="cursor-pointer">
+              Employer
+            </Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="colleague" id="colleague" />
-            <Label htmlFor="colleague" className="cursor-pointer">Colleague</Label>
+            <Label htmlFor="colleague" className="cursor-pointer">
+              Colleague
+            </Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="mentor" id="mentor" />
-            <Label htmlFor="mentor" className="cursor-pointer">Mentor</Label>
+            <Label htmlFor="mentor" className="cursor-pointer">
+              Mentor
+            </Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="community_leader" id="community_leader" />
-            <Label htmlFor="community_leader" className="cursor-pointer">Community Leader</Label>
+            <Label htmlFor="community_leader" className="cursor-pointer">
+              Community Leader
+            </Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="friend" id="friend" />
-            <Label htmlFor="friend" className="cursor-pointer">Friend</Label>
+            <Label htmlFor="friend" className="cursor-pointer">
+              Friend
+            </Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="family" id="family" />
-            <Label htmlFor="family" className="cursor-pointer">Family Member</Label>
+            <Label htmlFor="family" className="cursor-pointer">
+              Family Member
+            </Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="other" id="other" />
-            <Label htmlFor="other" className="cursor-pointer">Other</Label>
+            <Label htmlFor="other" className="cursor-pointer">
+              Other
+            </Label>
           </div>
         </RadioGroup>
         {errors.relationship && (
@@ -117,7 +138,10 @@ function Relationship() {
           name="howYouMet"
           value={formData.howYouMet || ""}
           onChange={handleChange}
-          placeholder={guidance?.prompts.howYouMet || "Describe how you met JAHmere and the circumstances of your relationship"}
+          placeholder={
+            guidance?.prompts.howYouMet ||
+            "Describe how you met JAHmere and the circumstances of your relationship"
+          }
           rows={4}
           className={errors.howYouMet ? "border-red-500" : ""}
         />
@@ -145,8 +169,9 @@ function Relationship() {
       {/* Legal notice */}
       <div className="bg-yellow-50 p-4 rounded-md mt-6">
         <p className="text-sm text-yellow-800">
-          <strong>Important:</strong> Being specific about your relationship with JAHmere 
-          significantly increases the impact of your letter with the court.
+          <strong>Important:</strong> Being specific about your relationship
+          with JAHmere significantly increases the impact of your letter with
+          the court.
         </p>
       </div>
     </motion.div>
@@ -155,4 +180,4 @@ function Relationship() {
 
 export default withSafeUI(Relationship, {
   componentName: "Relationship",
-}); 
+});

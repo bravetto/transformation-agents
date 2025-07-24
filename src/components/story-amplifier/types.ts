@@ -225,4 +225,4 @@ export interface QuoteShareModalProps {
   onClose: () => void;
   copiedToClipboard: boolean;
   setCopiedToClipboard: (copied: boolean) => void;
-} 
+}

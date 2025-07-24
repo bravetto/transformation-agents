@@ -1,7 +1,7 @@
 "use client";
 
-import { LoadingMessages } from '@/components/people/LoadingStates';
-import { motion } from 'framer-motion';
+import { LoadingMessages } from "@/components/people/LoadingStates";
+import { motion } from "framer-motion";
 
 export default function PersonPageLoading() {
   return (
@@ -10,7 +10,7 @@ export default function PersonPageLoading() {
       <div className="container mx-auto py-8">
         <LoadingMessages />
       </div>
-      
+
       {/* Hero Section Skeleton */}
       <section className="relative overflow-hidden bg-courage-blue text-white py-16 md:py-24">
         <div className="container mx-auto px-4">
@@ -27,7 +27,7 @@ export default function PersonPageLoading() {
               </div>
               <div className="h-10 shimmer shimmer-messenger rounded-lg w-40"></div>
             </div>
-            
+
             {/* Image Skeleton with Ethereal Particles */}
             <div className="order-1 lg:order-2 flex justify-center">
               <div className="relative h-80 w-80 md:h-96 md:w-96 rounded-full overflow-hidden border-4 border-white/30 shimmer shimmer-messenger">
@@ -36,26 +36,26 @@ export default function PersonPageLoading() {
                   <motion.div
                     key={i}
                     className="absolute rounded-full bg-white opacity-40"
-                    initial={{ 
-                      x: Math.random() * 100 - 50, 
+                    initial={{
+                      x: Math.random() * 100 - 50,
                       y: Math.random() * 100 - 50,
-                      scale: 0.5 + Math.random() * 0.5
+                      scale: 0.5 + Math.random() * 0.5,
                     }}
-                    animate={{ 
-                      x: Math.random() * 100 - 50, 
+                    animate={{
+                      x: Math.random() * 100 - 50,
                       y: Math.random() * 100 - 50,
-                      scale: 0.8 + Math.random() * 0.5
+                      scale: 0.8 + Math.random() * 0.5,
                     }}
-                    transition={{ 
-                      duration: 3 + Math.random() * 4, 
+                    transition={{
+                      duration: 3 + Math.random() * 4,
                       repeat: Infinity,
                       repeatType: "reverse",
-                      ease: "easeInOut"
+                      ease: "easeInOut",
                     }}
                     style={{
                       width: `${8 + Math.random() * 8}px`,
                       height: `${8 + Math.random() * 8}px`,
-                      filter: 'blur(2px)'
+                      filter: "blur(2px)",
                     }}
                   />
                 ))}
@@ -64,7 +64,7 @@ export default function PersonPageLoading() {
           </div>
         </div>
       </section>
-      
+
       {/* Testimony Section Skeleton */}
       <section className="py-16 md:py-24 bg-comfort-cream">
         <div className="container mx-auto px-4">
@@ -73,13 +73,13 @@ export default function PersonPageLoading() {
             <div className="h-10 shimmer shimmer-witness rounded-lg w-1/3 mx-auto mb-4"></div>
             <div className="h-6 shimmer shimmer-witness rounded-lg w-2/3 mx-auto"></div>
           </div>
-          
+
           {/* Testimony Skeleton */}
           <div className="max-w-4xl mx-auto">
             <div className="relative glass backdrop-blur-md rounded-2xl shadow-xl p-8 md:p-12">
               {/* Quote icon placeholder */}
               <div className="absolute -top-6 -left-6 bg-hope-gold/50 rounded-full p-4 h-14 w-14 shimmer shimmer-witness"></div>
-              
+
               {/* Testimony content skeleton */}
               <div className="min-h-[200px]">
                 <div className="space-y-4">
@@ -87,7 +87,7 @@ export default function PersonPageLoading() {
                   <div className="h-6 shimmer shimmer-witness rounded w-full"></div>
                   <div className="h-6 shimmer shimmer-witness rounded w-4/5"></div>
                 </div>
-                
+
                 <div className="flex items-center mt-6">
                   <div>
                     <div className="h-6 shimmer shimmer-witness rounded w-40 mb-2"></div>
@@ -95,7 +95,7 @@ export default function PersonPageLoading() {
                   </div>
                 </div>
               </div>
-              
+
               {/* Navigation dots skeleton */}
               <div className="flex justify-center gap-2 mt-8">
                 <div className="h-3 w-3 rounded-full shimmer shimmer-witness"></div>
@@ -106,7 +106,7 @@ export default function PersonPageLoading() {
           </div>
         </div>
       </section>
-      
+
       {/* Impact Section Skeleton */}
       <section className="py-16 md:py-24 bg-gentle-charcoal text-white">
         <div className="container mx-auto px-4">
@@ -115,12 +115,12 @@ export default function PersonPageLoading() {
             <div className="h-10 shimmer shimmer-lightworker rounded-lg w-1/3 mx-auto mb-4"></div>
             <div className="h-6 shimmer shimmer-lightworker rounded-lg w-2/3 mx-auto"></div>
           </div>
-          
+
           {/* Stats Skeleton */}
           <div className="mb-16">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[...Array(4)].map((_, index) => (
-                <motion.div 
+                <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -136,14 +136,14 @@ export default function PersonPageLoading() {
               ))}
             </div>
           </div>
-          
+
           {/* Achievements Skeleton */}
           <div className="max-w-4xl mx-auto">
             <div className="h-8 shimmer shimmer-guardian rounded-lg w-64 mx-auto mb-8"></div>
-            
+
             <div className="space-y-4">
               {[...Array(3)].map((_, index) => (
-                <motion.div 
+                <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -163,5 +163,5 @@ export default function PersonPageLoading() {
         </div>
       </section>
     </main>
-  )
-} 
+  );
+}

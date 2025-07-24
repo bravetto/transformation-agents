@@ -1,4 +1,5 @@
 # 🔥 JAHmere Webb Freedom Portal - Development Guide
+
 **The Single Source of Truth for Building, Deploying, and Maintaining**
 
 ## 🚀 Quick Start (2 Minutes)
@@ -60,40 +61,46 @@ npm run fix:development    # Auto-fix common dev issues
 
 ## 🎯 Performance Targets
 
-| Metric | Target | Current | Status |
-|--------|--------|---------|--------|
-| Build Time | <5s | 5.1s | 🟡 |
-| API Response | <7ms | 7ms | ✅ |
-| Hot Reload | <500ms | 400ms | ✅ |
-| Bundle Size | <100KB | 95KB | ✅ |
-| TypeScript Errors | 0 | 0 | ✅ |
+| Metric            | Target | Current | Status |
+| ----------------- | ------ | ------- | ------ |
+| Build Time        | <5s    | 5.1s    | 🟡     |
+| API Response      | <7ms   | 7ms     | ✅     |
+| Hot Reload        | <500ms | 400ms   | ✅     |
+| Bundle Size       | <100KB | 95KB    | ✅     |
+| TypeScript Errors | 0      | 0       | ✅     |
 
 ## 🔥 Troubleshooting
 
 ### PostHog 500 Errors
+
 **Symptom**: `POST /ingest/e ... 500` in browser console  
 **Fix**: Verify `.env.local` uses `https://app.posthog.com` (not `us.i.posthog.com`)
 
 ### Routes Manifest ENOENT
+
 **Symptom**: `ENOENT: .next/routes-manifest.json`  
 **Fix**: `npm run clean && npm run dev:turbo`
 
 ### Excessive Hot Reload
+
 **Symptom**: 50+ compilation cycles  
 **Fix**: `npm run fix:development`
 
 ### TypeScript Errors
+
 **Fix**: Check `tsconfig.json` - ensure strict mode settings are compatible
 
 ## 🚀 Deployment (Vercel)
 
 ### Automated Deployment
+
 ```bash
 # Push to main branch triggers auto-deployment
 git push origin main
 ```
 
 ### Manual Deployment
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -103,7 +110,9 @@ vercel --prod
 ```
 
 ### Environment Variables (Vercel)
+
 Set these in Vercel dashboard:
+
 - All `.env.local` variables
 - `DATABASE_URL` (if using database)
 - `VERCEL_TOKEN` (for CI/CD)
@@ -111,11 +120,13 @@ Set these in Vercel dashboard:
 ## 📊 Health Monitoring
 
 ### Local Health Check
+
 ```bash
 curl http://localhost:1357/api/health
 ```
 
 Expected response:
+
 ```json
 {
   "status": "healthy",
@@ -125,13 +136,14 @@ Expected response:
     "divine_sync": true
   },
   "services": {
-    "database": {"status": "healthy"},
-    "analytics": {"status": "healthy"}
+    "database": { "status": "healthy" },
+    "analytics": { "status": "healthy" }
   }
 }
 ```
 
 ### CI/CD Pipeline Status
+
 - ✅ **Quality Gate**: TypeScript + ESLint
 - ✅ **Testing**: Vitest unit tests
 - ✅ **Performance**: Lighthouse audits
@@ -141,16 +153,19 @@ Expected response:
 ## 🎭 Key Architecture Decisions
 
 ### Why Next.js 15.4.3 + Turbopack
+
 - **Performance**: 3x faster builds than Webpack
 - **Stability**: React 19 compatibility
 - **Features**: App Router, Server Components, Server Actions
 
 ### Why Server Components Default
+
 - **Performance**: Reduced client bundle size
 - **SEO**: Better initial page load
 - **UX**: Instant navigation with streaming
 
 ### Why TypeScript Strict Mode
+
 - **Quality**: Catch errors at compile time
 - **AI**: Better code completion and suggestions
 - **Maintenance**: Easier refactoring and debugging
@@ -168,4 +183,4 @@ Expected response:
 
 - [Architecture](./ARCHITECTURE.md) - System design decisions
 - [Component Patterns](.cursorrules) - AI-guided development patterns
-- [Project Overview](../README.md) - Mission and quick overview 
+- [Project Overview](../README.md) - Mission and quick overview
