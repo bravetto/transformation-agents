@@ -11,7 +11,7 @@ on:
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  NODE_VERSION: '22'
+  NODE_VERSION: '22.15.0'
 
 jobs:
   # Divine Preview Deployment with Enhanced Testing
@@ -32,7 +32,7 @@ jobs:
           cache: 'npm'
 
       - name: 🔮 Install Dependencies with Spiritual Care
-        run: npm ci
+        run: npm ci --frozen-lockfile
 
       - name: 🙏 Pre-deployment Prayer & Validation
         run: |
@@ -51,18 +51,22 @@ jobs:
       - name: 🧪 Pre-deployment Form Validation Test
         run: |
           echo "Testing critical form systems before deployment..."
-          npm run test -- src/lib/validation/__tests__/schemas.test.ts
-          npm run test -- src/lib/validation/__tests__/form-handler.test.ts
+          npm run test:ci
 
       - name: 🔧 Install Vercel CLI with Divine Blessing
-        run: npm install --global vercel@latest
+        run: npm install --global vercel@37.4.0
 
       - name: 📡 Pull Vercel Environment Configuration
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: ⚡ Build Divine Application
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           SKIP_ENV_VALIDATION: true
 
       - name: 🚀 Deploy to Divine Preview Environment
@@ -71,6 +75,9 @@ jobs:
           DEPLOYMENT_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
           echo "preview-url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
           echo "🔗 Preview deployed to: $DEPLOYMENT_URL"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: ⏰ Wait for Deployment Stability
         run: |

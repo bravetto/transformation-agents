@@ -8,6 +8,16 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: "./src/test/setup.ts",
+    // CI optimizations
+    reporter: process.env.CI ? "verbose" : "default",
+    outputFile: process.env.CI ? "test-results.xml" : undefined,
+    watch: false, // Disable watch mode in CI
+    pool: "threads",
+    poolOptions: {
+      threads: {
+        singleThread: process.env.CI ? true : false,
+      },
+    },
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],
