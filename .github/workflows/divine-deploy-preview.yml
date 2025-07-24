@@ -54,10 +54,14 @@ jobs:
           npm run test:ci
 
       - name: 🔧 Install Vercel CLI with Divine Blessing
-        run: npm install --global vercel@37.4.0
+        run: npm install --global vercel@44.5.0
 
       - name: 📡 Pull Vercel Environment Configuration
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        run: |
+          echo "Linking project to Vercel..."
+          vercel link --yes --token=${{ secrets.VERCEL_TOKEN }}
+          echo "Pulling environment configuration..."
+          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: ⚡ Build Divine Application
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
