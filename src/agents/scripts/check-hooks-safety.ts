@@ -40,7 +40,7 @@ class ReactHooksSafetyChecker {
       const lineNumber = i + 1;
 
       // Check for callback dependency pattern (PropheticCountdown issue)
-      if (this.hasCallbackDependencyPattern(line)) {
+      if (line && this.hasCallbackDependencyPattern(line)) {
         violations.push({
           file: filePath,
           line: lineNumber,
@@ -53,7 +53,7 @@ class ReactHooksSafetyChecker {
       }
 
       // Check for missing dependencies
-      if (this.hasMissingDependenciesPattern(line)) {
+      if (line && this.hasMissingDependenciesPattern(line)) {
         violations.push({
           file: filePath,
           line: lineNumber,
@@ -67,7 +67,7 @@ class ReactHooksSafetyChecker {
       }
 
       // Check for conditional hooks
-      if (this.hasConditionalHooksPattern(line)) {
+      if (line && this.hasConditionalHooksPattern(line)) {
         violations.push({
           file: filePath,
           line: lineNumber,
@@ -80,7 +80,7 @@ class ReactHooksSafetyChecker {
       }
 
       // Check for setState in render
-      if (this.hasSetStateInRenderPattern(line)) {
+      if (line && this.hasSetStateInRenderPattern(line)) {
         violations.push({
           file: filePath,
           line: lineNumber,
@@ -93,7 +93,7 @@ class ReactHooksSafetyChecker {
       }
 
       // Check for unthrottled event handlers
-      if (this.hasUnthrottledEventPattern(line)) {
+      if (line && this.hasUnthrottledEventPattern(line)) {
         violations.push({
           file: filePath,
           line: lineNumber,

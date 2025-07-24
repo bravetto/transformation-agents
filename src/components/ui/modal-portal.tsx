@@ -130,16 +130,18 @@ export const ModalPortal: React.FC<ModalPortalProps> = ({
 
   // Innovation: Top Layer Z-Index Management
   useEffect(() => {
+    const currentModalId = modalId.current;
+
     if (isOpen) {
       const calculatedZIndex =
-        zIndex || topLayerManager.addLayer(modalId.current);
+        zIndex || topLayerManager.addLayer(currentModalId);
       setModalZIndex(calculatedZIndex);
 
       // Prevent body scroll when modal is open
       document.body.style.overflow = "hidden";
       document.body.style.paddingRight = "var(--removed-body-scroll-bar-size)";
     } else {
-      topLayerManager.removeLayer(modalId.current);
+      topLayerManager.removeLayer(currentModalId);
 
       // Restore body scroll when modal is closed
       document.body.style.overflow = "";
@@ -147,11 +149,11 @@ export const ModalPortal: React.FC<ModalPortalProps> = ({
     }
 
     return () => {
-      topLayerManager.removeLayer(modalId.current);
+      topLayerManager.removeLayer(currentModalId);
       document.body.style.overflow = "";
       document.body.style.paddingRight = "";
     };
-  }, [isOpen, zIndex]);
+  }, [isOpen, zIndex, topLayerManager]);
 
   // Innovation: Enhanced Keyboard Navigation
   useEffect(() => {

@@ -1,34 +1,54 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Latest Next.js 15.4.3 with React 19 and Turbopack integration
-  experimental: {
-    // React 19 Server Components (fully stable in 15.4.3)
-    serverComponentsExternalPackages: ["prisma", "bcryptjs"],
 
-    // Turbopack build optimization (100% test compatibility)
-    turbo: {
-      resolveAlias: {
-        canvas: "./empty-module.js",
+  // Updated: serverComponentsExternalPackages moved to top level
+  serverExternalPackages: ["prisma", "bcryptjs"],
+
+  // Updated: Turbopack configuration (no longer experimental)
+  turbopack: {
+    resolveAlias: {
+      canvas: "./empty-module.js",
+    },
+    // Fix hot reload instability
+    rules: {
+      "*.svg": {
+        loaders: ["@svgr/webpack"],
+        as: "*.js",
       },
     },
+  },
 
+  experimental: {
     // Enhanced streaming for better performance
     serverActions: {
       allowedOrigins: ["localhost:1357", "july28freedom.vercel.app"],
     },
 
-    // 2025 Performance optimizations
+    // Enhanced caching for divine performance (merged configuration)
+    staleTimes: {
+      dynamic: 0, // Fresh data for dynamic routes (championship setting)
+      static: 300, // 5 minute cache for static content
+    },
+
+    // CSS and bundle optimizations
+    optimizeCss: true,
+    webVitalsAttribution: ["CLS", "LCP", "INP"],
+
+    // 2025 Performance optimizations (merged and deduplicated)
     optimizePackageImports: [
       "framer-motion",
       "lucide-react",
       "@radix-ui/react-popover",
+      "@radix-ui/react-icons",
+      "next/font",
+      "@radix-ui/react-slot",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-dropdown-menu",
     ],
 
-    // Enhanced caching for divine performance
-    staleTimes: {
-      dynamic: 30,
-      static: 180,
-    },
+    // Enable browser debug info forwarding
+    browserDebugInfoInTerminal: true,
   },
 
   // Enhanced compiler options for React 19
@@ -42,32 +62,13 @@ const nextConfig = {
   poweredByHeader: false,
   productionBrowserSourceMaps: false, // Disable for performance
 
-  // Advanced caching strategies for Next.js 15.4.3
-  experimental: {
-    // Next.js 15.4.3 stable features
-    staleTimes: {
-      dynamic: 0, // Fresh data for dynamic routes (championship setting)
-      static: 300, // 5 minute cache for static content
+  // Development optimization to fix hot reload instability
+  ...(process.env.NODE_ENV === "development" && {
+    // Fix routes-manifest.json ENOENT errors
+    generateBuildId: async () => {
+      return "divine-development-build";
     },
-
-    // CSS and bundle optimizations
-    optimizeCss: true,
-    webVitalsAttribution: ["CLS", "LCP", "INP"],
-
-    // Package import optimizations for common libraries
-    optimizePackageImports: [
-      "lucide-react",
-      "framer-motion",
-      "@radix-ui/react-icons",
-      "next/font",
-      "@radix-ui/react-slot",
-      "@radix-ui/react-dialog",
-      "@radix-ui/react-dropdown-menu",
-    ],
-
-    // Enable browser debug info forwarding
-    browserDebugInfoInTerminal: true,
-  },
+  }),
 
   // Image optimization with 2024 best practices
   images: {

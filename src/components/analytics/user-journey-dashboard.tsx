@@ -95,10 +95,12 @@ export function UserJourneyDashboard({
       },
       realtimeEvents: Array.from({ length: 10 }, (_, i) => ({
         timestamp: new Date(Date.now() - i * 60000).toISOString(),
-        eventType: ["view", "hover", "click", "selection"][
+        eventType: (["view", "hover", "click", "selection"] as const)[
           Math.floor(Math.random() * 4)
-        ],
-        userType: ["coach", "judge", "activist"][Math.floor(Math.random() * 3)],
+        ] as string,
+        userType: (["supporter", "advocate", "warrior", "messenger"] as const)[
+          Math.floor(Math.random() * 4)
+        ] as string,
       })),
     };
   }, []);
@@ -168,6 +170,9 @@ export function UserJourneyDashboard({
       const interval = setInterval(fetchAnalytics, refreshInterval);
       return () => clearInterval(interval);
     }
+
+    // Return undefined when autoRefresh is false to satisfy TypeScript
+    return undefined;
   }, [autoRefresh, refreshInterval, fetchAnalytics]);
 
   const formatDuration = (ms: number) => {

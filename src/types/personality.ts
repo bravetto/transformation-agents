@@ -48,7 +48,9 @@ export function convertToAIPersonality(
 ): import("./prompts").AIPersonality {
   return {
     name: config.personality?.name || config.name || "Unknown",
+    description: `${config.personality?.name || config.name || "Unknown"} - A Bridge Project guide`,
     role: config.role || "Bridge Guide",
+    responseStyle: "casual" as "formal" | "casual" | "divine" | "technical",
     background:
       config.personality?.background ||
       config.background ||
@@ -145,4 +147,27 @@ export interface ConversationStartersResponse {
     name: string;
   };
   error?: string;
+}
+
+export interface AIPersonality {
+  name: string;
+  description: string;
+  voiceExamples: string[];
+  traits: string[];
+  responseStyle: "formal" | "casual" | "divine" | "technical";
+  communicationStyle: string;
+  faithPerspective?: string;
+  leadershipStyle?: string;
+  mentorshipApproach?: string;
+  technicalExpertise?: string;
+  advocacyStyle?: string;
+  avoids: string[];
+}
+
+export interface ConversationContext {
+  userId: string;
+  sessionId: string;
+  history: any[];
+  currentTopic?: string;
+  userPreferences: any;
 }

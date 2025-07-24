@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
+import {
+  createSecureAPIHandler,
+  API_SCHEMAS,
+} from "@/lib/production/api-security-hardening";
 
 interface DivineEvent {
   eventType:
@@ -18,24 +22,17 @@ interface DivineEvent {
 const divineEvents: DivineEvent[] = [];
 let totalDivineInterventions = 777; // Starting divine number
 
-export async function POST(request: NextRequest) {
-  try {
-    const event: DivineEvent = await request.json();
-
-    // Validate divine event
-    if (event.userType !== "divine-warrior") {
-      return NextResponse.json(
-        { error: "Only divine warriors can submit divine events" },
-        { status: 403 },
-      );
-    }
-
+export const POST = createSecureAPIHandler({
+  method: "POST",
+  schema: API_SCHEMAS.divineEvent,
+  rateLimitType: "SENSITIVE",
+  handler: async (input) => {
     // Add divine blessing to the event
     const blessedEvent = {
-      ...event,
+      ...input,
       id: `divine-${Date.now()}-${Math.random().toString(36).substring(2)}`,
       receivedAt: new Date().toISOString(),
-      divineBlessing: getDivineBlessing(event),
+      divineBlessing: getDivineBlessing(input),
       interventionNumber: ++totalDivineInterventions,
     };
 
@@ -45,35 +42,24 @@ export async function POST(request: NextRequest) {
     // Generate divine response
     const response = {
       success: true,
-      message: getDivineMessage(event),
+      message: getDivineMessage(input),
       blessing: blessedEvent.divineBlessing,
       interventionNumber: blessedEvent.interventionNumber,
-      spiritualStatus: getSpiritualStatus(event),
+      spiritualStatus: getSpiritualStatus(input),
       prophecyProgress: calculateProphecyProgress(),
       nextMilestone: getNextDivineMilestone(),
     };
 
-    // Log divine event for monitoring
-    logger.divine(`DIVINE EVENT RECEIVED - ${event.eventType.toUpperCase()}`, {
-      impact: event.spiritualImpact,
+    // Log divine event for monitoring (production-safe)
+    logger.divine(`DIVINE EVENT RECEIVED - ${input.eventType.toUpperCase()}`, {
+      impact: input.spiritualImpact,
       intervention: blessedEvent.interventionNumber,
       prophecy: "July 28th Freedom Manifestation",
     });
 
-    return NextResponse.json(response);
-  } catch (error) {
-    console.error("Divine event processing error:", error);
-    return NextResponse.json(
-      {
-        error: "Divine intervention required",
-        message:
-          "The spiritual realm is experiencing interference. Please try again with pure intentions.",
-        blessing: "Divine protection activated",
-      },
-      { status: 500 },
-    );
-  }
-}
+    return response;
+  },
+});
 
 export async function GET() {
   const recentEvents = divineEvents.slice(-10); // Last 10 divine events
@@ -132,8 +118,21 @@ function getDivineBlessing(event: DivineEvent): string {
     ],
   };
 
-  const eventBlessings = blessings[event.eventType];
-  return eventBlessings[Math.floor(Math.random() * eventBlessings.length)];
+  const defaultBlessings = [
+    "Divine favor surrounds this moment",
+    "Heaven smiles upon this action",
+  ];
+
+  let eventBlessings: string[];
+  if (blessings[event.eventType as keyof typeof blessings]) {
+    eventBlessings = blessings[event.eventType as keyof typeof blessings]!;
+  } else {
+    eventBlessings = blessings.prayer_submitted || defaultBlessings;
+  }
+
+  return eventBlessings[
+    Math.floor(Math.random() * eventBlessings.length)
+  ] as string;
 }
 
 function getDivineMessage(event: DivineEvent): string {

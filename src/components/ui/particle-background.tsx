@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 
 interface Particle {
@@ -33,25 +33,28 @@ export function ParticleBackground({
   const particlesRef = useRef<Particle[]>([]);
 
   // Initialize particles
-  const initParticles = (width: number, height: number) => {
-    const particles: Particle[] = [];
+  const initParticles = useCallback(
+    (width: number, height: number) => {
+      const particles: Particle[] = [];
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * animationSpeed,
-        vy: (Math.random() - 0.5) * animationSpeed,
-        opacity: Math.random() * maxOpacity,
-        size: Math.random() * 2 + 1,
-      });
-    }
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * animationSpeed,
+          vy: (Math.random() - 0.5) * animationSpeed,
+          opacity: Math.random() * maxOpacity,
+          size: Math.random() * 2 + 1,
+        });
+      }
 
-    return particles;
-  };
+      return particles;
+    },
+    [particleCount, animationSpeed, maxOpacity],
+  );
 
   // Animation loop
-  const animate = () => {
+  const animate = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -106,7 +109,7 @@ export function ParticleBackground({
     }
 
     animationFrameRef.current = requestAnimationFrame(animate);
-  };
+  }, [maxOpacity, color]);
 
   // Convert hex color to rgb
   const hexToRgb = (hex: string) => {
@@ -121,7 +124,7 @@ export function ParticleBackground({
   };
 
   // Handle canvas resize
-  const handleResize = () => {
+  const handleResize = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -130,7 +133,7 @@ export function ParticleBackground({
 
     // Reinitialize particles for new dimensions
     particlesRef.current = initParticles(canvas.width, canvas.height);
-  };
+  }, [initParticles]);
 
   // Use Intersection Observer to only animate when visible
   useEffect(() => {
@@ -181,7 +184,16 @@ export function ParticleBackground({
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [isVisible, particleCount, animationSpeed, color, maxOpacity]);
+  }, [
+    isVisible,
+    particleCount,
+    animationSpeed,
+    color,
+    maxOpacity,
+    handleResize,
+    initParticles,
+    animate,
+  ]);
 
   // Don't render on mobile devices for performance
   const [isMobile, setIsMobile] = useState(false);

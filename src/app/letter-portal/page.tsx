@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { AILetterGenerator } from "@/components/ai/letter-generator";
 import { RealTimeImpact } from "@/components/impact/real-time-impact";

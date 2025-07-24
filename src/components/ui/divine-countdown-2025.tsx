@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useDivinePerformance } from "@/lib/performance/divine-performance-2025";
-import { useAnalytics } from "@/lib/hooks/useAnalytics";
+import { useAnalytics } from "@/lib/hooks/use-analytics";
 import { cn } from "@/lib/utils";
 
 interface TimeLeft {
@@ -96,10 +96,13 @@ export default function DivineCountdown2025({
         // Track urgency level changes
         trackDivineEvent({
           eventType: "countdown_urgency_change",
-          spiritualImpact: newUrgencyLevel === "divine" ? "miraculous" : "high",
+          component: "divine-countdown",
+          urgency: newUrgencyLevel,
           metadata: {
             urgencyLevel: newUrgencyLevel,
             daysRemaining: newTimeLeft?.days || 0,
+            spiritualImpact:
+              newUrgencyLevel === "divine" ? "miraculous" : "high",
             timestamp: new Date().toISOString(),
           },
         });
@@ -169,10 +172,11 @@ export default function DivineCountdown2025({
 
     trackDivineEvent({
       eventType: "prayer_warrior_activated",
-      spiritualImpact: "miraculous",
+      component: "divine-countdown",
       urgency: urgencyLevel,
       metadata: {
         countdownContext: true,
+        spiritualImpact: "miraculous",
         daysRemaining: timeLeft?.days || 0,
         activationSource: "countdown_component",
       },

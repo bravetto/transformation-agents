@@ -378,7 +378,7 @@ export class RuntimeErrorDetector extends BaseDivineAgent {
     while ((match = importRegex.exec(content)) !== null) {
       const name = match[1] || match[2];
       const path = match[3];
-      if (path.includes("components")) {
+      if (name && path && path.includes("components")) {
         imports.push({ name: name.trim(), path });
       }
     }

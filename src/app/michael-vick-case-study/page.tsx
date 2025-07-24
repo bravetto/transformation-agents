@@ -206,7 +206,7 @@ function MichaelVickCaseStudyCore() {
       conversionType: "secondary",
       metadata: {
         action: "timeline_phase_clicked",
-        phase: TRANSFORMATION_TIMELINE[phaseIndex].phase,
+        phase: TRANSFORMATION_TIMELINE[phaseIndex]?.phase || "unknown",
         component: "vick_case_study",
       },
     });
@@ -370,63 +370,65 @@ function MichaelVickCaseStudyCore() {
 
                 {/* Timeline Detail */}
                 <div className="lg:col-span-2">
-                  <Card className="border-2 border-elite-emerald">
-                    <CardHeader>
-                      <div className="flex items-center gap-3 mb-2">
-                        <Badge
-                          className={`${
-                            TRANSFORMATION_TIMELINE[activePhase].status ===
-                            "success"
-                              ? "bg-elite-emerald"
-                              : TRANSFORMATION_TIMELINE[activePhase].status ===
-                                  "proven"
-                                ? "bg-elite-emerald"
-                                : TRANSFORMATION_TIMELINE[activePhase]
-                                      .status === "advocacy"
-                                  ? "bg-blue-600"
-                                  : TRANSFORMATION_TIMELINE[activePhase]
-                                        .status === "official"
-                                    ? "bg-purple-600"
-                                    : TRANSFORMATION_TIMELINE[activePhase]
-                                          .status === "mentorship"
-                                      ? "bg-orange-600"
-                                      : "bg-red-600"
-                          } text-white`}
-                        >
-                          {TRANSFORMATION_TIMELINE[activePhase].phase}
-                        </Badge>
-                        <span className="text-sm text-elite-obsidian/60">
-                          {TRANSFORMATION_TIMELINE[activePhase].date}
-                        </span>
-                      </div>
-                      <CardTitle className="text-2xl text-elite-obsidian">
-                        {TRANSFORMATION_TIMELINE[activePhase].title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <p className="text-elite-obsidian/80 text-lg">
-                        {TRANSFORMATION_TIMELINE[activePhase].description}
-                      </p>
+                  {(() => {
+                    const currentPhase = TRANSFORMATION_TIMELINE[activePhase];
+                    if (!currentPhase) return null;
 
-                      <div className="bg-elite-emerald/10 p-4 rounded-lg">
-                        <h4 className="font-semibold text-elite-obsidian mb-2">
-                          Impact:
-                        </h4>
-                        <p className="text-elite-obsidian/80">
-                          {TRANSFORMATION_TIMELINE[activePhase].impact}
-                        </p>
-                      </div>
+                    return (
+                      <Card className="border-2 border-elite-emerald">
+                        <CardHeader>
+                          <div className="flex items-center gap-3 mb-2">
+                            <Badge
+                              className={`${
+                                currentPhase.status === "success"
+                                  ? "bg-elite-emerald"
+                                  : currentPhase.status === "proven"
+                                    ? "bg-elite-emerald"
+                                    : currentPhase.status === "advocacy"
+                                      ? "bg-blue-600"
+                                      : currentPhase.status === "official"
+                                        ? "bg-purple-600"
+                                        : currentPhase.status === "mentorship"
+                                          ? "bg-orange-600"
+                                          : "bg-red-600"
+                              } text-white`}
+                            >
+                              {currentPhase.phase}
+                            </Badge>
+                            <span className="text-sm text-elite-obsidian/60">
+                              {currentPhase.date}
+                            </span>
+                          </div>
+                          <CardTitle className="text-2xl text-elite-obsidian">
+                            {currentPhase.title}
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <p className="text-elite-obsidian/80 text-lg">
+                            {currentPhase.description}
+                          </p>
 
-                      <div className="bg-blue-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-elite-obsidian mb-2">
-                          JAHmere Application:
-                        </h4>
-                        <p className="text-elite-obsidian/80">
-                          {TRANSFORMATION_TIMELINE[activePhase].lessons}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
+                          <div className="bg-elite-emerald/10 p-4 rounded-lg">
+                            <h4 className="font-semibold text-elite-obsidian mb-2">
+                              Impact:
+                            </h4>
+                            <p className="text-elite-obsidian/80">
+                              {currentPhase.impact}
+                            </p>
+                          </div>
+
+                          <div className="bg-blue-50 p-4 rounded-lg">
+                            <h4 className="font-semibold text-elite-obsidian mb-2">
+                              JAHmere Application:
+                            </h4>
+                            <p className="text-elite-obsidian/80">
+                              {currentPhase.lessons}
+                            </p>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })()}
                 </div>
               </div>
             </div>

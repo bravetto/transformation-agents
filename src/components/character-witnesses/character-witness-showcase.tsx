@@ -50,6 +50,9 @@ function CharacterWitnessShowcase({
       }, 5000);
       return () => clearInterval(interval);
     }
+
+    // Return undefined when condition is not met
+    return undefined;
   }, [featuredLetters.length]);
 
   // Track letter view

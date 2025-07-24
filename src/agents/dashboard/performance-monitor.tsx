@@ -92,6 +92,8 @@ export function PerformanceMonitor() {
 
       return () => observer.disconnect();
     }
+
+    return undefined;
   }, [isMonitoring, detectRenderLoops]);
 
   useEffect(() => {

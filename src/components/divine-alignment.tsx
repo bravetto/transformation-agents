@@ -44,9 +44,9 @@ function DivineAlignment({
   return (
     <SacredContainer
       role={role}
-      title={title}
-      subtitle={subtitle}
-      className={className}
+      {...(title && { title })}
+      {...(subtitle && { subtitle })}
+      {...(className && { className })}
     >
       <motion.div
         variants={alignmentVariants}

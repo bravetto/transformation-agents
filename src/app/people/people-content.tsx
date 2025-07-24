@@ -10,7 +10,7 @@ import {
   LoadingMessages,
   ErrorWithRetry,
 } from "@/components/people/LoadingStates";
-import { PersonData, PersonRole } from "@/types/person";
+import type { PersonData, PersonRole } from "@/types/person";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";

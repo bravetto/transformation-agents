@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
-import { OpenGraphImageConfig, PLATFORM_CONFIGS } from "@/types/social-sharing";
+import type { OpenGraphImageConfig } from "@/types/social-sharing";
+import { PLATFORM_CONFIGS } from "@/types/social-sharing";
 
 /**
  * 🎨 DYNAMIC OPEN GRAPH IMAGE GENERATOR

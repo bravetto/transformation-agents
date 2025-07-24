@@ -152,6 +152,7 @@ function CascadeMonitor({
       const interval = setInterval(fetchSystemHealth, refreshInterval);
       return () => clearInterval(interval);
     }
+    return undefined;
   }, [fetchSystemHealth, autoRefresh, refreshInterval]);
 
   // Get status color and icon

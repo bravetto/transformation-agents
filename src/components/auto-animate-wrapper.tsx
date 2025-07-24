@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type MotionStyle } from "framer-motion";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 
 // 🚀 OPTIMIZED: Replaced @formkit/auto-animate with Framer Motion
@@ -12,7 +12,7 @@ interface AutoAnimateProps {
   duration?: number;
   easing?: "ease" | "easeIn" | "easeOut" | "easeInOut" | "linear";
   className?: string;
-  style?: React.CSSProperties;
+  style?: MotionStyle;
 }
 
 function AutoAnimateContainer({
@@ -46,7 +46,7 @@ interface AutoAnimateListProps<T = unknown> {
   keyExtractor: (item: T, index: number) => string | number;
   duration?: number;
   className?: string;
-  style?: React.CSSProperties;
+  style?: MotionStyle;
 }
 
 export function AutoAnimateList<T = unknown>({
@@ -89,7 +89,7 @@ interface AutoAnimateGridProps<T = unknown> {
   columns?: number;
   duration?: number;
   className?: string;
-  style?: React.CSSProperties;
+  style?: MotionStyle;
 }
 
 export function AutoAnimateGrid<T = unknown>({
@@ -135,7 +135,7 @@ interface AutoAnimateStackProps {
   direction?: "horizontal" | "vertical";
   duration?: number;
   className?: string;
-  style?: React.CSSProperties;
+  style?: MotionStyle;
 }
 
 export function AutoAnimateStack({

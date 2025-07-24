@@ -5,16 +5,26 @@ import {
   UserProfile,
   TemplateSection,
   PromptTemplateConfig,
-} from "./types";
+} from "@/types/prompts";
 
 /**
  * Implementation of the PromptTemplate interface for The Bridge Project
  */
 export class BridgePromptTemplate implements PromptTemplate {
   private config: PromptTemplateConfig;
+  public id: string;
+  public name: string;
+  public content: string;
+  public variables: string[];
+  public metadata?: any;
 
   constructor(config: PromptTemplateConfig) {
     this.config = config;
+    this.id = config.id;
+    this.name = config.name;
+    this.content = config.sections.map((s) => s.content).join("\n");
+    this.variables = config.variables;
+    this.metadata = config.metadata;
   }
 
   /**
@@ -156,7 +166,7 @@ ${personality.technicalExpertise ? `- Technical Focus: ${personality.technicalEx
 ${personality.advocacyStyle ? `- Advocacy Approach: ${personality.advocacyStyle}` : ""}
 
 ## Voice Examples
-${personality.voiceExamples.map((example) => `"${example}"`).join("\n")}
+${personality.voiceExamples.map((example: string) => `"${example}"`).join("\n")}
 
 ## Avoids
 - ${personality.avoids.join("\n- ")}
@@ -171,7 +181,7 @@ ${personality.voiceExamples.map((example) => `"${example}"`).join("\n")}
     const { goals, stage, currentTopic, settings } = context;
 
     return `## Conversation Context
-- Goals: ${goals.join(", ")}
+- Goals: ${goals?.join(", ") || "No specific goals set"}
 - Current Stage: ${stage}
 ${currentTopic ? `- Current Topic: ${currentTopic}` : ""}
 ${
@@ -215,10 +225,12 @@ ${userProfile.background ? `- Background: ${userProfile.background}` : ""}
     userProfile?: UserProfile,
   ): string {
     // Filter sections based on conditions
-    const applicableSections = this.config.sections.filter((section) => {
-      if (!section.condition) return true;
-      return section.condition(context, userProfile);
-    });
+    const applicableSections = this.config.sections.filter(
+      (section: TemplateSection) => {
+        if (!section.condition) return true;
+        return section.condition(context, userProfile);
+      },
+    );
 
     // Sort by priority (higher number = higher priority)
     const sortedSections = [...applicableSections].sort(

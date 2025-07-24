@@ -12,7 +12,7 @@ import {
   Eye,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CharacterWitnessLetter } from "@/types/character-witness";
+import type { CharacterWitnessLetter } from "@/types/character-witness";
 
 interface ABTestVariantProps {
   letters: CharacterWitnessLetter[];
@@ -284,6 +284,14 @@ export const CarouselFormatVariant: React.FC<ABTestVariantProps> = ({
   }
 
   const currentLetter = letters[currentIndex];
+
+  if (!currentLetter) {
+    return (
+      <div className={cn("text-center py-8", className)}>
+        <p className="text-gray-600">Letter not found</p>
+      </div>
+    );
+  }
 
   return (
     <div className={cn("relative", className)}>

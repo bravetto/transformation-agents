@@ -114,7 +114,7 @@ export const GET = createAPIHandler({
         ...metrics,
         responseTime,
       },
-      alerts: alerts.length > 0 ? alerts : undefined,
+      alerts: alerts,
     };
 
     // Send critical alerts to monitoring service
@@ -191,7 +191,7 @@ async function checkMemory(): Promise<HealthCheck> {
     };
 
     let status: "pass" | "warn" | "fail" = "pass";
-    let message = undefined;
+    let message = "Memory usage within normal limits";
 
     if (heapUsagePercent > 90) {
       status = "fail";
@@ -225,7 +225,7 @@ async function checkDisk(): Promise<HealthCheck> {
     const diskUsagePercent = Math.random() * 100;
 
     let status: "pass" | "warn" | "fail" = "pass";
-    let message = undefined;
+    let message = "Disk usage within normal limits";
 
     if (diskUsagePercent > 95) {
       status = "fail";

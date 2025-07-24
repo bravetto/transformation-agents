@@ -2,7 +2,8 @@
 
 import { useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { onCLS, onFCP, onLCP, onTTFB, Metric } from "web-vitals";
+import { onCLS, onFCP, onLCP, onTTFB } from "web-vitals";
+import type { Metric } from "web-vitals";
 import { sendMetric, sendPageView } from "@/lib/analytics";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 

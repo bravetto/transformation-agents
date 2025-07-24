@@ -19,9 +19,8 @@ export function JAHmereFreedomCountdown() {
   const [mounted, setMounted] = useState(false);
   const { trackDivineEvent } = useAnalytics();
 
-  const targetDate = new Date("2025-07-28T09:00:00-05:00"); // 9 AM EST court time
-
   const calculateTimeLeft = useCallback(() => {
+    const targetDate = new Date("2025-07-28T09:00:00-05:00"); // 9 AM EST court time
     const now = new Date().getTime();
     const difference = targetDate.getTime() - now;
 
@@ -36,7 +35,7 @@ export function JAHmereFreedomCountdown() {
       };
     }
     return null;
-  }, [targetDate]);
+  }, []);
 
   useEffect(() => {
     setMounted(true);

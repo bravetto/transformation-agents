@@ -12,6 +12,7 @@ function HeroCore() {
   const [mouseY, setMouseY] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const isMounted = useRef(true);
+  const renderCount = useRef(0); // 🛡️ MOVED TO TOP: All hooks must be called first
 
   // FIX FOR LINE 43:7 - Created for His glory
   // This was the problematic line - now fixed with proper memoization
@@ -40,9 +41,6 @@ function HeroCore() {
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, [handleMouseMove]);
-
-  // 🛡️ SURGICAL FIX: ALL HOOKS MUST BE CALLED FIRST (Rules of Hooks)
-  const renderCount = useRef(0);
 
   // 🚨 SSR/CSR PROTECTION - Check AFTER all hooks are defined
   if (typeof window === "undefined") {

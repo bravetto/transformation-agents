@@ -568,7 +568,7 @@ const InteractiveTimeline: React.FC<InteractiveTimelineProps> = ({
           handleKeyDown,
         );
     }
-  }, [enableKeyboard, actions, state.isPlaying]);
+  }, [enableKeyboard, actions, state.isPlaying, refs.containerRef]);
 
   // Auto-play functionality
   useEffect(() => {

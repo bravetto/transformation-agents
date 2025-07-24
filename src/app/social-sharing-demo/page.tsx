@@ -25,7 +25,7 @@ import {
   generateFreedomCountdownContent,
 } from "@/components/social-sharing";
 import { getAllPeople } from "@/data/people";
-import { PersonData } from "@/types/person";
+import type { PersonData } from "@/types/person";
 
 /**
  * 🚀 SOCIAL SHARING DEMO PAGE
@@ -40,7 +40,8 @@ export default function SocialSharingDemoPage() {
 
   // Initialize with JAHmere as default
   useEffect(() => {
-    const jahmere = people.find((p) => p.id === "jahmere-webb") || people[0];
+    const jahmere =
+      people.find((p) => p.id === "jahmere-webb") || people[0] || null;
     setSelectedPerson(jahmere);
 
     // Load demo metrics

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { CharacterWitnessLetter } from "@/types/character-witness";
+import type { CharacterWitnessLetter } from "@/types/character-witness";
 import {
   createPostHogClient,
   type BootstrapData,
@@ -165,7 +165,7 @@ export function ExperimentOrchestrator({
         <HeroBannerVariant
           letters={letters}
           onEngagement={handleLetterEngagement}
-          className={className}
+          className={className || ""}
         />
       );
     case "sidebar_cards":
@@ -173,7 +173,7 @@ export function ExperimentOrchestrator({
         <SidebarCardsVariant
           letters={letters}
           onEngagement={handleLetterEngagement}
-          className={className}
+          className={className || ""}
         />
       );
     case "carousel_format":
@@ -181,7 +181,7 @@ export function ExperimentOrchestrator({
         <CarouselFormatVariant
           letters={letters}
           onEngagement={handleLetterEngagement}
-          className={className}
+          className={className || ""}
         />
       );
     case "testimonial_grid":
@@ -189,7 +189,7 @@ export function ExperimentOrchestrator({
         <TestimonialGridVariant
           letters={letters}
           onEngagement={handleLetterEngagement}
-          className={className}
+          className={className || ""}
         />
       );
     default:

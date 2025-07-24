@@ -75,14 +75,19 @@ function DivineChannelCore({
       );
 
       // Log command transition
-      log("Command transitioned", {
-        from: divineCommands[currentCommandIndex].command,
-        to: divineCommands[
-          currentCommandIndex === divineCommands.length - 1
-            ? 0
-            : currentCommandIndex + 1
-        ].command,
-      });
+      const currentCmd = divineCommands[currentCommandIndex];
+      const nextIndex =
+        currentCommandIndex === divineCommands.length - 1
+          ? 0
+          : currentCommandIndex + 1;
+      const nextCmd = divineCommands[nextIndex];
+
+      if (currentCmd && nextCmd) {
+        log("Command transitioned", {
+          from: currentCmd.command,
+          to: nextCmd.command,
+        });
+      }
     }, 7000);
 
     return () => {
@@ -96,6 +101,10 @@ function DivineChannelCore({
     log("Command transition failed", { error: error.message });
     await handleError(error);
   };
+
+  if (!currentCommand) {
+    return null;
+  }
 
   return (
     <SacredProtection>

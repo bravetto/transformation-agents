@@ -140,12 +140,15 @@ export class ProductionLogger {
       // Add helpful metadata - environment-aware
       metadata: {
         // 🛡️ SERVER-SIDE ONLY: Node.js APIs
-        ...(typeof window === "undefined" && typeof process !== "undefined"
+        // Node.js specific metadata (only in Node.js runtime)
+        ...(typeof globalThis !== "undefined" &&
+        typeof globalThis.process !== "undefined" &&
+        typeof globalThis.process.pid !== "undefined" &&
+        !globalThis.EdgeRuntime
           ? {
-              pid: process.pid,
-              platform: process.platform,
-              nodeVersion: process.version,
-              memoryUsage: process.memoryUsage(),
+              pid: globalThis.process.pid,
+              platform: globalThis.process.platform,
+              nodeVersion: globalThis.process.version,
             }
           : {}),
 
@@ -227,6 +230,7 @@ export class ProductionLogger {
     if (
       typeof window !== "undefined" ||
       (typeof process !== "undefined" &&
+        typeof process.stdout !== "undefined" &&
         process.stdout &&
         !process.stdout.isTTY)
     ) {
@@ -448,9 +452,20 @@ export class ProductionLogger {
     }
   }
 
-  // Memory monitoring
+  // Memory monitoring (Node.js runtime only)
   memoryUsage(component?: string, context?: LogContext) {
-    const usage = process.memoryUsage();
+    // Skip in edge runtime or if process APIs unavailable
+    if (
+      typeof globalThis === "undefined" ||
+      typeof globalThis.process === "undefined" ||
+      typeof globalThis.process.memoryUsage !== "function" ||
+      globalThis.EdgeRuntime
+    ) {
+      this.debug("Memory monitoring skipped (edge runtime)", { component });
+      return;
+    }
+
+    const usage = globalThis.process.memoryUsage();
     const used = Math.round((usage.heapUsed / 1024 / 1024) * 100) / 100;
     const total = Math.round((usage.heapTotal / 1024 / 1024) * 100) / 100;
 
@@ -584,14 +599,19 @@ export const createErrorContext = (req: any): LogContext => ({
   },
 });
 
-// Graceful shutdown
-if (typeof process !== "undefined") {
-  process.on("SIGTERM", () => {
+// Graceful shutdown (Node.js runtime only)
+if (
+  typeof globalThis !== "undefined" &&
+  typeof globalThis.process !== "undefined" &&
+  typeof globalThis.process.on === "function" &&
+  !globalThis.EdgeRuntime
+) {
+  globalThis.process.on("SIGTERM", () => {
     logger.info("Received SIGTERM, flushing logs...");
     logger.destroy();
   });
 
-  process.on("SIGINT", () => {
+  globalThis.process.on("SIGINT", () => {
     logger.info("Received SIGINT, flushing logs...");
     logger.destroy();
   });

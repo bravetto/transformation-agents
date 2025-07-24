@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPerson, getAllPeople } from "@/data/people";
 import { Suspense } from "react";
@@ -13,7 +13,7 @@ import {
   generatePersonShareableContent,
 } from "@/components/social-sharing";
 import Link from "next/link";
-import { PersonRole } from "@/types/person";
+import type { PersonRole } from "@/types/person";
 
 interface PersonPageParams {
   params: Promise<{
@@ -314,16 +314,19 @@ export default async function PersonPage({ params }: PersonPageParams) {
                   (s) => s.type === "letter",
                 );
                 if (letterSection?.type === "letter") {
+                  const signatureValue =
+                    typeof letterSection.content.signature === "string"
+                      ? letterSection.content.signature
+                      : letterSection.content.signature?.image;
+
                   return (
                     <PersonLetter
                       title={letterSection.content.title}
                       body={letterSection.content.body}
-                      date={letterSection.content.date}
-                      signature={
-                        typeof letterSection.content.signature === "string"
-                          ? letterSection.content.signature
-                          : letterSection.content.signature?.image
-                      }
+                      {...(letterSection.content.date && {
+                        date: letterSection.content.date,
+                      })}
+                      {...(signatureValue && { signature: signatureValue })}
                     />
                   );
                 }

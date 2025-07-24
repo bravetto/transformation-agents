@@ -126,7 +126,7 @@ const SocialShareButton: React.FC<SocialShareButtonProps> = ({
       default:
         return "Share";
     }
-  }, [platform, prayerCall, abTestVariant]);
+  }, [platform, prayerCall]);
 
   // Get button style based on urgency and divine features
   const getButtonStyle = useCallback(() => {
@@ -178,7 +178,6 @@ const SocialShareButton: React.FC<SocialShareButtonProps> = ({
     size,
     urgencyLevel,
     platformConfig,
-    abTestVariant,
     isHovered,
     justShared,
     isSharing,

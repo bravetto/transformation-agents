@@ -24,7 +24,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 // User Type Modal - this component works safely
-import UserTypeModal, { UserType } from "@/components/user-type-modal";
+import UserTypeModal, { type UserType } from "@/components/user-type-modal";
 import { SafeProfileImage } from "@/components/safe-profile-image";
 
 // 🛡️ PROGRESSIVE ENHANCEMENT WRAPPER - Safe pattern for client-only features

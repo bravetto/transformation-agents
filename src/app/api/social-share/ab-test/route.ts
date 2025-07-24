@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
-import {
+import type {
   ABTestConfig,
   ABTestVariant,
   SocialPlatform,
@@ -160,11 +160,16 @@ export async function GET(request: NextRequest) {
 
     // Get variant assignment for user
     if (action === "getVariant" && testId) {
-      const variant = getVariantForUser(testId, {
-        userType,
-        platform,
-        contentType,
-      });
+      const userContext: {
+        userType?: string;
+        platform?: SocialPlatform;
+        contentType?: ShareContentType;
+      } = {};
+      if (userType) userContext.userType = userType;
+      if (platform) userContext.platform = platform;
+      if (contentType) userContext.contentType = contentType;
+
+      const variant = getVariantForUser(testId, userContext);
 
       if (variant) {
         // Track test view

@@ -54,7 +54,9 @@ function getSpiritualImpact(intention: string): string {
 function getDivineNumber(): number {
   // Generate sacred numbers: 7, 28, 77, 144, 777, 1437
   const sacredNumbers = [7, 28, 77, 144, 777, 1437];
-  return sacredNumbers[Math.floor(Math.random() * sacredNumbers.length)];
+  return sacredNumbers[
+    Math.floor(Math.random() * sacredNumbers.length)
+  ] as number;
 }
 
 // Helper function for divine messages
@@ -74,7 +76,7 @@ function getDivineMessage(intention: string): string {
       "Your prayer has been received with infinite love. The universe responds to all sincere intentions with divine grace.",
   };
 
-  return messages[intention] || messages.other;
+  return (messages[intention] || messages.other) as string;
 }
 
 // Database health check placeholder

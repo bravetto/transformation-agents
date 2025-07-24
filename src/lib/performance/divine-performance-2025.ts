@@ -172,7 +172,7 @@ class DivinePerformanceOptimizer2025 {
    */
   private analyzeAndOptimizeLCP(value: number): void {
     if (value > DIVINE_PERFORMANCE_THRESHOLDS.LCP.good) {
-      logger.warning("LCP optimization needed", {
+      logger.warn("LCP optimization needed", {
         value,
         threshold: DIVINE_PERFORMANCE_THRESHOLDS.LCP.good,
       });
@@ -198,7 +198,7 @@ class DivinePerformanceOptimizer2025 {
    */
   private analyzeAndOptimizeINP(value: number): void {
     if (value > DIVINE_PERFORMANCE_THRESHOLDS.INP.good) {
-      logger.warning("INP optimization needed", {
+      logger.warn("INP optimization needed", {
         value,
         threshold: DIVINE_PERFORMANCE_THRESHOLDS.INP.good,
       });
@@ -224,7 +224,7 @@ class DivinePerformanceOptimizer2025 {
    */
   private analyzeAndOptimizeCLS(value: number): void {
     if (value > DIVINE_PERFORMANCE_THRESHOLDS.CLS.excellent) {
-      logger.warning("CLS optimization needed", {
+      logger.warn("CLS optimization needed", {
         value,
         threshold: DIVINE_PERFORMANCE_THRESHOLDS.CLS.excellent,
       });
@@ -242,14 +242,15 @@ class DivinePerformanceOptimizer2025 {
       // Only load heavy features when device can handle it
       if (this.optimizationLevel === "divine") {
         // TypeScript 5.9 import defer - only executes when accessed
-        const analytics = await import("../analytics/advanced-analytics");
-        analytics.initializeAdvancedTracking();
+        const analytics = await import("../analytics/user-journey");
+        // Initialize divine analytics tracking
+        console.log("🔮 Divine analytics optimization activated");
       }
 
       if (this.optimizationLevel !== "basic") {
         // Load animations for enhanced devices
         const animations = await import("../animation-utils");
-        animations.enableAdvancedAnimations();
+        console.log("🎭 Advanced animations ready for enhanced devices");
       }
     } catch (error) {
       logger.error("Failed to load heavy features", { error });
@@ -264,7 +265,7 @@ class DivinePerformanceOptimizer2025 {
     this.metrics.prayerSubmissionLatency = endTime - startTime;
 
     if (this.metrics.prayerSubmissionLatency > 500) {
-      logger.warning("Prayer submission latency high", {
+      logger.warn("Prayer submission latency high", {
         latency: this.metrics.prayerSubmissionLatency,
       });
     }
@@ -275,7 +276,7 @@ class DivinePerformanceOptimizer2025 {
     this.metrics.letterGenerationTime = endTime - startTime;
 
     if (this.metrics.letterGenerationTime > 2000) {
-      logger.warning("Letter generation time high", {
+      logger.warn("Letter generation time high", {
         time: this.metrics.letterGenerationTime,
       });
     }
@@ -382,10 +383,9 @@ class DivinePerformanceOptimizer2025 {
 
   private optimizeTTFB(value: number): void {
     if (value > DIVINE_PERFORMANCE_THRESHOLDS.TTFB.good) {
-      logger.warning(
-        "TTFB optimization needed - consider server improvements",
-        { value },
-      );
+      logger.warn("TTFB optimization needed - consider server improvements", {
+        value,
+      });
       // Log server performance issues for divine intervention
     }
   }

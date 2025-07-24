@@ -160,8 +160,8 @@ export default function VideoEngagementTracker({
         metadata: {
           source,
           category,
-          authority_context: authorityContext,
-          conversion_context: conversionContext,
+          ...(authorityContext && { authority_context: authorityContext }),
+          ...(conversionContext && { conversion_context: conversionContext }),
         },
         ...additionalData,
       };
@@ -255,8 +255,8 @@ export default function VideoEngagementTracker({
           metadata: {
             source,
             category,
-            authority_context: authorityContext,
-            conversion_context: conversionContext,
+            ...(authorityContext && { authority_context: authorityContext }),
+            ...(conversionContext && { conversion_context: conversionContext }),
             milestone: milestone,
           },
         });
@@ -274,8 +274,8 @@ export default function VideoEngagementTracker({
         metadata: {
           source,
           category,
-          authority_context: authorityContext,
-          conversion_context: conversionContext,
+          ...(authorityContext && { authority_context: authorityContext }),
+          ...(conversionContext && { conversion_context: conversionContext }),
           seek_from: lastPosition,
           seek_to: currentTime,
           seek_distance: timeDifference,
@@ -304,8 +304,8 @@ export default function VideoEngagementTracker({
       metadata: {
         source,
         category,
-        authority_context: authorityContext,
-        conversion_context: conversionContext,
+        ...(authorityContext && { authority_context: authorityContext }),
+        ...(conversionContext && { conversion_context: conversionContext }),
         total_watch_time: engagementData.totalWatchTime,
         max_progress_reached: engagementData.maxProgressReached,
         pause_count: engagementData.pauseCount,
@@ -326,7 +326,7 @@ export default function VideoEngagementTracker({
         metadata: {
           video_id: videoId,
           completion_rate: engagementData.maxProgressReached,
-          authority_context: authorityContext,
+          ...(authorityContext && { authority_context: authorityContext }),
         },
       });
     }
@@ -365,8 +365,8 @@ export default function VideoEngagementTracker({
         metadata: {
           source,
           category,
-          authority_context: authorityContext,
-          conversion_context: conversionContext,
+          ...(authorityContext && { authority_context: authorityContext }),
+          ...(conversionContext && { conversion_context: conversionContext }),
           error_type:
             (error.target as HTMLVideoElement)?.error?.code?.toString() ||
             "unknown",
@@ -456,8 +456,8 @@ export default function VideoEngagementTracker({
         metadata: {
           source,
           category,
-          authority_context: authorityContext,
-          conversion_context: conversionContext,
+          ...(authorityContext && { authority_context: authorityContext }),
+          ...(conversionContext && { conversion_context: conversionContext }),
           session_end: true,
           final_engagement_data: engagementData,
         },

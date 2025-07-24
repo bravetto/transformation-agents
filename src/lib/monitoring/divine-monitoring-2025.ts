@@ -186,7 +186,10 @@ class DivineMonitoringSystem2025 {
    */
   private updateMetric(key: keyof DivineMetrics, value: number): void {
     const oldValue = this.metrics[key];
-    this.metrics[key] = value as any;
+    // Type-safe assignment for numeric metrics only
+    if (typeof this.metrics[key] === "number") {
+      (this.metrics as any)[key] = value;
+    }
     this.metrics.timestamp = Date.now();
 
     // Check for threshold violations
@@ -412,7 +415,7 @@ class DivineMonitoringSystem2025 {
 
     if (loadTime > 1000) {
       // Slow resource
-      logger.warning("Slow critical resource load", {
+      logger.warn("Slow critical resource load", {
         resource: entry.name,
         loadTime,
         type: entry.initiatorType,

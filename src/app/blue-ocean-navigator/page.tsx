@@ -295,7 +295,7 @@ export default function BlueOceanNavigatorPage() {
                     Core Strengths
                   </h4>
                   <div className="flex flex-wrap gap-2">
-                    {selectedProfile.strengths.map((strength, index) => (
+                    {selectedProfile?.strengths?.map((strength, index) => (
                       <Badge
                         key={index}
                         className="bg-elite-transformation-emerald/20 text-elite-transformation-emerald border-elite-transformation-emerald/30"
@@ -310,7 +310,7 @@ export default function BlueOceanNavigatorPage() {
                     Values Alignment
                   </h4>
                   <div className="flex flex-wrap gap-2">
-                    {selectedProfile.values.map((value, index) => (
+                    {selectedProfile?.values?.map((value, index) => (
                       <Badge
                         key={index}
                         className="bg-elite-justice-indigo/20 text-elite-justice-indigo border-elite-justice-indigo/30"
@@ -334,7 +334,7 @@ export default function BlueOceanNavigatorPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {selectedProfile.blueOceanOpportunities.map(
+                {selectedProfile?.blueOceanOpportunities?.map(
                   (opportunity, index) => (
                     <div
                       key={index}

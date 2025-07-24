@@ -188,7 +188,7 @@ export function useSocialSharing(content: ShareableContent) {
 
       return null;
     },
-    [content, userType, sessionId, abTestVariants],
+    [userType, sessionId, abTestVariants, generateShareUrl],
   );
 
   /**
@@ -371,7 +371,7 @@ export function useSocialSharing(content: ShareableContent) {
         setTimeout(() => setShareSuccess(false), 3000);
       }
     },
-    [content, trackShare, generateShareUrl],
+    [content, trackShare, generateShareUrl, userType],
   );
 
   /**

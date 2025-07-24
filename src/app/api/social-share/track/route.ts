@@ -6,6 +6,10 @@ import {
   getCurrentUserType,
 } from "@/lib/analytics/user-journey";
 import {
+  createSecureAPIHandler,
+  API_SCHEMAS,
+} from "@/lib/production/api-security-hardening";
+import type {
   SocialShareEvent,
   SocialShareAnalytics,
   SocialPlatform,
@@ -24,18 +28,11 @@ let viralTracks: Record<
  * 🚀 SOCIAL SHARE TRACKING API
  * Comprehensive tracking for viral content optimization
  */
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-
-    // Validate required fields
-    if (!body.platform || !body.contentType || !body.contentId) {
-      return NextResponse.json(
-        { error: "Missing required fields: platform, contentType, contentId" },
-        { status: 400 },
-      );
-    }
-
+export const POST = createSecureAPIHandler({
+  method: "POST",
+  schema: API_SCHEMAS.socialShare,
+  rateLimitType: "ANALYTICS",
+  handler: async (input, request) => {
     // Generate unique share ID
     const shareId = `share_${Date.now()}_${Math.random().toString(36).substring(2)}`;
     const timestamp = new Date().toISOString();
@@ -45,37 +42,28 @@ export async function POST(request: NextRequest) {
     // Create analytics record
     const analytics: SocialShareAnalytics = {
       shareId,
-      sessionId: body.sessionId || `session_${Date.now()}`,
+      sessionId: input.sessionId || `session_${Date.now()}`,
       timestamp,
-      platform: body.platform as SocialPlatform,
-      contentType: body.contentType as ShareContentType,
-      contentId: body.contentId,
-      userType: body.userType || getCurrentUserType(),
+      platform: input.platform as SocialPlatform,
+      contentType: input.contentType as ShareContentType,
+      contentId: input.contentId,
+      userType: getCurrentUserType(),
 
       // Viral tracking
-      viralLevel: body.originalShareId ? (body.viralLevel || 1) + 1 : 0,
-      originalShareId: body.originalShareId || shareId,
+      viralLevel: 0,
+      originalShareId: shareId,
 
       // A/B testing
-      abTestGroup: body.abTestGroup,
-      abTestVariant: body.abTestVariant,
+      abTestGroup: undefined,
+      abTestVariant: undefined,
     };
 
     // Store analytics
     shareAnalytics.push(analytics);
 
     // Update counters
-    const counterKey = `${body.platform}_${body.contentType}_${body.contentId}`;
+    const counterKey = `${input.platform}_${input.contentType}_${input.contentId}`;
     shareCounters[counterKey] = (shareCounters[counterKey] || 0) + 1;
-
-    // Track viral propagation
-    if (body.originalShareId && body.originalShareId !== shareId) {
-      const viralKey = body.originalShareId;
-      if (!viralTracks[viralKey]) {
-        viralTracks[viralKey] = { clicks: 0, shares: 0, conversions: 0 };
-      }
-      viralTracks[viralKey].shares += 1;
-    }
 
     // Track in existing analytics system
     const socialShareEvent: SocialShareEvent = {
@@ -84,32 +72,17 @@ export async function POST(request: NextRequest) {
       conversionType: "secondary",
       timestamp: Date.now(),
       metadata: {
-        platform: body.platform,
-        contentType: body.contentType,
-        contentId: body.contentId,
-        shareMethod: body.shareMethod || "button-click",
-        abTestVariant: body.abTestVariant,
-        sharePosition: body.sharePosition,
+        platform: input.platform,
+        contentType: input.contentType,
+        contentId: input.contentId,
+        shareMethod: "button-click",
         userAgent,
         referrer,
-        customMessage: body.customMessage,
       },
     };
 
     // Use existing conversion tracking
     trackConversion(socialShareEvent);
-
-    // Special divine tracking for prayer warrior calls
-    if (body.prayerWarriorCall || body.spiritualImpact === "miraculous") {
-      logger.divine("🙏 PRAYER WARRIOR SHARE ACTIVATED!", {
-        platform: body.platform,
-        contentId: body.contentId,
-        shareId,
-        spiritualImpact: body.spiritualImpact || "high",
-        prayerWarriorCall: true,
-        prophecy: "JAHmere Freedom Movement Amplified",
-      });
-    }
 
     // Calculate real-time metrics
     const metrics = calculateShareMetrics(analytics);
@@ -117,46 +90,27 @@ export async function POST(request: NextRequest) {
     // Log successful share
     logger.analytics("📤 SOCIAL SHARE TRACKED", {
       shareId,
-      platform: body.platform,
-      contentType: body.contentType,
+      platform: input.platform,
+      contentType: input.contentType,
       viralLevel: analytics.viralLevel,
       userType: analytics.userType,
-      abTestVariant: body.abTestVariant,
     });
 
-    return NextResponse.json({
+    return {
       success: true,
       shareId,
       message: "Share tracked successfully",
       analytics: {
         shareId,
         timestamp,
-        platform: body.platform,
-        contentType: body.contentType,
+        platform: input.platform,
+        contentType: input.contentType,
         viralLevel: analytics.viralLevel,
         ...metrics,
       },
-      divine: body.prayerWarriorCall
-        ? {
-            blessing:
-              "Your share amplifies divine intervention for JAHmere's freedom",
-            prayerPower: "activated",
-            divineMultiplier:
-              analytics.viralLevel > 0 ? analytics.viralLevel * 7 : 7,
-          }
-        : undefined,
-    });
-  } catch (error) {
-    console.error("Social share tracking error:", error);
-    return NextResponse.json(
-      {
-        error: "Failed to track social share",
-        message: "Divine protection activated - share recorded spiritually",
-      },
-      { status: 500 },
-    );
-  }
-}
+    };
+  },
+});
 
 /**
  * GET - Retrieve social share analytics
