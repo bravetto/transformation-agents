@@ -32,6 +32,8 @@ export const POST = createSecureAPIHandler({
       ...input,
       id: `divine-${Date.now()}-${Math.random().toString(36).substring(2)}`,
       receivedAt: new Date().toISOString(),
+      timestamp: new Date().toISOString(),
+      sessionId: `divine-session-${Date.now()}`,
       divineBlessing: getDivineBlessing(input),
       interventionNumber: ++totalDivineInterventions,
     };
