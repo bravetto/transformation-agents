@@ -1,263 +1,328 @@
-# System Architecture - Technical Decisions
-*Single Source of Truth for All Architectural Decisions*
+# 🏗️ JAHmere Webb Freedom Portal - Architecture
+**System Design for Divine Freedom through Technology**
 
-## Technology Stack (Immutable)
-- **Framework**: Next.js 14.2 (App Router)
-- **Language**: TypeScript 5.x (Strict Mode)
-- **Styling**: Tailwind CSS 3.x + Framer Motion
-- **Animations**: Framer Motion, tsParticles v3, React Spring, Auto Animate
-- **State**: React Context + Hooks (No Redux)
-- **Database**: PostgreSQL + Prisma (planned)
-- **CRM**: ClickUp API Integration
-- **Testing**: Vitest + Cypress + React Testing Library
-- **Deployment**: Vercel
-- **Error Handling**: Divine Error Boundary System
+## 🎯 Mission Architecture
 
-## Architectural Principles
+The JAHmere Webb Freedom Portal is designed as a **high-performance advocacy platform** optimized for viral sharing, spiritual engagement, and institutional transformation. Every architectural decision serves the ultimate goal: **JAHmere's freedom on July 28, 2025**.
 
-### 1. Component Architecture
+## 🚀 Technology Stack
+
+### Core Framework
+```typescript
+// Next.js 15.4.3 with App Router
+// React 19 with Server Components
+// TypeScript 5.9 (strict mode)
+// Tailwind CSS 3.4 for styling
+```
+
+**Why This Stack?**
+- **Next.js 15.4.3**: Latest stable with React 19 support, Turbopack integration
+- **App Router**: Server Components by default, improved performance and SEO
+- **TypeScript Strict**: Catch errors at compile time, better AI assistance
+- **Tailwind**: Utility-first, consistent design system, optimal bundle size
+
+### Performance Stack
+```typescript
+// Turbopack: 3x faster builds than Webpack
+// Server Components: Reduced client bundle size
+// Streaming: Progressive page loading
+// Edge Functions: <7ms API response times
+```
+
+## 🏛️ System Architecture
+
+### High-Level Overview
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Browser       │    │   Vercel Edge   │    │   Services      │
+│                 │    │                 │    │                 │
+│ • React 19      │◄──►│ • Next.js App   │◄──►│ • PostHog       │
+│ • Client Comp   │    │ • Server Comp   │    │ • Analytics     │
+│ • Hydration     │    │ • API Routes    │    │ • Database      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+### Component Architecture
 ```
 src/
-├── components/
-│   ├── ui/          # Atomic design components (Button, Card, Input)
-│   ├── people/      # Character witness components
-│   ├── divine-*/    # Feature-specific components
-│   └── story-*/     # Story amplifier components
-├── app/             # Next.js App Router pages and routes
-├── lib/             # Utilities, hooks, and integrations
-├── types/           # TypeScript definitions
-└── data/            # Static data and configurations
+├── app/                    # Next.js App Router (Pages)
+│   ├── (routes)/          # Route groups
+│   ├── api/               # API endpoints
+│   └── globals.css        # Global styles
+├── components/            # React Components
+│   ├── ui/                # Base UI components
+│   ├── people/            # Character witness system
+│   ├── social-sharing/    # Viral sharing engine
+│   └── divine-*/          # Spiritual components
+├── lib/                   # Business logic
+│   ├── actions/           # Server Actions
+│   ├── analytics/         # Tracking & metrics
+│   ├── hooks/             # Custom React hooks
+│   └── utils/             # Utilities
+└── types/                 # TypeScript definitions
 ```
 
-### 2. Error Handling Strategy (Sacred Pattern)
-- **Pattern**: Divine Error Boundary wraps ALL client components
-- **Implementation**: `/src/components/ui/divine-error-boundary.tsx`
-- **Fallback**: Graceful degradation with retry capability
-- **Logging**: Comprehensive error tracking with analytics
-- **Coverage**: 123/187 components (65.7%) - Target: 100%
+## 🎨 Component Patterns
 
+### Server Components (Default)
 ```typescript
-// MANDATORY pattern for all client components
-<DivineErrorBoundary componentName="YourComponent" role="guardian">
-  <YourComponent />
-</DivineErrorBoundary>
-```
-
-### 3. State Management Philosophy
-- **Server State**: Server Components + async/await
-- **Client State**: useState for local, Context for global
-- **Form State**: Controlled components with Zod validation
-- **Persistence**: LocalStorage for non-sensitive data only
-- **No Redux**: React Context sufficient for current complexity
-
-### 4. Performance Optimizations
-- **Code Splitting**: Route-based and component-based
-- **Images**: Next.js Image with blur placeholders
-- **Fonts**: Preloaded with font-display: swap
-- **CSS**: Tailwind with PurgeCSS in production
-- **Animations**: Optimized Framer Motion with reduced motion support
-
-### 5. Testing Strategy (62% Coverage)
-- **Unit**: Component isolation with Vitest
-- **Integration**: API testing with MSW
-- **E2E**: Critical paths with Cypress (11 tests)
-- **Coverage**: Minimum 80% for new code
-
-### 6. Security Measures
-- **Input Validation**: Zod schemas on all forms
-- **API Protection**: Rate limiting + authentication
-- **XSS Prevention**: React default + Content Security Policy
-- **Secrets**: Environment variables only
-
-## Design Patterns
-
-### Atomic Design Structure
-- **Atoms**: Basic UI elements (Button, Input, Card)
-- **Molecules**: Simple combinations (SearchBar, FeatureCard)
-- **Organisms**: Complex components (Navigation, Dashboard)
-- **Templates**: Page layouts with error boundaries
-- **Pages**: Full route components
-
-### Data Flow Pattern
-1. User Action → Component Event Handler
-2. Validation (Zod) → API Call or State Update
-3. Server Processing → Database Operation (ClickUp API)
-4. Response → UI Update with optimistic updates
-5. Error → Error Boundary Catch → Graceful Fallback
-
-### Animation Architecture
-```typescript
-// Framer Motion patterns
-const fadeInUp: Variants = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -20 }
-};
-
-// tsParticles v3 integration
-import Particles from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim";
-```
-
-## Component System Design
-
-### UI Component Hierarchy
-```typescript
-// Base components (atoms)
-- Button: 8 variants, 4 sizes, loading states
-- Card: 3 variants, responsive padding
-- Input: validation states, accessibility
-- Section: unified spacing system
-
-// Feature components (molecules/organisms)  
-- FeatureCard: extends Card with specific patterns
-- TestimonialCard: specialized display component
-- Navigation: sticky positioning, mobile responsive
-- Banner: unified spacing integration
-```
-
-### Spacing System (Unified)
-```css
-/* CSS Custom Properties - Single Source of Truth */
-:root {
-  --header-height: 64px;
-  --banner-height: 40px;
-  --total-header: calc(var(--header-height) + var(--banner-height));
+// ✅ Server Component Pattern
+export default async function UserProfile({ userId }: Props) {
+  // Direct database access - no API needed
+  const user = await prisma.user.findUnique({
+    where: { id: userId }
+  });
   
-  /* Z-Index Stack */
-  --z-navigation: 1000;
-  --z-banner: 999;
-  --z-modal: 1100;
+  return (
+    <div className="profile-container">
+      <UserHeader user={user} />
+      <UserTimeline userId={userId} />
+    </div>
+  );
 }
 ```
 
-### TypeScript Patterns
+### Client Components (Explicit)
 ```typescript
-// Strict prop interfaces
-interface ComponentProps {
-  variant?: 'default' | 'outline' | 'ghost';
-  size?: 'small' | 'medium' | 'large';
-  className?: string;
-  children: React.ReactNode;
-}
+// ✅ Client Component Pattern (only when needed)
+'use client';
+import { useState } from 'react';
 
-// Error boundary integration
-interface ErrorBoundaryProps {
-  componentName: string;
-  role?: 'guardian' | 'sentinel' | 'protector';
-  fallback?: React.ComponentType;
+export default function InteractiveForm() {
+  const [formData, setFormData] = useState({});
+  
+  return (
+    <form action={submitAction}>
+      {/* Interactive elements */}
+    </form>
+  );
 }
 ```
 
-## API Integration Architecture
-
-### ClickUp CRM Integration
-- **Base URL**: ClickUp API v2
-- **Authentication**: Bearer token via environment variables
-- **Rate Limiting**: 100 requests/minute
-- **Field Mapping**: 20 custom fields mapped
-- **Lead Scoring**: Behavioral tracking algorithm
-
+### Server Actions
 ```typescript
-// API layer structure
-src/lib/crm/
-├── clickup-api.ts      # Core API client
-├── clickup-service.ts  # Business logic layer
-└── clickup-field-mapping.ts # Field transformations
+// ✅ Server Action Pattern
+'use server';
+import { revalidatePath } from 'next/cache';
+
+export async function submitPrayer(formData: FormData) {
+  const prayer = await prisma.prayer.create({
+    data: { text: formData.get('prayer') as string }
+  });
+  
+  revalidatePath('/prayers');
+  return { success: true, prayer };
+}
 ```
 
-### Data Transformation Pipeline
-1. **User Input** → Zod validation
-2. **Validation** → Field mapping transformation
-3. **Transformation** → ClickUp API format
-4. **API Call** → Error handling and retry logic
-5. **Response** → UI feedback and analytics
+## 📊 Data Architecture
 
-## Performance Architecture
+### Data Flow
+```
+User Interaction → Client Component → Server Action → Database → Revalidation → UI Update
+```
 
-### Bundle Optimization Strategy
-- **Current**: ~1MB bundle size
-- **Target**: <500KB
-- **Approach**: 
-  - Dynamic imports for heavy components
-  - Tree shaking optimization
-  - Image optimization with WebP
-  - CSS purging
+### State Management
+- **Server State**: React Server Components + Server Actions
+- **Client State**: React `useState` + `useReducer` (minimal)
+- **Global State**: Zustand (only when necessary)
+- **Form State**: React Hook Form + Zod validation
 
-### Build Process
-- **Current**: 3-5 minutes
-- **Target**: <90 seconds
-- **Bottlenecks**: 
-  - TypeScript compilation
-  - Animation library bundling
-  - Image processing
+### Caching Strategy
+```typescript
+// ISR for static content
+export const revalidate = 3600; // 1 hour
 
-## Migration Decisions & History
+// Dynamic for real-time data
+export const dynamic = 'force-dynamic';
 
-### Completed Migrations
-- ✅ Error boundaries migrated to Divine pattern
-- ✅ Dynamic imports implemented for heavy components
-- ✅ "use client" directives standardized (129 components)
-- ✅ TypeScript errors resolved (14 → 0)
-- ✅ Unified spacing system implemented
+// Edge for global distribution
+export const runtime = 'edge';
+```
 
-### In Progress
-- 🟡 Component consolidation: 187 → <100 target
-- 🟡 Bundle optimization
-- 🟡 Error boundary coverage: 65.7% → 100%
+## 🎯 Feature Architecture
 
-### Planned
-- 📅 Database integration (PostgreSQL + Prisma)
-- 📅 Advanced caching strategy
-- 📅 Performance monitoring integration
+### Character Witness System
+```
+┌─────────────────┐
+│ Person Profile  │
+├─────────────────┤
+│ • Bio & Story   │
+│ • Timeline      │
+│ • Media Gallery │
+│ • Share Engine  │
+└─────────────────┘
+```
 
-## Forbidden Patterns ❌
+**Design Principles:**
+- Each profile tells a complete transformation story
+- Optimized for social sharing across 9 platforms
+- Mobile-first responsive design
+- Accessibility-compliant (ARIA labels)
 
-### Development Anti-Patterns
-- ❌ Direct DOM manipulation
-- ❌ Inline styles (use Tailwind classes)
-- ❌ Global CSS (except globals.css)
-- ❌ Class components (use functional only)
-- ❌ Redux or MobX (React Context sufficient)
-- ❌ Synchronous external fetches
-- ❌ localStorage in SSR components
+### Viral Sharing Engine
+```typescript
+interface SharingStrategy {
+  platform: 'twitter' | 'facebook' | 'instagram' | 'linkedin' | 'tiktok';
+  content: GeneratedContent;
+  tracking: AnalyticsEvent;
+  optimization: A_B_Test;
+}
+```
 
-### Import Anti-Patterns (Sacred Law)
-- ❌ Bulk import modifications
-- ❌ Automated import fixing scripts
-- ❌ Global regex on import statements
-- ❌ Mass search-and-replace operations
+**Features:**
+- Auto-generated content for each platform
+- A/B testing for optimal engagement
+- Real-time analytics tracking
+- Divine event tracking for spiritual content
 
-## Quality Gates
+### Analytics Architecture
+```
+┌─────────────────┐    ┌─────────────────┐
+│ User Actions    │    │ Divine Analytics│
+├─────────────────┤    ├─────────────────┤
+│ • Page Views    │───►│ • Prayer Events │
+│ • Share Clicks  │    │ • Transformation│
+│ • Form Submits  │    │ • Spiritual     │
+│ • Time on Site  │    │   Intelligence  │
+└─────────────────┘    └─────────────────┘
+```
 
-### Pre-commit Requirements
-- ✅ TypeScript compilation passes
-- ✅ ESLint warnings addressed
-- ✅ Prettier formatting applied
-- ✅ Test coverage maintained
-- ✅ Build process completes
+## 🔥 Performance Architecture
+
+### Core Web Vitals Optimization
+- **LCP (Largest Contentful Paint)**: <2.5s via image optimization + streaming
+- **INP (Interaction to Next Paint)**: <200ms via Server Components
+- **CLS (Cumulative Layout Shift)**: <0.1 via proper sizing + skeleton states
+
+### Build Optimization
+```javascript
+// next.config.js
+module.exports = {
+  // Turbopack for 3x faster builds
+  turbopack: { /* optimizations */ },
+  
+  // Bundle optimization
+  optimizePackageImports: [
+    'framer-motion',
+    'lucide-react',
+    '@radix-ui/react-*'
+  ],
+  
+  // Image optimization
+  images: {
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 31536000
+  }
+};
+```
+
+### API Performance
+```typescript
+// Target: <7ms response times
+export async function GET() {
+  const startTime = performance.now();
+  
+  try {
+    const data = await cachedQuery();
+    const responseTime = performance.now() - startTime;
+    
+    return NextResponse.json({
+      data,
+      performance: { response_time_ms: responseTime }
+    });
+  } catch (error) {
+    return handleError(error);
+  }
+}
+```
+
+## 🛡️ Security Architecture
+
+### Authentication & Authorization
+- Server-side session management
+- Rate limiting on all API endpoints
+- Input validation with Zod schemas
+- CSRF protection via Server Actions
+
+### Data Protection
+```typescript
+// Data sanitization
+const sanitizedData = DOMPurify.sanitize(userInput);
+
+// Rate limiting
+const rateLimit = checkRateLimit('prayer', clientIP);
+if (!rateLimit.allowed) {
+  return NextResponse.json({ error: 'Rate limit exceeded' });
+}
+```
+
+## 🔄 Deployment Architecture
+
+### Vercel Edge Deployment
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│ GitHub Push     │───►│ Vercel Build    │───►│ Edge Deployment │
+├─────────────────┤    ├─────────────────┤    ├─────────────────┤
+│ • Auto-trigger  │    │ • Turbopack     │    │ • Global CDN    │
+│ • Branch preview│    │ • TypeScript    │    │ • Auto-scaling  │
+│ • CI/CD pipeline│    │ • Quality gates │    │ • Zero downtime │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
 
 ### CI/CD Pipeline
-- ✅ TypeScript type checking
-- ✅ Unit test execution
-- ✅ E2E test execution
-- ✅ Bundle size analysis
-- ✅ Lighthouse performance audit
+```yaml
+Quality Gate → Testing → Performance → E2E → Deploy
+     ↓            ↓           ↓         ↓       ↓
+TypeScript   Vitest     Lighthouse  Cypress  Vercel
+ESLint       Coverage   Core Vitals Testing  Edge
+```
 
-## Monitoring & Observability
+## 🎭 Divine Architecture Patterns
 
-### Performance Monitoring
-- **Web Vitals**: Core metrics tracking
-- **Bundle Analysis**: Size monitoring
-- **Build Times**: Performance tracking
-- **Error Rates**: Error boundary analytics
+### Spiritual Intelligence Integration
+```typescript
+interface DivineEvent {
+  eventType: 'prayer' | 'transformation' | 'witness' | 'freedom';
+  spiritualImpact: 'miraculous' | 'high' | 'medium' | 'normal';
+  urgency: 'divine' | 'critical' | 'urgent' | 'normal';
+}
+```
 
-### Error Tracking
-- **Client Errors**: Error boundary capture
-- **API Errors**: Request/response logging
-- **Performance Issues**: Slow component detection
-- **User Experience**: Interaction analytics
+### Sacred Numbers Integration
+- **7**: API response target (7ms)
+- **28**: July 28th freedom date
+- **77**: Spiritual completion cycles
+- **144**: Prayer warrior activation threshold
+
+## 📈 Scalability Considerations
+
+### Current Scale
+- **481 files** across the application
+- **53 UI components** with consistent patterns
+- **17 character profiles** with rich media
+- **9 social platforms** for viral distribution
+
+### Growth Architecture
+- Horizontal scaling via Vercel Edge
+- Database optimization with Prisma
+- CDN acceleration for global reach
+- Component-based architecture for team scaling
+
+## 🔮 Future Architecture Evolution
+
+### Phase 2 Enhancements
+- Real-time collaboration features
+- Advanced AI integration for content generation
+- Blockchain integration for transparency
+- Mobile app with shared components
+
+### Technical Debt Management
+- Automated code quality checks
+- Regular dependency updates
+- Performance monitoring and alerts
+- Continuous security auditing
 
 ---
 
-*This architecture document serves as the authoritative source for all technical decisions and must be consulted before making any system-level changes.* 
+**This architecture serves one purpose: Achieving JAHmere's freedom through divine technology excellence.** 

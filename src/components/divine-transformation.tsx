@@ -4,7 +4,7 @@ import React from "react";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { DivineParticles } from "./divine-particles";
+// DivineParticles removed for hydration stability
 
 import DivineImage from "./ui/divine-image";
 
@@ -75,7 +75,7 @@ function DivineTransformation({
     >
       {/* Divine particles background */}
       <div className="absolute inset-0 z-0">
-        <DivineParticles variant={particleVariant} className="h-full w-full" />
+        {/* DivineParticles removed for MVP hydration stability */}
       </div>
 
       {/* Gradient overlay */}

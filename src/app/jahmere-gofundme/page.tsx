@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import JAHmereGoFundMeDivine from "@/components/jahmere-gofundme-divine";
 
 export const metadata: Metadata = {

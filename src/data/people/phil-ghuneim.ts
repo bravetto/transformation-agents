@@ -4,8 +4,8 @@ export const philGhuneim: PersonData = {
   id: "phil-ghuneim",
   slug: "phil-ghuneim",
   name: "Phil Ghuneim",
-  title: "Survivor, Healer & Youth Advocate",
-  heroImage: "/images/profiles/phil-ghuneim.svg",
+  title: "Business Development Professional",
+  heroImage: "/images/people/phil-ghuneim.svg",
   localImage: true,
 
   // Filter properties

@@ -1,0 +1,323 @@
+// This is your Prisma schema file - Divine Database Architecture
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 🙏 PRAYERS SYSTEM - Core spiritual data
+model Prayer {
+  id              String   @id @default(cuid())
+  name            String?  // Optional for anonymous prayers
+  location        String?  // Optional for anonymous prayers
+  message         String?  // Prayer content
+  intention       PrayerIntention @default(OTHER)
+  isAnonymous     Boolean  @default(false)
+  divineNumber    Int      // Sacred numerology
+  status          PrayerStatus @default(RECEIVED)
+  
+  // Technical tracking
+  ipAddress       String
+  userAgent       String
+  sessionId       String?
+  
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  answeredAt      DateTime?
+  
+  // Relationships
+  events          AnalyticsEvent[]
+  
+  @@map("prayers")
+  @@index([createdAt])
+  @@index([intention])
+  @@index([status])
+  @@index([sessionId])
+}
+
+enum PrayerIntention {
+  HEALING
+  GUIDANCE
+  PROTECTION
+  FREEDOM      // For JAHmere's case
+  PEACE
+  OTHER
+}
+
+enum PrayerStatus {
+  RECEIVED
+  BLESSED
+  ANSWERED
+}
+
+// 📊 ANALYTICS SYSTEM - User journey tracking
+model AnalyticsEvent {
+  id              String   @id @default(cuid())
+  eventType       EventType
+  userType        UserType
+  sessionId       String
+  userId          String?  // Optional user identification
+  
+  // Event details
+  path            String?  // Current path/route
+  userAgent       String?
+  referrer        String?
+  metadata        Json?    // Additional event data
+  
+  // Performance metrics
+  responseTime    Int?     // API response time in ms
+  loadTime        Int?     // Page load time
+  
+  // Spiritual tracking
+  divineAlignment Int?     // 1-100 alignment score
+  spiritualImpact String?  // low, medium, high, miraculous
+  
+  // Timestamps
+  timestamp       DateTime @default(now())
+  
+  // Relationships
+  prayer          Prayer?  @relation(fields: [prayerId], references: [id])
+  prayerId        String?
+  
+  @@map("analytics_events")
+  @@index([sessionId])
+  @@index([eventType])
+  @@index([userType])
+  @@index([timestamp])
+}
+
+enum EventType {
+  PAGE_VIEW
+  PATH_SELECTION      // Coach/Judge/Activist path
+  PRAYER_SUBMITTED
+  LETTER_STARTED
+  LETTER_COMPLETED
+  TESTIMONY_VIEWED
+  SOCIAL_SHARE
+  DIVINE_EVENT        // Spiritual events
+  MIRACLE_WITNESSED
+  PROPHECY_PROGRESS
+}
+
+enum UserType {
+  COACH
+  JUDGE  
+  ACTIVIST
+  DIVINE_WARRIOR
+  VISITOR
+}
+
+// 📝 TESTIMONIES SYSTEM - Character witness support
+model Testimony {
+  id              String   @id @default(cuid())
+  name            String
+  title           String?  // Professional title/role
+  relationship    TestimonyRelationship
+  message         String   // Testimony content
+  isVerified      Boolean  @default(false)
+  isPublic        Boolean  @default(false)
+  
+  // Contact information (private)
+  email           String?
+  phone           String?
+  organization    String?
+  
+  // Assessment data (if applicable)
+  assessmentScore Int?     // Jay Forte assessment scores
+  assessmentType  String?  // Type of assessment
+  
+  // Technical tracking
+  ipAddress       String
+  sessionId       String?
+  
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  verifiedAt      DateTime?
+  
+  @@map("testimonies")
+  @@index([relationship])
+  @@index([isVerified])
+  @@index([isPublic])
+  @@index([createdAt])
+}
+
+enum TestimonyRelationship {
+  COACH           // Tony Dungy, other coaches
+  MENTOR          // Personal mentors
+  FAMILY          // Family members
+  FRIEND          // Personal friends
+  COMMUNITY       // Community leaders
+  PROFESSIONAL    // Professional contacts
+  EDUCATOR        // Teachers, professors
+  COLLEAGUE       // Work colleagues
+  ASSESSOR        // Jay Forte, other assessment professionals
+  OTHER
+}
+
+// 💌 LETTER CAMPAIGN - Judge outreach system
+model Letter {
+  id              String   @id @default(cuid())
+  writerName      String
+  writerTitle     String?
+  relationship    TestimonyRelationship
+  
+  // Letter content
+  subject         String?
+  content         String   // Main letter content
+  examples        Json?    // Specific examples as JSON
+  impactScore     Int?     // AI-calculated effectiveness score
+  
+  // Legal formatting
+  addressedTo     String   @default("The Honorable Judge Leticia Marques")
+  caseNumber      String   @default("JAHmere Webb - July 28, 2025")
+  courtAddress    String?
+  
+  // Processing status
+  status          LetterStatus @default(DRAFT)
+  isSubmitted     Boolean  @default(false)
+  submittedAt     DateTime?
+  
+  // Auto-save functionality
+  lastSavedAt     DateTime @default(now())
+  saveCount       Int      @default(0)
+  
+  // Technical tracking
+  sessionId       String
+  ipAddress       String
+  
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("letters")
+  @@index([status])
+  @@index([relationship])
+  @@index([isSubmitted])
+  @@index([createdAt])
+}
+
+enum LetterStatus {
+  DRAFT
+  IN_PROGRESS
+  COMPLETED
+  SUBMITTED
+  DELIVERED
+}
+
+// 👨‍⚖️ JUDGE ANALYTICS - Judicial engagement tracking
+model JudgeEngagement {
+  id              String   @id @default(cuid())
+  sessionId       String   @unique
+  
+  // Judge-specific tracking
+  dashboardViews  Int      @default(0)
+  evidenceViews   Int      @default(0)
+  timeSpent       Int      @default(0) // Total time in seconds
+  documentsViewed Json?    // Array of viewed documents
+  
+  // Case interest indicators
+  caseDetails     Boolean  @default(false) // Viewed JAHmere's case details
+  communitySupport Boolean @default(false) // Viewed community support
+  testimonials    Boolean  @default(false) // Viewed testimonials
+  assessments     Boolean  @default(false) // Viewed Jay Forte assessments
+  
+  // Engagement quality
+  interactionDepth String? // shallow, moderate, deep
+  returningVisitor Boolean @default(false)
+  
+  // Technical details
+  ipAddress       String?
+  userAgent       String?
+  location        String? // Geographic location if available
+  
+  // Timestamps
+  firstVisit      DateTime @default(now())
+  lastVisit       DateTime @updatedAt
+  
+  @@map("judge_engagement")
+  @@index([sessionId])
+  @@index([lastVisit])
+}
+
+// 📈 CAMPAIGN METRICS - Overall campaign tracking
+model CampaignMetric {
+  id              String   @id @default(cuid())
+  metricType      CampaignMetricType
+  metricName      String
+  value           Float
+  target          Float?
+  unit            String   // count, percentage, seconds, etc.
+  
+  // Context
+  description     String?
+  category        String?  // prayer, letter, social, engagement, etc.
+  
+  // Date tracking (for time-series data)
+  date            DateTime @default(now())
+  hour            Int?     // Hour of day (0-23)
+  dayOfWeek       Int?     // Day of week (0-6)
+  
+  @@map("campaign_metrics")
+  @@index([metricType])
+  @@index([date])
+  @@index([category])
+}
+
+enum CampaignMetricType {
+  PRAYER_COUNT
+  LETTER_COUNT  
+  TESTIMONY_COUNT
+  SOCIAL_SHARES
+  COMMUNITY_SIZE
+  JUDGE_ENGAGEMENT
+  RESPONSE_TIME
+  CONVERSION_RATE
+  SPIRITUAL_ALIGNMENT
+  MIRACLE_INDEX
+}
+
+// 🔐 ADMIN SYSTEM - Administrative oversight
+model AdminUser {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  name            String
+  role            AdminRole @default(MODERATOR)
+  
+  // Authentication
+  passwordHash    String?  // For future auth implementation
+  isActive        Boolean  @default(true)
+  
+  // Permissions
+  canModerate     Boolean  @default(true)   // Moderate prayers/testimonies
+  canAnalyze      Boolean  @default(true)   // Access analytics
+  canExport       Boolean  @default(false)  // Export data
+  canAdminister   Boolean  @default(false)  // Full admin access
+  
+  // Activity tracking
+  lastLoginAt     DateTime?
+  loginCount      Int      @default(0)
+  
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("admin_users")
+  @@index([email])
+  @@index([role])
+  @@index([isActive])
+}
+
+enum AdminRole {
+  SUPER_ADMIN     // Full system access
+  ADMIN           // High-level access
+  MODERATOR       // Content moderation
+  ANALYST         // Analytics only
+  VIEWER          // Read-only access
+} 

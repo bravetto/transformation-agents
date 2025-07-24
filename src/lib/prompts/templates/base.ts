@@ -12,6 +12,7 @@ const baseTemplate: PromptTemplateConfig = {
   name: "Bridge Base Template",
   description: "The standard template for Bridge Project AI interactions",
   version: "1.0.0",
+  metadata: {},
   variables: [
     "goals",
     "stage",
@@ -39,6 +40,8 @@ Remember to:
 - Provide guidance that aligns with your values and expertise
 - Balance listening and advising
 - Respect the user's background and perspective`,
+      variables: ["userName", "goals", "stage", "currentTopic"],
+      order: 1,
       priority: 100,
       isRequired: true,
     },
@@ -54,6 +57,8 @@ Remember to:
 - Reflection: Encourage processing learnings and next steps
 
 Adjust your responses accordingly, staying mindful of where the user is in their journey.`,
+      variables: ["stage"],
+      order: 2,
       priority: 90,
       isRequired: true,
     },
@@ -62,16 +67,15 @@ Adjust your responses accordingly, staying mindful of where the user is in their
       name: "Personalization",
       content: `This conversation should be personalized based on:
 
-${(context: ConversationContext) => (context.userMood ? `- User's current mood: ${context.userMood}` : "")}
-${(context: ConversationContext, profile?: UserProfile) => (profile?.interests?.length ? `- User's interests: ${profile.interests.join(", ")}` : "")}
-${(context: ConversationContext, profile?: UserProfile) => (profile?.personalValues?.length ? `- User's values: ${profile.personalValues.join(", ")}` : "")}
-${(context: ConversationContext, profile?: UserProfile) => (profile?.relationshipToProject ? `- User's relationship to the project: ${profile.relationshipToProject}` : "")}
+{{userProfileSummary}}
 
 When appropriate, make connections between these elements and your guidance.`,
+      variables: ["userProfileSummary"],
+      order: 3,
       priority: 80,
       isRequired: false,
-      condition: (context: ConversationContext, profile?: UserProfile) =>
-        Boolean(profile),
+      condition: (context?: ConversationContext, userProfile?: UserProfile) =>
+        Boolean(userProfile),
     },
     {
       id: "topic-continuity",
@@ -79,10 +83,12 @@ When appropriate, make connections between these elements and your guidance.`,
       content: `Previous topics in this conversation have included: {{previousTopics}}.
 
 When relevant, make connections to these earlier topics, building a coherent narrative throughout the conversation.`,
+      variables: ["previousTopics"],
+      order: 4,
       priority: 70,
       isRequired: false,
-      condition: (context: ConversationContext) =>
-        Boolean(context.previousTopics?.length),
+      condition: (context?: ConversationContext) =>
+        Boolean(context?.previousTopics?.length),
     },
     {
       id: "spiritual-guidance",
@@ -93,9 +99,11 @@ When relevant, make connections to these earlier topics, building a coherent nar
 - Share wisdom from your perspective without imposing
 - Connect spiritual insights to practical applications
 - Acknowledge the divine potential within each person`,
+      variables: [],
+      order: 5,
       priority: 60,
       isRequired: false,
-      condition: (context: ConversationContext, profile?: UserProfile) => {
+      condition: (context?: ConversationContext, userProfile?: UserProfile) => {
         // Include this section for faith-oriented personalities or when discussing spiritual topics
         const faithTopics = [
           "faith",
@@ -107,9 +115,9 @@ When relevant, make connections to these earlier topics, building a coherent nar
           "religion",
         ];
         const hasFaithTopic =
-          context.currentTopic &&
+          context?.currentTopic &&
           faithTopics.some((topic) =>
-            context.currentTopic?.toLowerCase().includes(topic),
+            context?.currentTopic?.toLowerCase().includes(topic),
           );
 
         return hasFaithTopic || false;
@@ -125,6 +133,8 @@ When relevant, make connections to these earlier topics, building a coherent nar
 - Restorative approaches heal both individuals and communities
 - Lived experience brings essential wisdom to solutions
 - Reconciliation requires truth, accountability, and compassion`,
+      variables: [],
+      order: 6,
       priority: 50,
       isRequired: true,
     },

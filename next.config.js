@@ -1,149 +1,158 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    // Enable React 18 features (appDir is now default in Next.js 13+)
-    optimizeCss: true,
-    optimizePackageImports: [
-      "lucide-react",
-      "framer-motion",
-      "@radix-ui/react-tooltip",
-      "@radix-ui/react-dialog",
-      "@radix-ui/react-popover",
-      "date-fns",
-      "clsx",
-      "tailwind-merge",
-    ],
+  // Latest Next.js 15.4.3 with React 19 and Turbopack integration
+
+  // Updated: serverComponentsExternalPackages moved to top level
+  serverExternalPackages: ["prisma", "bcryptjs"],
+
+  // Updated: Turbopack configuration (no longer experimental)
+  turbopack: {
+    resolveAlias: {
+      canvas: "./empty-module.js",
+    },
+    // Fix hot reload instability
+    rules: {
+      "*.svg": {
+        loaders: ["@svgr/webpack"],
+        as: "*.js",
+      },
+    },
   },
 
-  // Move serverComponentsExternalPackages to root level
-  serverExternalPackages: [],
+  experimental: {
+    // Enhanced streaming for better performance
+    serverActions: {
+      allowedOrigins: ["localhost:1357", "july28freedom.vercel.app"],
+    },
 
-  // 🚀 PERFORMANCE SUPREMACY CONFIGURATION
+    // Enhanced caching for divine performance (merged configuration)
+    staleTimes: {
+      dynamic: 0, // Fresh data for dynamic routes (championship setting)
+      static: 300, // 5 minute cache for static content
+    },
+
+    // CSS and bundle optimizations
+    optimizeCss: true,
+    webVitalsAttribution: ["CLS", "LCP", "INP"],
+
+    // 2025 Performance optimizations (merged and deduplicated)
+    optimizePackageImports: [
+      "framer-motion",
+      "lucide-react",
+      "@radix-ui/react-popover",
+      "@radix-ui/react-icons",
+      "next/font",
+      "@radix-ui/react-slot",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-dropdown-menu",
+    ],
+
+    // Enable browser debug info forwarding
+    browserDebugInfoInTerminal: true,
+  },
+
+  // Enhanced compiler options for React 19
+  compiler: {
+    // Remove console logs in production for divine cleanliness
+    removeConsole: process.env.NODE_ENV === "production",
+  },
+
+  // Production optimizations
+  compress: true,
+  poweredByHeader: false,
+  productionBrowserSourceMaps: false, // Disable for performance
+
+  // Development optimization to fix hot reload instability
+  ...(process.env.NODE_ENV === "development" && {
+    // Fix routes-manifest.json ENOENT errors
+    generateBuildId: async () => {
+      return "divine-development-build";
+    },
+  }),
+
+  // Image optimization with 2024 best practices
   images: {
-    // Enable next-gen image formats
-    formats: ["image/avif", "image/webp"],
-    // Optimize image loading
-    minimumCacheTTL: 60 * 60 * 24 * 365, // 1 year
-    // Image optimization
-    dangerouslyAllowSVG: true,
-    contentDispositionType: "attachment",
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    domains: [],
-    // Responsive image breakpoints
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    formats: ["image/webp", "image/avif"],
+    minimumCacheTTL: 31536000, // 1 year for divine caching
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    domains: ["images.unsplash.com", "picsum.photos"],
   },
 
-  // Simplified webpack configuration to prevent module loading failures
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // Only apply minimal optimizations to prevent webpack module errors
-    if (!isServer && !dev) {
-      // Production-only optimizations with safer chunk splitting
-      config.optimization.splitChunks = {
-        chunks: "all",
-        maxSize: 500000,
-        cacheGroups: {
-          default: {
-            minChunks: 2,
-            priority: -20,
-            reuseExistingChunk: true,
-          },
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: "vendors",
-            priority: -10,
-            chunks: "all",
-            reuseExistingChunk: true,
-          },
-        },
-      };
-    }
+  // Advanced bundling optimization (removed webpack config to avoid Turbopack conflicts)
 
-    return config;
-  },
-
-  // Headers for performance optimization
+  // Enhanced headers for performance and security
   async headers() {
     return [
       {
-        source: "/:path*",
+        source: "/(.*)",
         headers: [
-          // Cache static assets aggressively
+          // Enhanced security headers for 2025
           {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
-          // Security headers
           {
-            key: "X-DNS-Prefetch-Control",
-            value: "on",
+            key: "X-Frame-Options",
+            value: "DENY",
           },
           {
             key: "X-XSS-Protection",
             value: "1; mode=block",
           },
           {
-            key: "X-Frame-Options",
-            value: "SAMEORIGIN",
+            key: "Referrer-Policy",
+            value: "origin-when-cross-origin",
           },
+          // Divine performance headers
           {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
-          },
-          // Performance headers
-          {
-            key: "X-Compress",
-            value: "1",
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },
       {
         source: "/api/:path*",
         headers: [
-          // API-specific caching
           {
             key: "Cache-Control",
-            value:
-              "public, max-age=60, s-maxage=300, stale-while-revalidate=60",
+            value: "s-maxage=1, stale-while-revalidate=59",
+          },
+        ],
+      },
+      {
+        source: "/images/:all*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/_next/static/:all*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },
     ];
   },
 
-  // Enable compression and optimization
-  compress: true,
-  poweredByHeader: false,
-
-  // Build optimization
-  generateBuildId: async () => {
-    // Use deterministic build ID for better caching
-    return "build-" + Date.now();
-  },
-
-  // Redirect and rewrite optimization
+  // Optimized redirects for SEO
   async redirects() {
-    return [];
+    return [
+      {
+        source: "/home",
+        destination: "/",
+        permanent: true,
+      },
+    ];
   },
-
-  // Environment configuration
-  env: {
-    NEXT_TELEMETRY_DISABLED: "1", // Disable telemetry for faster builds
-  },
-
-  // TypeScript configuration
-  typescript: {
-    ignoreBuildErrors: false, // Maintain type safety
-  },
-
-  // ESLint configuration
-  eslint: {
-    ignoreDuringBuilds: false, // Maintain code quality
-  },
-
-  // Server runtime optimization
-  serverRuntimeConfig: {},
-  publicRuntimeConfig: {},
 };
 
 module.exports = nextConfig;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { getPerformanceMemory } from "../utils";
 
 // 🚀 ADVANCED PERFORMANCE MONITORING SYSTEM
 // Client-side only with SSR safety and RUM capabilities
@@ -156,7 +157,7 @@ class ClientPerformanceMonitor {
           this.metrics.ttfb =
             navigation.responseStart - navigation.requestStart;
           this.metrics.pageLoadTime =
-            navigation.loadEventEnd - navigation.navigationStart;
+            navigation.loadEventEnd - navigation.fetchStart;
           this.updatePerformanceScore();
           this.notifyCallbacks();
         }
@@ -259,9 +260,9 @@ class ClientPerformanceMonitor {
   }
 
   private getMemoryUsage(): number {
-    if ("memory" in performance) {
-      const memory = (performance as any).memory;
-      return memory.usedJSHeapSize / 1024 / 1024; // Convert to MB
+    const memoryInfo = getPerformanceMemory();
+    if (memoryInfo) {
+      return memoryInfo.used / 1024 / 1024; // Convert to MB
     }
     return 0;
   }
@@ -443,7 +444,7 @@ export function usePerformanceMonitoring(config?: Partial<PerformanceConfig>) {
       unsubscribe();
       performanceMonitor.destroy();
     };
-  }, []);
+  }, [config]); // Added config to dependency array
 
   const trackCustomMetric = useCallback(
     (name: string, value: number) => {

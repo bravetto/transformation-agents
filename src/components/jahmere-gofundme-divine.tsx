@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import {
   DollarSign,
   Calendar,
@@ -28,7 +29,7 @@ import Particles from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import type { Engine, ISourceOptions } from "@tsparticles/engine";
 
-export default function JAHmereGoFundMeDivine() {
+function JAHmereGoFundMeDivine() {
   const [raised, setRaised] = useState(2847);
   const [donors, setDonors] = useState(47);
   const [daysLeft, setDaysLeft] = useState(13);
@@ -92,7 +93,7 @@ export default function JAHmereGoFundMeDivine() {
       events: {
         onClick: { enable: true, mode: "push" },
         onHover: { enable: true, mode: "repulse" },
-        resize: true,
+        resize: { enable: true },
       },
       modes: {
         push: { quantity: 7 }, // Divine number
@@ -118,17 +119,17 @@ export default function JAHmereGoFundMeDivine() {
         straight: false,
       },
       number: {
-        density: { enable: true, area: 800 },
+        density: { enable: true },
         value: 47, // Number of character witnesses
       },
       opacity: {
         value: 0.7,
-        animation: { enable: true, speed: 1, minimumValue: 0.1 },
+        animation: { enable: true, speed: 1 },
       },
       shape: { type: "star" },
       size: {
         value: { min: 1, max: 5 },
-        animation: { enable: true, speed: 3, minimumValue: 0.1 },
+        animation: { enable: true, speed: 3 },
       },
     },
     detectRetina: true,
@@ -214,11 +215,7 @@ export default function JAHmereGoFundMeDivine() {
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black relative overflow-hidden">
       {/* Divine Particles Background */}
       <div className="absolute inset-0 z-0">
-        <Particles
-          id="divine-particles"
-          init={particlesInit}
-          options={particlesOptions}
-        />
+        <Particles id="divine-particles" options={particlesOptions} />
       </div>
 
       {/* Prayer Traffic Overload Indicator */}
@@ -739,3 +736,8 @@ export default function JAHmereGoFundMeDivine() {
     </div>
   );
 }
+
+export default withDivineErrorBoundary(JAHmereGoFundMeDivine, {
+  componentName: "JAHmereGoFundMeDivine",
+  role: "messenger",
+});

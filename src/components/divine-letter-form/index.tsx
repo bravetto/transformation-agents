@@ -31,7 +31,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { withDivineErrorBoundary } from "../ui/divine-error-boundary";
-import { DivineParticles } from "../divine-particles";
+// DivineParticles removed for hydration stability
 import { cn } from "@/lib/utils";
 import { LetterFormProvider, useLetterForm } from "./context";
 import { DivineLetterFormProps, FormStep } from "./types";
@@ -54,12 +54,13 @@ function DivineLetterForm({
   return (
     <LetterFormProvider onSubmit={onSubmit} onSave={onSave}>
       <div className={cn("relative w-full max-w-4xl mx-auto", className)}>
-        {/* Background particles */}
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <DivineParticles
-            variant="sacred"
-            className="h-full w-full opacity-10"
-          />
+        {/* Static Background */}
+        <div className="absolute inset-0 -z-10 overflow-hidden bg-gradient-to-br from-purple-100/20 via-transparent to-blue-100/15 opacity-10">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.1),transparent)] animate-pulse"></div>
+          <div
+            className="absolute inset-0 bg-[radial-gradient(circle_at_25%_75%,rgba(59,130,246,0.1),transparent)] animate-pulse"
+            style={{ animationDelay: "1s" }}
+          ></div>
         </div>
 
         {/* Form container */}

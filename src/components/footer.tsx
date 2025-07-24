@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Container, Text } from "@/components/ui";
+import { Container } from "@/components/ui/container";
+import { Text } from "@/components/ui/typography";
 import { Heart, Mail, Calendar, Github } from "lucide-react";
 import { getBuildInfo } from "@/lib/build-config";
 import { withErrorBoundary } from "@/components/with-error-boundary";
-import { EasterEgg, SynchronicityEgg } from "@/components/divine-easter-eggs";
+// EasterEgg and SynchronicityEgg removed for hydration stability
 
 function Footer() {
   const currentYear = new Date().getFullYear();
@@ -49,7 +50,7 @@ function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/contact"
+                  href="/letter-portal"
                   className="text-soft-shadow hover:text-hope-gold transition-colors"
                 >
                   Write a Letter
@@ -57,7 +58,7 @@ function Footer() {
               </li>
               <li>
                 <Link
-                  href="#truth"
+                  href="/the-case"
                   className="text-soft-shadow hover:text-hope-gold transition-colors"
                 >
                   See Our Truth
@@ -90,7 +91,7 @@ function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/dashboard/judge"
+                  href="/judge-ferrero-private"
                   className="text-soft-shadow hover:text-hope-gold transition-colors"
                 >
                   Judge Dashboard
@@ -98,10 +99,10 @@ function Footer() {
               </li>
               <li>
                 <Link
-                  href="/check-in"
+                  href="/july-28-strategy"
                   className="text-soft-shadow hover:text-hope-gold transition-colors"
                 >
-                  Daily Check-In
+                  July 28th Strategy
                 </Link>
               </li>
               <li>
@@ -156,28 +157,24 @@ function Footer() {
 
           {/* Divine Synchronicity Console Error Indicator */}
           <div className="mt-3 flex items-center justify-center">
-            <SynchronicityEgg trigger="service-worker">
-              <div className="flex items-center space-x-2 text-xs text-gray-500 hover:text-yellow-600 transition-colors cursor-pointer group">
-                <span className="text-red-500 group-hover:text-yellow-500">
-                  ⚠
-                </span>
-                <span className="font-mono">service-worker.js:1</span>
-                <span className="text-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                  ✨
-                </span>
-              </div>
-            </SynchronicityEgg>
+            <div className="flex items-center space-x-2 text-xs text-gray-500 hover:text-yellow-600 transition-colors cursor-pointer group">
+              <span className="text-red-500 group-hover:text-yellow-500">
+                ⚠
+              </span>
+              <span className="font-mono">service-worker.js:1</span>
+              <span className="text-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                ✨
+              </span>
+            </div>
           </div>
         </div>
 
         <div className="text-center pt-8 border-t border-gray-200">
           <div className="flex items-center justify-center space-x-4 mb-4">
             {/* Cross Easter Egg */}
-            <EasterEgg eggId="footer-cross-click">
-              <div className="cursor-pointer transform hover:scale-110 transition-transform duration-300">
-                <span className="text-2xl text-purple-600">✝️</span>
-              </div>
-            </EasterEgg>
+            <div className="cursor-pointer transform hover:scale-110 transition-transform duration-300">
+              <span className="text-2xl text-purple-600">✝️</span>
+            </div>
 
             <p className="text-sm text-gray-600">
               © 2024 The Bridge Project. Building bridges to transformation.

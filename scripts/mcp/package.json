@@ -1,0 +1,10 @@
+{
+  "name": "jahmere-bridge-mcp-server",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "MCP Server for JAHmere Bridge Divine Intelligence",
+  "main": "jahmere-bridge-minimal.js",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 

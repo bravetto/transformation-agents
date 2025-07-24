@@ -376,7 +376,7 @@ function ImpactDashboard() {
               whileTap={{ scale: 0.98 }}
               onClick={() => {
                 if (typeof window !== "undefined") {
-                  window.location.href = "/contact";
+                  window.open("/contact", "_self");
                 }
               }}
               className="w-full mt-4 bg-hope-gold text-pure-white py-2 rounded-lg font-semibold hover:bg-hope-gold/90 transition-colors text-sm"

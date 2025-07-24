@@ -10,7 +10,7 @@ import {
   ABTestResult,
   PromptSystemControls,
   SafetyCheckResult,
-} from "../types";
+} from "@/types/prompts";
 
 import { promptTemplateService } from "../template-service";
 import { promptAnalytics } from "./analytics";

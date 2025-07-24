@@ -84,7 +84,4 @@ function withUnificationErrorBoundary<P extends object>(
   };
 }
 
-export default withErrorBoundary(withUnificationErrorBoundary, {
-  componentName: "withUnificationErrorBoundary",
-  id: "withunificationerrorboundary",
-});
+export default withUnificationErrorBoundary;

@@ -394,6 +394,7 @@ function DevPortalUI({ isFirstUnlock }: DevPortalUIProps) {
       const timer = setTimeout(() => setShowNewBadge(false), 10000);
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [showNewBadge]);
 
   const handleNavigate = (path: string) => {

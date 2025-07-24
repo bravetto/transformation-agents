@@ -3,7 +3,7 @@
  * Predictive preloading for optimal Core Web Vitals
  */
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 interface SpeculationRule {
   source: "list" | "document";
@@ -42,9 +42,8 @@ export function SpeculationRules({
 }: {
   config?: Partial<SpeculationRulesConfig>;
 }) {
-  const finalConfig = { ...DEFAULT_CONFIG, ...config };
-
   useEffect(() => {
+    const finalConfig = { ...DEFAULT_CONFIG, ...config };
     // Check if Speculation Rules API is supported
     if (!("HTMLScriptElement" in window) || !HTMLScriptElement.supports) {
       console.log(
@@ -108,7 +107,7 @@ export function SpeculationRules({
       console.warn("Error setting up Speculation Rules:", error);
       fallbackPrefetch(finalConfig.preloadCriticalPaths);
     }
-  }, [finalConfig]);
+  }, [config]);
 
   return null; // This component doesn't render anything
 }
@@ -179,7 +178,7 @@ function fallbackPrefetch(urls: string[]): void {
  * Hook for dynamic speculation rules
  */
 export function useSpeculationRules() {
-  const prefetchOnHover = (selector: string) => {
+  const usePrefetchOnHover = (selector: string) => {
     useEffect(() => {
       const elements = document.querySelectorAll(selector);
       elements.forEach((element) => {
@@ -217,7 +216,7 @@ export function useSpeculationRules() {
     document.head.appendChild(script);
   };
 
-  return { prefetchOnHover, prerenderOnIntent };
+  return { usePrefetchOnHover, prerenderOnIntent };
 }
 
 /**

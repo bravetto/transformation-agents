@@ -4,7 +4,7 @@ import React from "react";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { DivineParticles } from "./divine-particles";
+// DivineParticles removed for hydration stability
 
 import { cn } from "@/lib/utils";
 
@@ -89,10 +89,7 @@ function WayHome({ role = "default", className }: WayHomeProps) {
       )}
     >
       {/* Sacred particles */}
-      <DivineParticles
-        variant="divine"
-        className="absolute inset-0 opacity-30"
-      />
+      {/* DivineParticles removed for MVP hydration stability */}
 
       {/* Divine light rays */}
       <div className="absolute inset-0 pointer-events-none">

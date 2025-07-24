@@ -41,18 +41,11 @@ interface PerformanceData {
 // In-memory storage for demo (use database in production)
 let performanceMetrics: PerformanceData[] = [];
 
-export async function POST(request: NextRequest) {
-  try {
-    const data: PerformanceData = await request.json();
-
-    // Validate required fields
-    if (!data.url || !data.timestamp) {
-      return NextResponse.json(
-        { error: "Missing required fields: url, timestamp" },
-        { status: 400 },
-      );
-    }
-
+export const POST = createSecureAPIHandler({
+  method: "POST",
+  schema: API_SCHEMAS.performance,
+  rateLimitType: "ANALYTICS",
+  handler: async (data) => {
     // Add server-side timestamp
     const serverData = {
       ...data,
@@ -90,25 +83,15 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    return NextResponse.json({
+    return {
       success: true,
       message: "Performance metrics recorded",
       analysis,
       serverProcessingTime: serverData.serverProcessingTime,
       timestamp: Date.now(),
-    });
-  } catch (error) {
-    console.error("Performance metrics API error:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: "Failed to record performance metrics",
-        timestamp: Date.now(),
-      },
-      { status: 500 },
-    );
-  }
-}
+    };
+  },
+});
 
 export async function GET(request: NextRequest) {
   try {
@@ -259,9 +242,11 @@ function analyzePerformance(data: PerformanceData): {
   }
 
   // Analyze component load times
-  const slowComponents = Object.entries(data.componentLoadTimes)
-    .filter(([_, time]) => time > 1000)
-    .map(([name]) => name);
+  const slowComponents = data.componentLoadTimes
+    ? Object.entries(data.componentLoadTimes)
+        .filter(([_, time]) => time > 1000)
+        .map(([name]) => name)
+    : [];
 
   if (slowComponents.length > 0) {
     score -= 10;
@@ -270,9 +255,11 @@ function analyzePerformance(data: PerformanceData): {
   }
 
   // Analyze API performance
-  const slowApis = Object.entries(data.apiResponseTimes)
-    .filter(([_, time]) => time > 500)
-    .map(([endpoint]) => endpoint);
+  const slowApis = data.apiResponseTimes
+    ? Object.entries(data.apiResponseTimes)
+        .filter(([_, time]) => time > 500)
+        .map(([endpoint]) => endpoint)
+    : [];
 
   if (slowApis.length > 0) {
     score -= 10;

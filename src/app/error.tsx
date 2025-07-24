@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { Button, Heading, Text } from "@/components/ui";
+import { Button } from "@/components/ui/button";
+import { Heading, Text } from "@/components/ui/typography";
 
 export default function Error({
   error,
@@ -21,29 +22,29 @@ export default function Error({
         <Heading as="h2" size="h3" className="text-red-600 mb-4">
           Something went wrong
         </Heading>
-        
+
         <Text className="mb-6 text-soft-shadow">
-          We apologize for the inconvenience. The Bridge is experiencing a temporary disruption.
+          We apologize for the inconvenience. The Bridge is experiencing a
+          temporary disruption.
         </Text>
-        
+
         <div className="bg-white p-4 rounded mb-6 overflow-auto max-h-32">
           <Text size="sm" className="font-mono text-red-500">
             {error.message || "An unexpected error occurred"}
-            {error.digest && <span className="block mt-1 text-gray-500">({error.digest})</span>}
+            {error.digest && (
+              <span className="block mt-1 text-gray-500">({error.digest})</span>
+            )}
           </Text>
         </div>
-        
+
         <div className="flex flex-wrap gap-4">
-          <Button 
-            variant="primary"
-            onClick={reset}
-          >
+          <Button variant="primary" onClick={reset}>
             Try again
           </Button>
-          
+
           <Button
             variant="outline"
-            onClick={() => window.location.href = '/'}
+            onClick={() => (window.location.href = "/")}
           >
             Return to homepage
           </Button>
@@ -51,4 +52,4 @@ export default function Error({
       </div>
     </div>
   );
-} 
+}

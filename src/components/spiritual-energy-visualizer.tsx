@@ -8,7 +8,7 @@ import {
   Heart,
   Star,
   Crown,
-  Infinity,
+  Infinity as InfinityIcon,
   Eye,
   Waves,
 } from "lucide-react";
@@ -329,7 +329,7 @@ const SpiritualEnergyVisualizer: React.FC<SpiritualEnergyVisualizerProps> = ({
               animate={{ rotate: [0, 180, 360] }}
               transition={{ duration: 4, repeat: Infinity }}
             >
-              <Infinity className="w-8 h-8 text-green-400" />
+              <InfinityIcon className="w-8 h-8 text-green-400" />
             </motion.div>
           )}
 

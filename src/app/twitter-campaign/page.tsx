@@ -18,7 +18,10 @@ import {
   ArrowRight,
   Star,
 } from "lucide-react";
-import { Container, Heading, Text, Button, Card } from "@/components/ui";
+import { Container } from "@/components/ui/container";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Heading, Text } from "@/components/ui/typography";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { cn } from "@/lib/utils";
 import Link from "next/link";

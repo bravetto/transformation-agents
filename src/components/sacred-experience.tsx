@@ -8,7 +8,7 @@ import DivineTransformation from "./divine-transformation";
 
 import SacredContainer from "./sacred-container";
 
-import { DivineParticles } from "./divine-particles";
+// DivineParticles removed for hydration stability
 
 import { cn } from "@/lib/utils";
 
@@ -191,10 +191,7 @@ function SacredExperience({
 
       {/* Divine Background Effects */}
       <div className="fixed inset-0 pointer-events-none">
-        <DivineParticles
-          variant="divine"
-          className="h-full w-full opacity-30"
-        />
+        {/* DivineParticles removed for MVP hydration stability */}
       </div>
     </SacredContainer>
   );

@@ -152,6 +152,7 @@ function CascadeMonitor({
       const interval = setInterval(fetchSystemHealth, refreshInterval);
       return () => clearInterval(interval);
     }
+    return undefined;
   }, [fetchSystemHealth, autoRefresh, refreshInterval]);
 
   // Get status color and icon
@@ -403,9 +404,7 @@ function CascadeMonitor({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() =>
-                      (window.location.href = "/analytics-dashboard")
-                    }
+                    onClick={() => window.open("/analytics-dashboard", "_self")}
                     className="flex-1"
                   >
                     <Activity className="w-3 h-3 mr-1" />

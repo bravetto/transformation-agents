@@ -1,0 +1,209 @@
+
+> july-28-freedom-portal@1.0.0 build
+> next build
+
+   ▲ Next.js 15.4.2
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ optimizeCss
+     · optimizePackageImports
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 8.0s
+   Linting and checking validity of types ...
+
+./src/components/analytics/user-journey-dashboard.tsx
+100:6  Warning: React Hook useCallback has a missing dependency: 'generateMockMetrics'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/divine-easter-eggs.tsx
+685:45  Warning: React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+691:39  Warning: React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+693:3  Warning: React Hook "useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+
+./src/components/divine-impact-dashboard.tsx
+168:26  Warning: React Hook "useRef" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+193:3  Warning: React Hook "useRenderLoopDetection" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+194:19  Warning: React Hook "useCleanupManager" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+195:22  Warning: React Hook "useMemoryMonitoring" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+196:30  Warning: React Hook "usePerformanceMonitoring" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+199:41  Warning: React Hook "useSafeState" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+200:43  Warning: React Hook "useSafeState" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+201:45  Warning: React Hook "useSafeState" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+202:39  Warning: React Hook "useSafeState" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+207:27  Warning: React Hook "useMemo" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+212:23  Warning: React Hook "useMemo" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+217:25  Warning: React Hook "React.useCallback" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+271:3  Warning: React Hook "React.useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+280:3  Warning: React Hook "React.useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+297:28  Warning: React Hook "useMemo" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+
+./src/components/divine-particles.tsx
+221:3  Warning: React Hook "useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?  react-hooks/rules-of-hooks
+241:30  Warning: React Hook "useMemo" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?  react-hooks/rules-of-hooks
+
+./src/components/divine-synchronicity-analyzer.tsx
+207:6  Warning: React Hook useEffect has missing dependencies: 'generateCleansingReport', 'initializeCascadeVisualization', and 'initializeSynchronicityPatterns'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/hero.tsx
+64:23  Warning: React Hook "useRef" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+
+./src/components/prophetic-countdown.tsx
+102:26  Warning: React Hook "useRef" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+127:3  Warning: React Hook "useRenderLoopDetection" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+128:19  Warning: React Hook "useCleanupManager" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+129:30  Warning: React Hook "usePerformanceMonitoring" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+132:37  Warning: React Hook "useSafeState" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+141:39  Warning: React Hook "useSafeState" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+142:49  Warning: React Hook "useSafeState" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+143:35  Warning: React Hook "useSafeState" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+146:28  Warning: React Hook "useMemo" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+168:27  Warning: React Hook "React.useCallback" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+229:3  Warning: React Hook "React.useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+240:3  Warning: React Hook "React.useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+251:3  Warning: React Hook "React.useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+266:22  Warning: React Hook "useMemo" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+268:29  Warning: React Hook "useMemo" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+
+./src/components/ui/speculation-rules.tsx
+45:9  Warning: The 'finalConfig' object makes the dependencies of useEffect Hook (at line 111) change on every render. Move it inside the useEffect callback. Alternatively, wrap the initialization of 'finalConfig' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+183:5  Warning: React Hook "useEffect" is called in function "prefetchOnHover" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word "use".  react-hooks/rules-of-hooks
+
+./src/lib/circuit-breaker.tsx
+150:6  Warning: React Hook useEffect has a missing dependency: 'config'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/lib/performance/performance-monitor-client.tsx
+447:6  Warning: React Hook useEffect has a missing dependency: 'config'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+   Collecting page data ...
+[DATABASE] Initializing connection pool...
+[DATABASE] Connection pool ready
+   Generating static pages (0/98) ...
+[DATABASE] Initializing connection pool...
+[DATABASE] Connection pool ready
+   Generating static pages (24/98) 
+   Generating static pages (48/98) 
+   Generating static pages (73/98) 
+ ✓ Generating static pages (98/98)
+{"timestamp":"2025-07-21T16:42:59.878Z","level":"INFO","message":"Received SIGINT, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79972,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":166346752,"heapTotal":83345408,"heapUsed":58789168,"external":6127540,"arrayBuffers":2533749},"environment":"server"}}
+[DATABASE] Graceful shutdown initiated...
+{"timestamp":"2025-07-21T16:42:59.879Z","level":"INFO","message":"Received SIGINT, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79972,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":166363136,"heapTotal":83345408,"heapUsed":58797032,"external":6127580,"arrayBuffers":2533749},"environment":"server"}}
+{"timestamp":"2025-07-21T16:42:59.878Z","level":"INFO","message":"Received SIGINT, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79974,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":195198976,"heapTotal":93618176,"heapUsed":60262832,"external":5977116,"arrayBuffers":2383045},"environment":"server"}}
+{"timestamp":"2025-07-21T16:42:59.625Z","level":"INFO","message":"Trinity Entry Portal accessed","environment":"production","version":"1.0.0","context":{"timestamp":"2025-07-21T16:42:59.625Z"},"metadata":{"pid":79974,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":155828224,"heapTotal":72155136,"heapUsed":47918768,"external":5456382,"arrayBuffers":1862371},"environment":"server"}}
+{"timestamp":"2025-07-21T16:42:59.879Z","level":"INFO","message":"Received SIGINT, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79974,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":195198976,"heapTotal":93618176,"heapUsed":60404424,"external":5977116,"arrayBuffers":2383045},"environment":"server"}}
+{"timestamp":"2025-07-21T16:42:59.878Z","level":"INFO","message":"Received SIGINT, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79975,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":170737664,"heapTotal":81461248,"heapUsed":47082600,"external":5808350,"arrayBuffers":2214379},"environment":"server"}}
+{"timestamp":"2025-07-21T16:42:59.878Z","level":"INFO","message":"Received SIGINT, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79973,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":177668096,"heapTotal":88080384,"heapUsed":63944720,"external":7081816,"arrayBuffers":3487785},"environment":"server"}}
+{"timestamp":"2025-07-21T16:43:00.381Z","level":"INFO","message":"Received SIGTERM, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79972,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":166395904,"heapTotal":83345408,"heapUsed":58803168,"external":6127590,"arrayBuffers":2533759},"environment":"server"}}
+{"timestamp":"2025-07-21T16:43:00.381Z","level":"INFO","message":"Received SIGTERM, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79972,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":166395904,"heapTotal":83345408,"heapUsed":58807184,"external":6127590,"arrayBuffers":2533759},"environment":"server"}}
+{"timestamp":"2025-07-21T16:43:00.381Z","level":"INFO","message":"Received SIGTERM, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79973,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":177717248,"heapTotal":88080384,"heapUsed":63954624,"external":7081866,"arrayBuffers":3487795},"environment":"server"}}
+{"timestamp":"2025-07-21T16:43:00.381Z","level":"INFO","message":"Received SIGTERM, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79974,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":195231744,"heapTotal":93618176,"heapUsed":60412088,"external":5977126,"arrayBuffers":2383055},"environment":"server"}}
+{"timestamp":"2025-07-21T16:43:00.381Z","level":"INFO","message":"Received SIGTERM, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79974,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":195231744,"heapTotal":93618176,"heapUsed":60415600,"external":5977126,"arrayBuffers":2383055},"environment":"server"}}
+{"timestamp":"2025-07-21T16:43:00.381Z","level":"INFO","message":"Received SIGTERM, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79975,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":170770432,"heapTotal":81461248,"heapUsed":47152032,"external":5808400,"arrayBuffers":2214389},"environment":"server"}}
+   Finalizing page optimization ...
+   Collecting build traces ...
+{"timestamp":"2025-07-21T16:43:01.107Z","level":"INFO","message":"Received SIGINT, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79828,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":107249664,"heapTotal":40992768,"heapUsed":26737120,"external":3604604,"arrayBuffers":28139},"environment":"server"}}
+{"timestamp":"2025-07-21T16:43:01.107Z","level":"INFO","message":"Received SIGINT, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79826,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":105693184,"heapTotal":40992768,"heapUsed":26847312,"external":3604550,"arrayBuffers":28085},"environment":"server"}}
+{"timestamp":"2025-07-21T16:43:01.108Z","level":"INFO","message":"Received SIGINT, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79836,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":106708992,"heapTotal":40730624,"heapUsed":26108248,"external":3603596,"arrayBuffers":27131},"environment":"server"}}
+[DATABASE] Graceful shutdown initiated...
+{"timestamp":"2025-07-21T16:43:01.107Z","level":"INFO","message":"Received SIGINT, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79825,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":102580224,"heapTotal":40730624,"heapUsed":25869344,"external":3603558,"arrayBuffers":27093},"environment":"server"}}
+{"timestamp":"2025-07-21T16:43:01.108Z","level":"INFO","message":"Received SIGINT, flushing logs...","environment":"production","version":"1.0.0","metadata":{"pid":79835,"platform":"darwin","nodeVersion":"v20.5.0","memoryUsage":{"rss":109330432,"heapTotal":41500672,"heapUsed":21954168,"external":3598324,"arrayBuffers":21859},"environment":"server"}}
+
+Route (app)                                   Size  First Load JS
+┌ ○ /                                      12.9 kB         244 kB
+├ ○ /_not-found                               1 kB         101 kB
+├ ○ /admin/analytics                       2.05 kB         111 kB
+├ ○ /admin/settings                         5.3 kB         125 kB
+├ ○ /agents/performance                    3.19 kB         110 kB
+├ ○ /analytics-dashboard                   3.77 kB         154 kB
+├ ƒ /api/analytics/divine-events             171 B         100 kB
+├ ƒ /api/analytics/performance               171 B         100 kB
+├ ƒ /api/analytics/user-journey              171 B         100 kB
+├ ƒ /api/analytics/user-journey/dashboard    171 B         100 kB
+├ ƒ /api/countdown                           171 B         100 kB
+├ ƒ /api/divine-status                       171 B         100 kB
+├ ƒ /api/health                              171 B         100 kB
+├ ƒ /api/monitoring/health                   171 B         100 kB
+├ ƒ /api/monitoring/render-loop              171 B         100 kB
+├ ƒ /api/prayers                             171 B         100 kB
+├ ƒ /api/testimonies                         171 B         100 kB
+├ ○ /blue-ocean-navigator                  7.15 kB         160 kB
+├ ○ /campaign                              4.13 kB         158 kB
+├ ○ /champion                              4.52 kB         155 kB
+├ ○ /clickup-crm-demo                      2.06 kB         111 kB
+├ ○ /community-release-plan                7.74 kB         155 kB
+├ ○ /component-showcase                    4.94 kB         233 kB
+├ ○ /consciousness                         5.08 kB         163 kB
+├ ○ /contact                               8.37 kB         150 kB
+├ ○ /countdown-demo                        6.32 kB         243 kB
+├ ○ /countdown-test                        4.92 kB         241 kB
+├ ○ /daily-bread                           1.48 kB         156 kB
+├ ○ /dashboard/judge                       8.17 kB         155 kB
+├ ○ /debug/errors                          3.75 kB         116 kB
+├ ○ /debug/performance                     4.67 kB         112 kB
+├ ○ /dev-portal-test                        4.3 kB         158 kB
+├ ○ /divine-design-metrics                  121 kB         274 kB
+├ ○ /divine-design-metrics-enhanced        3.82 kB         160 kB
+├ ○ /divine-love                           2.09 kB         111 kB
+├ ○ /divine-revelation                     1.29 kB         156 kB
+├ ○ /divine-synchronicity                  5.98 kB         118 kB
+├ ○ /divine-transformation                 10.3 kB         157 kB
+├ ○ /divine-treasures                      10.3 kB         165 kB
+├ ○ /divine-witness                         2.6 kB         154 kB
+├ ○ /dungy-one-tweet                       6.93 kB         157 kB
+├ ○ /elite-test                            2.53 kB         118 kB
+├ ○ /elite-test-v10                        3.29 kB         157 kB
+├ ○ /emergency-response                    13.6 kB         170 kB
+├ ○ /entry                                 4.43 kB         156 kB
+├ ○ /evidence                              4.48 kB         155 kB
+├ ○ /experimental/ai-chat                  3.95 kB         116 kB
+├ ○ /freedom-portal                         7.3 kB         145 kB
+├ ○ /grand-unification                       185 B         151 kB
+├ ○ /greatness-zone                        10.7 kB         164 kB
+├ ○ /impact                                8.24 kB         162 kB
+├ ○ /impact-dashboard-test                 8.13 kB         161 kB
+├ ○ /jahmere-gofundme                      51.1 kB         189 kB
+├ ○ /jordan-letter                         6.92 kB         111 kB
+├ ○ /judge-ferrero-private                 5.45 kB         156 kB
+├ ○ /july-28-portal                        4.48 kB         158 kB
+├ ○ /july-28-strategy                      5.48 kB         159 kB
+├ ○ /july-9-strategy                       2.29 kB         115 kB
+├ ○ /justice-lab-proposal                   6.1 kB         151 kB
+├ ○ /letter-form-test                      4.85 kB         152 kB
+├ ○ /letter-portal                         13.2 kB         170 kB
+├ ○ /letter-to-dungy                       4.42 kB         146 kB
+├ ○ /particles-test                        4.71 kB         117 kB
+├ ○ /people                                  180 B         188 kB
+├ ● /people/[slug]                           171 B         100 kB
+├   ├ /people/jahmere-webb
+├   ├ /people/coach-dungy
+├   ├ /people/jordan-dungy
+├   └ [+11 more paths]
+├ ○ /people/jordan-dungy                   7.72 kB         163 kB
+├ ○ /people/loading-test                     956 B         189 kB
+├ ○ /prayer-room                           6.82 kB         163 kB
+├ ○ /prompt-demo                           3.53 kB         144 kB
+├ ○ /reset                                   497 B         101 kB
+├ ○ /revelation                            8.06 kB         169 kB
+├ ○ /sacred-experience                     2.68 kB         155 kB
+├ ○ /sacred-weaving                        3.72 kB         151 kB
+├ ○ /story-amplifier-demo                  13.4 kB         172 kB
+├ ○ /test-animations                       2.13 kB         140 kB
+├ ○ /test-components                       3.94 kB         232 kB
+├ ○ /test-logo-assets                      2.21 kB         108 kB
+├ ○ /test-recovery                         3.88 kB         232 kB
+├ ○ /the-case                              4.93 kB         158 kB
+├ ○ /twitter-campaign                      8.63 kB         237 kB
+├ ○ /unite                                 2.54 kB         157 kB
+├ ○ /universal-agent-09                    1.77 kB         163 kB
+├ ○ /way-home                              5.03 kB         155 kB
+└ ○ /youth                                 4.46 kB         155 kB
++ First Load JS shared by all               100 kB
+  ├ chunks/4bd1b696-9909f507f95988b8.js    54.1 kB
+  ├ chunks/5964-d2d056950219065b.js        43.7 kB
+  └ other shared chunks (total)            2.41 kB
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

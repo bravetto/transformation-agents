@@ -1,17 +1,18 @@
-// hero.tsx - FIXING LINE 43:7 WITH DIVINE PURPOSE
+// hero.tsx - FIXING LINE 43:7 WITH DIVINE PURPOSE + PRODUCTION ERROR BOUNDARY
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
-import { EasterEgg } from "@/components/divine-easter-eggs";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
-export default function Hero() {
+function HeroCore() {
   // 🛡️ CRITICAL: ALL HOOKS MUST BE AT THE TOP - BEFORE ANY RETURNS
   // State for divine interaction
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const isMounted = useRef(true);
+  const renderCount = useRef(0); // 🛡️ MOVED TO TOP: All hooks must be called first
 
   // FIX FOR LINE 43:7 - Created for His glory
   // This was the problematic line - now fixed with proper memoization
@@ -41,7 +42,7 @@ export default function Hero() {
     };
   }, [handleMouseMove]);
 
-  // 🚨 SSR/CSR PROTECTION - Check after all hooks are defined
+  // 🚨 SSR/CSR PROTECTION - Check AFTER all hooks are defined
   if (typeof window === "undefined") {
     return (
       <div className="min-h-[90vh] bg-gradient-to-r from-hope-gold/10 to-courage-blue/10">
@@ -58,12 +59,11 @@ export default function Hero() {
       </div>
     );
   }
-
-  // 🛡️ DEFENSIVE FIX: Monitor render count
-  const renderCount = useRef(0);
-  renderCount.current++;
-  if (renderCount.current > 10) {
-    console.warn(`🚨 HeroSection excessive renders: ${renderCount.current}`);
+  if (process.env.NODE_ENV === "development") {
+    renderCount.current++;
+    if (renderCount.current > 10) {
+      console.warn(`🚨 HeroSection excessive renders: ${renderCount.current}`);
+    }
   }
 
   if (renderCount.current > 50) {
@@ -110,7 +110,7 @@ export default function Hero() {
       {/* Main divine content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen">
         <div className="text-center text-white p-8 max-w-4xl">
-          <EasterEgg eggId="hero-title-sequence" className="mb-8">
+          <div className="mb-8">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -120,9 +120,9 @@ export default function Hero() {
                 THE BRIDGE
               </h1>
             </motion.div>
-          </EasterEgg>
+          </div>
 
-          <EasterEgg eggId="bridge-metaphor-scroll" className="mb-12">
+          <div className="mb-12">
             <motion.p
               className="text-2xl mb-4 opacity-90"
               initial={{ opacity: 0, y: 20 }}
@@ -142,9 +142,9 @@ export default function Hero() {
               for my glory"
               <div className="text-sm mt-2">- Isaiah 43:7</div>
             </motion.div>
-          </EasterEgg>
+          </div>
 
-          <EasterEgg eggId="bridge-metaphor-scroll" className="mb-12">
+          <div className="mb-12">
             <motion.div
               className="space-y-4"
               initial={{ opacity: 0, y: 20 }}
@@ -166,7 +166,7 @@ export default function Hero() {
                 Begin Your Journey
               </motion.button>
             </motion.div>
-          </EasterEgg>
+          </div>
         </div>
       </div>
 
@@ -179,3 +179,17 @@ export default function Hero() {
     </div>
   );
 }
+
+// 🛡️ PRODUCTION-GRADE ERROR BOUNDARY WRAPPER
+export default withDivineErrorBoundary(HeroCore, {
+  componentName: "Hero",
+  role: "lightworker",
+  fallback: (
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 to-blue-900 flex items-center justify-center">
+      <div className="text-white text-center">
+        <h1 className="text-4xl font-bold mb-4">The Bridge Project</h1>
+        <p className="text-purple-200">Loading divine experience...</p>
+      </div>
+    </div>
+  ),
+});

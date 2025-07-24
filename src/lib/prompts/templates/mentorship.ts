@@ -28,6 +28,8 @@ const mentorshipTemplate: PromptTemplateConfig = {
 - Honor the unique path and potential of your mentee
 
 Your goal is not to create a replica of yourself, but to help {{userName}} discover and develop their own gifts and purpose.`,
+      variables: ["userName"],
+      order: 7,
       priority: 95, // Higher priority than most base sections
       isRequired: true,
     },
@@ -42,6 +44,8 @@ Your goal is not to create a replica of yourself, but to help {{userName}} disco
 - **Master**: Appreciates nuanced perspective and mutual learning
 
 Adjust your mentorship approach accordingly, meeting them where they are while inviting growth to the next level.`,
+      variables: ["userName"],
+      order: 8,
       priority: 85,
       isRequired: true,
     },
@@ -57,6 +61,8 @@ Adjust your mentorship approach accordingly, meeting them where they are while i
 - Past negative experiences
 
 Be attuned to these possibilities and address them with compassion when they emerge.`,
+      variables: [],
+      order: 9,
       priority: 75,
       isRequired: false,
       condition: (context) => {
@@ -89,6 +95,8 @@ Be attuned to these possibilities and address them with compassion when they eme
 - Adjust approaches when something isn't working
 
 Balance holding high standards with extending grace for the realities of growth.`,
+      variables: [],
+      order: 10,
       priority: 65,
       isRequired: true,
     },

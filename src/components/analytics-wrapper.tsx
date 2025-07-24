@@ -212,23 +212,29 @@ export function usePathAnalytics() {
     });
   };
 
-  const trackStepCompletion = (
-    step: string,
-    nextStep?: string,
-    userType?: UserType,
-  ) => {
-    const currentUserType = userType || getCurrentUserType();
+  const recordStepCompletion = useCallback(
+    (
+      step: string,
+      nextStep?: string,
+      userType?: UserType,
+      metadata?: { timeOnStep?: number },
+    ) => {
+      const currentUserType = userType || getCurrentUserType();
 
-    trackPathProgression({
-      eventType: "step_completed",
-      userType: currentUserType,
-      currentStep: step,
-      nextStep,
-      metadata: {
-        timeOnStep: Date.now(),
-      },
-    });
-  };
+      const progressionData = {
+        eventType: "step_completed" as const,
+        userType: currentUserType,
+        currentStep: step,
+        metadata: {
+          timeOnStep: metadata?.timeOnStep || 0,
+        },
+        ...(nextStep && { nextStep }),
+      };
+
+      trackPathProgression(progressionData);
+    },
+    [],
+  );
 
   const trackJourneyAbandonment = (
     step: string,
@@ -268,7 +274,7 @@ export function usePathAnalytics() {
 
   return {
     trackStepStart,
-    trackStepCompletion,
+    recordStepCompletion,
     trackJourneyAbandonment,
     trackPathSwitch,
   };

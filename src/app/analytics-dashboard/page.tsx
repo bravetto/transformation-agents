@@ -411,28 +411,20 @@ export default function AnalyticsDashboard() {
   const fetchAnalytics = useCallback(async () => {
     // Prevent concurrent fetches
     if (fetchInProgress.current) {
-      logger.debug(
-        "Fetch already in progress, skipping...",
-        null,
-        "analytics-dashboard",
-      );
+      logger.debug("Fetch already in progress, skipping...");
       return;
     }
 
     // Check if component is still mounted
     if (!mounted.current) {
-      logger.debug(
-        "Component unmounted, skipping fetch...",
-        null,
-        "analytics-dashboard",
-      );
+      logger.debug("Component unmounted, skipping fetch...");
       return;
     }
 
     fetchInProgress.current = true;
 
     try {
-      logger.info("Fetching analytics data...", null, "analytics-dashboard");
+      logger.info("Fetching analytics data...");
       const response = await fetch("/api/analytics/user-journey/dashboard", {
         method: "GET",
         headers: {
@@ -458,11 +450,9 @@ export default function AnalyticsDashboard() {
         setData(result);
         setError(null);
         retryCount.current = 0; // Reset retry count on success
-        logger.info(
-          "Analytics data fetched successfully",
-          { dataLength: result?.length },
-          "analytics-dashboard",
-        );
+        logger.info("Analytics data fetched successfully", {
+          dataLength: result?.length,
+        });
       }
     } catch (err) {
       logger.error("Failed to fetch analytics:", err);
@@ -521,7 +511,7 @@ export default function AnalyticsDashboard() {
       clearInterval(intervalId);
       fetchInProgress.current = false;
     };
-  }, []); // Empty deps, fetchAnalytics is stable due to useCallback
+  }, [fetchAnalytics]); // Include fetchAnalytics since it's used in the effect
 
   // Loading state
   if (loading && !data) {

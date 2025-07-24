@@ -87,7 +87,7 @@ export function setUserType(userType: UserType) {
 
     // Track user type selection as conversion
     trackConversion({
-      eventType: "path_selected",
+      eventType: "cta_clicked",
       userType,
       conversionType: "primary",
       metadata: {
@@ -298,12 +298,29 @@ async function processAnalyticsQueue() {
   analyticsRateLimit.processing = false;
 }
 
+// Utility function to create absolute URLs for API calls
+function getAbsoluteUrl(path: string): string {
+  // Client-side: use window.location.origin
+  if (typeof window !== "undefined") {
+    return `${window.location.origin}${path}`;
+  }
+
+  // Server-side: use VERCEL_URL or fallback
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : process.env.NEXT_PUBLIC_URL || "https://july28freedom.vercel.app";
+
+  return `${baseUrl}${path}`;
+}
+
 // Send analytics to our internal API with rate limiting
 async function sendToAnalyticsAPI(event: any, isDivine = false) {
   try {
-    const endpoint = isDivine
+    const relativePath = isDivine
       ? "/api/analytics/divine-events"
       : "/api/analytics/user-journey";
+
+    const endpoint = getAbsoluteUrl(relativePath);
 
     const data = {
       ...event,

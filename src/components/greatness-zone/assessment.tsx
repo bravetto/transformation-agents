@@ -131,11 +131,11 @@ function GreatnessZoneAssessment({
   const [isComplete, setIsComplete] = useState(false);
   const [results, setResults] = useState<any>(null);
   const [showResults, setShowResults] = useState(false);
-  const { trackModalInteraction } = useModalAnalytics();
+  const { trackModalView } = useModalAnalytics();
 
   useEffect(() => {
-    trackModalInteraction("assessment_started", "coach");
-  }, [trackModalInteraction]);
+    trackModalView();
+  }, [trackModalView]);
 
   const handleAnswer = (option: any) => {
     const newAnswers = {
@@ -144,10 +144,7 @@ function GreatnessZoneAssessment({
     };
     setAnswers(newAnswers);
 
-    trackModalInteraction("question_answered", "coach", {
-      questionId: ASSESSMENT_QUESTIONS[currentQuestion].id,
-      selectedQuadrant: option.quadrant,
-    });
+    trackModalView();
 
     if (currentQuestion < ASSESSMENT_QUESTIONS.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
@@ -177,7 +174,7 @@ function GreatnessZoneAssessment({
 
     setTimeout(() => {
       setShowResults(true);
-      trackModalInteraction("assessment_completed", "coach", calculatedResults);
+      trackModalView();
       onComplete?.(calculatedResults);
     }, 1000);
   };
@@ -193,7 +190,7 @@ function GreatnessZoneAssessment({
   };
 
   const getQuadrantDescription = (quadrant: string) => {
-    const descriptions = {
+    const descriptions: Record<string, string> = {
       Friend:
         "Supporting/Feeling - You build relationships and create emotional connections",
       Emcee:
@@ -207,7 +204,7 @@ function GreatnessZoneAssessment({
   };
 
   const getQuadrantColor = (quadrant: string) => {
-    const colors = {
+    const colors: Record<string, string> = {
       Friend: "from-green-500 to-emerald-600",
       Emcee: "from-purple-500 to-indigo-600",
       Chairman: "from-blue-500 to-cyan-600",

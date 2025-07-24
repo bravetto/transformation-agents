@@ -100,7 +100,10 @@ describe("Character Witness Display", () => {
               .should("be.visible")
               .and(($img) => {
                 // Check if image has loaded (naturalWidth > 0 indicates successful load)
-                expect($img[0].complete || $img[0].naturalWidth > 0).to.be.true;
+                expect(
+                  ($img[0] as HTMLImageElement).complete ||
+                    ($img[0] as HTMLImageElement).naturalWidth > 0,
+                ).to.be.true;
               });
           }
         });
@@ -235,7 +238,9 @@ describe("Character Witness Display", () => {
             expect($img.attr("src")).to.exist;
 
             // Check if image loaded or has fallback
-            const hasLoaded = $img[0].complete && $img[0].naturalWidth > 0;
+            const hasLoaded =
+              ($img[0] as HTMLImageElement).complete &&
+              ($img[0] as HTMLImageElement).naturalWidth > 0;
             const hasFallback =
               $img.attr("src")?.includes("fallback") ||
               $img.attr("src")?.includes("placeholder");
@@ -289,7 +294,7 @@ describe("Character Witness Display", () => {
 
       if (focusableElements.length > 0) {
         // Test tab navigation
-        cy.get("body").tab();
+        cy.get("body").type("{tab}");
 
         // Verify focus is visible
         cy.focused().should("be.visible");

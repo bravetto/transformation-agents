@@ -4,8 +4,8 @@ export const mohammadAliRaza: PersonData = {
   id: "mohammad-ali-raza",
   slug: "mohammad-ali-raza",
   name: "Mohammad Ali Raza",
-  title: "Solution Architect & Spiritual Bridge Builder",
-  heroImage: "/images/profiles/mohammad-ali-raza.svg",
+  title: "Technology Professional & Community Leader",
+  heroImage: "/images/people/mohammad-ali-raza.svg",
   localImage: true,
 
   // Filter properties

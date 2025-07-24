@@ -3,7 +3,21 @@
  * Provides retry logic, timeouts, and circuit breaker pattern for network requests
  */
 
-import { CircuitBreaker } from "./circuit-breaker";
+// Simple circuit breaker state for resilient fetch
+interface SimpleCircuitBreaker {
+  failures: number;
+  lastFailure: number;
+  isOpen: boolean;
+}
+
+const circuitBreakerState: SimpleCircuitBreaker = {
+  failures: 0,
+  lastFailure: 0,
+  isOpen: false,
+};
+
+const CIRCUIT_BREAKER_THRESHOLD = 5; // failures before opening
+const CIRCUIT_BREAKER_TIMEOUT = 60000; // 1 minute reset
 
 export interface ResilientFetchOptions extends RequestInit {
   retries?: number;
@@ -12,9 +26,6 @@ export interface ResilientFetchOptions extends RequestInit {
   useCircuitBreaker?: boolean;
   onRetry?: (attempt: number, error: Error) => void;
 }
-
-// Default circuit breaker instance
-const defaultCircuitBreaker = new CircuitBreaker();
 
 /**
  * Fetch with automatic retries and exponential backoff
@@ -34,9 +45,39 @@ export async function resilientFetch(
 
   // Use circuit breaker if enabled
   if (useCircuitBreaker) {
-    return defaultCircuitBreaker.call(() =>
-      fetchWithRetry(url, fetchOptions, retries, retryDelay, timeout, onRetry),
-    );
+    // Check if circuit breaker is open
+    const now = Date.now();
+    if (circuitBreakerState.isOpen) {
+      // Check if enough time has passed to reset
+      if (now - circuitBreakerState.lastFailure > CIRCUIT_BREAKER_TIMEOUT) {
+        circuitBreakerState.isOpen = false;
+        circuitBreakerState.failures = 0;
+      } else {
+        throw new Error("Circuit breaker is open - too many recent failures");
+      }
+    }
+
+    try {
+      const result = await fetchWithRetry(
+        url,
+        fetchOptions,
+        retries,
+        retryDelay,
+        timeout,
+        onRetry,
+      );
+      // Success - reset failure count
+      circuitBreakerState.failures = 0;
+      return result;
+    } catch (error) {
+      // Failure - increment count and check threshold
+      circuitBreakerState.failures += 1;
+      circuitBreakerState.lastFailure = now;
+      if (circuitBreakerState.failures >= CIRCUIT_BREAKER_THRESHOLD) {
+        circuitBreakerState.isOpen = true;
+      }
+      throw error;
+    }
   }
 
   return fetchWithRetry(

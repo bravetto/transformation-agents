@@ -46,6 +46,11 @@
   --quantum-connection: linear-gradient(45deg, var(--divine-purple), var(--divine-blue));
   --quantum-sync: linear-gradient(90deg, var(--divine-gold), var(--divine-green));
   --quantum-resonance: conic-gradient(from 0deg, var(--divine-purple), var(--divine-blue), var(--divine-green), var(--divine-gold));
+  
+  /* 🌟 Modal Portal Divine Gradients */
+  --gradient-divine: linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #f59e0b 100%);
+  --gradient-divine-hover: linear-gradient(135deg, #1d4ed8 0%, #8b5cf6 50%, #f97316 100%);
+  --gradient-divine-light: linear-gradient(135deg, rgba(30, 64, 175, 0.1) 0%, rgba(124, 58, 237, 0.1) 50%, rgba(245, 158, 11, 0.1) 100%);
 }
 
 /* 🌟 Dynamic Color Classes */
@@ -330,6 +335,198 @@
   }
 }
 
+/* 🌟 JAHmere Divine Styling - Championship Level */
+
+.divine-text-glow {
+  text-shadow: 
+    0 0 20px rgba(255, 215, 0, 0.8),
+    0 0 40px rgba(255, 215, 0, 0.6),
+    0 0 60px rgba(255, 215, 0, 0.4),
+    0 0 80px rgba(255, 215, 0, 0.2);
+  animation: divine-pulse 2s ease-in-out infinite;
+}
+
+.prayer-intensity-maximum {
+  background: linear-gradient(
+    45deg,
+    var(--divine-gold) 0%,
+    #FCD34D 25%,
+    #F59E0B 50%,
+    #FCD34D 75%,
+    var(--divine-gold) 100%
+  );
+  background-size: 200% 200%;
+  animation: prayer-flow 3s ease-in-out infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.divine-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.divine-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 215, 0, 0.3) 0%,
+    transparent 70%
+  );
+  animation: divine-rotate 3s linear infinite;
+  pointer-events: none;
+}
+
+.divine-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+}
+
+/* JAHmere Championship Banner */
+.jahmere-hero-bg {
+  background: linear-gradient(
+    135deg,
+    #92400E 0%,
+    #D97706 25%,
+    #F59E0B 50%,
+    #D97706 75%,
+    #DC2626 100%
+  );
+  position: relative;
+}
+
+.jahmere-hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 215, 0, 0.2) 0%,
+    transparent 70%
+  );
+  animation: divine-breathe 4s ease-in-out infinite;
+}
+
+/* Divine Countdown Styling */
+.freedom-countdown-urgent {
+  animation: urgent-pulse 2s ease-in-out infinite;
+  border: 2px solid #EF4444;
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
+}
+
+/* Prayer Warrior Activation */
+.prayer-warrior-active {
+  background: conic-gradient(
+    from 0deg,
+    #8B5CF6,
+    #3B82F6,
+    #10B981,
+    #F59E0B,
+    #8B5CF6
+  );
+  animation: divine-rotate 8s linear infinite;
+}
+
+/* Championship Metrics Grid */
+.metrics-card-champion {
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.metrics-card-champion:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Divine Animations - Championship Level */
+
+@keyframes divine-pulse {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.8; 
+    transform: scale(1.02);
+  }
+}
+
+@keyframes prayer-flow {
+  0%, 100% { 
+    background-position: 0% 50%; 
+  }
+  50% { 
+    background-position: 100% 50%; 
+  }
+}
+
+@keyframes divine-rotate {
+  from { 
+    transform: rotate(0deg); 
+  }
+  to { 
+    transform: rotate(360deg); 
+  }
+}
+
+@keyframes divine-breathe {
+  0%, 100% { 
+    opacity: 0.2; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.4; 
+    transform: scale(1.05);
+  }
+}
+
+@keyframes urgent-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(239, 68, 68, 0.6);
+    transform: scale(1.02);
+  }
+}
+
+/* Responsive Divine Styling */
+@media (max-width: 768px) {
+  .divine-text-glow {
+    text-shadow: 
+      0 0 10px rgba(255, 215, 0, 0.8),
+      0 0 20px rgba(255, 215, 0, 0.6);
+  }
+
+  .jahmere-hero-bg::before {
+    animation-duration: 6s;
+  }
+
+  .divine-button:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .divine-text-glow,
+  .prayer-intensity-maximum,
+  .divine-button::before,
+  .jahmere-hero-bg::before,
+  .freedom-countdown-urgent,
+  .prayer-warrior-active {
+    animation: none;
+  }
+}
+
 /* 🌟 Dark Mode Divine Colors */
 
 @media (prefers-color-scheme: dark) {
@@ -366,5 +563,48 @@
   
   .consciousness-high {
     border-width: 3px;
+  }
+} 
+
+/* 🌟 Divine Gradient Utility Classes for Modal Portal */
+
+.bg-gradient-divine {
+  background: var(--gradient-divine);
+}
+
+.bg-gradient-divine-hover {
+  background: var(--gradient-divine-hover);
+}
+
+.bg-gradient-divine-light {
+  background: var(--gradient-divine-light);
+}
+
+.text-gradient-divine {
+  background: var(--gradient-divine);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 🎯 Divine Button Hover Enhancement */
+.hover\:bg-gradient-divine-hover:hover {
+  background: var(--gradient-divine-hover);
+  transition: background 0.3s ease;
+}
+
+/* 🚀 Divine Loading States */
+.divine-loading-pulse {
+  animation: divine-pulse 2s ease-in-out infinite;
+}
+
+@keyframes divine-pulse {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.8; 
+    transform: scale(1.02);
   }
 } 

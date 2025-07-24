@@ -8,7 +8,7 @@ import DivineTransformation from "./divine-transformation";
 
 import SacredContainer from "./sacred-container";
 
-import { DivineParticles } from "./divine-particles";
+// DivineParticles removed for hydration stability
 
 import { cn } from "@/lib/utils";
 
@@ -44,9 +44,9 @@ function DivineAlignment({
   return (
     <SacredContainer
       role={role}
-      title={title}
-      subtitle={subtitle}
-      className={className}
+      {...(title && { title })}
+      {...(subtitle && { subtitle })}
+      {...(className && { className })}
     >
       <motion.div
         variants={alignmentVariants}
@@ -94,12 +94,13 @@ function DivineAlignment({
         {children}
       </motion.div>
 
-      {/* Divine particles background */}
-      <div className="fixed inset-0 pointer-events-none">
-        <DivineParticles
-          variant="divine"
-          className="h-full w-full opacity-20"
-        />
+      {/* Static Divine Background */}
+      <div className="fixed inset-0 pointer-events-none bg-gradient-to-br from-yellow-400/10 via-transparent to-purple-400/10 opacity-20">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_40%,rgba(255,215,0,0.2),transparent)] animate-pulse"></div>
+        <div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_60%_60%,rgba(168,85,247,0.1),transparent)] animate-pulse"
+          style={{ animationDelay: "2s" }}
+        ></div>
       </div>
     </SacredContainer>
   );

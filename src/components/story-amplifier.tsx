@@ -35,7 +35,7 @@ import {
 import { withDivineErrorBoundary } from "./ui/divine-error-boundary";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import DivineParticles from "./divine-particles";
+// DivineParticles removed for hydration stability
 import type { DivineRole } from "./ui/divine-error-boundary";
 
 // Main interface for the story content
@@ -420,13 +420,13 @@ const StoryAmplifier = ({
 
   return (
     <div ref={storyRef} className={cn("relative min-h-screen", className)}>
-      {/* Divine Particles Background */}
-      <div className="fixed inset-0 -z-10 opacity-20">
-        <DivineParticles
-          variant="minimal"
-          intensity="low"
-          interactive={false}
-        />
+      {/* Static Background */}
+      <div className="fixed inset-0 -z-10 opacity-20 bg-gradient-to-br from-blue-100/30 via-transparent to-purple-100/20">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(59,130,246,0.1),transparent)] animate-pulse"></div>
+        <div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(168,85,247,0.05),transparent)] animate-pulse"
+          style={{ animationDelay: "3s" }}
+        ></div>
       </div>
 
       {/* Reading progress bar - fixed at top */}
