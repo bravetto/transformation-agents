@@ -23,6 +23,9 @@ export type ShareContentType =
   | "testimony"
   | "impact-stat"
   | "quote-card"
+  | "profile"
+  | "letter"
+  | "prayer"
   | "freedom-countdown"
   | "prayer-request"
   | "general-page";

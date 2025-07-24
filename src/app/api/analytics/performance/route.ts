@@ -1,37 +1,41 @@
 import { NextRequest, NextResponse } from "next/server";
+import {
+  createSecureAPIHandler,
+  API_SCHEMAS,
+} from "@/lib/production/api-security-hardening";
 
 interface PerformanceData {
   // Core Web Vitals
-  cls: number | null;
-  fid: number | null;
-  fcp: number | null;
-  lcp: number | null;
-  ttfb: number | null;
+  cls?: number | null;
+  fid?: number | null;
+  fcp?: number | null;
+  lcp?: number | null;
+  ttfb?: number | null;
 
   // Custom metrics
-  bundleSize: number;
-  componentLoadTimes: Record<string, number>;
-  memoryUsage: number;
-  connectionType: string;
-  deviceType: "mobile" | "tablet" | "desktop";
+  bundleSize?: number;
+  componentLoadTimes?: Record<string, number>;
+  memoryUsage?: number;
+  connectionType?: string;
+  deviceType?: "mobile" | "tablet" | "desktop";
 
   // User experience metrics
-  timeToInteractive: number | null;
-  totalBlockingTime: number | null;
-  speedIndex: number | null;
+  timeToInteractive?: number | null;
+  totalBlockingTime?: number | null;
+  speedIndex?: number | null;
 
   // API performance
-  apiResponseTimes: Record<string, number>;
-  apiErrorRates: Record<string, number>;
+  apiResponseTimes?: Record<string, number>;
+  apiErrorRates?: Record<string, number>;
 
   // Engagement metrics
-  pageViews: number;
-  sessionDuration: number;
-  bounceRate: number;
+  pageViews?: number;
+  sessionDuration?: number;
+  bounceRate?: number;
 
   // Request metadata
   url: string;
-  userAgent: string;
+  userAgent?: string;
   timestamp: number;
 
   // Custom metrics
@@ -78,7 +82,7 @@ export const POST = createSecureAPIHandler({
         lcp: data.lcp,
         fcp: data.fcp,
         cls: data.cls,
-        memoryUsage: data.memoryUsage,
+        memoryUsage: (data as any).memoryUsage || 0,
         performanceScore: analysis.score,
       });
     }
@@ -168,7 +172,7 @@ function analyzePerformance(data: PerformanceData): {
   const strengths: string[] = [];
 
   // Analyze LCP (Largest Contentful Paint)
-  if (data.lcp !== null) {
+  if (data.lcp !== null && data.lcp !== undefined) {
     if (data.lcp <= 2500) {
       strengths.push("Excellent Largest Contentful Paint");
     } else if (data.lcp <= 4000) {
@@ -185,7 +189,7 @@ function analyzePerformance(data: PerformanceData): {
   }
 
   // Analyze FID (First Input Delay)
-  if (data.fid !== null) {
+  if (data.fid !== null && data.fid !== undefined) {
     if (data.fid <= 100) {
       strengths.push("Excellent First Input Delay");
     } else if (data.fid <= 300) {
@@ -200,7 +204,7 @@ function analyzePerformance(data: PerformanceData): {
   }
 
   // Analyze CLS (Cumulative Layout Shift)
-  if (data.cls !== null) {
+  if (data.cls !== null && data.cls !== undefined) {
     if (data.cls <= 0.1) {
       strengths.push("Excellent layout stability");
     } else if (data.cls <= 0.25) {
@@ -217,7 +221,7 @@ function analyzePerformance(data: PerformanceData): {
   }
 
   // Analyze FCP (First Contentful Paint)
-  if (data.fcp !== null) {
+  if (data.fcp !== null && data.fcp !== undefined) {
     if (data.fcp <= 1800) {
       strengths.push("Fast First Contentful Paint");
     } else if (data.fcp <= 3000) {
@@ -231,13 +235,13 @@ function analyzePerformance(data: PerformanceData): {
   }
 
   // Analyze memory usage
-  if (data.memoryUsage > 100) {
+  if (data.memoryUsage !== undefined && data.memoryUsage > 100) {
     score -= 10;
     issues.push(`High memory usage: ${data.memoryUsage.toFixed(1)}MB`);
     recommendations.push("Optimize component loading and memory management");
-  } else if (data.memoryUsage > 50) {
+  } else if (data.memoryUsage !== undefined && data.memoryUsage > 50) {
     recommendations.push("Monitor memory usage - consider optimizations");
-  } else {
+  } else if (data.memoryUsage !== undefined) {
     strengths.push("Efficient memory usage");
   }
 
@@ -308,45 +312,50 @@ function calculateAggregatedMetrics(metrics: PerformanceData[]) {
     };
   }
 
+  // Helper function to filter valid numbers
+  const filterNumbers = (values: (number | null | undefined)[]): number[] => {
+    return values.filter((v): v is number => v !== null && v !== undefined);
+  };
+
   // Calculate averages
   const averages = {
-    lcp: calculateAverage(metrics.map((m) => m.lcp).filter((v) => v !== null)),
-    fcp: calculateAverage(metrics.map((m) => m.fcp).filter((v) => v !== null)),
-    fid: calculateAverage(metrics.map((m) => m.fid).filter((v) => v !== null)),
-    cls: calculateAverage(metrics.map((m) => m.cls).filter((v) => v !== null)),
-    ttfb: calculateAverage(
-      metrics.map((m) => m.ttfb).filter((v) => v !== null),
+    lcp: calculateAverage(filterNumbers(metrics.map((m) => m.lcp))),
+    fcp: calculateAverage(filterNumbers(metrics.map((m) => m.fcp))),
+    fid: calculateAverage(filterNumbers(metrics.map((m) => m.fid))),
+    cls: calculateAverage(filterNumbers(metrics.map((m) => m.cls))),
+    ttfb: calculateAverage(filterNumbers(metrics.map((m) => m.ttfb))),
+    memoryUsage: calculateAverage(
+      filterNumbers(metrics.map((m) => m.memoryUsage)),
     ),
-    memoryUsage: calculateAverage(metrics.map((m) => m.memoryUsage)),
-    sessionDuration: calculateAverage(metrics.map((m) => m.sessionDuration)),
+    sessionDuration: calculateAverage(
+      filterNumbers(metrics.map((m) => m.sessionDuration)),
+    ),
   };
 
   // Calculate percentiles for key metrics
   const percentiles = {
-    lcp: calculatePercentiles(
-      metrics.map((m) => m.lcp).filter((v) => v !== null),
-    ),
-    fcp: calculatePercentiles(
-      metrics.map((m) => m.fcp).filter((v) => v !== null),
-    ),
-    fid: calculatePercentiles(
-      metrics.map((m) => m.fid).filter((v) => v !== null),
-    ),
+    lcp: calculatePercentiles(filterNumbers(metrics.map((m) => m.lcp))),
+    fcp: calculatePercentiles(filterNumbers(metrics.map((m) => m.fcp))),
+    fid: calculatePercentiles(filterNumbers(metrics.map((m) => m.fid))),
   };
 
-  // Device type breakdown
+  // Device type breakdown (only for defined device types)
   const deviceTypes = metrics.reduce(
     (acc, metric) => {
-      acc[metric.deviceType] = (acc[metric.deviceType] || 0) + 1;
+      if (metric.deviceType) {
+        acc[metric.deviceType] = (acc[metric.deviceType] || 0) + 1;
+      }
       return acc;
     },
     {} as Record<string, number>,
   );
 
-  // Connection type breakdown
+  // Connection type breakdown (only for defined connection types)
   const connectionTypes = metrics.reduce(
     (acc, metric) => {
-      acc[metric.connectionType] = (acc[metric.connectionType] || 0) + 1;
+      if (metric.connectionType) {
+        acc[metric.connectionType] = (acc[metric.connectionType] || 0) + 1;
+      }
       return acc;
     },
     {} as Record<string, number>,

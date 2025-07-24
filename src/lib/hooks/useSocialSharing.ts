@@ -188,7 +188,7 @@ export function useSocialSharing(content: ShareableContent) {
 
       return null;
     },
-    [userType, sessionId, abTestVariants, generateShareUrl],
+    [userType, sessionId, abTestVariants],
   );
 
   /**

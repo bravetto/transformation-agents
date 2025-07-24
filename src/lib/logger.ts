@@ -144,7 +144,7 @@ export class ProductionLogger {
         ...(typeof globalThis !== "undefined" &&
         typeof globalThis.process !== "undefined" &&
         typeof globalThis.process.pid !== "undefined" &&
-        !globalThis.EdgeRuntime
+        !(globalThis as any).EdgeRuntime
           ? {
               pid: globalThis.process.pid,
               platform: globalThis.process.platform,
@@ -459,7 +459,7 @@ export class ProductionLogger {
       typeof globalThis === "undefined" ||
       typeof globalThis.process === "undefined" ||
       typeof globalThis.process.memoryUsage !== "function" ||
-      globalThis.EdgeRuntime
+      (globalThis as any).EdgeRuntime
     ) {
       this.debug("Memory monitoring skipped (edge runtime)", { component });
       return;
@@ -604,7 +604,7 @@ if (
   typeof globalThis !== "undefined" &&
   typeof globalThis.process !== "undefined" &&
   typeof globalThis.process.on === "function" &&
-  !globalThis.EdgeRuntime
+  !(globalThis as any).EdgeRuntime
 ) {
   globalThis.process.on("SIGTERM", () => {
     logger.info("Received SIGTERM, flushing logs...");

@@ -73,7 +73,7 @@ export const POST = createSecureAPIHandler({
       timestamp: Date.now(),
       metadata: {
         platform: input.platform,
-        contentType: input.contentType,
+        contentType: input.contentType as any,
         contentId: input.contentId,
         shareMethod: "button-click",
         userAgent,

@@ -89,7 +89,7 @@ export class APISecurityHardening {
   };
 
   private constructor() {
-    this.sanitizer = new DivineInputSanitizer();
+    this.sanitizer = DivineInputSanitizer.getInstance();
     this.securityMetrics = {
       blockedRequests: 0,
       suspiciousActivity: 0,
@@ -381,7 +381,7 @@ export class APISecurityHardening {
   /**
    * 🌐 GET CLIENT IP SAFELY
    */
-  private getClientIP(request: NextRequest): string {
+  public getClientIP(request: NextRequest): string {
     const forwarded = request.headers.get("x-forwarded-for");
     const realIP = request.headers.get("x-real-ip");
     const cfIP = request.headers.get("cf-connecting-ip");

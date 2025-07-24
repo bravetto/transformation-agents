@@ -1,34 +1,63 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "framework": "nextjs",
+  "version": 2,
+  "name": "jahmere-bridge-freedom-portal",
+  "alias": ["jahmerebridge.com", "jahmerebridgeapp.vercel.app"],
+  
+  "build": {
+    "env": {
+      "NEXT_TELEMETRY_DISABLED": "1",
+      "NODE_OPTIONS": "--max-old-space-size=4096"
+    }
+  },
+  
   "functions": {
     "src/app/api/**/*.ts": {
+      "maxDuration": 10
+    },
+    "src/app/api/ai/**/*.ts": {
       "maxDuration": 30
     }
   },
-  "crons": [],
+  
+  "regions": ["iad1", "sfo1"],
+  
   "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+        }
+      ]
+    },
     {
       "source": "/api/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "s-maxage=1, stale-while-revalidate=59"
+          "value": "s-maxage=60, stale-while-revalidate=300"
         }
       ]
     },
     {
-      "source": "/_next/static/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/images/(.*)",
+      "source": "/(.*\\.(js|css|ico|png|jpg|jpeg|gif|svg|webp|avif|woff|woff2|ttf|eot))",
       "headers": [
         {
           "key": "Cache-Control",
@@ -37,18 +66,44 @@
       ]
     }
   ],
+  
   "redirects": [
     {
-      "source": "/home",
-      "destination": "/",
+      "source": "/old-url",
+      "destination": "/new-url",
       "permanent": true
     }
   ],
-  "rewrites": [],
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "regions": ["iad1"],
+  
+  "rewrites": [
+    {
+      "source": "/healthz",
+      "destination": "/api/health"
+    }
+  ],
+  
+  "crons": [
+    {
+      "path": "/api/monitoring/health",
+      "schedule": "0 */6 * * *"
+    }
+  ],
+
   "env": {
-    "NODE_ENV": "production"
+    "NEXT_PUBLIC_POSTHOG_KEY": "@posthog-key",
+    "NEXT_PUBLIC_POSTHOG_HOST": "@posthog-host",
+    "DATABASE_URL": "@database-url",
+    "POSTGRES_URL_NON_POOLING": "@postgres-url-non-pooling",
+    "NEXTAUTH_SECRET": "@nextauth-secret",
+    "OPENAI_API_KEY": "@openai-api-key",
+    "DIVINE_SECURITY_SALT": "@divine-security-salt"
+  },
+  
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build:prod",
+  "outputDirectory": ".next",
+  
+  "github": {
+    "autoAlgorithm": "ort"
   }
 }
