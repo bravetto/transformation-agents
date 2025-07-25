@@ -7,7 +7,7 @@ import { AnalyticsWrapper } from "@/components/analytics-wrapper";
 import { AnimationProvider } from "@/components/animation-context";
 import { ProductionErrorBoundary } from "@/components/ui/production-error-boundary";
 import { initializeProductionLogging } from "@/lib/production/console-log-sanitizer";
-import Navigation from "@/components/navigation";
+import ClientLayout from "@/components/client-layout";
 
 // Initialize production security on app startup
 if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
@@ -85,10 +85,11 @@ export default function RootLayout({
         >
           <PostHogProviderWrapper>
             <AnimationProvider>
-              <Navigation />
-              <ProductionErrorBoundary componentName="MainApp">
-                {children}
-              </ProductionErrorBoundary>
+              <ClientLayout>
+                <ProductionErrorBoundary componentName="MainApp">
+                  {children}
+                </ProductionErrorBoundary>
+              </ClientLayout>
             </AnimationProvider>
           </PostHogProviderWrapper>
           <AnalyticsWrapper>{children}</AnalyticsWrapper>

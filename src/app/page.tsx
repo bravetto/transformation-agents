@@ -28,7 +28,7 @@ function ExperimentLoading() {
 // Main home page component (Server Component)
 export default async function HomePage() {
   return (
-    <main className="min-h-screen pt-16 bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-100">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-100">
       {/* Particle Background */}
       <ParticleBackground />
 
@@ -59,6 +59,6 @@ export default async function HomePage() {
 
       {/* Sticky Bottom CTA */}
       <StickyBottomCTA />
-    </main>
+    </div>
   );
 }
