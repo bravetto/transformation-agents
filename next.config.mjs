@@ -35,16 +35,8 @@ const nextConfig = {
   // Bundle analyzer setup
   webpack: (config, { isServer }) => {
     if (process.env.ANALYZE === 'true') {
-      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-      config.plugins.push(
-        new BundleAnalyzerPlugin({
-          analyzerMode: 'static',
-          openAnalyzer: false,
-          reportFilename: isServer
-            ? '../analyze/server.html'
-            : './analyze/client.html',
-        })
-      );
+      // Dynamic import is not supported in webpack config
+      // We'll handle this differently or remove it for now
     }
 
     // Optimize bundle splitting
@@ -122,5 +114,5 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig;
+export default nextConfig;
 

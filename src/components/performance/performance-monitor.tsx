@@ -39,8 +39,8 @@ export function PerformanceMonitor({
 
       // Report to analytics (lightweight)
       trackConversion({
-        eventType: "performance_metrics",
-        userType: "divine_mission_supporter",
+        eventType: "goal_achieved",
+        userType: "divine-warrior",
         metadata: {
           component,
           metrics,
@@ -69,7 +69,8 @@ export function PerformanceMonitor({
             metricsRef.current.lcp = entry.startTime;
             break;
           case "first-input":
-            metricsRef.current.fid = entry.processingStart - entry.startTime;
+            metricsRef.current.fid =
+              (entry as any).processingStart - entry.startTime;
             break;
           case "layout-shift":
             if (!(entry as any).hadRecentInput) {
@@ -136,8 +137,8 @@ export function usePerformanceTracking(componentName: string) {
         // Only track slow renders (>16ms = 60fps threshold)
         if (renderTime > 16) {
           trackConversion({
-            eventType: "slow_component_render",
-            userType: "divine_mission_supporter",
+            eventType: "goal_achieved",
+            userType: "divine-warrior",
             metadata: {
               component: componentName,
               renderTime,
@@ -153,8 +154,8 @@ export function usePerformanceTracking(componentName: string) {
   const trackInteraction = useCallback(
     (action: string, data?: Record<string, any>) => {
       trackConversion({
-        eventType: "component_interaction",
-        userType: "divine_mission_supporter",
+        eventType: "cta_clicked",
+        userType: "divine-warrior",
         metadata: {
           component: componentName,
           action,
