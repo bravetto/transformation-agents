@@ -186,11 +186,24 @@ function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 🔥 CRITICAL FIX: Close both mobile menu and desktop popovers when pathname changes
+  // 🔥 CRITICAL FIX: Enhanced pathname change handler with forced state reset
   useEffect(() => {
+    // Force reset all navigation state immediately
     setIsOpen(false);
-    setOpenPopover(null); // Close any open desktop popovers
-    setExpandedItems([]); // Reset mobile expanded items
+    setOpenPopover(null);
+    setExpandedItems([]);
+
+    // Additional cleanup for any lingering state
+    document.body.style.overflow = "";
+
+    // Force a small delay to ensure state is properly reset
+    const timeoutId = setTimeout(() => {
+      setIsOpen(false);
+      setOpenPopover(null);
+      setExpandedItems([]);
+    }, 50);
+
+    return () => clearTimeout(timeoutId);
   }, [pathname]);
 
   const toggleExpanded = (href: string) => {
@@ -201,15 +214,17 @@ function Navigation() {
     );
   };
 
-  // 🔥 CRITICAL FIX: Handle desktop popover state changes with proper cleanup
+  // 🔥 CRITICAL FIX: Enhanced popover state management with forced cleanup
   const handlePopoverOpenChange = useCallback(
     (isOpen: boolean, itemHref: string) => {
       if (isOpen) {
-        // Close any other open popovers first
-        setOpenPopover(itemHref);
+        // Force close all popovers first, then open the requested one
+        setOpenPopover(null);
+        // Use a micro-task to ensure state is reset before setting new state
+        setTimeout(() => setOpenPopover(itemHref), 0);
       } else {
-        // Only close if this specific popover is currently open
-        setOpenPopover((prev) => (prev === itemHref ? null : prev));
+        // Always close the popover, regardless of current state
+        setOpenPopover(null);
       }
     },
     [],

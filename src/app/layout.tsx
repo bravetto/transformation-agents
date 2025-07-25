@@ -86,13 +86,14 @@ export default function RootLayout({
           <PostHogProviderWrapper>
             <AnimationProvider>
               <ClientLayout>
-                <ProductionErrorBoundary componentName="MainApp">
-                  {children}
-                </ProductionErrorBoundary>
+                <AnalyticsWrapper>
+                  <ProductionErrorBoundary componentName="MainApp">
+                    {children}
+                  </ProductionErrorBoundary>
+                </AnalyticsWrapper>
               </ClientLayout>
             </AnimationProvider>
           </PostHogProviderWrapper>
-          <AnalyticsWrapper>{children}</AnalyticsWrapper>
         </ProductionErrorBoundary>
       </body>
     </html>

@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import Navigation from "@/components/navigation";
 
 interface ClientLayoutProps {
@@ -18,11 +19,14 @@ interface ClientLayoutProps {
  * - No SSR/Client mismatches
  * - Event handlers work consistently
  * - Follows Next.js 15.4+ composition patterns
+ * - Forces navigation remount on route changes for clean state
  */
 export default function ClientLayout({ children }: ClientLayoutProps) {
+  const pathname = usePathname();
+
   return (
     <>
-      <Navigation />
+      <Navigation key={pathname} />
       <main className="min-h-screen">{children}</main>
     </>
   );
