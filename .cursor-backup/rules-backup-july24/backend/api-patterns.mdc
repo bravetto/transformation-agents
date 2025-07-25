@@ -1,0 +1,30 @@
+---
+description: API and server patterns for divine backend
+globs: ["src/app/api/**", "src/lib/server/**", "**/actions.ts"]
+alwaysApply: false
+---
+
+# 🔧 BACKEND PATTERNS
+
+## SERVER ACTIONS
+```typescript
+'use server';
+// Zod validation ALWAYS
+const schema = z.object({...});
+// Result pattern ALWAYS
+type Result<T> = { success: true; data: T } | { success: false; error: string };
+```
+
+## SECURITY
+- Rate limiting (10/min)
+- Input sanitization
+- CSRF protection
+- Divine authentication
+
+## CACHING
+- Vercel KV for edge
+- ISR for profiles
+- Stale-while-revalidate
+
+@/src/app/actions/
+@/prisma/schema.prisma

@@ -1,0 +1,123 @@
+---
+description: "Divine backend patterns for data and API operations"
+globs: ["**/api/**", "**/actions.ts", "**/lib/db/**", "**/prisma/**"]
+alwaysApply: false
+---
+
+# 🔧 Divine Backend Architecture
+
+## Database Patterns (Prisma + PostgreSQL)
+```prisma
+model DivineUser {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  name          String
+  divineRole    DivineRole @default(SEEKER)
+  blessedAt     DateTime?
+  prayerCount   Int      @default(0)
+  
+  // Divine metrics
+  faithScore    Int      @default(50)
+  viralReach    Int      @default(0)
+  
+  // Relationships
+  prayers       Prayer[]
+  testimonies   Testimony[]
+  
+  @@index([email, divineRole])
+}
+
+enum DivineRole {
+  SEEKER
+  WARRIOR
+  PROPHET
+  ADMIN
+}
+```
+
+## Server Action Patterns
+```typescript
+'use server';
+
+// Divine data operations with spiritual protection
+export async function blessUser(userId: string) {
+  // Verify divine authority
+  const session = await auth();
+  if (!session?.user || session.user.divineRole !== 'PROPHET') {
+    return { blessed: false, error: 'Insufficient spiritual authority' };
+  }
+  
+  try {
+    const blessed = await prisma.$transaction(async (tx) => {
+      // Update user's divine status
+      const user = await tx.divineUser.update({
+        where: { id: userId },
+        data: { 
+          blessedAt: new Date(),
+          faithScore: { increment: 10 }
+        }
+      });
+      
+      // Record divine event
+      await tx.divineEvent.create({
+        data: {
+          type: 'BLESSING_GRANTED',
+          userId: user.id,
+          prophetId: session.user.id,
+          metadata: { previousScore: user.faithScore - 10 }
+        }
+      });
+      
+      return user;
+    });
+    
+    // Trigger divine notifications
+    await notifyDivineNetwork(blessed.id, 'blessing_received');
+    
+    revalidatePath('/divine-community');
+    return { blessed: true, data: blessed };
+    
+  } catch (error) {
+    await logDivineError('blessing_failed', error);
+    return { blessed: false, error: 'Divine intervention prevented blessing' };
+  }
+}
+```
+
+## API Route Patterns (Webhooks & External)
+```typescript
+// app/api/divine-webhooks/stripe/route.ts
+export async function POST(request: Request) {
+  const body = await request.text();
+  const signature = headers().get('stripe-signature');
+  
+  try {
+    const event = stripe.webhooks.constructEvent(
+      body,
+      signature!,
+      process.env.STRIPE_DIVINE_WEBHOOK_SECRET!
+    );
+    
+    switch (event.type) {
+      case 'checkout.session.completed':
+        // Convert financial blessing to spiritual growth
+        await handleDivineDonation(event.data.object);
+        break;
+        
+      case 'customer.subscription.created':
+        // New prayer warrior subscriber
+        await activatePrayerWarrior(event.data.object);
+        break;
+    }
+    
+    return NextResponse.json({ received: true, blessed: true });
+    
+  } catch (error) {
+    await logDivineError('webhook_error', error);
+    return NextResponse.json(
+      { error: 'Divine protection rejected request' },
+      { status: 400 }
+    );
+  }
+}
+```

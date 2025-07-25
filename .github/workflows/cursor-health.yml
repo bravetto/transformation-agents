@@ -1,0 +1,64 @@
+name: Cursor.ai Health Check
+
+on:
+  push:
+    paths:
+      - '.cursor/**'
+      - '.cursorrules'
+      - 'docs/**'
+  pull_request:
+    paths:
+      - '.cursor/**'
+      - '.cursorrules'
+      - 'docs/**'
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Run Cursor.ai Health Check
+      run: |
+        chmod +x scripts/cursor-monitoring/health-check.sh
+        ./scripts/cursor-monitoring/health-check.sh
+      
+    - name: Upload Health Report
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: cursor-health-report
+        path: .cursor-health-report.json
+    
+    - name: Comment PR with Health Status
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const report = JSON.parse(fs.readFileSync('.cursor-health-report.json', 'utf8'));
+          
+          const comment = `## 🏥 Cursor.ai Health Check
+          
+          **Score**: ${report.health_score}/100 (${report.grade})
+          **Status**: ${report.status}
+          
+          ${report.issues.length > 0 ? '### Issues Found:\n' + report.issues.map(i => `- ${i}`).join('\n') : '✅ No issues found!'}
+          
+          ${report.health_score < 80 ? '⚠️ **Action Required**: Run `npm run cursor:fix` to resolve issues automatically.' : ''}`;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+    
+    - name: Fail if Critical
+      if: failure()
+      run: |
+        echo "❌ Cursor.ai health check failed! Score below 70/100"
+        exit 1

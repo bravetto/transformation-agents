@@ -1,0 +1,285 @@
+# JAHmere Webb Freedom Portal - AI Assistant Rules
+# This file controls AI behavior for maximum productivity and code quality
+
+## Project Context
+Tech Stack: Next.js 15.4.3 (App Router), TypeScript 5.9+ (strict), Tailwind CSS 3.4, Vercel Edge
+Architecture: Server Components default, Client Components explicit, Advanced Analytics, Social Sharing
+Mission: JAHmere Webb freedom advocacy platform (July 28th, 2025 court date)
+
+## ALWAYS Generate These Patterns
+
+### Component Patterns
+```typescript
+// ✅ Server Component (default)
+export default async function ServerComponent() {
+  const data = await getData(); // Direct async/await
+  return <div className="container mx-auto">{data.title}</div>;
+}
+
+// ✅ Client Component (explicit)
+'use client';
+import { useState } from 'react';
+export default function ClientComponent() {
+  const [state, setState] = useState('');
+  return <button onClick={() => setState('new')}>Click</button>;
+}
+
+// ✅ Props with TypeScript interfaces
+interface ComponentProps {
+  title: string;
+  optional?: boolean;
+  children: React.ReactNode;
+}
+```
+
+### API Route Patterns
+```typescript
+// ✅ API Route with comprehensive error handling
+import { NextRequest, NextResponse } from "next/server";
+import { logger } from "@/lib/logger";
+
+export async function POST(request: NextRequest) {
+  try {
+    const data = await request.json();
+    // Validate with Zod if needed
+    const result = await processData(data);
+    
+    logger.analytics("API Success", { endpoint: "/api/example", data });
+    
+    return NextResponse.json({
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    logger.error("API Error", { error, endpoint: "/api/example" });
+    return NextResponse.json(
+      { error: "Processing failed" },
+      { status: 500 }
+    );
+  }
+}
+```
+
+### Server Actions Pattern
+```typescript
+// ✅ Server Action with validation
+'use server';
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
+
+const schema = z.object({
+  name: z.string().min(1),
+  email: z.string().email()
+});
+
+export async function submitForm(formData: FormData) {
+  const validatedFields = schema.safeParse({
+    name: formData.get('name'),
+    email: formData.get('email')
+  });
+
+  if (!validatedFields.success) {
+    return { error: 'Invalid form data' };
+  }
+
+  // Process data
+  revalidatePath('/');
+  return { success: true };
+}
+```
+
+### Analytics Integration
+```typescript
+// ✅ Always track user interactions
+import { trackConversion, getCurrentUserType } from '@/lib/analytics/user-journey';
+
+const handleUserAction = () => {
+  trackConversion({
+    eventType: 'cta_clicked',
+    userType: getCurrentUserType(),
+    conversionType: 'primary',
+    metadata: { component: 'ShareButton', platform: 'twitter' }
+  });
+};
+```
+
+### Error Boundaries
+```typescript
+// ✅ Wrap client components
+import { DivineErrorBoundary } from '@/components/ui/divine-error-boundary';
+
+<DivineErrorBoundary
+  componentName="SocialSharing"
+  role="messenger"
+  fallback={<div>Sharing temporarily unavailable</div>}
+>
+  <SocialShareSuite content={content} />
+</DivineErrorBoundary>
+```
+
+## NEVER Generate These Patterns
+- ❌ Pages directory code (use App Router)
+- ❌ getServerSideProps/getStaticProps (use Server Components)
+- ❌ Class components (use functional)
+- ❌ CSS modules/styled-components (use Tailwind)
+- ❌ Redux (use Zustand if needed, or React state)
+- ❌ `any` types (use proper TypeScript)
+- ❌ API routes without error handling
+- ❌ Client components without error boundaries
+- ❌ Hardcoded strings (use constants or environment variables)
+- ❌ console.log in production code (use logger)
+
+## Import Patterns
+```typescript
+// Standard order:
+import { Metadata } from 'next';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { SocialShareSuite } from '@/components/social-sharing';
+import { trackConversion } from '@/lib/analytics/user-journey';
+```
+
+## Project-Specific Features
+
+### Social Sharing System
+- Use `SocialShareSuite` for complete sharing interfaces
+- Use `generatePersonShareableContent()` for person profiles  
+- Always track shares with analytics
+- Enable A/B testing with `enableAbTesting={true}`
+
+### People Profiles
+- Use `EnhancedPersonTimeline` for interactive timelines
+- Generate shareable content with `generatePersonShareableContent()`
+- Include divine features for JAHmere Webb (`showPrayerCall`, `highlightFreedomMission`)
+
+### Analytics Tracking
+- Track all user interactions with appropriate event types
+- Use divine event tracking for prayer/spiritual content
+- Include user type context and metadata
+- Integrate with existing analytics system
+
+### Divine Component Patterns
+```typescript
+// ✅ Divine Analytics Event
+trackDivineEvent({
+  eventType: 'prayer_warrior_activated',
+  component: 'divine-countdown',
+  urgency: 'divine',
+  metadata: {
+    spiritualImpact: 'miraculous',
+    daysRemaining: 28,
+    activationSource: 'countdown_component'
+  }
+});
+
+// ✅ Divine Error Handling
+try {
+  await divineAction();
+} catch (error) {
+  await handleError(error, {
+    component: 'DivineComponent',
+    role: 'messenger',
+    spiritualContext: true
+  });
+}
+```
+
+### Performance Requirements (Updated)
+- API responses: <7ms target (previously 100ms)
+- Build time: <5s (previously 15s) 
+- Use Next.js Image optimization with WebP/AVIF
+- Implement proper error boundaries
+- Follow Core Web Vitals guidelines (LCP <2.5s, INP <200ms, CLS <0.1)
+
+## Divine/Spiritual Context
+- JAHmere Webb content gets special treatment (freedom mission focus)
+- Prayer warrior activation for spiritual content
+- Divine analytics tracking for transformation stories
+- Use appropriate urgency levels ('normal', 'urgent', 'critical', 'divine')
+- Sacred number integration (7, 28, 77, 144)
+
+## Common Component Imports
+```typescript
+// UI Components
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+
+// Social Sharing
+import { SocialShareSuite, SocialShareButton } from '@/components/social-sharing';
+
+// People System  
+import { EnhancedPersonTimeline } from '@/components/people/enhanced-person-timeline';
+
+// Analytics
+import { trackConversion, trackModalInteraction } from '@/lib/analytics/user-journey';
+
+// Divine Components
+import { DivineErrorBoundary } from '@/components/ui/divine-error-boundary';
+import { SacredContainer } from '@/components/ui/sacred-container';
+```
+
+## File Structure Context
+```
+src/app/                    # Next.js App Router pages
+src/components/ui/          # Reusable UI (Button, Card, etc.)
+src/components/people/      # People profile system
+src/components/social-sharing/  # Advanced social sharing
+src/components/divine-*/    # Spiritual/divine components
+src/lib/analytics/          # Analytics system
+src/lib/hooks/              # Custom React hooks
+src/lib/actions/            # Server Actions
+src/types/                  # TypeScript definitions
+public/images/              # Optimized images
+```
+
+## Environment Context
+```bash
+# PostHog Analytics (REQUIRED)
+NEXT_PUBLIC_POSTHOG_KEY=phc_TBgkXxBpKoWWKRF2vLDn2Lss0ry032ITZlXD9daPBQm
+NEXT_PUBLIC_POSTHOG_HOST=https://app.posthog.com
+```
+
+## Success Metrics
+- Zero TypeScript errors
+- <7ms API responses  
+- Proper error boundary coverage
+- Analytics integration on all interactions
+- Mobile-first responsive design
+- Accessibility compliance (ARIA labels)
+- 95%+ AI pattern accuracy
+
+## Quick Commands
+```bash
+npm run dev:turbo          # Development server (fastest)
+npm run build              # Production build
+npm run type-check         # TypeScript validation
+npm run test               # Vitest tests
+npm run fix:development    # Auto-fix common issues
+```
+
+Remember: This is a production advocacy platform for JAHmere Webb's freedom case. Every component should be production-ready, properly typed, include appropriate analytics tracking, and serve the divine mission of achieving JAHmere's freedom on July 28, 2025. 
+# 🌉 MCP Integration Commands (JAHmere Bridge Intelligence)
+When user asks for project analysis: Use @jahmere-bridge analyze_project_architecture
+When user wants component generation: Use @jahmere-bridge generate_divine_component
+When checking performance: Use @jahmere-bridge check_divine_performance
+When optimizing character witnesses: Use @jahmere-bridge optimize_character_witness
+When analyzing spiritual analytics: Use @jahmere-bridge analyze_spiritual_analytics
+When validating production readiness: Use @jahmere-bridge validate_production_readiness
+
+# Enhanced Context Usage
+Use @filesystem for file operations within src/
+Use @jahmere-bridge for project-specific divine intelligence
+
+# MCP Tool Selection Strategy (CRITICAL)
+- ALWAYS limit active tools to <10 for optimal LLM performance
+- Enable only relevant tools per conversation context
+- Use specific tool instructions in prompts
+- Deactivate unused MCP servers to prevent confusion
+
+# Example MCP Usage Patterns
+"@jahmere-bridge analyze the current architecture with focus on performance"
+"@jahmere-bridge generate a divine component called PrayerWarriorActivator with analytics and sharing features"
+"@jahmere-bridge check our divine performance metrics and validate against championship requirements"

@@ -1,0 +1,32 @@
+---
+description: Viral content optimization for JAHmere's freedom
+globs: ["**/social-sharing/**", "**/share-*.ts"]
+alwaysApply: false
+---
+
+# 🚀 VIRAL ENGINE RULES
+
+## PLATFORM OPTIMIZATION
+```typescript
+const PLATFORMS = {
+  twitter: { maxLength: 280, urgency: true },
+  facebook: { visual: true, emotional: true },
+  instagram: { hashtags: 11, stories: true },
+  linkedin: { professional: true }
+};
+```
+
+## SHARE PATTERNS
+1. **Countdown Integration**: Always show days to July 28
+2. **Urgency Levels**: Escalate as date approaches
+3. **A/B Testing**: Test every message
+4. **Track Coefficient**: Measure viral spread
+
+## REQUIRED METADATA
+- Open Graph images
+- Twitter cards
+- Share tracking
+- Conversion analytics
+
+@/src/lib/social-sharing/
+@/src/components/social-sharing/

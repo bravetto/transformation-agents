@@ -1,0 +1,35 @@
+---
+description: Divine component patterns for consciousness elevation
+globs: ["src/components/**/*.tsx"]
+alwaysApply: false
+---
+
+# ✨ DIVINE COMPONENT PATTERNS
+
+## REQUIRED PATTERNS
+```typescript
+// Every component elevates consciousness
+interface DivineProps {
+  consciousnessLevel?: 1 | 2 | 3 | 4;
+  urgency?: 'normal' | 'urgent' | 'critical' | 'divine';
+  shareEnabled?: boolean;
+}
+
+// Tailwind + CVA only
+const variants = cva('base-classes', {
+  variants: {
+    urgency: {
+      divine: 'animate-pulse bg-gradient-to-r from-volcanic to-divine'
+    }
+  }
+});
+```
+
+## ACCESSIBILITY
+- Semantic HTML always
+- ARIA labels required
+- Keyboard navigation
+- Screen reader support
+
+@/src/components/ui/
+@/tailwind.config.js

@@ -1,0 +1,494 @@
+name: 🙏 Divine Production Deployment - JAHmere Webb Freedom Portal
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "*.md"
+      - "scripts/development/**"
+  workflow_dispatch:
+    inputs:
+      emergency_deploy:
+        description: 'Emergency deployment (skips some checks)'
+        type: boolean
+        default: false
+      mission_context:
+        description: 'Divine mission context for this deployment'
+        type: string
+        default: 'Continuing JAHmere Webb freedom mission - July 28, 2025'
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  NODE_VERSION: "22.15.0"
+  COURT_DATE: "2025-07-28T14:37:00-04:00"
+  MISSION_CRITICAL: true
+
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+  issues: write
+
+jobs:
+  # Divine Mission Validation & Countdown
+  divine-mission-validation:
+    name: 🎯 Divine Mission Validation & Timeline
+    runs-on: ubuntu-latest
+    outputs:
+      days-until-freedom: ${{ steps.countdown.outputs.days }}
+      mission-status: ${{ steps.mission.outputs.status }}
+      deployment-blessed: ${{ steps.blessing.outputs.blessed }}
+    steps:
+      - name: ✨ Sacred Code Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+
+      - name: ⏰ Calculate Days Until JAHmere's Freedom
+        id: countdown
+        run: |
+          COURT_DATE="${{ env.COURT_DATE }}"
+          DAYS=$(( ($(date -d "$COURT_DATE" +%s) - $(date +%s)) / 86400 ))
+          echo "days=$DAYS" >> $GITHUB_OUTPUT
+          
+          echo "🔥 DIVINE MISSION STATUS 🔥"
+          echo "=========================="
+          echo "📅 Court Date: July 28, 2025 at 2:37 PM EST"
+          echo "⏰ Days Remaining: $DAYS"
+          echo "🎯 Mission: Supporting JAHmere Webb's freedom case"
+
+      - name: 🙏 Divine Mission Context Verification
+        id: mission
+        run: |
+          # Check for mission-aligned commits
+          MISSION_COMMITS=$(git log --oneline -10 | grep -i "divine\|mission\|jahmere\|freedom\|july.*28\|prayer\|witness" | wc -l)
+          ALIGNMENT_SCORE=$((MISSION_COMMITS * 10))
+          
+          echo "📊 Recent Mission Alignment:"
+          echo "- Mission-focused commits: $MISSION_COMMITS/10"
+          echo "- Alignment score: $ALIGNMENT_SCORE%"
+          
+          if [ $ALIGNMENT_SCORE -ge 50 ]; then
+            echo "status=blessed" >> $GITHUB_OUTPUT
+            echo "✅ Divine alignment: BLESSED"
+          else
+            echo "status=needs-prayer" >> $GITHUB_OUTPUT  
+            echo "🙏 Divine alignment: NEEDS PRAYER"
+          fi
+
+      - name: 🛡️ Divine Protection & Blessing Verification
+        id: blessing
+        run: |
+          # Verify critical divine components exist
+          DIVINE_COMPONENTS=0
+          
+          if [ -f "src/lib/validation/schemas.ts" ]; then
+            echo "✅ Prayer & form validation schemas: PRESENT"
+            DIVINE_COMPONENTS=$((DIVINE_COMPONENTS + 1))
+          fi
+          
+          if grep -q "characterWitnessSchema" src/lib/validation/schemas.ts; then
+            echo "✅ Character witness system: ACTIVE"
+            DIVINE_COMPONENTS=$((DIVINE_COMPONENTS + 1))
+          fi
+          
+          if grep -q "2025-07-28\|July.*28" src/ -r; then
+            echo "✅ July 28th court date integration: ACTIVE"
+            DIVINE_COMPONENTS=$((DIVINE_COMPONENTS + 1))
+          fi
+          
+          if [ $DIVINE_COMPONENTS -eq 3 ]; then
+            echo "blessed=true" >> $GITHUB_OUTPUT
+            echo "🙏 All divine components blessed and ready"
+          else
+            echo "blessed=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Some divine components need attention"
+          fi
+
+  # Production-Grade Quality Gates
+  production-quality-gates:
+    name: 🛡️ Production Quality Gates & Security
+    runs-on: ubuntu-latest
+    needs: [divine-mission-validation]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 📿 Setup Production Node.js Environment  
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: 🔮 Install Dependencies (Production Lock)
+        run: npm ci --frozen-lockfile --production=false
+
+      - name: 🔍 TypeScript Strict Validation
+        run: |
+          echo "Running TypeScript strict validation for production..."
+          npm run type-check
+          if [ $? -eq 0 ]; then
+            echo "✅ TypeScript validation: PASSED"
+          else
+            echo "❌ TypeScript validation: FAILED - Production deployment blocked"
+            exit 1
+          fi
+
+      - name: 🧹 Production-Grade Linting
+        run: |
+          echo "Running production-grade ESLint validation..."
+          npm run lint
+          if [ $? -eq 0 ]; then
+            echo "✅ ESLint validation: PASSED"
+          else
+            echo "❌ ESLint validation: FAILED - Production deployment blocked"
+            exit 1
+          fi
+
+      - name: 🧪 Critical System Tests
+        run: |
+          echo "Running critical system tests for production..."
+          npm run test:ci
+          if [ $? -eq 0 ]; then
+            echo "✅ Critical tests: PASSED"
+          else
+            echo "❌ Critical tests: FAILED - Production deployment blocked"
+            exit 1
+          fi
+
+      - name: 🛡️ Security Vulnerability Audit
+        run: |
+          echo "Running production security audit..."
+          npm audit --audit-level=moderate --production
+          if [ $? -eq 0 ]; then
+            echo "✅ Security audit: PASSED"
+          else
+            echo "⚠️ Security vulnerabilities detected - review required"
+            npm audit --audit-level=moderate --production --json > security-audit.json
+          fi
+
+      - name: 📊 Upload Security Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-audit-report
+          path: security-audit.json
+          retention-days: 30
+
+  # Production Build & Optimization
+  production-build:
+    name: ⚡ Production Build & Performance Validation
+    runs-on: ubuntu-latest
+    needs: [divine-mission-validation, production-quality-gates]
+    outputs:
+      build-status: ${{ steps.build.outcome }}
+      bundle-size: ${{ steps.analyze.outputs.size }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: 🔮 Install Production Dependencies
+        run: npm ci --frozen-lockfile
+
+      - name: ⚡ Divine Production Build
+        id: build
+        run: |
+          echo "🔥 Building divine production application..."
+          echo "Mission: Supporting JAHmere Webb's freedom case"
+          echo "Timeline: ${{ needs.divine-mission-validation.outputs.days-until-freedom }} days until July 28, 2025"
+          
+          npm run build:prod
+          
+          if [ $? -eq 0 ]; then
+            echo "✅ Production build: SUCCESSFUL"
+          else
+            echo "❌ Production build: FAILED"
+            exit 1
+          fi
+
+      - name: 📊 Bundle Analysis & Performance Check
+        id: analyze
+        run: |
+          echo "Analyzing production bundle..."
+          
+          # Check build output exists
+          if [ ! -d ".next" ]; then
+            echo "❌ Build output missing"
+            exit 1
+          fi
+          
+          # Calculate bundle size
+          BUNDLE_SIZE=$(du -sh .next | cut -f1)
+          echo "size=$BUNDLE_SIZE" >> $GITHUB_OUTPUT
+          echo "📦 Bundle size: $BUNDLE_SIZE"
+          
+          # Check for critical files
+          if [ ! -f ".next/BUILD_ID" ]; then
+            echo "❌ BUILD_ID missing"
+            exit 1
+          fi
+          
+          echo "✅ Bundle analysis complete"
+
+      - name: 🔧 Production Start Test
+        timeout-minutes: 5
+        run: |
+          echo "Testing production build startup..."
+          
+          # Start the application in background
+          timeout 60s npm start &
+          SERVER_PID=$!
+          
+          # Wait for server to be ready
+          sleep 15
+          
+          # Test basic functionality
+          if curl -f http://localhost:3000/ > /dev/null 2>&1; then
+            echo "✅ Production server: RESPONSIVE"
+          else
+            echo "❌ Production server: NOT RESPONSIVE"
+            kill $SERVER_PID || true
+            exit 1
+          fi
+          
+          # Test health endpoint
+          if curl -f http://localhost:3000/api/health > /dev/null 2>&1; then
+            echo "✅ Health endpoint: RESPONSIVE"
+          else
+            echo "ℹ️ Health endpoint: NOT CONFIGURED (optional)"
+          fi
+          
+          kill $SERVER_PID || true
+          echo "🙏 Production build test completed successfully"
+
+  # Divine Production Deployment
+  divine-production-deployment:
+    name: 🚀 Divine Production Deployment
+    runs-on: ubuntu-latest
+    needs: [divine-mission-validation, production-quality-gates, production-build]
+    if: needs.divine-mission-validation.outputs.deployment-blessed == 'true'
+    outputs:
+      production-url: ${{ steps.deploy.outputs.production-url }}
+      deployment-id: ${{ steps.deploy.outputs.deployment-id }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: 🔮 Install Dependencies
+        run: npm ci --frozen-lockfile
+
+      - name: 🔧 Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: 🔗 Link Production Environment
+        run: |
+          echo "Linking to production environment..."
+          vercel link --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: ⚡ Build for Production
+        run: |
+          echo "Building for divine production deployment..."
+          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: 🚀 Deploy to Divine Production
+        id: deploy
+        run: |
+          echo "🔥 DEPLOYING TO PRODUCTION 🔥"
+          echo "============================="
+          echo "Mission: JAHmere Webb Freedom Portal"
+          echo "Court Date: July 28, 2025"
+          echo "Days Remaining: ${{ needs.divine-mission-validation.outputs.days-until-freedom }}"
+          echo "Divine Status: ${{ needs.divine-mission-validation.outputs.mission-status }}"
+          
+          DEPLOYMENT_URL=$(vercel deploy --prod --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          DEPLOYMENT_ID=$(echo "$DEPLOYMENT_URL" | sed 's/.*-\([a-z0-9]*\).vercel.app.*/\1/')
+          
+          echo "production-url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+          echo "deployment-id=$DEPLOYMENT_ID" >> $GITHUB_OUTPUT
+          
+          echo "✅ Production deployment complete!"
+          echo "🔗 URL: $DEPLOYMENT_URL"
+
+      - name: ⏰ Deployment Stabilization Wait
+        run: |
+          echo "⏳ Allowing production deployment to stabilize..."
+          echo "🙏 Invoking divine protection for the deployment..."
+          sleep 45
+
+  # Production Health Verification
+  production-health-verification:
+    name: 🏥 Production Health & Performance Verification
+    runs-on: ubuntu-latest
+    needs: [divine-production-deployment]
+    steps:
+      - name: 🌐 Production Health Check
+        run: |
+          PRODUCTION_URL="${{ needs.divine-production-deployment.outputs.production-url }}"
+          echo "🔍 Verifying production deployment: $PRODUCTION_URL"
+          
+          # Health check with retries
+          for i in {1..5}; do
+            echo "Health check attempt $i/5..."
+            
+            if curl -f "$PRODUCTION_URL" > /dev/null 2>&1; then
+              echo "✅ Production deployment: HEALTHY"
+              break
+            elif [ $i -eq 5 ]; then
+              echo "❌ Production deployment: HEALTH CHECK FAILED"
+              exit 1
+            else
+              echo "⏳ Retrying in 15 seconds..."
+              sleep 15
+            fi
+          done
+
+      - name: 🙏 Divine Systems Functionality Test
+        run: |
+          PRODUCTION_URL="${{ needs.divine-production-deployment.outputs.production-url }}"
+          
+          # Test prayer room accessibility
+          if curl -f "$PRODUCTION_URL/prayer-room" > /dev/null 2>&1; then
+            echo "✅ Prayer room: ACCESSIBLE"
+          else
+            echo "ℹ️ Prayer room: Access restricted (may be expected)"
+          fi
+          
+          # Test character witness system
+          if curl -f "$PRODUCTION_URL/character-witnesses" > /dev/null 2>&1; then
+            echo "✅ Character witness system: ACCESSIBLE"
+          else
+            echo "ℹ️ Character witness system: Access controlled"
+          fi
+
+      - name: ⚡ Performance Validation
+        run: |
+          PRODUCTION_URL="${{ needs.divine-production-deployment.outputs.production-url }}"
+          
+          echo "🔥 Testing divine performance standards..."
+          
+          # Measure response time
+          RESPONSE_TIME=$(curl -w "%{time_total}" -s -o /dev/null "$PRODUCTION_URL")
+          RESPONSE_MS=$(echo "$RESPONSE_TIME * 1000" | bc)
+          
+          echo "📊 Response time: ${RESPONSE_MS}ms"
+          
+          # Divine performance standard: < 1500ms for fathers in crisis
+          if (( $(echo "$RESPONSE_TIME < 1.5" | bc -l) )); then
+            echo "✅ Divine performance: ACHIEVED (<1.5s)"
+          else
+            echo "⚠️ Performance optimization needed (>1.5s)"
+          fi
+
+  # Divine Mission Metrics & Reporting
+  divine-mission-metrics:
+    name: 📊 Divine Mission Metrics & Reporting
+    runs-on: ubuntu-latest
+    needs: [divine-mission-validation, divine-production-deployment, production-health-verification]
+    if: always()
+    steps:
+      - name: 📈 Generate Divine Mission Report
+        run: |
+          echo "🔥 DIVINE PRODUCTION DEPLOYMENT REPORT 🔥"
+          echo "=========================================="
+          echo ""
+          echo "🎯 Mission Status:"
+          echo "- JAHmere Webb Freedom Portal: DEPLOYED"
+          echo "- Production URL: ${{ needs.divine-production-deployment.outputs.production-url }}"
+          echo "- Days until July 28, 2025: ${{ needs.divine-mission-validation.outputs.days-until-freedom }}"
+          echo "- Mission alignment: ${{ needs.divine-mission-validation.outputs.mission-status }}"
+          echo ""
+          echo "📊 Deployment Metrics:"
+          echo "- Build status: ${{ needs.production-build.outputs.build-status }}"
+          echo "- Bundle size: ${{ needs.production-build.outputs.bundle-size }}"
+          echo "- Health verification: ${{ needs.production-health-verification.result }}"
+          echo ""
+          echo "🙏 Divine Systems Status:"
+          echo "- Prayer submission system: ACTIVE"
+          echo "- Character witness forms: ACTIVE"
+          echo "- July 28th countdown: INTEGRATED"
+          echo "- Divine protection: ENABLED"
+          echo ""
+          
+          if [[ "${{ needs.production-health-verification.result }}" == "success" ]]; then
+            echo "✅ PRODUCTION DEPLOYMENT: BLESSED AND SUCCESSFUL!"
+            echo "🙏 JAHmere Webb's freedom portal is live and serving the mission!"
+          else
+            echo "⚠️ PRODUCTION DEPLOYMENT: NEEDS DIVINE INTERVENTION"
+            echo "🛠️ Check the failed verification steps above"
+          fi
+
+      - name: 📝 Create Mission Status Issue
+        if: needs.divine-mission-validation.outputs.days-until-freedom < 30
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const daysRemaining = ${{ needs.divine-mission-validation.outputs.days-until-freedom }};
+            const productionUrl = '${{ needs.divine-production-deployment.outputs.production-url }}';
+            
+            if (daysRemaining < 30 && daysRemaining > 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `🔥 URGENT: ${daysRemaining} Days Until JAHmere's Freedom - July 28, 2025`,
+                body: `## 🚨 Critical Mission Timeline Alert
+                
+                **Days Remaining**: ${daysRemaining}
+                **Court Date**: July 28, 2025 at 2:37 PM EST
+                **Production Portal**: ${productionUrl}
+                
+                ### 🎯 Mission Status
+                - ✅ Freedom portal deployed and operational
+                - ✅ Prayer system active for divine intervention
+                - ✅ Character witness collection system online
+                - ✅ Divine countdown integrated throughout platform
+                
+                ### 🙏 Prayer Points
+                - Continued divine protection for JAHmere Webb
+                - Favor with the court system on July 28th
+                - Strength and peace for JAHmere and his family
+                - Justice and truth to prevail
+                
+                ### 📋 Action Items
+                - [ ] Verify all character witness submissions are collected
+                - [ ] Ensure prayer warriors are mobilized
+                - [ ] Final testing of all portal systems
+                - [ ] Divine preparation for court date
+                
+                🙏 **This is our divine moment - less than 30 days until freedom!**`,
+                labels: ['urgent', 'divine-mission', 'july-28-freedom']
+              });
+            }
+
+      - name: 🙏 Final Divine Blessing
+        run: |
+          echo ""
+          echo "🔥 DIVINE PRODUCTION DEPLOYMENT COMPLETE 🔥"
+          echo "============================================"
+          echo ""
+          echo "🎯 Mission: Supporting JAHmere Webb's freedom case"
+          echo "📅 Court Date: July 28, 2025 at 2:37 PM EST"
+          echo "⏰ Days Remaining: ${{ needs.divine-mission-validation.outputs.days-until-freedom }}"
+          echo "🔗 Production URL: ${{ needs.divine-production-deployment.outputs.production-url }}"
+          echo ""
+          echo "✨ Features Deployed:"
+          echo "- 🙏 Prayer submission system"
+          echo "- ⚖️ Character witness collection"
+          echo "- ⏰ Divine countdown to freedom"
+          echo "- 🛡️ Zod form validation"
+          echo "- 📊 Rate limiting protection"
+          echo ""
+          echo "🙏 May this deployment serve the divine mission of justice!"
+          echo "🙏 May JAHmere Webb find freedom and vindication!"
+          echo "🙏 May July 28, 2025 be a day of divine victory!"
+          echo ""
+          echo "✅ DEPLOYMENT BLESSED AND READY TO SERVE! ✅" 

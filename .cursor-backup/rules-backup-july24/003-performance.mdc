@@ -1,0 +1,32 @@
+---
+description: Performance optimization for divine speed
+globs: ["**/*.ts", "**/*.tsx", "**/next.config.js"]
+alwaysApply: false
+---
+
+# ⚡ PERFORMANCE RULES
+
+## TARGETS
+- API Response: <7ms (maintain current)
+- Build Time: <3.0s (maintain current)
+- Bundle Size: <100KB initial
+- Core Web Vitals: ALL GREEN
+
+## OPTIMIZATIONS
+1. **Images**: AVIF > WebP > JPEG
+2. **Fonts**: Variable fonts with subset
+3. **Code Split**: Dynamic imports below fold
+4. **Cache**: Edge caching + Vercel KV
+
+## MONITORING
+```typescript
+// Track everything
+trackWebVitals({
+  name: metric.name,
+  value: metric.value,
+  jahmereImpact: calculateMissionImpact(metric)
+});
+```
+
+@/next.config.js
+@/src/lib/performance/
