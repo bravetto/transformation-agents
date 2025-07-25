@@ -144,6 +144,45 @@ function Navigation() {
   const { isMobile } = useMobileOptimization();
   const { createSwipeHandler, triggerHaptic } = useAdvancedGestures();
 
+  // 🔥 PRODUCTION MONITORING: Navigation state debugging for deployment
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      console.log("🧭 Navigation State:", {
+        pathname,
+        openPopover,
+        isOpen,
+        expandedItems: expandedItems.length,
+        timestamp: new Date().toISOString(),
+      });
+    }
+  }, [pathname, openPopover, isOpen, expandedItems]);
+
+  // 🔥 PRODUCTION MONITORING: Error boundary for navigation state
+  useEffect(() => {
+    const handleNavigationError = (event: ErrorEvent) => {
+      if (
+        event.error?.message?.includes("navigation") ||
+        event.error?.message?.includes("popover")
+      ) {
+        console.error("🚨 Navigation Error Detected:", {
+          error: event.error,
+          pathname,
+          openPopover,
+          userAgent: navigator.userAgent,
+          timestamp: new Date().toISOString(),
+        });
+
+        // Auto-recovery: Reset navigation state
+        setOpenPopover(null);
+        setIsOpen(false);
+        setExpandedItems([]);
+      }
+    };
+
+    window.addEventListener("error", handleNavigationError);
+    return () => window.removeEventListener("error", handleNavigationError);
+  }, [pathname, openPopover]);
+
   // Enhanced mobile navigation with swipe support
   const mobileSwipeHandlers = createSwipeHandler(
     () => {
@@ -186,24 +225,31 @@ function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 🔥 CRITICAL FIX: Enhanced pathname change handler with forced state reset
+  // 🔥 PRODUCTION FIX: Robust navigation state management for deployment
   useEffect(() => {
-    // Force reset all navigation state immediately
-    setIsOpen(false);
-    setOpenPopover(null);
-    setExpandedItems([]);
-
-    // Additional cleanup for any lingering state
-    document.body.style.overflow = "";
-
-    // Force a small delay to ensure state is properly reset
-    const timeoutId = setTimeout(() => {
+    // Immediate state reset with deployment-safe timing
+    const resetNavigationState = () => {
       setIsOpen(false);
       setOpenPopover(null);
       setExpandedItems([]);
-    }, 50);
+      document.body.style.overflow = "";
+    };
 
-    return () => clearTimeout(timeoutId);
+    // Reset immediately
+    resetNavigationState();
+
+    // Double-check reset after microtask queue to ensure Vercel compatibility
+    const timeoutId = setTimeout(resetNavigationState, 0);
+
+    // Additional safety reset for edge cases in production
+    const fallbackTimeoutId = setTimeout(resetNavigationState, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearTimeout(fallbackTimeoutId);
+      // Ensure cleanup on unmount
+      document.body.style.overflow = "";
+    };
   }, [pathname]);
 
   const toggleExpanded = (href: string) => {
@@ -214,17 +260,27 @@ function Navigation() {
     );
   };
 
-  // 🔥 CRITICAL FIX: Enhanced popover state management with forced cleanup
+  // 🔥 PRODUCTION FIX: Enhanced popover state management with deployment safety
   const handlePopoverOpenChange = useCallback(
     (isOpen: boolean, itemHref: string) => {
-      if (isOpen) {
-        // Force close all popovers first, then open the requested one
+      try {
+        if (isOpen) {
+          // Force close all popovers first for clean state
+          setOpenPopover(null);
+
+          // Use requestAnimationFrame for better timing in production
+          requestAnimationFrame(() => {
+            setOpenPopover(itemHref);
+          });
+        } else {
+          // Always close the popover with immediate effect
+          setOpenPopover(null);
+        }
+      } catch (error) {
+        // Production safety: Log error and force reset
+        console.error("🚨 Popover state error:", error);
         setOpenPopover(null);
-        // Use a micro-task to ensure state is reset before setting new state
-        setTimeout(() => setOpenPopover(itemHref), 0);
-      } else {
-        // Always close the popover, regardless of current state
-        setOpenPopover(null);
+        setIsOpen(false);
       }
     },
     [],
@@ -306,6 +362,16 @@ function Navigation() {
                       <PopoverContent
                         align="start"
                         className="w-64 p-0 bg-white border border-gray-200 shadow-lg z-dropdown"
+                        onOpenAutoFocus={(e) => e.preventDefault()}
+                        onCloseAutoFocus={(e) => e.preventDefault()}
+                        onPointerDownOutside={(e) => {
+                          // Enhanced outside click handling for deployment stability
+                          setOpenPopover(null);
+                        }}
+                        onEscapeKeyDown={() => {
+                          // Ensure popover closes on escape
+                          setOpenPopover(null);
+                        }}
                       >
                         <div className="py-2">
                           {item.children.map((child) => (
@@ -322,9 +388,26 @@ function Navigation() {
                                 pathname === child.href ? "page" : undefined
                               }
                               onClick={(e) => {
-                                // 🔥 CRITICAL FIX: Prevent event bubbling and ensure popover closes
-                                e.stopPropagation();
-                                setOpenPopover(null);
+                                // 🔥 PRODUCTION FIX: Enhanced event handling with error recovery
+                                try {
+                                  e.stopPropagation();
+                                  setOpenPopover(null);
+
+                                  // Additional safety for mobile devices
+                                  if (isMobile) {
+                                    setIsOpen(false);
+                                    document.body.style.overflow = "";
+                                  }
+                                } catch (error) {
+                                  // Production safety: Force navigation reset on error
+                                  console.error(
+                                    "🚨 Navigation click error:",
+                                    error,
+                                  );
+                                  setOpenPopover(null);
+                                  setIsOpen(false);
+                                  document.body.style.overflow = "";
+                                }
                               }}
                             >
                               <span className="text-sm">{child.label}</span>
