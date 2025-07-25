@@ -7,15 +7,7 @@ import { AnalyticsWrapper } from "@/components/analytics-wrapper";
 import { AnimationProvider } from "@/components/animation-context";
 import { ProductionErrorBoundary } from "@/components/ui/production-error-boundary";
 import { initializeProductionLogging } from "@/lib/production/console-log-sanitizer";
-import dynamic from "next/dynamic";
-
-// Dynamic import of Navigation to avoid hydration issues
-const Navigation = dynamic(() => import("@/components/navigation"), {
-  ssr: false,
-  loading: () => (
-    <div className="h-16 bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-100 animate-pulse"></div>
-  ),
-});
+import Navigation from "@/components/navigation";
 
 // Initialize production security on app startup
 if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
