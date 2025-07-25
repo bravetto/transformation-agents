@@ -89,15 +89,7 @@
     }
   ],
 
-  "env": {
-    "NEXT_PUBLIC_POSTHOG_KEY": "@posthog_key",
-    "NEXT_PUBLIC_POSTHOG_HOST": "@posthog_host", 
-    "DATABASE_URL": "@database_url",
-    "POSTGRES_URL_NON_POOLING": "@postgres_url_non_pooling",
-    "NEXTAUTH_SECRET": "@nextauth_secret",
-    "OPENAI_API_KEY": "@openai_api_key",
-    "DIVINE_SECURITY_SALT": "@divine_security_salt"
-  },
+
 
   "installCommand": "npm ci",
   "buildCommand": "npm run build:prod",
