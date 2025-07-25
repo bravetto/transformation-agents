@@ -42,6 +42,17 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * People Index Page - Server Component
+ *
+ * This server component properly wraps the client-side PeopleContent
+ * to prevent hydration mismatches. The PeopleContent component contains
+ * interactive features and must be rendered as a client component.
+ */
 export default function PeopleIndexPage() {
-  return <PeopleContent />;
+  return (
+    <div className="min-h-screen">
+      <PeopleContent />
+    </div>
+  );
 }

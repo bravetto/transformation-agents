@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getPerson, getAllPeople } from "@/data/people";
 import { Suspense } from "react";
 import { DivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import PersonPageClient from "@/components/people/person-page-client";
 import EnhancedPersonHero from "@/components/people/enhanced-person-hero-simple";
 import PersonTestimony from "@/components/people/person-testimony";
 import PersonImpact from "@/components/people/person-impact";
@@ -192,221 +193,206 @@ export default async function PersonPage({ params }: PersonPageParams) {
   };
 
   return (
-    <DivineErrorBoundary
-      componentName={`${personData.name}Page`}
-      role="guardian"
-      fallback={
-        <div className="p-8 text-center">
-          Sorry, something went wrong loading {personData.name}'s profile.
-          <div className="mt-4">
-            <Link href="/people" className="text-blue-500 hover:underline">
-              Return to People Directory
-            </Link>
-          </div>
-        </div>
-      }
-    >
-      <main className="min-h-screen">
-        {/* Hero Section */}
-        <section className="w-full">
+    <PersonPageClient personName={personData.name}>
+      {/* Hero Section */}
+      <section className="w-full">
+        <DivineErrorBoundary
+          componentName={`${personData.name}Hero`}
+          role="messenger"
+          fallback={
+            <div className="container-wide py-12 text-center">
+              <h2 className="text-3xl font-bold">{personData.name}</h2>
+              <p className="mt-4">Hero section could not be displayed</p>
+            </div>
+          }
+        >
+          <Suspense fallback={<PersonPageSkeleton />}>
+            <EnhancedPersonHero {...heroProps} />
+          </Suspense>
+        </DivineErrorBoundary>
+      </section>
+
+      {/* Testimony Section */}
+      {personData.testimony && (
+        <Suspense fallback={<PersonPageSkeleton />}>
           <DivineErrorBoundary
-            componentName={`${personData.name}Hero`}
+            componentName={`${personData.name}Testimony`}
             role="messenger"
             fallback={
-              <div className="container-wide py-12 text-center">
-                <h2 className="text-3xl font-bold">{personData.name}</h2>
-                <p className="mt-4">Hero section could not be displayed</p>
+              <div className="p-6 bg-gray-100 rounded-lg">
+                <h3 className="text-lg font-semibold">
+                  Error loading testimony section
+                </h3>
+                <p>This content could not be displayed.</p>
               </div>
             }
           >
-            <Suspense fallback={<PersonPageSkeleton />}>
-              <EnhancedPersonHero {...heroProps} />
-            </Suspense>
+            <PersonTestimony
+              title="Vision & Testimony"
+              description={
+                personData.sections?.find((s) => s.type === "testimony")
+                  ?.content?.description || "Personal journey and insights"
+              }
+              testimonies={[
+                {
+                  id: "main-testimony",
+                  quote: personData.testimony.quote,
+                  author: personData.name,
+                  role: personData.title || "",
+                  date: personData.testimony.date || "",
+                },
+              ]}
+            />
           </DivineErrorBoundary>
-        </section>
+        </Suspense>
+      )}
 
-        {/* Testimony Section */}
-        {personData.testimony && (
-          <Suspense fallback={<PersonPageSkeleton />}>
-            <DivineErrorBoundary
-              componentName={`${personData.name}Testimony`}
-              role="messenger"
-              fallback={
-                <div className="p-6 bg-gray-100 rounded-lg">
-                  <h3 className="text-lg font-semibold">
-                    Error loading testimony section
-                  </h3>
-                  <p>This content could not be displayed.</p>
-                </div>
+      {/* Impact Section */}
+      {personData.impact && (
+        <Suspense fallback={<PersonPageSkeleton />}>
+          <DivineErrorBoundary
+            componentName={`${personData.name}Impact`}
+            role="messenger"
+            fallback={
+              <div className="p-6 bg-gray-100 rounded-lg">
+                <h3 className="text-lg font-semibold">
+                  Error loading impact section
+                </h3>
+                <p>This content could not be displayed.</p>
+              </div>
+            }
+          >
+            <PersonImpact
+              title={personData.impact.title}
+              description={personData.impact.description}
+              stats={
+                personData.impact.stats?.map((stat) => ({
+                  id: `stat-${stat.label.toLowerCase().replace(/\s+/g, "-")}`,
+                  value: stat.value.toString(),
+                  label: stat.label,
+                })) || []
               }
-            >
-              <PersonTestimony
-                title="Vision & Testimony"
-                description={
-                  personData.sections?.find((s) => s.type === "testimony")
-                    ?.content?.description || "Personal journey and insights"
-                }
-                testimonies={[
-                  {
-                    id: "main-testimony",
-                    quote: personData.testimony.quote,
-                    author: personData.name,
-                    role: personData.title || "",
-                    date: personData.testimony.date || "",
-                  },
-                ]}
-              />
-            </DivineErrorBoundary>
-          </Suspense>
-        )}
+              achievements={
+                personData.sections?.find((s) => s.type === "impact")?.content
+                  ?.achievements || []
+              }
+            />
+          </DivineErrorBoundary>
+        </Suspense>
+      )}
 
-        {/* Impact Section */}
-        {personData.impact && (
-          <Suspense fallback={<PersonPageSkeleton />}>
-            <DivineErrorBoundary
-              componentName={`${personData.name}Impact`}
-              role="messenger"
-              fallback={
-                <div className="p-6 bg-gray-100 rounded-lg">
-                  <h3 className="text-lg font-semibold">
-                    Error loading impact section
-                  </h3>
-                  <p>This content could not be displayed.</p>
-                </div>
-              }
-            >
-              <PersonImpact
-                title={personData.impact.title}
-                description={personData.impact.description}
-                stats={
-                  personData.impact.stats?.map((stat) => ({
-                    id: `stat-${stat.label.toLowerCase().replace(/\s+/g, "-")}`,
-                    value: stat.value.toString(),
-                    label: stat.label,
-                  })) || []
-                }
-                achievements={
-                  personData.sections?.find((s) => s.type === "impact")?.content
-                    ?.achievements || []
-                }
-              />
-            </DivineErrorBoundary>
-          </Suspense>
-        )}
+      {/* Letter Section */}
+      {personData.sections?.find((s) => s.type === "letter") && (
+        <Suspense fallback={<PersonPageSkeleton />}>
+          <DivineErrorBoundary
+            componentName={`${personData.name}Letter`}
+            role="messenger"
+            fallback={
+              <div className="p-6 bg-gray-100 rounded-lg">
+                <h3 className="text-lg font-semibold">
+                  Error loading letter section
+                </h3>
+                <p>This content could not be displayed.</p>
+              </div>
+            }
+          >
+            {(() => {
+              const letterSection = personData.sections?.find(
+                (s) => s.type === "letter",
+              );
+              if (letterSection?.type === "letter") {
+                const signatureValue =
+                  typeof letterSection.content.signature === "string"
+                    ? letterSection.content.signature
+                    : letterSection.content.signature?.image;
 
-        {/* Letter Section */}
-        {personData.sections?.find((s) => s.type === "letter") && (
-          <Suspense fallback={<PersonPageSkeleton />}>
-            <DivineErrorBoundary
-              componentName={`${personData.name}Letter`}
-              role="messenger"
-              fallback={
-                <div className="p-6 bg-gray-100 rounded-lg">
-                  <h3 className="text-lg font-semibold">
-                    Error loading letter section
-                  </h3>
-                  <p>This content could not be displayed.</p>
-                </div>
-              }
-            >
-              {(() => {
-                const letterSection = personData.sections?.find(
-                  (s) => s.type === "letter",
+                return (
+                  <PersonLetter
+                    title={letterSection.content.title}
+                    body={letterSection.content.body}
+                    {...(letterSection.content.date && {
+                      date: letterSection.content.date,
+                    })}
+                    {...(signatureValue && { signature: signatureValue })}
+                  />
                 );
-                if (letterSection?.type === "letter") {
-                  const signatureValue =
-                    typeof letterSection.content.signature === "string"
-                      ? letterSection.content.signature
-                      : letterSection.content.signature?.image;
+              }
+              return null;
+            })()}
+          </DivineErrorBoundary>
+        </Suspense>
+      )}
 
-                  return (
-                    <PersonLetter
-                      title={letterSection.content.title}
-                      body={letterSection.content.body}
-                      {...(letterSection.content.date && {
-                        date: letterSection.content.date,
-                      })}
-                      {...(signatureValue && { signature: signatureValue })}
-                    />
-                  );
-                }
-                return null;
-              })()}
-            </DivineErrorBoundary>
-          </Suspense>
-        )}
-
-        {/* Social Sharing Section - ADVANCED VIRAL OPTIMIZATION! */}
-        <section className="w-full bg-gradient-to-r from-blue-50 to-purple-50 py-12">
-          <div className="container mx-auto px-4">
-            <Suspense
+      {/* Social Sharing Section - ADVANCED VIRAL OPTIMIZATION! */}
+      <section className="w-full bg-gradient-to-r from-blue-50 to-purple-50 py-12">
+        <div className="container mx-auto px-4">
+          <Suspense
+            fallback={
+              <div className="h-32 bg-white rounded-lg animate-pulse" />
+            }
+          >
+            <DivineErrorBoundary
+              componentName={`${personData.name}SocialSharing`}
+              role="messenger"
               fallback={
-                <div className="h-32 bg-white rounded-lg animate-pulse" />
+                <div className="p-6 bg-white rounded-lg shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    Share {personData.name}'s Story
+                  </h3>
+                  <p className="text-gray-600">
+                    Sharing is temporarily unavailable. Please copy the URL to
+                    share manually.
+                  </p>
+                </div>
               }
             >
-              <DivineErrorBoundary
-                componentName={`${personData.name}SocialSharing`}
-                role="messenger"
-                fallback={
-                  <div className="p-6 bg-white rounded-lg shadow-sm">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      Share {personData.name}'s Story
-                    </h3>
-                    <p className="text-gray-600">
-                      Sharing is temporarily unavailable. Please copy the URL to
-                      share manually.
-                    </p>
-                  </div>
+              <SocialShareSuite
+                content={generatePersonShareableContent(personData)}
+                showPrayerCall={
+                  personData.id === "jahmere-webb" ||
+                  personData.role === "lightworker"
                 }
-              >
-                <SocialShareSuite
-                  content={generatePersonShareableContent(personData)}
-                  showPrayerCall={
-                    personData.id === "jahmere-webb" ||
-                    personData.role === "lightworker"
-                  }
-                  showUrgency={personData.id === "jahmere-webb"}
-                  highlightFreedomMission={personData.id === "jahmere-webb"}
-                  trackViralCoefficient={true}
-                  trackEngagement={true}
-                  enableAbTesting={true}
-                  layout="horizontal"
-                  showLabels={true}
-                  showCounts={false}
-                  className="max-w-4xl mx-auto"
-                />
-              </DivineErrorBoundary>
-            </Suspense>
-          </div>
-        </section>
+                showUrgency={personData.id === "jahmere-webb"}
+                highlightFreedomMission={personData.id === "jahmere-webb"}
+                trackViralCoefficient={true}
+                trackEngagement={true}
+                enableAbTesting={true}
+                layout="horizontal"
+                showLabels={true}
+                showCounts={false}
+                className="max-w-4xl mx-auto"
+              />
+            </DivineErrorBoundary>
+          </Suspense>
+        </div>
+      </section>
 
-        {/* Interactive Timeline Section - NEW! */}
-        <section className="w-full bg-gray-50 py-16">
-          <div className="container-wide">
-            <Suspense fallback={<PersonPageSkeleton />}>
-              <DivineErrorBoundary
-                componentName={`${personData.name}Timeline`}
-                role="messenger"
-                fallback={
-                  <div className="p-8 text-center">
-                    <h3 className="text-lg font-semibold">
-                      Error loading timeline section
-                    </h3>
-                    <p>The interactive timeline could not be displayed.</p>
-                  </div>
-                }
-              >
-                <EnhancedPersonTimeline
-                  person={personData}
-                  variant="detailed"
-                  showFilters={true}
-                  showStats={true}
-                />
-              </DivineErrorBoundary>
-            </Suspense>
-          </div>
-        </section>
-      </main>
-    </DivineErrorBoundary>
+      {/* Interactive Timeline Section - NEW! */}
+      <section className="w-full bg-gray-50 py-16">
+        <div className="container-wide">
+          <Suspense fallback={<PersonPageSkeleton />}>
+            <DivineErrorBoundary
+              componentName={`${personData.name}Timeline`}
+              role="messenger"
+              fallback={
+                <div className="p-8 text-center">
+                  <h3 className="text-lg font-semibold">
+                    Error loading timeline section
+                  </h3>
+                  <p>The interactive timeline could not be displayed.</p>
+                </div>
+              }
+            >
+              <EnhancedPersonTimeline
+                person={personData}
+                variant="detailed"
+                showFilters={true}
+                showStats={true}
+              />
+            </DivineErrorBoundary>
+          </Suspense>
+        </div>
+      </section>
+    </PersonPageClient>
   );
 }
