@@ -117,13 +117,27 @@ export function useSocialSharing(content: ShareableContent) {
           setShareCount((prev) => prev + 1);
           setViralCoefficient(result.analytics?.viralCoefficient || 1);
 
-          // Track A/B test event
+          // Track A/B test event inline to avoid dependency issues
           if (trackingData.abTestGroup && trackingData.abTestVariant) {
-            trackAbTestEvent(
-              trackingData.abTestGroup,
-              trackingData.abTestVariant,
-              "share",
-            );
+            try {
+              await fetch("/api/social-share/ab-test", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  action: "trackEvent",
+                  testId: trackingData.abTestGroup,
+                  variant: trackingData.abTestVariant,
+                  event: "share",
+                  metadata: {
+                    userType,
+                    contentType: content.type,
+                    platform: "web",
+                  },
+                }),
+              });
+            } catch (error) {
+              logger.error("Failed to track A/B test event", { error });
+            }
           }
 
           logger.analytics("📤 SHARE TRACKED", {
@@ -152,7 +166,63 @@ export function useSocialSharing(content: ShareableContent) {
       customMessage?: string,
     ): Promise<ShareResult | null> => {
       try {
-        const shareUrl = generateShareUrl(platform, customMessage);
+        // Generate share URL inline to avoid dependency issues
+        const platformConfig = PLATFORM_CONFIGS[platform];
+        const baseUrl = platformConfig.baseUrl;
+
+        // Get effective message (custom, A/B test, or default)
+        const abTestVariant = abTestVariants["share-message-urgency-2024"];
+        const defaultMessage = (() => {
+          const platformConfig = PLATFORM_CONFIGS[platform];
+          const style = platformConfig.messageStyle;
+
+          if (style === "urgent") {
+            return `🚨 URGENT: ${content.title} - This could change everything! ${content.description}`;
+          } else if (style === "professional") {
+            return `${content.title}: ${content.description}`;
+          } else {
+            return `Check this out: ${content.title} - ${content.description}`;
+          }
+        })();
+
+        const message =
+          customMessage || abTestVariant?.shareMessage || defaultMessage;
+
+        const encodedUrl = encodeURIComponent(content.url);
+        const encodedMessage = encodeURIComponent(message);
+
+        let shareUrl: string;
+        switch (platform) {
+          case "twitter":
+            const hashtags = content.hashtags.slice(0, 3).join(",");
+            shareUrl = `${baseUrl}?text=${encodedMessage}&url=${encodedUrl}&hashtags=${hashtags}`;
+            break;
+          case "linkedin":
+            shareUrl = `${baseUrl}?url=${encodedUrl}&title=${encodeURIComponent(content.title)}&summary=${encodedMessage}`;
+            break;
+          case "facebook":
+            shareUrl = `${baseUrl}?u=${encodedUrl}&quote=${encodedMessage}`;
+            break;
+          case "email":
+            const subject = encodeURIComponent(content.emailSubject);
+            const body = encodeURIComponent(
+              `${content.emailBody}\n\n${content.url}`,
+            );
+            shareUrl = `${baseUrl}?subject=${subject}&body=${body}`;
+            break;
+          case "whatsapp":
+            shareUrl = `${baseUrl}?text=${encodedMessage} ${encodedUrl}`;
+            break;
+          case "telegram":
+            shareUrl = `${baseUrl}?url=${encodedUrl}&text=${encodedMessage}`;
+            break;
+          case "reddit":
+            shareUrl = `${baseUrl}?url=${encodedUrl}&title=${encodeURIComponent(content.title)}`;
+            break;
+          default:
+            shareUrl = content.url;
+        }
+
         setShareCount((prev) => prev + 1);
         setShareSuccess(true);
 
@@ -188,7 +258,7 @@ export function useSocialSharing(content: ShareableContent) {
 
       return null;
     },
-    [userType, sessionId, abTestVariants],
+    [userType, sessionId, abTestVariants, content],
   );
 
   /**

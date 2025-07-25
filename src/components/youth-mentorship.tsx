@@ -64,26 +64,37 @@ function YouthMentorship() {
     }
   }, []);
 
-  // 🛡️ DEFENSIVE FIX: Move event listeners to separate useEffect
+  // 🛡️ DEFENSIVE FIX: Move event listeners to separate useEffect with proper cleanup
   useEffect(() => {
+    // Only add listener if component is mounted and client-side
+    if (!isClient) return;
+
     // Listen for global impact events
     const handleNewYouth = () => {
       setYouthCount((prev) => {
         const newCount = prev + 1;
-        localStorage.setItem(
-          "youthMentorshipData",
-          JSON.stringify({
-            count: newCount,
-            messages: recentMessages,
-          }),
-        );
+        try {
+          localStorage.setItem(
+            "youthMentorshipData",
+            JSON.stringify({
+              count: newCount,
+              messages: recentMessages,
+            }),
+          );
+        } catch (error) {
+          console.warn("localStorage save error:", error);
+        }
         return newCount;
       });
     };
 
     window.addEventListener("newYouthMessage", handleNewYouth);
-    return () => window.removeEventListener("newYouthMessage", handleNewYouth);
-  }, [recentMessages]);
+
+    // 🔥 CRITICAL FIX: Proper cleanup to prevent navigation interference
+    return () => {
+      window.removeEventListener("newYouthMessage", handleNewYouth);
+    };
+  }, [recentMessages, isClient]);
 
   const recipients = [
     { value: "JAHmere", label: "JAHmere Webb", emoji: "🌉" },

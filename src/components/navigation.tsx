@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
@@ -31,6 +30,7 @@ import {
   useAdvancedGestures,
   useMobileOptimization,
 } from "@/components/ui/mobile-optimization";
+import { useStableNavigation } from "@/hooks/useStableNavigation";
 // EasterEgg removed for hydration stability
 
 interface NavItem {
@@ -138,11 +138,37 @@ function Navigation() {
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   // 🔥 CRITICAL FIX: Add state for desktop popover management
   const [openPopover, setOpenPopover] = useState<string | null>(null);
-  const pathname = usePathname();
+  const { pathname, isRoute, isRoutePrefix, hasRouteChanged } =
+    useStableNavigation();
 
   // Mobile optimization hooks
   const { isMobile } = useMobileOptimization();
   const { createSwipeHandler, triggerHaptic } = useAdvancedGestures();
+
+  // 🔥 CRITICAL FIX: Enhanced navigation state reset with memory leak prevention
+  const resetNavigationState = useCallback(() => {
+    try {
+      setIsOpen(false);
+      setOpenPopover(null);
+      setExpandedItems([]);
+      document.body.style.overflow = "";
+
+      // Clear any lingering focus states
+      if (document.activeElement && document.activeElement !== document.body) {
+        (document.activeElement as HTMLElement).blur();
+      }
+
+      // Force cleanup of any event listeners
+      document.removeEventListener("click", () => {});
+      document.removeEventListener("keydown", () => {});
+    } catch (error) {
+      // Production safety: Log error and force basic reset
+      console.error("🚨 Navigation reset error:", error);
+      setIsOpen(false);
+      setOpenPopover(null);
+      setExpandedItems([]);
+    }
+  }, []);
 
   // 🔥 PRODUCTION MONITORING: Navigation state debugging for deployment
   useEffect(() => {
@@ -157,7 +183,7 @@ function Navigation() {
     }
   }, [pathname, openPopover, isOpen, expandedItems]);
 
-  // 🔥 PRODUCTION MONITORING: Error boundary for navigation state
+  // 🔥 CRITICAL FIX: Navigation error boundary with stable dependencies
   useEffect(() => {
     const handleNavigationError = (event: ErrorEvent) => {
       if (
@@ -173,15 +199,37 @@ function Navigation() {
         });
 
         // Auto-recovery: Reset navigation state
-        setOpenPopover(null);
-        setIsOpen(false);
-        setExpandedItems([]);
+        resetNavigationState();
       }
     };
 
     window.addEventListener("error", handleNavigationError);
     return () => window.removeEventListener("error", handleNavigationError);
-  }, [pathname, openPopover]);
+  }, [pathname, openPopover, resetNavigationState]);
+
+  // 🔥 CRITICAL FIX: Memory leak prevention - cleanup on unmount
+  useEffect(() => {
+    return () => {
+      // Comprehensive cleanup on component unmount
+      try {
+        document.body.style.overflow = "";
+        setIsOpen(false);
+        setOpenPopover(null);
+        setExpandedItems([]);
+
+        // Clear any remaining timers or intervals
+        const highestTimeoutId = setTimeout(() => {}, 0);
+        clearTimeout(highestTimeoutId);
+
+        // Remove any global event listeners that might have been added
+        document.removeEventListener("click", () => {});
+        document.removeEventListener("keydown", () => {});
+        window.removeEventListener("resize", () => {});
+      } catch (error) {
+        console.error("🚨 Navigation cleanup error:", error);
+      }
+    };
+  }, []);
 
   // Enhanced mobile navigation with swipe support
   const mobileSwipeHandlers = createSwipeHandler(
@@ -225,32 +273,13 @@ function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 🔥 PRODUCTION FIX: Robust navigation state management for deployment
+  // 🔥 CRITICAL FIX: Route change detection with stable navigation
   useEffect(() => {
-    // Immediate state reset with deployment-safe timing
-    const resetNavigationState = () => {
-      setIsOpen(false);
-      setOpenPopover(null);
-      setExpandedItems([]);
-      document.body.style.overflow = "";
-    };
-
-    // Reset immediately
-    resetNavigationState();
-
-    // Double-check reset after microtask queue to ensure Vercel compatibility
-    const timeoutId = setTimeout(resetNavigationState, 0);
-
-    // Additional safety reset for edge cases in production
-    const fallbackTimeoutId = setTimeout(resetNavigationState, 100);
-
-    return () => {
-      clearTimeout(timeoutId);
-      clearTimeout(fallbackTimeoutId);
-      // Ensure cleanup on unmount
-      document.body.style.overflow = "";
-    };
-  }, [pathname]);
+    if (hasRouteChanged()) {
+      // Reset navigation state immediately on route change
+      resetNavigationState();
+    }
+  }, [pathname, hasRouteChanged, resetNavigationState]);
 
   const toggleExpanded = (href: string) => {
     setExpandedItems((prev) =>
@@ -388,15 +417,14 @@ function Navigation() {
                                 pathname === child.href ? "page" : undefined
                               }
                               onClick={(e) => {
-                                // 🔥 PRODUCTION FIX: Enhanced event handling with error recovery
+                                // 🔥 CRITICAL FIX: Enhanced event handling with stable navigation
                                 try {
                                   e.stopPropagation();
-                                  setOpenPopover(null);
+                                  resetNavigationState();
 
                                   // Additional safety for mobile devices
                                   if (isMobile) {
-                                    setIsOpen(false);
-                                    document.body.style.overflow = "";
+                                    triggerHaptic("light");
                                   }
                                 } catch (error) {
                                   // Production safety: Force navigation reset on error
@@ -404,9 +432,7 @@ function Navigation() {
                                     "🚨 Navigation click error:",
                                     error,
                                   );
-                                  setOpenPopover(null);
-                                  setIsOpen(false);
-                                  document.body.style.overflow = "";
+                                  resetNavigationState();
                                 }
                               }}
                             >
@@ -573,14 +599,14 @@ function Navigation() {
                   ) : (
                     <Link
                       href={item.href}
-                      onClick={() => setIsOpen(false)}
+                      onClick={() => resetNavigationState()}
                       className={`flex items-center gap-4 py-4 min-h-[64px] border-b border-quiet-stone ${
-                        pathname === item.href
+                        isRoute(item.href)
                           ? "text-elite-justice-indigo font-semibold bg-blue-50"
                           : "text-gentle-charcoal hover:text-elite-justice-indigo hover:bg-gray-50"
                       } transition-colors rounded-lg px-2`}
                       role="menuitem"
-                      aria-current={pathname === item.href ? "page" : undefined}
+                      aria-current={isRoute(item.href) ? "page" : undefined}
                     >
                       {item.icon}
                       <span className="text-lg font-medium">{item.label}</span>

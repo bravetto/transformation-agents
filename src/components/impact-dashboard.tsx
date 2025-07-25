@@ -182,57 +182,16 @@ function ImpactDashboard() {
       setDaysUntilIndependence(Math.max(0, days));
     };
 
-    // Update countdown every minute to catch day changes
-    const interval = setInterval(updateCountdown, 60000);
+    updateCountdown();
+    const dailyTimer = setInterval(updateCountdown, 24 * 60 * 60 * 1000);
 
-    // Simulate real-time activity updates
-    const activityTimer = setInterval(() => {
-      if (Math.random() > 0.7) {
-        // 30% chance every 10 seconds
-        const activities = [
-          { type: "letter" as const, name: "Sarah M.", location: "Miami, FL" },
-          {
-            type: "letter" as const,
-            name: "Michael R.",
-            location: "Tampa, FL",
-          },
-          {
-            type: "heart" as const,
-            name: "Jennifer K.",
-            location: "Orlando, FL",
-          },
-          {
-            type: "youth" as const,
-            name: "Alex P.",
-            location: "Jacksonville, FL",
-          },
-          {
-            type: "letter" as const,
-            name: "David L.",
-            location: "Atlanta, GA",
-          },
-          { type: "heart" as const, name: "Maria S.", location: "Houston, TX" },
-        ];
-
-        const randomActivity =
-          activities[Math.floor(Math.random() * activities.length)];
-        const newActivity = {
-          id: Date.now().toString(),
-          ...randomActivity,
-          timestamp: new Date(),
-        };
-
-        setRecentActivity((prev) => [newActivity, ...prev.slice(0, 4)]); // Keep only 5 most recent
-      }
-    }, 10000); // Every 10 seconds
-
+    // 🔥 CRITICAL FIX: Comprehensive cleanup to prevent navigation interference
     return () => {
       window.removeEventListener(
         "impact-update",
         handleImpact as EventListener,
       );
-      clearInterval(interval);
-      clearInterval(activityTimer);
+      clearInterval(dailyTimer);
     };
   }, []);
 

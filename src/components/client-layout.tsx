@@ -1,48 +1,45 @@
 "use client";
 
-import { ReactNode, Suspense } from "react";
-import { usePathname } from "next/navigation";
-import Navigation from "@/components/navigation";
+// 🔥 CRITICAL FIX: Replace usePathname with useStableNavigation for production stability
+import { useStableNavigation } from "@/hooks/useStableNavigation";
+import { Suspense } from "react";
+import Navigation from "./navigation";
+import Footer from "./footer";
 
 interface ClientLayoutProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
-/**
- * Client Layout Wrapper
- *
- * This component handles all client-side navigation and interactivity.
- * It's a Client Component that can safely import and render other Client Components.
- *
- * Benefits:
- * - Proper hydration boundaries
- * - No SSR/Client mismatches
- * - Event handlers work consistently
- * - Follows Next.js 15.4+ composition patterns
- * - Stable navigation state across route changes
- */
-// Navigation Skeleton for Suspense fallback
 function NavigationSkeleton() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 h-16">
-      <div className="container mx-auto px-4 h-full flex items-center justify-between">
-        <div className="w-32 h-6 bg-gray-200 rounded animate-pulse" />
-        <div className="hidden md:flex items-center gap-3">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div
-              key={i}
-              className="w-20 h-8 bg-gray-200 rounded animate-pulse"
-            />
-          ))}
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 animate-pulse">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo skeleton */}
+          <div className="flex items-center">
+            <div className="h-8 w-32 bg-gray-200 rounded"></div>
+          </div>
+
+          {/* Desktop navigation skeleton */}
+          <div className="hidden md:flex items-center space-x-8">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-4 w-16 bg-gray-200 rounded"></div>
+            ))}
+          </div>
+
+          {/* Mobile menu button skeleton */}
+          <div className="md:hidden">
+            <div className="h-6 w-6 bg-gray-200 rounded"></div>
+          </div>
         </div>
-        <div className="w-8 h-8 bg-gray-200 rounded animate-pulse md:hidden" />
       </div>
     </nav>
   );
 }
 
 export default function ClientLayout({ children }: ClientLayoutProps) {
-  const pathname = usePathname();
+  // 🔥 CRITICAL FIX: Use stable navigation hook to prevent re-render loops
+  const { pathname } = useStableNavigation();
 
   return (
     <>

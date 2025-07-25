@@ -62,11 +62,14 @@ function LettersOfHope() {
     };
 
     window.addEventListener("impact-update", handleImpact as EventListener);
-    return () =>
+
+    // 🔥 CRITICAL FIX: Proper cleanup to prevent navigation interference
+    return () => {
       window.removeEventListener(
         "impact-update",
         handleImpact as EventListener,
       );
+    };
   }, []);
 
   const handleSubmitLetter = async (e: React.FormEvent) => {
