@@ -17,6 +17,7 @@ if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://transformation-agent-bridge-33928f4xe-bravetto.vercel.app'),
   title: "JAHmere Webb - July 28th Freedom Portal",
   description:
     "Supporting JAHmere Webb's journey to freedom through community advocacy and legal support.",

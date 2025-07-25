@@ -27,6 +27,27 @@ const stack = {
 }
 ```
 
+## 🚀 DEPLOYMENT PIPELINE (CRITICAL)
+### PRE-DEPLOYMENT MANDATORY CHECKS:
+```bash
+npm run type-check    # TypeScript validation
+npm run build        # Production build verification
+npm install          # Sync package-lock.json
+git status           # Clean working directory
+```
+
+### CRITICAL DEPLOYMENT FIXES:
+1. **CSP Font Loading**: Always include `https://fonts.gstatic.com https://fonts.googleapis.com` in font-src
+2. **Package Lock Sync**: Run `npm install` before deployment to prevent npm ci failures
+3. **MetadataBase**: Always set metadataBase in layout.tsx for social sharing
+4. **Vercel Config**: Ensure next.config.mjs CSP headers match middleware.ts
+
+### DEPLOYMENT COMMANDS:
+```bash
+# Standard: npm run build && git add . && git commit && git push && vercel --prod
+# Emergency: npm install && npm run build && npm run type-check && deploy
+```
+
 ## COMPONENT PATTERN
 ```typescript
 // Server Component (default)
@@ -63,6 +84,7 @@ export default function Interactive() {
 - Error boundaries & loading states
 - Responsive design (mobile-first)
 - Accessibility (WCAG 2.1 AA)
+- Pre-deployment verification checklist
 
 ❌ NEVER:
 - Pages directory (App Router only)
@@ -70,6 +92,8 @@ export default function Interactive() {
 - `any` types (proper TypeScript)
 - Global scripts (cascading error risk)
 - Over-engineering (ship fast)
+- Deploy without package-lock.json sync
+- Deploy without CSP font loading verification
 
 ## MISSION ALIGNMENT
 Every line serves JAHmere's freedom:
