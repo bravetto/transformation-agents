@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { divineDesignSystem } from "@/lib/divine-design-intelligence";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface LetterInputProps {
   label: string;
@@ -149,11 +149,8 @@ const LetterInput: React.FC<LetterInputProps> = ({
   );
 };
 
-export default withDivineErrorBoundary(LetterInput, {
-  componentName: "LetterInput",
-  fallback: (
+export default withErrorBoundary(LetterInput, "LetterInput", (
     <div className="p-4 text-center text-gray-500">
       Letter input temporarily unavailable
     </div>
-  ),
-});
+  ));

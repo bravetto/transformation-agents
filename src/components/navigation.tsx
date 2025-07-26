@@ -25,7 +25,7 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { Container } from "@/components/ui/container";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import MiniCountdown from "@/components/ui/mini-countdown";
 import {
   useAdvancedGestures,
@@ -222,7 +222,7 @@ function Navigation() {
         className={`layout-navigation sticky top-0 z-navigation transition-all duration-300 ${
           scrolled ? "bg-pure-white shadow-md" : "bg-comfort-cream"
         }`}
-        role="navigation"
+       
         aria-label="Main navigation"
         {...(isMobile ? mobileSwipeHandlers : {})}
       >
@@ -241,7 +241,7 @@ function Navigation() {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-4" role="menubar">
+            <div className="hidden md:flex items-center gap-4">
               {navItems.map((item) =>
                 item.children ? (
                   <Popover key={item.href}>
@@ -255,7 +255,7 @@ function Navigation() {
                         aria-expanded={expandedItems.includes(item.href)}
                         aria-haspopup="true"
                         aria-controls={`dropdown-${item.label}`}
-                        role="menuitem"
+                       
                       >
                         <span className="sr-only">Open</span>
                         {item.icon}
@@ -268,19 +268,19 @@ function Navigation() {
                     <PopoverContent
                       className="bg-pure-white border-quiet-stone shadow-lg p-2 min-w-[200px]"
                       align="start"
-                      role="menu"
+                     
                       id={`dropdown-${item.label}`}
                     >
                       <Link
                         href={item.href}
                         className="block px-3 py-2 min-h-[36px] flex items-center text-sm text-gentle-charcoal hover:bg-soft-cloud hover:text-elite-justice-indigo rounded-md transition-colors mb-1"
-                        role="menuitem"
+                       
                       >
                         View All {item.label}
                       </Link>
                       <div
                         className="h-px bg-quiet-stone my-1"
-                        role="separator"
+                       
                         aria-orientation="horizontal"
                       />
                       {item.children.map((child) => (
@@ -288,7 +288,7 @@ function Navigation() {
                           key={child.href}
                           href={child.href}
                           className="block px-3 py-2 min-h-[36px] flex items-center text-sm text-gentle-charcoal hover:bg-soft-cloud hover:text-elite-justice-indigo rounded-md transition-colors"
-                          role="menuitem"
+                         
                         >
                           {child.label}
                         </Link>
@@ -304,7 +304,7 @@ function Navigation() {
                         ? "text-elite-justice-indigo font-semibold"
                         : "text-gentle-charcoal hover:text-elite-justice-indigo"
                     }`}
-                    role="menuitem"
+                   
                     aria-current={pathname === item.href ? "page" : undefined}
                   >
                     {item.icon}
@@ -324,7 +324,7 @@ function Navigation() {
               </div>
 
               {/* Take Action Button */}
-              <Link href="/contact" role="menuitem">
+              <Link href="/contact">
                 <Button
                   variant="primary"
                   size="sm"
@@ -364,7 +364,7 @@ function Navigation() {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="fixed inset-0 z-modal bg-pure-white md:hidden overflow-y-auto"
             id="mobile-menu"
-            role="dialog"
+           
             aria-modal="true"
             aria-label="Mobile navigation menu"
             {...mobileSwipeHandlers}
@@ -374,7 +374,7 @@ function Navigation() {
               ← Swipe to close
             </div>
 
-            <div className="flex flex-col pt-20 px-4 sm:px-8 pb-8" role="menu">
+            <div className="flex flex-col pt-20 px-4 sm:px-8 pb-8">
               {navItems.map((item, index) => (
                 <motion.div
                   key={item.href}
@@ -395,7 +395,7 @@ function Navigation() {
                         aria-expanded={expandedItems.includes(item.href)}
                         aria-haspopup="true"
                         aria-controls={`mobile-submenu-${item.href.replace(/\//g, "")}`}
-                        role="menuitem"
+                       
                       >
                         <div className="flex items-center gap-3">
                           {item.icon}
@@ -418,14 +418,14 @@ function Navigation() {
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.2 }}
                             className="overflow-hidden bg-soft-cloud rounded-lg mt-2 mb-2"
-                            role="menu"
+                           
                             id={`mobile-submenu-${item.href.replace(/\//g, "")}`}
                           >
                             <Link
                               href={item.href}
                               onClick={() => setIsOpen(false)}
                               className="flex items-center gap-3 py-4 min-h-[56px] pl-10 text-sm text-gentle-charcoal hover:text-elite-justice-indigo transition-colors"
-                              role="menuitem"
+                             
                             >
                               View All {item.label}
                             </Link>
@@ -439,7 +439,7 @@ function Navigation() {
                                     ? "text-elite-justice-indigo font-semibold"
                                     : "text-gentle-charcoal hover:text-elite-justice-indigo"
                                 } transition-colors`}
-                                role="menuitem"
+                               
                                 aria-current={
                                   pathname === child.href ? "page" : undefined
                                 }
@@ -460,7 +460,7 @@ function Navigation() {
                           ? "text-elite-justice-indigo font-semibold"
                           : "text-gentle-charcoal hover:text-elite-justice-indigo"
                       } transition-colors`}
-                      role="menuitem"
+                     
                       aria-current={pathname === item.href ? "page" : undefined}
                     >
                       {item.icon}
@@ -535,7 +535,4 @@ function Navigation() {
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(Navigation, {
-  componentName: "Navigation",
-  role: "guardian",
-});
+export default withErrorBoundary(Navigation, "Navigation");

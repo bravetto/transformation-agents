@@ -4,7 +4,7 @@ import React, { memo } from "react";
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BaseCard } from "./base-card";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { withSafeUI } from "./with-safe-ui";
 
 /**
@@ -133,14 +133,11 @@ const FeatureCardComponent = memo<FeatureCardProps>(
 
 FeatureCardComponent.displayName = "FeatureCard";
 
-const FeatureCard = withDivineErrorBoundary(FeatureCardComponent, {
-  componentName: "FeatureCard",
-  fallback: (
+const FeatureCard = withErrorBoundary(FeatureCardComponent, "FeatureCard", (
     <div className="p-6 bg-red-50 text-red-600 rounded-lg">
       Feature card failed to load
     </div>
-  ),
-});
+  ));
 
 export default withSafeUI(FeatureCard, {
   componentName: "FeatureCard",

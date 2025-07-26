@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import { AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 // DivineParticles removed for MVP hydration stability
 import { StoryAmplifierProps } from "./types";
 import { StoryProvider, useStory } from "./context";
@@ -128,7 +128,4 @@ const StoryAmplifier = (props: StoryAmplifierProps) => {
   );
 };
 
-export default withDivineErrorBoundary(StoryAmplifier, {
-  componentName: "StoryAmplifier",
-  role: "default",
-});
+export default withErrorBoundary(StoryAmplifier, "StoryAmplifier");

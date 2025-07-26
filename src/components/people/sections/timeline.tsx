@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface TimelineEvent {
   year: number;
@@ -56,7 +56,4 @@ function Timeline({ events }: TimelineProps) {
   );
 }
 
-export default withDivineErrorBoundary(Timeline, {
-  componentName: "Timeline",
-  role: "guardian",
-});
+export default withErrorBoundary(Timeline, "Timeline");

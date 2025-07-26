@@ -11,7 +11,7 @@ import {
   Clock,
   AlertCircle,
 } from "lucide-react";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface SmartCTAProps {
   userType?: "visitor" | "judge" | "attorney" | "advocate";
@@ -254,7 +254,4 @@ function SmartCTA({ userType = "visitor" }: SmartCTAProps) {
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(SmartCTA, {
-  componentName: "SmartCTA",
-  role: "lightworker",
-});
+export default withErrorBoundary(SmartCTA, "SmartCTA");

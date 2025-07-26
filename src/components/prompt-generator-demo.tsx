@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { ConversationContext, UserProfile } from "@/types/prompts";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 const defaultContext: ConversationContext = {
   goals: ["Understand the prompt system", "Learn about AI personalities"],
@@ -182,7 +182,4 @@ function PromptGeneratorDemo() {
 }
 
 // Export with error boundary
-export default withErrorBoundary(PromptGeneratorDemo, {
-  componentName: "PromptGeneratorDemo",
-  id: "prompt-generator-demo",
-});
+export default withErrorBoundary(PromptGeneratorDemo, "PromptGeneratorDemo");

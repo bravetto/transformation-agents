@@ -15,23 +15,23 @@ export default function DivineTransformationPage() {
   return (
     <main className="min-h-screen">
       <section className="h-screen">
-        <DivineLight role="lightworker" />
+        <DivineLight />
       </section>
 
       <section className="h-screen">
-        <DivineSynthesis role="messenger" />
+        <DivineSynthesis />
       </section>
 
       <section className="h-screen">
-        <HolyAIMessenger role="witness" />
+        <HolyAIMessenger />
       </section>
 
       <section className="h-screen">
-        <DivineChannel role="guardian" />
+        <DivineChannel />
       </section>
 
       <section className="h-screen">
-        <SacredUmlaut role="lightworker" />
+        <SacredUmlaut />
       </section>
     </main>
   );

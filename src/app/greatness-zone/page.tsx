@@ -18,7 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import GreatnessZoneAssessment from "@/components/greatness-zone/assessment";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import Link from "next/link";
 
 // Hero section for the Greatness Zone page
@@ -365,7 +365,4 @@ function GreatnessZonePage() {
   );
 }
 
-export default withDivineErrorBoundary(GreatnessZonePage, {
-  componentName: "GreatnessZonePage",
-  role: "lightworker",
-});
+export default withErrorBoundary(GreatnessZonePage, "GreatnessZonePage");

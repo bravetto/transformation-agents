@@ -1,10 +1,11 @@
 /**
- * 🏆 PRODUCTION LOGGER SYSTEM
- * Enterprise-grade logging with structured data, performance tracking, and alerting
+ * PRODUCTION LOGGER SYSTEM
+ * Battle-tested logging with structured data and performance tracking
  */
 
 import { cn } from "./utils";
 import { getPerformanceMemory } from "./utils";
+import { logger as unifiedLogger } from "./unified-logger";
 
 interface LogLevel {
   DEBUG: 0;

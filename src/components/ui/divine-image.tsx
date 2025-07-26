@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import Image, { ImageProps } from "next/image";
 import { motion } from "framer-motion";
-import { DivineRole } from "@/components/ui/divine-error-boundary";
+import { DivineRole } from "@/lib/design-system";
 import assetManager, { AssetType } from "@/lib/asset-manager";
 import { cn } from "@/lib/utils";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 export interface DivineImageProps extends Omit<ImageProps, "src" | "onError"> {
   src: string;
@@ -197,7 +197,4 @@ function DivineImageComponent({
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(DivineImageComponent, {
-  componentName: "DivineImageComponent",
-  role: "lightworker",
-});
+export default withErrorBoundary(DivineImageComponent, "DivineImageComponent");

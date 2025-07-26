@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { Card } from "@/components/ui/card";
 
 function ArchitecturePrinciples() {
@@ -26,7 +26,4 @@ function ArchitecturePrinciples() {
   );
 }
 
-export default withDivineErrorBoundary(ArchitecturePrinciples, {
-  componentName: "ArchitecturePrinciples",
-  role: "lightworker",
-});
+export default withErrorBoundary(ArchitecturePrinciples, "ArchitecturePrinciples");

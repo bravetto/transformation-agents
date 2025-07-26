@@ -15,7 +15,7 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import Link from "next/link";
 
 // Letter campaign goals
@@ -307,7 +307,4 @@ const LetterCampaignTracker = () => {
   );
 };
 
-export default withDivineErrorBoundary(LetterCampaignTracker, {
-  componentName: "LetterCampaignTracker",
-  role: "guardian",
-});
+export default withErrorBoundary(LetterCampaignTracker, "LetterCampaignTracker");

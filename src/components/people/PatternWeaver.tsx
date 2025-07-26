@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface PatternWeaverProps {
   className?: string;
@@ -247,7 +247,4 @@ function PatternWeaver({ className = "" }: PatternWeaverProps) {
   );
 }
 
-export default withDivineErrorBoundary(PatternWeaver, {
-  componentName: "PatternWeaver",
-  role: "lightworker",
-});
+export default withErrorBoundary(PatternWeaver, "PatternWeaver");

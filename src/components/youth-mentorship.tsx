@@ -12,7 +12,7 @@ import {
   Star,
 } from "lucide-react";
 import { impactEvents } from "./impact-dashboard";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface YouthMessage {
   id: string;
@@ -469,7 +469,4 @@ function YouthMentorship() {
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(YouthMentorship, {
-  componentName: "YouthMentorship",
-  role: "lightworker",
-});
+export default withErrorBoundary(YouthMentorship, "YouthMentorship");

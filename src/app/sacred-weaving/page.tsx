@@ -1,5 +1,5 @@
 import SacredPattern from "@/components/divine-weaving/SacredPattern";
-import { SacredPatternErrorBoundary } from "@/components/divine-weaving/error-boundary";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -23,9 +23,9 @@ export default function SacredWeavingPage() {
           </p>
         </div>
 
-        <SacredPatternErrorBoundary>
+        <ErrorBoundary componentName="SacredPattern">
           <SacredPattern className="mb-16" />
-        </SacredPatternErrorBoundary>
+        </ErrorBoundary>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto text-center md:text-left">
           <div className="p-6 rounded-lg bg-white/5 backdrop-blur-sm">

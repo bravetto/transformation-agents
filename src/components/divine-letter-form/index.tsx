@@ -30,7 +30,7 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { withDivineErrorBoundary } from "../ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 // DivineParticles removed for hydration stability
 import { cn } from "@/lib/utils";
 import { LetterFormProvider, useLetterForm } from "./context";
@@ -132,10 +132,7 @@ function FormContent() {
 }
 
 // Export with error boundary
-export default withDivineErrorBoundary(DivineLetterForm, {
-  componentName: "DivineLetterForm",
-  role: "lightworker",
-});
+export default withErrorBoundary(DivineLetterForm, "DivineLetterForm");
 
 // Re-export types
 export * from "./types";

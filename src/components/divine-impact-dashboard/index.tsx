@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { DashboardProvider } from "./context";
 import DashboardContainer from "./dashboard-container";
 import DashboardHeader from "./dashboard-header";
@@ -30,7 +30,4 @@ function DivineImpactDashboard(props: DivineImpactDashboardProps) {
   );
 }
 
-export default withErrorBoundary(DivineImpactDashboard, {
-  componentName: "Divine Impact Dashboard",
-  id: "divine-impact-dashboard",
-});
+export default withErrorBoundary(DivineImpactDashboard, "Divine Impact Dashboard");

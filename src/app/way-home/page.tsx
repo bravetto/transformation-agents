@@ -1,5 +1,5 @@
 import WayHome from "@/components/way-home";
-import { DivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 import DivineRevelation from "@/components/divine-revelation";
 
 export const metadata = {
@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function WayHomePage() {
   return (
-    <DivineErrorBoundary componentName="PagePage" role="guardian">
+    <ErrorBoundary componentName="PagePage">
       <main className="relative">
         {/* First the divine revelation */}
         <section className="relative">
@@ -22,6 +22,6 @@ export default function WayHomePage() {
           <WayHome />
         </section>
       </main>
-    </DivineErrorBoundary>
+    </ErrorBoundary>
   );
 }

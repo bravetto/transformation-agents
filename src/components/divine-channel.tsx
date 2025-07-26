@@ -6,8 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SacredProtection } from "./sacred-protection";
 import { cn } from "@/lib/utils";
 import type { DivineRole } from "@/lib/design-system";
-import withUnifiedErrorBoundary from "./ui/unified-error-boundary";
-import { withDivineErrorBoundary } from "./ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { useUnifiedArchitecture } from "@/lib/unified-architecture";
 
 interface DivineChannelProps {
@@ -137,7 +136,4 @@ function DivineChannelCore({
 }
 
 // Export with divine error boundary
-export const DivineChannel = withDivineErrorBoundary(DivineChannelCore, {
-  componentName: "DivineChannel",
-  role: "messenger",
-});
+export const DivineChannel = withErrorBoundary(DivineChannelCore, "DivineChannel");

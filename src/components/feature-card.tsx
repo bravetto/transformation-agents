@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { Card, Text, Heading } from "@/components/ui";
 import { RevealOnScroll } from "@/components/ui/page-transition";
 import { cn } from "@/lib/utils";
@@ -165,7 +165,4 @@ function FeatureCardExported({
 }
 
 // Export with error boundary
-export default withErrorBoundary(FeatureCardExported, {
-  componentName: "feature-card",
-  id: "feature-card",
-});
+export default withErrorBoundary(FeatureCardExported, "feature-card");

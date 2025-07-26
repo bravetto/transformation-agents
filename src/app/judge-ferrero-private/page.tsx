@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import Section from "@/components/section";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -327,9 +327,6 @@ const JudgeDashboard = () => {
   );
 };
 
-export default withDivineErrorBoundary(JudgeDashboard, {
-  componentName: "JudgeDashboard",
-  fallback: (
+export default withErrorBoundary(JudgeDashboard, "JudgeDashboard", (
     <div className="text-white p-8">Dashboard temporarily unavailable</div>
-  ),
-});
+  ));

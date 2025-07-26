@@ -1,6 +1,6 @@
 "use client";
 
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -113,7 +113,7 @@ function TestComponentsPage() {
             <TestimonialCard
               quote="The Bridge Project has transformed our community in ways we never imagined possible."
               author="John Doe"
-              role="Community Leader"
+             
             />
           </div>
         </section>
@@ -122,11 +122,8 @@ function TestComponentsPage() {
   );
 }
 
-export default withDivineErrorBoundary(TestComponentsPage, {
-  componentName: "TestComponentsPage",
-  fallback: (
+export default withErrorBoundary(TestComponentsPage, "TestComponentsPage", (
     <div className="min-h-screen p-8 bg-gray-900 text-white">
       Error loading component library
     </div>
-  ),
-});
+  ));

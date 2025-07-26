@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 // DivineParticles removed for hydration stability
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -322,11 +322,8 @@ I stand with Martha Henderson. I stand with JAHmere.
   );
 }
 
-export default withDivineErrorBoundary(DungyOneTweetCore, {
-  componentName: "DungyOneTweet",
-  fallback: (
+export default withErrorBoundary(DungyOneTweetCore, "DungyOneTweet", (
     <div className="text-white p-8 text-center">
       Loading the power of one voice...
     </div>
-  ),
-});
+  ));

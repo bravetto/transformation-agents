@@ -10,7 +10,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface ImpactMetrics {
   heartsBeating: number;
@@ -406,7 +406,4 @@ function ImpactDashboard() {
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(ImpactDashboard, {
-  componentName: "ImpactDashboard",
-  role: "messenger",
-});
+export default withErrorBoundary(ImpactDashboard, "ImpactDashboard");

@@ -4,7 +4,7 @@ import React from "react";
 import { AnimatePresence } from "framer-motion";
 import MetricCard from "./metric-card";
 import useDashboard from "./context";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 /**
  * Metrics Grid Component
@@ -50,7 +50,4 @@ function MetricsGridSkeleton() {
   );
 }
 
-export default withErrorBoundary(MetricsGrid, {
-  componentName: "MetricsGrid",
-  id: "metricsgrid",
-});
+export default withErrorBoundary(MetricsGrid, "MetricsGrid");

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { Card } from "@/components/ui/card";
 
 function MischiefPrinciples() {
@@ -32,7 +32,4 @@ function MischiefPrinciples() {
   );
 }
 
-export default withDivineErrorBoundary(MischiefPrinciples, {
-  componentName: "MischiefPrinciples",
-  role: "lightworker",
-});
+export default withErrorBoundary(MischiefPrinciples, "MischiefPrinciples");

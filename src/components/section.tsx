@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { ReactNode } from "react";
 
 interface SectionProps {
@@ -99,7 +99,4 @@ Section.displayName = "Section";
 const SectionExported = Section;
 
 // Export with error boundary
-export default withErrorBoundary(SectionExported, {
-  componentName: "section",
-  id: "section",
-});
+export default withErrorBoundary(SectionExported, "section");

@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { DivineFAB } from "@/components/ui/floating-cta";
 import CascadeMonitor from "@/components/debug/cascade-monitor";
 
@@ -87,7 +87,4 @@ function LayoutWrapperExported({ children }: { children: React.ReactNode }) {
 }
 
 // Export with error boundary
-export default withErrorBoundary(LayoutWrapperExported, {
-  componentName: "layout-wrapper",
-  id: "layout-wrapper",
-});
+export default withErrorBoundary(LayoutWrapperExported, "layout-wrapper");

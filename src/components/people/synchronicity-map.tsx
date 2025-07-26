@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface TimelineEvent {
   year: string;
@@ -93,7 +93,7 @@ function SynchronicityMap({
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     aria-hidden="true"
-                    role="img"
+                   
                   >
                     <path
                       strokeLinecap="round"
@@ -130,11 +130,8 @@ function SynchronicityMap({
   );
 }
 
-export default withDivineErrorBoundary(SynchronicityMap, {
-  componentName: "SynchronicityMap",
-  fallback: (
+export default withErrorBoundary(SynchronicityMap, "SynchronicityMap", (
     <div className="py-16 text-center">
       <p className="text-muted-foreground">Unable to load timeline</p>
     </div>
-  ),
-});
+  ));

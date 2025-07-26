@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 function HeroCore() {
   // 🛡️ CRITICAL: ALL HOOKS MUST BE AT THE TOP - BEFORE ANY RETURNS
@@ -61,27 +61,28 @@ function HeroCore() {
       </div>
     );
   }
-  if (process.env.NODE_ENV === "development") {
-    renderCount.current++;
-    if (renderCount.current > 10) {
-      console.warn(`🚨 HeroSection excessive renders: ${renderCount.current}`);
-    }
-  }
+  // DISABLED for Fast Refresh stability
+  // if (process.env.NODE_ENV === "development") {
+  //   renderCount.current++;
+  //   if (renderCount.current > 10) {
+  //     console.warn(`🚨 HeroSection excessive renders: ${renderCount.current}`);
+  //   }
+  // }
 
-  if (renderCount.current > 50) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-900 to-indigo-900">
-        <div className="text-center p-8 text-white">
-          <h1 className="text-2xl font-bold mb-4">
-            "For I have created him for my glory" - Isaiah 43:7
-          </h1>
-          <p className="opacity-80">
-            Component temporarily paused to preserve divine purpose
-          </p>
-        </div>
-      </div>
-    );
-  }
+  // if (renderCount.current > 50) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-900 to-indigo-900">
+  //       <div className="text-center p-8 text-white">
+  //         <h1 className="text-2xl font-bold mb-4">
+  //           "For I have created him for my glory" - Isaiah 43:7
+  //         </h1>
+  //         <p className="opacity-80">
+  //           Component temporarily paused to preserve divine purpose
+  //         </p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-indigo-900 via-purple-900 to-pink-900">
@@ -183,15 +184,11 @@ function HeroCore() {
 }
 
 // 🛡️ PRODUCTION-GRADE ERROR BOUNDARY WRAPPER
-export default withDivineErrorBoundary(HeroCore, {
-  componentName: "Hero",
-  role: "lightworker",
-  fallback: (
+export default withErrorBoundary(HeroCore, "Hero", (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 to-blue-900 flex items-center justify-center">
       <div className="text-white text-center">
         <h1 className="text-4xl font-bold mb-4">The Bridge Project</h1>
         <p className="text-purple-200">Loading divine experience...</p>
       </div>
     </div>
-  ),
-});
+  ));

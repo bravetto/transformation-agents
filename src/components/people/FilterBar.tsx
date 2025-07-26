@@ -14,7 +14,7 @@ import {
   PersonTheme,
   PersonImpactLevel,
 } from "@/types/person";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 // Generic filter option type
 interface FilterOption<T extends string> {
@@ -432,7 +432,4 @@ function FilterBar({
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(FilterBar, {
-  componentName: "FilterBar",
-  role: "guardian",
-});
+export default withErrorBoundary(FilterBar, "FilterBar");

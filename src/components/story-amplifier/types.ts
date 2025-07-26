@@ -1,4 +1,4 @@
-import type { DivineRole } from "../ui/divine-error-boundary";
+import type { DivineRole } from "@/lib/design-system";
 
 /**
  * Main interface for the story content

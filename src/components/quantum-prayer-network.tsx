@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import {
   Heart,
   Zap,
@@ -304,10 +304,7 @@ function QuantumPrayerNetworkCore({ className }: QuantumPrayerNetworkProps) {
   );
 }
 
-export const QuantumPrayerNetwork = withDivineErrorBoundary(
+export const QuantumPrayerNetwork = withErrorBoundary(
   QuantumPrayerNetworkCore,
-  {
-    componentName: "QuantumPrayerNetwork",
-    fallback: <div>Prayer network initializing...</div>,
-  },
+  "QuantumPrayerNetwork"
 );

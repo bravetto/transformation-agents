@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
 
 // DivineParticles removed for hydration stability
@@ -182,7 +182,4 @@ function WayHome({ role = "default", className }: WayHomeProps) {
   );
 }
 
-export default withErrorBoundary(WayHome, {
-  componentName: "WayHome",
-  id: "wayhome",
-});
+export default withErrorBoundary(WayHome, "WayHome");

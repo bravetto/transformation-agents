@@ -19,7 +19,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { cn } from "@/lib/utils";
 
 interface SystemHealthMetrics {
@@ -435,9 +435,7 @@ function CascadeMonitor({
   );
 }
 
-export default withDivineErrorBoundary(CascadeMonitor, {
-  componentName: "CascadeMonitor",
-  fallback: (
+export default withErrorBoundary(CascadeMonitor, "CascadeMonitor", (
     <div className="fixed bottom-4 left-4 z-50">
       <Card className="w-80 shadow-lg">
         <CardContent className="p-4 flex items-center gap-3">
@@ -446,5 +444,4 @@ export default withDivineErrorBoundary(CascadeMonitor, {
         </CardContent>
       </Card>
     </div>
-  ),
-});
+  ));

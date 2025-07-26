@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 // PropheticCountdown removed for hydration stability
 import { Button } from "@/components/ui/button";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { logger } from "@/lib/logger";
@@ -182,8 +182,5 @@ function DecisionCountdown({
   );
 }
 
-// Export with divine error boundary for production safety
-export default withDivineErrorBoundary(DecisionCountdown, {
-  componentName: "DecisionCountdown",
-  role: "messenger",
-});
+// Export with error boundary for production safety
+export default withErrorBoundary(DecisionCountdown, "DecisionCountdown");

@@ -15,7 +15,7 @@ import type {
   DashboardProviderProps,
   MetricCard,
 } from "./types";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 // 🚨 DEBUG: Track render count to detect loops
 let renderCount = 0;
@@ -47,9 +47,9 @@ export function DivineImpactProvider({
   defaultRole = "messenger",
   initialMetrics = [],
 }: DashboardProviderProps) {
-  // 🚨 DEBUG: Count renders to detect infinite loops
-  renderCount++;
-  console.warn(`🔍 DashboardProvider render #${renderCount}`);
+  // 🚨 DEBUG: Count renders to detect infinite loops - DISABLED for Fast Refresh stability
+  // renderCount++;
+  // console.warn(`🔍 DashboardProvider render #${renderCount}`);
 
   // 🛡️ CRITICAL FIX: ALL React hooks MUST come BEFORE any conditional returns
   // State for metrics data (moved before conditional return)
@@ -62,7 +62,10 @@ export function DivineImpactProvider({
 
   // 🛡️ CRITICAL FIX: Move initialMetrics to ref to prevent recreation
   const initialMetricsRef = useRef(initialMetrics);
-  initialMetricsRef.current = initialMetrics;
+  // Only update ref if initialMetrics actually changed (prevent unnecessary re-renders)
+  if (JSON.stringify(initialMetricsRef.current) !== JSON.stringify(initialMetrics)) {
+    initialMetricsRef.current = initialMetrics;
+  }
 
   // 🛡️ CRITICAL FIX: Stabilize function WITHOUT dependencies that change
   const refreshData = useCallback(async () => {
@@ -126,29 +129,29 @@ export function DivineImpactProvider({
     return () => clearInterval(intervalId);
   }, [autoRefresh, refreshInterval, refreshData]);
 
-  // 🚨 EMERGENCY: Circuit breaker to prevent infinite loops (AFTER all hooks)
-  if (renderCount > 10) {
-    console.error("🚨 INFINITE RENDER LOOP DETECTED IN DASHBOARD PROVIDER!");
-    return (
-      <div className="p-8 bg-red-900/20 rounded-lg text-white">
-        <h2 className="text-xl text-red-400 mb-2">
-          Dashboard Temporarily Disabled
-        </h2>
-        <p className="text-gray-300 mb-4">
-          Infinite render loop detected ({renderCount} renders)
-        </p>
-        <button
-          onClick={() => {
-            renderCount = 0;
-            window.location.reload();
-          }}
-          className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded transition-colors"
-        >
-          Reset Dashboard
-        </button>
-      </div>
-    );
-  }
+  // 🚨 EMERGENCY: Circuit breaker DISABLED for Fast Refresh stability
+  // if (renderCount > 10) {
+  //   console.error("🚨 INFINITE RENDER LOOP DETECTED IN DASHBOARD PROVIDER!");
+  //   return (
+  //     <div className="p-8 bg-red-900/20 rounded-lg text-white">
+  //       <h2 className="text-xl text-red-400 mb-2">
+  //         Dashboard Temporarily Disabled
+  //       </h2>
+  //       <p className="text-gray-300 mb-4">
+  //         Infinite render loop detected ({renderCount} renders)
+  //       </p>
+  //       <button
+  //         onClick={() => {
+  //           renderCount = 0;
+  //           window.location.reload();
+  //         }}
+  //         className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded transition-colors"
+  //       >
+  //         Reset Dashboard
+  //       </button>
+  //     </div>
+  //   );
+  // }
 
   // Context value
   const value: DashboardContextType = {

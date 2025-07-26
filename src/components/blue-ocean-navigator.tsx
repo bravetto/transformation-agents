@@ -25,7 +25,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { cn } from "@/lib/utils";
 
 /**
@@ -561,7 +561,4 @@ function BlueOceanNavigatorAgent({
   );
 }
 
-export default withDivineErrorBoundary(BlueOceanNavigatorAgent, {
-  componentName: "BlueOceanNavigatorAgent",
-  role: "lightworker",
-});
+export default withErrorBoundary(BlueOceanNavigatorAgent, "BlueOceanNavigatorAgent");

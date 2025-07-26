@@ -18,7 +18,7 @@ import {
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { cn } from "@/lib/utils";
 
 interface ViralSharingEngineProps {
@@ -371,7 +371,4 @@ function ViralSharingEngine({
   );
 }
 
-export default withDivineErrorBoundary(ViralSharingEngine, {
-  componentName: "ViralSharingEngine",
-  role: "messenger",
-});
+export default withErrorBoundary(ViralSharingEngine, "ViralSharingEngine");

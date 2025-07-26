@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface AlignmentData {
   trait: string;
@@ -106,7 +106,7 @@ function AssessmentAlignment({
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     aria-hidden="true"
-                    role="img"
+                   
                   >
                     <path
                       strokeLinecap="round"
@@ -146,11 +146,8 @@ function AssessmentAlignment({
   );
 }
 
-export default withDivineErrorBoundary(AssessmentAlignment, {
-  componentName: "AssessmentAlignment",
-  fallback: (
+export default withErrorBoundary(AssessmentAlignment, "AssessmentAlignment", (
     <div className="py-16 text-center">
       <p className="text-muted-foreground">Unable to load assessment data</p>
     </div>
-  ),
-});
+  ));

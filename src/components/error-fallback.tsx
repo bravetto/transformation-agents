@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui";
 import { cn } from "@/lib/utils";
-import type { DivineRole } from "./ui/divine-error-boundary";
+import type { DivineRole } from "@/lib/design-system";
 
 /**
  * Role configuration mapping for styling error fallbacks
@@ -87,7 +87,7 @@ function ErrorFallbackExported({
         styles.borderClass,
         className,
       )}
-      role="alert"
+     
       aria-live="assertive"
     >
       <div className="flex items-center justify-center gap-2 mb-2">
@@ -133,7 +133,4 @@ function ErrorFallbackExported({
 }
 
 // Export with error boundary
-export default withErrorBoundary(ErrorFallbackExported, {
-  componentName: "error-fallback",
-  id: "error-fallback",
-});
+export default withErrorBoundary(ErrorFallbackExported, "error-fallback");

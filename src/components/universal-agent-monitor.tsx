@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
-import { withUnifiedErrorBoundary } from "./ui/unified-error-boundary";
+import { withErrorBoundary } from "./ui/error-boundary";
 import { logger } from "@/lib/logger";
 
 interface UniversalAgentMonitorProps {
@@ -272,10 +272,7 @@ function UniversalAgentMonitorCore({
 }
 
 // Export with error boundary
-export const UniversalAgentMonitor = withUnifiedErrorBoundary(
+export const UniversalAgentMonitor = withErrorBoundary(
   UniversalAgentMonitorCore,
-  {
-    componentName: "UniversalAgentMonitor",
-    role: "guardian",
-  },
+  "UniversalAgentMonitor"
 );

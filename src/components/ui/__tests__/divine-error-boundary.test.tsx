@@ -9,7 +9,7 @@ import {
   beforeEach,
   afterEach,
 } from "@jest/globals";
-import { DivineErrorBoundary } from "../divine-error-boundary";
+import { ErrorBoundary } from "../error-boundary";
 import React, { useState, useEffect } from "react";
 
 // Mock console methods to avoid noise in tests
@@ -92,9 +92,9 @@ describe("Divine Error Boundary", () => {
   describe("Basic Error Catching", () => {
     it("catches and displays errors gracefully", () => {
       render(
-        <DivineErrorBoundary componentName="TestComponent" role="default">
+        <ErrorBoundary componentName="TestComponent">
           <ThrowError shouldThrow={true} />
-        </DivineErrorBoundary>,
+        </ErrorBoundary>,
       );
 
       expect(screen.getByText(/TestComponent Error/i)).toBeInTheDocument();
@@ -103,9 +103,9 @@ describe("Divine Error Boundary", () => {
 
     it("renders children when no error occurs", () => {
       render(
-        <DivineErrorBoundary componentName="TestComponent" role="default">
+        <ErrorBoundary componentName="TestComponent">
           <ThrowError shouldThrow={false} />
-        </DivineErrorBoundary>,
+        </ErrorBoundary>,
       );
 
       expect(screen.getByTestId("no-error")).toBeInTheDocument();
@@ -118,13 +118,13 @@ describe("Divine Error Boundary", () => {
       );
 
       render(
-        <DivineErrorBoundary
+        <ErrorBoundary
           componentName="TestComponent"
-          role="default"
+         
           fallback={customFallback}
         >
           <ThrowError shouldThrow={true} />
-        </DivineErrorBoundary>,
+        </ErrorBoundary>,
       );
 
       expect(screen.getByTestId("custom-fallback")).toBeInTheDocument();
@@ -137,12 +137,12 @@ describe("Divine Error Boundary", () => {
       let errorTrigger = 1;
 
       const { rerender } = render(
-        <DivineErrorBoundary
+        <ErrorBoundary
           componentName="RecoverableComponent"
-          role="default"
+         
         >
           <RecoverableComponent errorTrigger={errorTrigger} />
-        </DivineErrorBoundary>,
+        </ErrorBoundary>,
       );
 
       // Should show error
@@ -153,12 +153,12 @@ describe("Divine Error Boundary", () => {
       // Update to stop throwing error
       errorTrigger = 0;
       rerender(
-        <DivineErrorBoundary
+        <ErrorBoundary
           componentName="RecoverableComponent"
-          role="default"
+         
         >
           <RecoverableComponent errorTrigger={errorTrigger} />
-        </DivineErrorBoundary>,
+        </ErrorBoundary>,
       );
 
       // Should still show error (error boundaries don't auto-recover)
@@ -177,12 +177,12 @@ describe("Divine Error Boundary", () => {
 
       errorTypes.forEach((errorMessage, index) => {
         const { unmount } = render(
-          <DivineErrorBoundary
+          <ErrorBoundary
             componentName={`TestComponent${index}`}
-            role="default"
+           
           >
             <ThrowError shouldThrow={true} errorMessage={errorMessage} />
-          </DivineErrorBoundary>,
+          </ErrorBoundary>,
         );
 
         expect(
@@ -196,9 +196,9 @@ describe("Divine Error Boundary", () => {
   describe("Form Data Preservation", () => {
     it("preserves form state during error conditions", () => {
       render(
-        <DivineErrorBoundary componentName="FormComponent" role="default">
+        <ErrorBoundary componentName="FormComponent">
           <FormWithError shouldThrow={true} />
-        </DivineErrorBoundary>,
+        </ErrorBoundary>,
       );
 
       const input = screen.getByTestId("form-input");
@@ -216,12 +216,12 @@ describe("Divine Error Boundary", () => {
 
     it("provides user feedback about data preservation", () => {
       render(
-        <DivineErrorBoundary componentName="FormComponent" role="default">
+        <ErrorBoundary componentName="FormComponent">
           <ThrowError
             shouldThrow={true}
             errorMessage="Form submission failed"
           />
-        </DivineErrorBoundary>,
+        </ErrorBoundary>,
       );
 
       // Error boundary should be displayed
@@ -236,9 +236,9 @@ describe("Divine Error Boundary", () => {
       // This test verifies the component handles async scenarios
 
       render(
-        <DivineErrorBoundary componentName="AsyncComponent" role="default">
+        <ErrorBoundary componentName="AsyncComponent">
           <AsyncErrorComponent shouldThrow={false} />
-        </DivineErrorBoundary>,
+        </ErrorBoundary>,
       );
 
       expect(screen.getByTestId("async-component")).toBeInTheDocument();
@@ -253,9 +253,9 @@ describe("Divine Error Boundary", () => {
       };
 
       render(
-        <DivineErrorBoundary componentName="LazyComponent" role="default">
+        <ErrorBoundary componentName="LazyComponent">
           <LazyFailComponent />
-        </DivineErrorBoundary>,
+        </ErrorBoundary>,
       );
 
       expect(screen.getByText(/LazyComponent Error/i)).toBeInTheDocument();
@@ -266,9 +266,9 @@ describe("Divine Error Boundary", () => {
   describe("Error Logging and Monitoring", () => {
     it("logs errors to console with component context", () => {
       render(
-        <DivineErrorBoundary componentName="LoggingTest" role="guardian">
+        <ErrorBoundary componentName="LoggingTest">
           <ThrowError shouldThrow={true} errorMessage="Logged error" />
-        </DivineErrorBoundary>,
+        </ErrorBoundary>,
       );
 
       expect(mockConsoleError).toHaveBeenCalledWith(
@@ -288,9 +288,9 @@ describe("Divine Error Boundary", () => {
       };
 
       render(
-        <DivineErrorBoundary componentName="ErrorBoundaryTest" role="default">
+        <ErrorBoundary componentName="ErrorBoundaryTest">
           <ProblematicErrorBoundary />
-        </DivineErrorBoundary>,
+        </ErrorBoundary>,
       );
 
       // Should handle the error without infinite loops
@@ -309,9 +309,9 @@ describe("Divine Error Boundary", () => {
       // Should not crash when logging fails
       expect(() => {
         render(
-          <DivineErrorBoundary componentName="LogFailTest" role="default">
+          <ErrorBoundary componentName="LogFailTest">
             <ThrowError shouldThrow={true} />
-          </DivineErrorBoundary>,
+          </ErrorBoundary>,
         );
       }).not.toThrow();
 
@@ -330,12 +330,12 @@ describe("Divine Error Boundary", () => {
 
       roles.forEach((role) => {
         const { unmount } = render(
-          <DivineErrorBoundary componentName={`RoleTest-${role}`} role={role}>
+          <ErrorBoundary componentName={`RoleTest-${role}`} role={role}>
             <ThrowError
               shouldThrow={true}
               errorMessage={`Error in ${role} role`}
             />
-          </DivineErrorBoundary>,
+          </ErrorBoundary>,
         );
 
         expect(
@@ -358,9 +358,9 @@ describe("Divine Error Boundary", () => {
 
       render(
         <div>
-          <DivineErrorBoundary componentName="FailingComponent" role="default">
+          <ErrorBoundary componentName="FailingComponent">
             <ThrowError shouldThrow={true} />
-          </DivineErrorBoundary>
+          </ErrorBoundary>
           <WorkingComponent />
         </div>,
       );
@@ -376,9 +376,9 @@ describe("Divine Error Boundary", () => {
 
       components.forEach((componentName) => {
         const { unmount } = render(
-          <DivineErrorBoundary componentName={componentName} role="default">
+          <ErrorBoundary componentName={componentName}>
             <ThrowError shouldThrow={true} />
-          </DivineErrorBoundary>,
+          </ErrorBoundary>,
         );
 
         // Should have consistent error structure
@@ -407,18 +407,18 @@ describe("Divine Error Boundary", () => {
       let shouldThrow = true;
 
       const { rerender } = render(
-        <DivineErrorBoundary componentName="PerformanceTest" role="default">
+        <ErrorBoundary componentName="PerformanceTest">
           <ThrowError shouldThrow={shouldThrow} />
-        </DivineErrorBoundary>,
+        </ErrorBoundary>,
       );
 
       // Rapidly toggle error state
       for (let i = 0; i < 10; i++) {
         shouldThrow = !shouldThrow;
         rerender(
-          <DivineErrorBoundary componentName="PerformanceTest" role="default">
+          <ErrorBoundary componentName="PerformanceTest">
             <ThrowError shouldThrow={shouldThrow} />
-          </DivineErrorBoundary>,
+          </ErrorBoundary>,
         );
       }
 
@@ -433,9 +433,9 @@ describe("Divine Error Boundary", () => {
       // Create and destroy multiple error boundaries
       for (let i = 0; i < 100; i++) {
         const { unmount } = render(
-          <DivineErrorBoundary componentName={`MemoryTest-${i}`} role="default">
+          <ErrorBoundary componentName={`MemoryTest-${i}`}>
             <ThrowError shouldThrow={true} />
-          </DivineErrorBoundary>,
+          </ErrorBoundary>,
         );
         unmount();
       }
@@ -452,9 +452,9 @@ describe("Divine Error Boundary", () => {
   describe("Accessibility and User Experience", () => {
     it("provides accessible error messages", () => {
       render(
-        <DivineErrorBoundary componentName="AccessibilityTest" role="default">
+        <ErrorBoundary componentName="AccessibilityTest">
           <ThrowError shouldThrow={true} />
-        </DivineErrorBoundary>,
+        </ErrorBoundary>,
       );
 
       const errorContainer = screen
@@ -470,12 +470,12 @@ describe("Divine Error Boundary", () => {
 
     it("provides user-friendly error messages", () => {
       render(
-        <DivineErrorBoundary componentName="UserFriendlyTest" role="default">
+        <ErrorBoundary componentName="UserFriendlyTest">
           <ThrowError
             shouldThrow={true}
             errorMessage="TypeError: Cannot read property 'map' of undefined"
           />
-        </DivineErrorBoundary>,
+        </ErrorBoundary>,
       );
 
       // Should show component name clearly

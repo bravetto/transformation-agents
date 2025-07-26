@@ -6,7 +6,7 @@ import {
   getAnalyticsDashboard,
   getCurrentUserType,
 } from "@/lib/analytics/user-journey";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface DivineMetrics {
   prayerCount: number;
@@ -175,10 +175,7 @@ export function useDivineTracking() {
 }
 
 // 🛡️ PRODUCTION-GRADE ERROR BOUNDARY WRAPPER
-export default withDivineErrorBoundary(DivineAnalyticsCore, {
-  componentName: "DivineAnalytics",
-  role: "messenger",
-  fallback: (
+export default withErrorBoundary(DivineAnalyticsCore, "DivineAnalytics", (
     <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
       <h3 className="text-lg font-semibold text-purple-800">
         Divine Analytics
@@ -188,5 +185,4 @@ export default withDivineErrorBoundary(DivineAnalyticsCore, {
         <div className="h-2 bg-purple-200 rounded w-3/4"></div>
       </div>
     </div>
-  ),
-});
+  ));

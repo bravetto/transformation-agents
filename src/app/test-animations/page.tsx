@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { useState } from "react";
 
 function TestAnimationsPage() {
@@ -130,11 +130,8 @@ function TestAnimationsPage() {
   );
 }
 
-export default withDivineErrorBoundary(TestAnimationsPage, {
-  componentName: "TestAnimationsPage",
-  fallback: (
+export default withErrorBoundary(TestAnimationsPage, "TestAnimationsPage", (
     <div className="min-h-screen p-8 bg-gray-900 text-white">
       Error loading animation test page
     </div>
-  ),
-});
+  ));

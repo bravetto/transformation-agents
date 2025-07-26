@@ -19,7 +19,7 @@ import {
   X,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { logger } from "@/lib/logger";
 
 // Developer routes registry
@@ -372,12 +372,10 @@ function DevPortalProviderComponent({ children }: DevPortalProviderProps) {
   );
 }
 
-export const DevPortalProvider = withDivineErrorBoundary(
+export const DevPortalProvider = withErrorBoundary(
   DevPortalProviderComponent,
-  {
-    componentName: "DevPortalProvider",
-    fallback: <div>Loading DevPortal...</div>,
-  },
+  "DevPortalProvider",
+  <div>Loading DevPortal...</div>
 );
 
 interface DevPortalUIProps {

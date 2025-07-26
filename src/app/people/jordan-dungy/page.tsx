@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { getPersonBySlug } from "@/data/people";
 import { Suspense } from "react";
-import { DivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 import EnhancedPersonHero from "@/components/people/enhanced-person-hero-simple";
 import { JordanFullTestimony } from "@/components/people/jordan-testimony";
 import Link from "next/link";
@@ -57,9 +57,9 @@ export default function JordanDungyPage() {
   };
 
   return (
-    <DivineErrorBoundary
+    <ErrorBoundary
       componentName="JordanDungyPage"
-      role="guardian"
+     
       fallback={
         <div className="p-8 text-center">
           Sorry, something went wrong loading Jordan Dungy's profile.
@@ -74,9 +74,9 @@ export default function JordanDungyPage() {
       <main className="min-h-screen">
         {/* Hero Section */}
         <section className="w-full">
-          <DivineErrorBoundary
+          <ErrorBoundary
             componentName="JordanDungyHero"
-            role="messenger"
+           
             fallback={
               <div className="container-wide py-12 text-center">
                 <h2 className="text-3xl font-bold">Jordan Dungy</h2>
@@ -87,14 +87,14 @@ export default function JordanDungyPage() {
             <Suspense fallback={<PersonPageSkeleton />}>
               <EnhancedPersonHero {...heroProps} />
             </Suspense>
-          </DivineErrorBoundary>
+          </ErrorBoundary>
         </section>
 
         {/* Enhanced Full Testimony Section (Moved from Homepage) */}
         <Suspense fallback={<PersonPageSkeleton />}>
-          <DivineErrorBoundary
+          <ErrorBoundary
             componentName="JordanDungyTestimony"
-            role="messenger"
+           
             fallback={
               <div className="p-6 bg-gray-100 rounded-lg">
                 <h3 className="text-lg font-semibold">
@@ -105,9 +105,9 @@ export default function JordanDungyPage() {
             }
           >
             <JordanFullTestimony />
-          </DivineErrorBoundary>
+          </ErrorBoundary>
         </Suspense>
       </main>
-    </DivineErrorBoundary>
+    </ErrorBoundary>
   );
 }

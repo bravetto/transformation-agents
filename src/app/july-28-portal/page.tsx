@@ -1,6 +1,6 @@
 "use client";
 
-import { DivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { motion } from "framer-motion";
 import { Heart, Crown, Zap, Gift, Users, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,7 @@ import Link from "next/link";
  */
 export default function July28Portal() {
   return (
-    <DivineErrorBoundary componentName="July28Portal" role="guardian">
+    <ErrorBoundary componentName="July28Portal">
       <div className="min-h-screen bg-gradient-to-b from-blue-950 via-purple-900 to-indigo-950 text-white">
         {/* Hero Section - July 28th Countdown */}
         <section className="relative pt-20 pb-16 px-4">
@@ -334,6 +334,6 @@ export default function July28Portal() {
           </div>
         </footer>
       </div>
-    </DivineErrorBoundary>
+    </ErrorBoundary>
   );
 }

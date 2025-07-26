@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 // Define base components with dynamic imports
 const NavigationBase = dynamic(() => import("@/components/navigation"), {
@@ -49,33 +49,12 @@ const SocialAmplificationBase = dynamic(
 );
 
 // Wrap components with error boundaries
-export const Navigation = withDivineErrorBoundary(NavigationBase, {
-  componentName: "Navigation",
-  role: "guardian",
-});
+export const Navigation = withErrorBoundary(NavigationBase, "Navigation");
 
-export const ImpactDashboard = withDivineErrorBoundary(ImpactDashboardBase, {
-  componentName: "ImpactDashboard",
-  role: "witness",
-});
+export const ImpactDashboard = withErrorBoundary(ImpactDashboardBase, "ImpactDashboard");
 
-export const FloatingTestimony = withDivineErrorBoundary(
-  FloatingTestimonyBase,
-  {
-    componentName: "FloatingTestimony",
-    role: "messenger",
-  },
-);
+export const FloatingTestimony = withErrorBoundary(FloatingTestimonyBase, "FloatingTestimony");
 
-export const CursorTrail = withDivineErrorBoundary(CursorTrailBase, {
-  componentName: "CursorTrail",
-  role: "lightworker",
-});
+export const CursorTrail = withErrorBoundary(CursorTrailBase, "CursorTrail");
 
-export const SocialAmplification = withDivineErrorBoundary(
-  SocialAmplificationBase,
-  {
-    componentName: "SocialAmplification",
-    role: "messenger",
-  },
-);
+export const SocialAmplification = withErrorBoundary(SocialAmplificationBase, "SocialAmplification");

@@ -16,7 +16,7 @@ import {
   SpiritualEnergyViz,
   QuantumInteractions,
 } from "@/lib/divine-design-intelligence";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface SpiritualEnergyVisualizerProps {
   spiritualLevel: number;
@@ -376,9 +376,6 @@ const SpiritualEnergyVisualizer: React.FC<SpiritualEnergyVisualizerProps> = ({
   );
 };
 
-export default withDivineErrorBoundary(SpiritualEnergyVisualizer, {
-  componentName: "SpiritualEnergyVisualizer",
-  fallback: (
+export default withErrorBoundary(SpiritualEnergyVisualizer, "SpiritualEnergyVisualizer", (
     <div className="w-full h-full bg-gradient-to-br from-purple-900/20 to-blue-900/20 rounded-lg" />
-  ),
-});
+  ));

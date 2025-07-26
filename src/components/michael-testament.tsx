@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { motion, useInView } from "framer-motion";
 import { Heart, Briefcase, Shield, Star, ArrowRight } from "lucide-react";
 
@@ -121,7 +121,4 @@ function MichaelTestamentExported() {
 }
 
 // Export with error boundary
-export default withErrorBoundary(MichaelTestamentExported, {
-  componentName: "michael-testament",
-  id: "michael-testament",
-});
+export default withErrorBoundary(MichaelTestamentExported, "michael-testament");

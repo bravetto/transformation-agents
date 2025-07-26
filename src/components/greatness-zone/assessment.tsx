@@ -19,7 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { useModalAnalytics } from "@/components/analytics-wrapper";
 
 // Assessment data based on the actual Jay Forte methodology
@@ -442,7 +442,4 @@ function GreatnessZoneAssessment({
   );
 }
 
-export default withDivineErrorBoundary(GreatnessZoneAssessment, {
-  componentName: "GreatnessZoneAssessment",
-  role: "lightworker",
-});
+export default withErrorBoundary(GreatnessZoneAssessment, "GreatnessZoneAssessment");

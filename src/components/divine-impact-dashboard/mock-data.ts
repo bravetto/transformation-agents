@@ -88,7 +88,7 @@ export const generateMockData = (): MetricCard[] => {
         direction: "up",
         timeframe: "this week",
       },
-      role: "lightworker",
+      role: "guardian",
     },
     {
       id: "engagement",
@@ -132,7 +132,7 @@ export const generateMockData = (): MetricCard[] => {
         timeframe: "vs. last month",
       },
       goal: 500,
-      role: "lightworker",
+      role: "guardian",
     },
     {
       id: "impact",

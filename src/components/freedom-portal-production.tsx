@@ -14,7 +14,7 @@ import {
   Star,
 } from "lucide-react";
 import { useSafeState } from "@/hooks/useSafeState";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface TimeLeft {
   days: number;
@@ -550,10 +550,7 @@ function FreedomPortalCore() {
 }
 
 // 🛡️ PRODUCTION-GRADE ERROR BOUNDARY WRAPPER
-export default withDivineErrorBoundary(FreedomPortalCore, {
-  componentName: "FreedomPortal",
-  role: "guardian",
-  fallback: (
+export default withErrorBoundary(FreedomPortalCore, "FreedomPortal", (
     <div className="min-h-screen bg-black flex items-center justify-center">
       <div className="text-white text-center">
         <h1 className="text-4xl font-bold mb-4 text-purple-400">
@@ -565,5 +562,4 @@ export default withDivineErrorBoundary(FreedomPortalCore, {
         </div>
       </div>
     </div>
-  ),
-});
+  ));

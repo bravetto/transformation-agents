@@ -8,7 +8,7 @@ import type {
   Quote,
 } from "@/components/story-amplifier";
 import { Button } from "@/components/ui/button";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 // Mock data for the demo
 const mockStory: StoryContent = {
@@ -298,7 +298,4 @@ const StoryAmplifierDemo = () => {
   );
 };
 
-export default withDivineErrorBoundary(StoryAmplifierDemo, {
-  componentName: "StoryAmplifierDemo",
-  role: "default",
-});
+export default withErrorBoundary(StoryAmplifierDemo, "StoryAmplifierDemo");

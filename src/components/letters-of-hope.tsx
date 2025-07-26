@@ -11,7 +11,7 @@ import {
   FloatingElement,
 } from "./sacred-animations";
 import { AutoAnimateList } from "./auto-animate-wrapper";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface LetterData {
   id: number;
@@ -446,7 +446,4 @@ function LettersOfHope() {
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(LettersOfHope, {
-  componentName: "LettersOfHope",
-  role: "messenger",
-});
+export default withErrorBoundary(LettersOfHope, "LettersOfHope");

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import {
   Bell,
   Users,
@@ -247,7 +247,4 @@ function CoalitionAlertCore({
   );
 }
 
-export const CoalitionAlert = withDivineErrorBoundary(CoalitionAlertCore, {
-  componentName: "CoalitionAlert",
-  fallback: <div>Coalition standing by...</div>,
-});
+export const CoalitionAlert = withErrorBoundary(CoalitionAlertCore, "CoalitionAlert", <div>Coalition standing by...</div>);

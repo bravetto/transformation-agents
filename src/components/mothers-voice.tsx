@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { AlertCircle, Heart, Zap, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -195,7 +195,4 @@ function MothersVoiceCore({
   return <AnimatePresence>{isVisible && renderContent()}</AnimatePresence>;
 }
 
-export const MothersVoice = withDivineErrorBoundary(MothersVoiceCore, {
-  componentName: "MothersVoice",
-  fallback: <div>The Mother's voice echoes...</div>,
-});
+export const MothersVoice = withErrorBoundary(MothersVoiceCore, "MothersVoice", <div>The Mother's voice echoes...</div>);

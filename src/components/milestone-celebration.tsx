@@ -18,7 +18,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { cn } from "@/lib/utils";
 
 interface MilestoneCelebrationProps {
@@ -468,7 +468,4 @@ function MilestoneCelebration({
   );
 }
 
-export default withDivineErrorBoundary(MilestoneCelebration, {
-  componentName: "MilestoneCelebration",
-  role: "messenger",
-});
+export default withErrorBoundary(MilestoneCelebration, "MilestoneCelebration");

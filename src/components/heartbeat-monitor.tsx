@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Activity, TrendingUp } from "lucide-react";
 import { impactEvents } from "./impact-dashboard";
@@ -181,7 +181,7 @@ function HeartbeatMonitorExported({
             viewBox="0 0 400 100"
             preserveAspectRatio="none"
             aria-hidden="true"
-            role="img"
+           
             aria-label="Heart rate visualization"
           >
             <motion.path
@@ -280,7 +280,4 @@ function HeartbeatMonitorExported({
 }
 
 // Export with error boundary
-export default withErrorBoundary(HeartbeatMonitorExported, {
-  componentName: "heartbeat-monitor",
-  id: "heartbeat-monitor",
-});
+export default withErrorBoundary(HeartbeatMonitorExported, "heartbeat-monitor");

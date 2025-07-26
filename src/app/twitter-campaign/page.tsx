@@ -22,7 +22,7 @@ import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Heading, Text } from "@/components/ui/typography";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -753,11 +753,8 @@ function TwitterCampaign() {
   );
 }
 
-export default withDivineErrorBoundary(TwitterCampaign, {
-  componentName: "TwitterCampaign",
-  fallback: (
+export default withErrorBoundary(TwitterCampaign, "TwitterCampaign", (
     <div className="p-8 text-center">
       Unable to load Twitter campaign content
     </div>
-  ),
-});
+  ));

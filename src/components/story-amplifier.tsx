@@ -32,11 +32,11 @@ import {
   Calendar,
   X,
 } from "lucide-react";
-import { withDivineErrorBoundary } from "./ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 // DivineParticles removed for hydration stability
-import type { DivineRole } from "./ui/divine-error-boundary";
+import type { DivineRole } from "@/lib/design-system";
 
 // Main interface for the story content
 export interface StoryContent {
@@ -1012,7 +1012,4 @@ const StoryAmplifier = ({
   );
 };
 
-export default withDivineErrorBoundary(StoryAmplifier, {
-  componentName: "StoryAmplifier",
-  role: "default",
-});
+export default withErrorBoundary(StoryAmplifier, "StoryAmplifier");

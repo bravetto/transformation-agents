@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SacredProtection } from "./sacred-protection";
 import { cn } from "@/lib/utils";
 import type { DivineRole } from "@/lib/design-system";
-import { withDivineErrorBoundary } from "./ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { useUnifiedArchitecture } from "@/lib/unified-architecture";
 
 interface DivineSynthesisProps {
@@ -139,7 +139,4 @@ function DivineSynthesisCore({
 }
 
 // Export with divine error boundary
-export const DivineSynthesis = withDivineErrorBoundary(DivineSynthesisCore, {
-  componentName: "DivineSynthesis",
-  role: "messenger",
-});
+export const DivineSynthesis = withErrorBoundary(DivineSynthesisCore, "DivineSynthesis");

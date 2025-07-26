@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
 
 import DivineTransformation from "./divine-transformation";
@@ -197,7 +197,4 @@ function SacredExperience({
   );
 }
 
-export default withErrorBoundary(SacredExperience, {
-  componentName: "SacredExperience",
-  id: "sacredexperience",
-});
+export default withErrorBoundary(SacredExperience, "SacredExperience");

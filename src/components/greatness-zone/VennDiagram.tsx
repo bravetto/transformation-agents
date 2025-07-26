@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -114,7 +114,4 @@ export const VennDiagram: React.FC<VennDiagramProps> = ({
 const VennDiagramExported = VennDiagram;
 
 // Export with error boundary
-export default withErrorBoundary(VennDiagramExported, {
-  componentName: "Venn Diagram",
-  id: "VennDiagram",
-});
+export default withErrorBoundary(VennDiagramExported, "Venn Diagram");

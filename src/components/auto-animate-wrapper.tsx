@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 // 🚀 OPTIMIZED: Replaced @formkit/auto-animate with Framer Motion
 // This eliminates the dependency and provides more control
@@ -340,7 +340,4 @@ export function AutoAnimateAccordion({
   );
 }
 
-export default withErrorBoundary(AutoAnimateContainer, {
-  componentName: "AutoAnimateContainer",
-  id: "autoanimatecontainer",
-});
+export default withErrorBoundary(AutoAnimateContainer, "AutoAnimateContainer");

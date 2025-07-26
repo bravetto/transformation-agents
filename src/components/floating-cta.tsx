@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, X, Trophy } from "lucide-react";
 import Link from "next/link";
@@ -139,7 +139,4 @@ function FloatingCTAExported() {
 }
 
 // Export with error boundary
-export default withErrorBoundary(FloatingCTAExported, {
-  componentName: "floating-cta",
-  id: "floating-cta",
-});
+export default withErrorBoundary(FloatingCTAExported, "floating-cta");

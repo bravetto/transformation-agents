@@ -1,5 +1,9 @@
 import type { LucideIcon } from "lucide-react";
-import type { DivineRole } from "@/components/ui/divine-error-boundary";
+
+/**
+ * Divine Role Type
+ */
+export type DivineRole = "guardian" | "messenger" | "transformer" | "catalyst" | "witness";
 
 /**
  * Metric Card Interface

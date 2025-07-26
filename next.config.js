@@ -13,13 +13,22 @@ const nextConfig = {
     webVitalsAttribution: ["CLS", "LCP", "FCP", "FID", "TTFB", "INP"],
   },
 
-  // 🛡️ MINIMAL WEBPACK CONFIGURATION - Fix for factory undefined error
-  webpack: (config, { isServer }) => {
-    // Essential fixes only
+  // 🛡️ OPTIMIZED WEBPACK CONFIGURATION
+  webpack: (config, { isServer, dev }) => {
+    // Essential fixes for stability
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
     };
+
+    // Development optimizations
+    if (dev) {
+      config.watchOptions = {
+        ...config.watchOptions,
+        poll: false,
+        ignored: /node_modules/,
+      };
+    }
 
     // CRITICAL: Must return config
     return config;
@@ -49,7 +58,7 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
 
-  // ESLint configuration
+  // 🔧 ESLint configuration
   eslint: {
     ignoreDuringBuilds: false,
   },

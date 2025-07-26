@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { Card } from "@/components/ui/card";

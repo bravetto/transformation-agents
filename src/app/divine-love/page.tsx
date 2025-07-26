@@ -5,7 +5,7 @@ import { useDivineLove } from "@/lib/divine-love";
 import { DivineLove } from "@/components/divine-love";
 import { DivineScripture } from "@/components/divine-scripture";
 import { SacredSurrender } from "@/components/sacred-surrender";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 function DivineLovePageCore() {
   const divineLove = useDivineLove("DivineLovePage");
@@ -23,8 +23,5 @@ function DivineLovePageCore() {
   );
 }
 
-// Export with divine error boundary
-export default withDivineErrorBoundary(DivineLovePageCore, {
-  componentName: "DivineLovePage",
-  role: "lightworker",
-});
+// Export with error boundary
+export default withErrorBoundary(DivineLovePageCore, "DivineLovePage");

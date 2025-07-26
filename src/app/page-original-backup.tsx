@@ -468,17 +468,17 @@ export default function HomePage() {
                 <TestimonialCard
                   quote="JAHmere represents the best of what our youth can become when given proper guidance and opportunity."
                   author="Tony Dungy"
-                  role="NFL Hall of Fame Coach"
+                 
                 />
                 <TestimonialCard
                   quote="The data clearly shows that transformation-based approaches dramatically reduce recidivism."
                   author="Research Team"
-                  role="Justice Reform Analysis"
+                 
                 />
                 <TestimonialCard
                   quote="This case represents hope for thousands of young people in similar situations."
                   author="Community Leader"
-                  role="Youth Advocacy Network"
+                 
                 />
               </div>
             </Container>

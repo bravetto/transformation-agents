@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 /**
  * Banner component that displays promotional messages below the navigation
@@ -40,7 +40,4 @@ function Banner() {
   );
 }
 
-export default withDivineErrorBoundary(Banner, {
-  componentName: "Banner",
-  role: "guardian",
-});
+export default withErrorBoundary(Banner, "Banner");

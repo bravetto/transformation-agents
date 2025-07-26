@@ -3,7 +3,7 @@
 import React from "react";
 import { Download, Share2 } from "lucide-react";
 import useDashboard from "./context";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 /**
  * Dashboard Footer Component
@@ -100,7 +100,4 @@ function DashboardFooter() {
   );
 }
 
-export default withErrorBoundary(DashboardFooter, {
-  componentName: "DashboardFooter",
-  id: "dashboardfooter",
-});
+export default withErrorBoundary(DashboardFooter, "DashboardFooter");

@@ -12,7 +12,7 @@ import {
   TrendingUp,
   Heart,
 } from "lucide-react";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface ShareStats {
   twitter: number;
@@ -209,7 +209,7 @@ Read the full story and consider adding your support: ${shareUrl}
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     aria-hidden="true"
-                    role="img"
+                   
                   >
                     <path
                       strokeLinecap="round"
@@ -347,7 +347,4 @@ Read the full story and consider adding your support: ${shareUrl}
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(SocialAmplification, {
-  componentName: "SocialAmplification",
-  role: "messenger",
-});
+export default withErrorBoundary(SocialAmplification, "SocialAmplification");

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 /**
  * Higher-order component that wraps UI components with error boundaries
@@ -27,15 +27,15 @@ export function withSafeUI<P extends object>(
   const id = options?.id || displayName.toLowerCase();
 
   // Use the withErrorBoundary HOC with UI-specific settings
-  return withErrorBoundary(Component, {
-    componentName: displayName,
-    id,
-    fallback: options?.fallback || (
+  return withErrorBoundary(
+    Component,
+    displayName,
+    options?.fallback || (
       <div className="p-2 text-sm text-red-500 border border-red-200 rounded bg-red-50">
         UI component failed to render. Please try again.
       </div>
-    ),
-  });
+    )
+  );
 }
 
 export default withSafeUI;

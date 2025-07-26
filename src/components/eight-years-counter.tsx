@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import {
   Calendar,
   Heart,
@@ -263,10 +263,7 @@ function EightYearsCounterCore({ className }: EightYearsCounterProps) {
   );
 }
 
-export const EightYearsCounter = withDivineErrorBoundary(
+export const EightYearsCounter = withErrorBoundary(
   EightYearsCounterCore,
-  {
-    componentName: "EightYearsCounter",
-    fallback: <div>Loading the cost of injustice...</div>,
-  },
+  "EightYearsCounter"
 );

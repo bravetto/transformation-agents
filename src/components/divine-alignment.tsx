@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { motion } from "framer-motion";
 
 import DivineTransformation from "./divine-transformation";
@@ -55,7 +55,7 @@ function DivineAlignment({
         className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
       >
         {/* The Heart Team */}
-        <DivineTransformation role="lightworker" particleVariant="sacred">
+        <DivineTransformation particleVariant="sacred">
           <h3 className="text-2xl font-bold mb-4">The Heart Team</h3>
           <div className="space-y-4">
             <div>
@@ -70,7 +70,7 @@ function DivineAlignment({
         </DivineTransformation>
 
         {/* The Drive Force */}
-        <DivineTransformation role="messenger" particleVariant="flame">
+        <DivineTransformation particleVariant="flame">
           <h3 className="text-2xl font-bold mb-4">The Drive Force</h3>
           <div className="space-y-4">
             <div>
@@ -81,7 +81,7 @@ function DivineAlignment({
         </DivineTransformation>
 
         {/* The Spiritual Covering */}
-        <DivineTransformation role="guardian" particleVariant="starfield">
+        <DivineTransformation particleVariant="starfield">
           <h3 className="text-2xl font-bold mb-4">The Spiritual Covering</h3>
           <div className="space-y-4">
             <div>
@@ -106,7 +106,4 @@ function DivineAlignment({
   );
 }
 
-export default withErrorBoundary(DivineAlignment, {
-  componentName: "DivineAlignment",
-  id: "divinealignment",
-});
+export default withErrorBoundary(DivineAlignment, "DivineAlignment");

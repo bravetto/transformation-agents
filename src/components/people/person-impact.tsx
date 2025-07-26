@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { Card } from "@/components/ui";
 
 export interface ImpactStat {
@@ -163,7 +163,4 @@ function PersonImpact({
   );
 }
 
-export default withDivineErrorBoundary(PersonImpact, {
-  componentName: "PersonImpact",
-  role: "guardian",
-});
+export default withErrorBoundary(PersonImpact, "PersonImpact");

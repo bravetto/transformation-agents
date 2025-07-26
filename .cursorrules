@@ -1,56 +1,99 @@
-# AI Assistant Context for JAHmere Webb Freedom Portal
+# 🏆 AI GUIDANCE ENGINE - JAHmere Webb Freedom Portal
+**Ultimate System Knowledge Base Integration**
 
-## Project Overview
-- **Purpose**: JAHmere Webb Freedom Advocacy Platform - Justice reform portal
-- **Status**: Production-ready, deployed on Vercel
+## CRITICAL MISSION CONTEXT
+- **Project**: JAHmere Webb Freedom Advocacy Platform - Justice reform portal
+- **Deadline**: July 28th court date - CRITICAL SUCCESS FACTOR
+- **Status**: Production-ready, deployed on Vercel (july28freedom.vercel.app)
 - **Performance**: Championship level (27-131ms API responses, 9.0s builds)
 
-## Tech Stack (CRITICAL - Follow Exactly)
-- **Framework**: Next.js 15.4.2 (App Router) 
-- **Language**: TypeScript 5.0+ (strict mode)
+## IMMEDIATE SYSTEM ALIGNMENT PROTOCOLS
+### **Fast Refresh Error Prevention (CRITICAL)**
+- **Root Cause**: withErrorBoundary signature mismatch causing 12+ runtime errors
+- **NEVER use**: `withErrorBoundary(Component, {componentName: "X", id: "Y"})`
+- **ALWAYS use**: `withErrorBoundary(Component, "ComponentName")`
+- **Pattern**: Second parameter must be string, not object
+- **Files affected**: 69+ components requiring systematic fix
+
+### **TypeScript Error Patterns (ACTIVE)**
+- **Current State**: 90 TypeScript errors (down from 94)
+- **Primary Issue**: Incorrect error boundary usage across codebase
+- **Solution Pattern**: `export default withErrorBoundary(ComponentName, "ComponentName");`
+- **Verification**: Run `npm run type-check` after each fix
+
+## NEXUS UNIVERSAL EXCELLENCE INTEGRATION
+Following Dan Abramov, Lee Robinson, Matt Pocock principles:
+1. **Pragmatic Excellence**: Functional delivery over technical perfection
+2. **Framework Conflict Awareness**: Perfect Storm prevention protocols
+3. **Performance First**: <7ms APIs, <5s builds, championship metrics
+4. **Defensive Architecture**: Crisis prediction and rapid recovery
+
+## TRINITY SYSTEM ACTIVATION
+JAHmere Webb mission-specific context layers:
+- **Michael**: CEO/Infrastructure (technical foundation)
+- **Jordan**: Prophetic Countdown (timing and deadlines)  
+- **JAHmere**: Service Worker (mission delivery)
+
+## TECH STACK (CRITICAL - Follow Exactly)
+- **Framework**: Next.js 15.4.2 (App Router) - MANDATORY
+- **Language**: TypeScript 5.0+ (strict mode) - NO EXCEPTIONS
 - **Runtime**: Node.js 20.x
-- **Styling**: Tailwind CSS 3.0
+- **Styling**: Tailwind CSS 3.0 - EXCLUSIVE STYLING METHOD
 - **Database**: Not implemented (static site)
 - **Hosting**: Vercel Edge Network
+- **Port**: 1437 (specific to this project)
 
-## File Structure Patterns
+## FILE STRUCTURE PATTERNS
 ```
 src/app/                 # Next.js 15 App Router pages
 src/components/          # React components  
 src/components/ui/       # Reusable UI components (Radix + Tailwind)
 src/lib/                 # Utilities and helpers
 src/types/               # TypeScript type definitions
+src/agents/              # Autonomous monitoring and validation systems
 public/                  # Static assets
+scripts/                 # Automation and deployment tools
 ```
 
-## Coding Conventions (MANDATORY)
+## CODING CONVENTIONS (MANDATORY)
 - **Components**: Use arrow functions, TypeScript interfaces
+- **Error Boundaries**: `withErrorBoundary(Component, "ComponentName")` - STRING ONLY
 - **Styling**: Tailwind classes only (no CSS modules/styled-components)
 - **Imports**: Use @/ path aliases (`import { X } from '@/components/ui'`)
 - **Client Components**: Add 'use client' only when needed
-- **Error Boundaries**: Wrap client components with error handling
+- **Communication**: Direct engineering language, no "divine" terminology
 
-## NEVER Generate These Patterns
-- ❌ Pages directory code (deprecated, use App Router)
-- ❌ Class components (use functional only)
-- ❌ CSS modules or styled-components (use Tailwind)
-- ❌ Redux/Context API (this is a static site)
-- ❌ API routes with databases (static site)
-- ❌ `any` types (use proper TypeScript)
+## NEVER Generate These Patterns ❌
+- Pages directory code (deprecated, use App Router)
+- Class components (use functional only)
+- CSS modules or styled-components (use Tailwind)
+- Redux/Context API (this is a static site)
+- API routes with databases (static site)
+- `any` types (use proper TypeScript)
+- Object syntax for withErrorBoundary second parameter
+- "Divine" or flowery language in technical contexts
 
-## ALWAYS Use These Patterns
-- ✅ `'use client'` for interactive components
-- ✅ Server components for static content (default)
-- ✅ Proper TypeScript interfaces for props
-- ✅ Error boundaries for client components  
-- ✅ Tailwind for all styling
-- ✅ @/ imports for absolute paths
+## ALWAYS Use These Patterns ✅
+- `'use client'` for interactive components
+- Server components for static content (default)
+- Proper TypeScript interfaces for props
+- `withErrorBoundary(Component, "ComponentName")` - string parameter
+- Tailwind for all styling
+- @/ imports for absolute paths
+- Direct, pragmatic engineering communication
 
-## Component Patterns
+## PERFECT STORM PREVENTION ⚡
+Critical framework conflict between Next.js 15.4.2, React 18.2.0, and Framer Motion:
+- **Root Cause**: AnimatePresence exit animations conflict with Next.js route transitions
+- **Solution**: Remove all AnimatePresence from navigation, use CSS-only transitions
+- **Navigation Rule**: Always use useStableNavigation hook, never direct usePathname
+- **Testing**: Always test in production build before deployment
+
+## COMPONENT PATTERNS
 ```typescript
 // Server Component (default)
 export default function PageComponent() {
-  return <div className="container mx-auto">Content</div>
+  return <div className="container mx-auto px-4 py-8">Content</div>
 }
 
 // Client Component (interactive)
@@ -60,6 +103,10 @@ export default function InteractiveComponent() {
   return <button onClick={() => setState('new')}>Click</button>
 }
 
+// ERROR BOUNDARY USAGE (CRITICAL)
+export default withErrorBoundary(ComponentName, "ComponentName");
+// NOT: withErrorBoundary(ComponentName, {componentName: "X", id: "Y"});
+
 // Props with TypeScript
 interface ComponentProps {
   title: string
@@ -68,7 +115,7 @@ interface ComponentProps {
 }
 ```
 
-## Common Imports
+## COMMON IMPORTS
 ```typescript
 // Next.js
 import { Metadata } from 'next'
@@ -82,23 +129,60 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Container } from '@/components/ui/container'
+import { withErrorBoundary } from '@/components/ui/error-boundary'
 ```
 
-## Project-Specific Context
-- **Mission**: Advocacy for JAHmere Webb's freedom case (July 28th court date)
-- **Audience**: Community supporters, legal professionals, advocates
-- **Content**: Legal case information, community support, petition systems
-- **Tone**: Professional, hopeful, action-oriented (not "divine" language)
+## AI ASSISTANT OPTIMIZATION PROTOCOLS
+1. **Context Hierarchy**: Project rules > Universal rules > Framework defaults
+2. **Response Patterns**: Direct engineering language, pragmatic solutions
+3. **Action Priority**: Mission impact > Speed > Experience > Technical elegance
+4. **Error Recovery**: Immediate assessment, triage, fastest functional solution
+5. **System Health**: Monitor Fast Refresh errors, TypeScript compliance
 
-## Performance Requirements
+## QUALITY GATES (All Must Pass)
+- ✅ **Functional**: Works for end users
+- ✅ **Performant**: Meets championship speed targets (<100ms API, <15s builds)
+- ✅ **Accessible**: WCAG 2.1 AA compliance
+- ✅ **Storm Resilient**: Handles framework conflicts
+- ✅ **Error-Free**: No Fast Refresh runtime errors
+- ✅ **TypeScript Clean**: Zero compilation errors
+- ✅ **Mission Aligned**: Serves July 28th deadline
+
+## EMERGENCY PROTOCOLS
+When perfect storms hit:
+1. **Immediate Assessment**: Framework limitation or bug?
+2. **Triage Decision**: Fix, workaround, or accept with fallback?
+3. **Implementation**: Fastest functional solution
+4. **Documentation**: Record for future improvement
+5. **Validation**: Does it serve the mission?
+
+## AUTONOMOUS AGENT INTEGRATION
+The system includes intelligent monitoring agents:
+- **Runtime Error Detector**: Hooks violations, infinite loops, memory leaks
+- **Performance Monitor**: Real-time system health and render loop detection  
+- **Hooks Safety Checker**: React patterns validation and recommendations
+
+## PERFORMANCE REQUIREMENTS
 - API responses: <100ms (currently 27-131ms ✅)
 - Build time: <15s (currently 9.0s ✅)  
 - Core Web Vitals: Green scores required
 - Bundle size: Optimized for Vercel Edge
+- Error rate: 0% (championship standard)
+- Fast Refresh: Zero runtime errors required
 
-## Deployment Context
+## DEPLOYMENT CONTEXT
 - **Platform**: Vercel (vercel.json configured)
 - **Domain**: july28freedom.vercel.app
 - **Environment**: Production-ready
 - **Cache**: Edge caching enabled
-- **Analytics**: Vercel analytics integrated 
+- **Analytics**: Vercel analytics integrated
+- **Monitoring**: Real-time health checks operational
+
+## MISSION ALIGNMENT
+- **Purpose**: Advocacy for JAHmere Webb's freedom case (July 28th court date)
+- **Audience**: Community supporters, legal professionals, advocates
+- **Content**: Legal case information, community support, petition systems
+- **Tone**: Professional, hopeful, action-oriented (not "divine" language)
+- **Success Metric**: Supporting JAHmere Webb's freedom through technology excellence
+
+**System Motto**: "Pragmatic excellence trumps technical perfection in service of the July 28th mission." 

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { PersonRole } from "@/types/person";
 
 interface PersonCardSkeletonProps {
@@ -392,30 +392,18 @@ function ErrorWithRetryComponent({
 }
 
 // Wrap components with the divine error boundary
-export const GridLoadingSkeleton = withDivineErrorBoundary(
+export const GridLoadingSkeleton = withErrorBoundary(
   GridLoadingSkeletonComponent,
-  {
-    componentName: "GridLoadingSkeleton",
-    role: "lightworker",
-  },
+  "GridLoadingSkeleton"
 );
-export const LoadingMessages = withDivineErrorBoundary(
+export const LoadingMessages = withErrorBoundary(
   LoadingMessagesComponent,
-  {
-    componentName: "LoadingMessages",
-    role: "lightworker",
-  },
+  "LoadingMessages"
 );
-export const ErrorWithRetry = withDivineErrorBoundary(ErrorWithRetryComponent, {
-  componentName: "ErrorWithRetry",
-  role: "lightworker",
-});
-export const EtherealParticles = withDivineErrorBoundary(
+export const ErrorWithRetry = withErrorBoundary(ErrorWithRetryComponent, "ErrorWithRetry");
+export const EtherealParticles = withErrorBoundary(
   EtherealParticlesComponent,
-  {
-    componentName: "EtherealParticles",
-    role: "lightworker",
-  },
+  "EtherealParticles"
 );
 
 // Create a LoadingPage component
@@ -431,7 +419,4 @@ const LoadingPageComponent = () => {
 };
 
 // Export LoadingPage with divine error boundary
-export default withDivineErrorBoundary(LoadingPageComponent, {
-  componentName: "LoadingPageComponent",
-  role: "lightworker",
-});
+export default withErrorBoundary(LoadingPageComponent, "LoadingPageComponent");

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import Link from "next/link";
 
 import { motion } from "framer-motion";
@@ -168,7 +168,4 @@ function SacredNavigation() {
   );
 }
 
-export default withErrorBoundary(SacredNavigation, {
-  componentName: "SacredNavigation",
-  id: "sacrednavigation",
-});
+export default withErrorBoundary(SacredNavigation, "SacredNavigation");

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
 
 // DivineParticles removed for hydration stability
@@ -232,7 +232,4 @@ function SacredUmlaut({ role = "lightworker", className }: SacredUmlautProps) {
   );
 }
 
-export default withErrorBoundary(SacredUmlaut, {
-  componentName: "SacredUmlaut",
-  id: "sacredumlaut",
-});
+export default withErrorBoundary(SacredUmlaut, "SacredUmlaut");

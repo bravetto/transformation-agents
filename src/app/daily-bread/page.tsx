@@ -1,6 +1,6 @@
 import DailyBread from "@/components/divine-unification/DailyBread";
 import SacredTable from "@/components/divine-unification/SacredTable";
-import { UnificationErrorBoundary } from "@/components/divine-unification/UnificationErrorBoundary";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -44,18 +44,18 @@ export default function DailyBreadPage() {
           </div>
 
           {/* Daily Bread Component */}
-          <UnificationErrorBoundary componentName="DailyBread">
+          <ErrorBoundary componentName="DailyBread">
             <DailyBread className="mb-16" />
-          </UnificationErrorBoundary>
+          </ErrorBoundary>
 
           {/* Sacred Communion */}
           <div className="mt-24 mb-16">
             <h2 className="text-4xl font-bold text-center text-amber-100 mb-12">
               The Table is Set
             </h2>
-            <UnificationErrorBoundary componentName="SacredTable">
+            <ErrorBoundary componentName="SacredTable">
               <SacredTable />
-            </UnificationErrorBoundary>
+            </ErrorBoundary>
           </div>
 
           {/* Divine Invitation */}

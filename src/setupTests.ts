@@ -85,7 +85,10 @@ global.cancelAnimationFrame = (id: number) => {
   clearTimeout(id);
 };
 
-// Suppress specific console errors in tests
+// Import unified logger for consistent test logging
+import { logger } from './lib/unified-logger';
+
+// Suppress only ReactDOM.render warnings in tests
 const originalError = console.error;
 beforeAll(() => {
   console.error = (...args) => {

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { PersonData, PersonRole } from "@/types/person";
 import PersonCard from "@/components/ui/person-card";
 import { cn } from "@/lib/utils";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface GridViewProps {
   people: Array<
@@ -106,7 +106,4 @@ function GridView({ people, className }: GridViewProps) {
 // Wrap with React.memo to prevent unnecessary re-renders when props haven't changed
 const MemoizedGridView = React.memo(GridView);
 
-export default withDivineErrorBoundary(MemoizedGridView, {
-  componentName: "GridView",
-  role: "guardian",
-});
+export default withErrorBoundary(MemoizedGridView, "GridView");

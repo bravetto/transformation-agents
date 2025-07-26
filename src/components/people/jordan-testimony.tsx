@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { Quote, Heart, Star, ExternalLink } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
@@ -308,7 +308,4 @@ function JordanFullTestimony() {
 // Export both named and default for compatibility
 export { JordanFullTestimony };
 
-export default withErrorBoundary(JordanFullTestimony, {
-  componentName: "JordanFullTestimony",
-  id: "jordanfulltestimony",
-});
+export default withErrorBoundary(JordanFullTestimony, "JordanFullTestimony");

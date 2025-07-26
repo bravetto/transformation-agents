@@ -8,7 +8,7 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 // 🚀 OPTIMIZED: All animations now use Framer Motion instead of react-spring
 // This eliminates the dependency on @react-spring/web (200KB+ savings)
@@ -330,7 +330,4 @@ export function MagneticButton({
   );
 }
 
-export default withErrorBoundary(SacredReveal, {
-  componentName: "SacredReveal",
-  id: "sacredreveal",
-});
+export default withErrorBoundary(SacredReveal, "SacredReveal");

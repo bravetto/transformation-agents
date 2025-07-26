@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface HealingCircleProps {
   className?: string;
@@ -130,7 +130,4 @@ function HealingCircle({ className = "" }: HealingCircleProps) {
   );
 }
 
-export default withDivineErrorBoundary(HealingCircle, {
-  componentName: "HealingCircle",
-  role: "lightworker",
-});
+export default withErrorBoundary(HealingCircle, "HealingCircle");

@@ -20,7 +20,7 @@ export * from "./case-status";
 export * from "./checkbox";
 export * from "./container";
 export * from "./date-picker";
-export * from "./divine-error-boundary";
+export * from "./error-boundary";
 export * from "./divine-image";
 export { default as FeatureCard } from "./feature-card";
 export * from "./file-upload";

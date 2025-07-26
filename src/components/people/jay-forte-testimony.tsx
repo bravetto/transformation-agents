@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import {
   Brain,
   Heart,
@@ -338,7 +338,4 @@ function JayForteTestimony() {
   );
 }
 
-export default withErrorBoundary(JayForteTestimony, {
-  componentName: "JayForteTestimony",
-  id: "jayfortetestimony",
-});
+export default withErrorBoundary(JayForteTestimony, "JayForteTestimony");

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import {
   Search,
   Lightbulb,
@@ -353,7 +353,4 @@ function ClarityPrinciples({ className = "" }: ClarityPrinciplesProps) {
   );
 }
 
-export default withDivineErrorBoundary(ClarityPrinciples, {
-  componentName: "ClarityPrinciples",
-  role: "lightworker",
-});
+export default withErrorBoundary(ClarityPrinciples, "ClarityPrinciples");

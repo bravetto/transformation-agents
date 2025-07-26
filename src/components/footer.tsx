@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/container";
 import { Text } from "@/components/ui/typography";
 import { Heart, Mail, Calendar, Github } from "lucide-react";
 import { getBuildInfo } from "@/lib/build-config";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 // EasterEgg and SynchronicityEgg removed for hydration stability
 
 function Footer() {
@@ -193,7 +193,4 @@ function Footer() {
 }
 
 // Export with error boundary
-export default withErrorBoundary(Footer, {
-  componentName: "Footer",
-  id: "footer",
-});
+export default withErrorBoundary(Footer, "Footer");

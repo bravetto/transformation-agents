@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import {
   Heart,
   Send,
@@ -282,10 +282,7 @@ function LiveTestimonyCollectorCore({
   );
 }
 
-export const LiveTestimonyCollector = withDivineErrorBoundary(
+export const LiveTestimonyCollector = withErrorBoundary(
   LiveTestimonyCollectorCore,
-  {
-    componentName: "LiveTestimonyCollector",
-    fallback: <div>Testimonies loading...</div>,
-  },
+  "LiveTestimonyCollector"
 );

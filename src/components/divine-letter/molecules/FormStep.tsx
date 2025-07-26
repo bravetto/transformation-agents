@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import LetterInput from "../atoms/LetterInput";
 import { divineDesignSystem } from "@/lib/divine-design-intelligence";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface FormStepProps {
   stepNumber: number;
@@ -259,11 +259,8 @@ const FormStep: React.FC<FormStepProps> = ({
   );
 };
 
-export default withDivineErrorBoundary(FormStep, {
-  componentName: "FormStep",
-  fallback: (
+export default withErrorBoundary(FormStep, "FormStep", (
     <div className="p-8 text-center text-gray-500">
       Form step temporarily unavailable
     </div>
-  ),
-});
+  ));

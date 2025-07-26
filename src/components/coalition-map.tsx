@@ -6,7 +6,7 @@ import { Building2, Users, Heart, MapPin, Plus, Filter } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { cn } from "@/lib/utils";
 
 // Types for organizations
@@ -308,7 +308,4 @@ function CoalitionMap({ showJoinButton = true, className }: CoalitionMapProps) {
   );
 }
 
-export default withDivineErrorBoundary(CoalitionMap, {
-  componentName: "CoalitionMap",
-  fallback: <div>Unable to load coalition map</div>,
-});
+export default withErrorBoundary(CoalitionMap, "CoalitionMap", <div>Unable to load coalition map</div>);

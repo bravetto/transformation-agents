@@ -1,5 +1,5 @@
 import SacredExperience from "@/components/sacred-experience";
-import { DivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 
 export const metadata = {
   title: "Sacred Experience | The Bridge Project",
@@ -9,8 +9,8 @@ export const metadata = {
 
 export default function SacredExperiencePage() {
   return (
-    <DivineErrorBoundary componentName="PagePage" role="guardian">
+    <ErrorBoundary componentName="PagePage">
       <SacredExperience />
-    </DivineErrorBoundary>
+    </ErrorBoundary>
   );
 }

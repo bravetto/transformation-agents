@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import {
   DollarSign,
   Calendar,
@@ -737,7 +737,4 @@ function JAHmereGoFundMeDivine() {
   );
 }
 
-export default withDivineErrorBoundary(JAHmereGoFundMeDivine, {
-  componentName: "JAHmereGoFundMeDivine",
-  role: "messenger",
-});
+export default withErrorBoundary(JAHmereGoFundMeDivine, "JAHmereGoFundMeDivine");

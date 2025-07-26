@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useDivineLove } from "@/lib/divine-love";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface SacredProtectionProps {
   intensity?: "low" | "medium" | "high";
@@ -29,7 +29,4 @@ function SacredProtectionCore({
 }
 
 // Export with divine error boundary
-export const SacredProtection = withDivineErrorBoundary(SacredProtectionCore, {
-  componentName: "SacredProtection",
-  role: "guardian",
-});
+export const SacredProtection = withErrorBoundary(SacredProtectionCore, "SacredProtection");

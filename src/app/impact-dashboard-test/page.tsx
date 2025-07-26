@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 // DivineImpactDashboard removed for hydration stability
 // DivineParticles removed for hydration stability
 // DivineRole type removed with divine-impact-dashboard

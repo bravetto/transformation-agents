@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 // DivineParticles removed for hydration stability
 import { MothersVoice } from "@/components/mothers-voice";
 import { CoalitionAlert } from "@/components/coalition-alert";
@@ -205,9 +205,6 @@ function EmergencyResponseCore() {
   );
 }
 
-export default withDivineErrorBoundary(EmergencyResponseCore, {
-  componentName: "EmergencyResponse",
-  fallback: (
+export default withErrorBoundary(EmergencyResponseCore, "EmergencyResponse", (
     <div className="text-white p-8 text-center">The Kraken stirs...</div>
-  ),
-});
+  ));

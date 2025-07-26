@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
 
 // DivineParticles removed for hydration stability
@@ -94,7 +94,4 @@ function DivineTransformation({
   );
 }
 
-export default withErrorBoundary(DivineTransformation, {
-  componentName: "DivineTransformation",
-  id: "divinetransformation",
-});
+export default withErrorBoundary(DivineTransformation, "DivineTransformation");

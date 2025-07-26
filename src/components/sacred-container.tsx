@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
@@ -105,7 +105,4 @@ function SacredContainer({
   );
 }
 
-export default withErrorBoundary(SacredContainer, {
-  componentName: "SacredContainer",
-  id: "sacredcontainer",
-});
+export default withErrorBoundary(SacredContainer, "SacredContainer");

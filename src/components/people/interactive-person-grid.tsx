@@ -10,7 +10,7 @@ import {
   PersonImpactLevel,
 } from "@/types/person";
 import FilterBar from "@/components/people/FilterBar";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { cn } from "@/lib/utils";
 import {
   GridLoadingSkeleton,
@@ -731,7 +731,4 @@ const getInitials = (name: string) => {
 };
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(InteractivePersonGrid, {
-  componentName: "InteractivePersonGrid",
-  role: "guardian",
-});
+export default withErrorBoundary(InteractivePersonGrid, "InteractivePersonGrid");

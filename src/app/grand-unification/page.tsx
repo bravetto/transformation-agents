@@ -1,5 +1,5 @@
 import SacredTable from "@/components/divine-unification/SacredTable";
-import { UnificationErrorBoundary } from "@/components/divine-unification/UnificationErrorBoundary";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -43,9 +43,9 @@ export default function GrandUnificationPage() {
 
           {/* The Sacred Table */}
           <div className="relative">
-            <UnificationErrorBoundary componentName="SacredTable">
+            <ErrorBoundary componentName="SacredTable">
               <SacredTable className="mb-16" />
-            </UnificationErrorBoundary>
+            </ErrorBoundary>
           </div>
 
           {/* Divine Truth Section */}

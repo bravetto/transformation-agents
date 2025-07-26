@@ -1,6 +1,6 @@
 "use client";
 
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -177,11 +177,8 @@ function AIChatInterfacePage() {
   );
 }
 
-export default withDivineErrorBoundary(AIChatInterfacePage, {
-  componentName: "AIChatInterfacePage",
-  fallback: (
+export default withErrorBoundary(AIChatInterfacePage, "AIChatInterfacePage", (
     <div className="min-h-screen p-8 bg-gray-900 text-white">
       Error loading AI chat interface
     </div>
-  ),
-});
+  ));

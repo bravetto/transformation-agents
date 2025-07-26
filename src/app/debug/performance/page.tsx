@@ -1,6 +1,6 @@
 "use client";
 
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { Card } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import {
@@ -218,11 +218,8 @@ function PerformanceMonitorPage() {
   );
 }
 
-export default withDivineErrorBoundary(PerformanceMonitorPage, {
-  componentName: "PerformanceMonitorPage",
-  fallback: (
+export default withErrorBoundary(PerformanceMonitorPage, "PerformanceMonitorPage", (
     <div className="min-h-screen p-8 bg-gray-900 text-white">
       Error loading performance monitor
     </div>
-  ),
-});
+  ));

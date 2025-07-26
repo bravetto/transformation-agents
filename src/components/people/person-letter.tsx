@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 export interface PersonLetterProps {
   title: string;
@@ -61,7 +61,4 @@ function PersonLetter({
   );
 }
 
-export default withDivineErrorBoundary(PersonLetter, {
-  componentName: "PersonLetter",
-  role: "guardian",
-});
+export default withErrorBoundary(PersonLetter, "PersonLetter");

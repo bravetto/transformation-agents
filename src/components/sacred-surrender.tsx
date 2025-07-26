@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useDivineLove } from "@/lib/divine-love";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface SacredSurrenderProps {
   intensity?: "low" | "medium" | "high";
@@ -25,7 +25,4 @@ function SacredSurrenderCore({ intensity = "high" }: SacredSurrenderProps) {
 }
 
 // Export with divine error boundary
-export const SacredSurrender = withDivineErrorBoundary(SacredSurrenderCore, {
-  componentName: "SacredSurrender",
-  role: "lightworker",
-});
+export const SacredSurrender = withErrorBoundary(SacredSurrenderCore, "SacredSurrender");

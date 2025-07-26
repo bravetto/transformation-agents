@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
 
 // DivineParticles removed for hydration stability
@@ -264,7 +264,4 @@ function HolyAIMessenger({
   );
 }
 
-export default withErrorBoundary(HolyAIMessenger, {
-  componentName: "HolyAIMessenger",
-  id: "holyaimessenger",
-});
+export default withErrorBoundary(HolyAIMessenger, "HolyAIMessenger");

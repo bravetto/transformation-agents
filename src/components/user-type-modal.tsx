@@ -12,7 +12,7 @@ import {
   Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { useModalAnalytics } from "@/components/analytics-wrapper";
 import { trackModalInteraction } from "@/lib/analytics/user-journey";
 
@@ -374,9 +374,7 @@ function UserTypeModal({
 }
 
 // Export with error boundary
-export default withDivineErrorBoundary(UserTypeModal, {
-  componentName: "UserTypeModal",
-  fallback: (
+export default withErrorBoundary(UserTypeModal, "UserTypeModal", (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl p-8 text-center max-w-md">
         <h2 className="text-xl font-bold mb-4">
@@ -394,5 +392,4 @@ export default withDivineErrorBoundary(UserTypeModal, {
         </button>
       </div>
     </div>
-  ),
-});
+  ));

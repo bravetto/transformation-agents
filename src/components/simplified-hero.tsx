@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { motion } from "framer-motion";
 
 import { Clock, Users, FileText } from "lucide-react";
@@ -254,7 +254,4 @@ export function WhatHappensNext() {
   );
 }
 
-export default withErrorBoundary(SimplifiedHero, {
-  componentName: "SimplifiedHero",
-  id: "simplifiedhero",
-});
+export default withErrorBoundary(SimplifiedHero, "SimplifiedHero");

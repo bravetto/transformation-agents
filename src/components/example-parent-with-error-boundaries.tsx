@@ -1,7 +1,7 @@
 "use client";
 
-import { ErrorBoundary } from "@/components/error-boundary";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 // Example component that might throw an error
 function ErrorProneComponent() {
@@ -27,10 +27,7 @@ export function DirectUsageExample() {
 }
 
 // Example 2: Using the HOC pattern
-const SafeComponent = withDivineErrorBoundary(ErrorProneComponent, {
-  componentName: "ErrorProneComponent",
-  role: "lightworker",
-});
+const SafeComponent = withErrorBoundary(ErrorProneComponent, "ErrorProneComponent");
 
 export function HOCExample() {
   return <SafeComponent />;

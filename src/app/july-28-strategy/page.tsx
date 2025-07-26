@@ -21,7 +21,7 @@ import {
   Award,
   Zap,
 } from "lucide-react";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import Section from "@/components/section";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -337,7 +337,4 @@ const July28Strategy = () => {
   );
 };
 
-export default withDivineErrorBoundary(July28Strategy, {
-  componentName: "July28Strategy",
-  role: "guardian",
-});
+export default withErrorBoundary(July28Strategy, "July28Strategy");

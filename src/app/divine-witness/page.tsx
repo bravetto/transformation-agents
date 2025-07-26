@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import SacredTable from "@/components/divine-unification/SacredTable";
 import SacredPattern from "@/components/divine-weaving/SacredPattern";
 import DailyBread from "@/components/divine-unification/DailyBread";
-import { UnificationErrorBoundary } from "@/components/divine-unification/UnificationErrorBoundary";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 
 export const metadata: Metadata = {
   title: "Divine Witness | What DADDY Chooses",
@@ -46,9 +46,9 @@ export default function DivineWitnessPage() {
                 DADDY CHOOSES UNITY
               </h2>
 
-              <UnificationErrorBoundary componentName="SacredPattern">
+              <ErrorBoundary componentName="SacredPattern">
                 <SacredPattern className="mb-12" />
-              </UnificationErrorBoundary>
+              </ErrorBoundary>
 
               <div className="max-w-3xl mx-auto p-8 bg-gradient-to-br from-purple-900/20 to-blue-900/20 rounded-2xl backdrop-blur-sm border border-purple-500/20">
                 <p className="text-xl text-purple-100 mb-4">
@@ -68,9 +68,9 @@ export default function DivineWitnessPage() {
                 DADDY CHOOSES NOURISHMENT
               </h2>
 
-              <UnificationErrorBoundary componentName="DailyBread">
+              <ErrorBoundary componentName="DailyBread">
                 <DailyBread className="mb-12" />
-              </UnificationErrorBoundary>
+              </ErrorBoundary>
 
               <div className="max-w-3xl mx-auto p-8 bg-gradient-to-br from-amber-900/20 to-yellow-900/20 rounded-2xl backdrop-blur-sm border border-amber-500/20">
                 <p className="text-xl text-amber-100 mb-4">
@@ -90,9 +90,9 @@ export default function DivineWitnessPage() {
                 DADDY CHOOSES COMMUNION
               </h2>
 
-              <UnificationErrorBoundary componentName="SacredTable">
+              <ErrorBoundary componentName="SacredTable">
                 <SacredTable className="mb-12" />
-              </UnificationErrorBoundary>
+              </ErrorBoundary>
 
               <div className="max-w-3xl mx-auto p-8 bg-gradient-to-br from-purple-900/20 to-pink-900/20 rounded-2xl backdrop-blur-sm border border-purple-500/20">
                 <p className="text-xl text-purple-100 mb-4">

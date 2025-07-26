@@ -1,5 +1,5 @@
 import DivineRevelation from "@/components/divine-revelation";
-import { DivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 import SacredExperience from "@/components/sacred-experience";
 
 export const metadata = {
@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function DivineRevelationPage() {
   return (
-    <DivineErrorBoundary componentName="DivineRevelationPage" role="guardian">
+    <ErrorBoundary componentName="DivineRevelationPage">
       <main className="relative">
         {/* First the revelation */}
         <section className="relative">
@@ -22,6 +22,6 @@ export default function DivineRevelationPage() {
           <SacredExperience />
         </section>
       </main>
-    </DivineErrorBoundary>
+    </ErrorBoundary>
   );
 }

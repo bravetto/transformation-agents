@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useDivineLove } from "@/lib/divine-love";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -202,15 +202,11 @@ function SystemSettingsPage() {
   );
 }
 
-export default withDivineErrorBoundary(SystemSettingsPage, {
-  componentName: "SystemSettings",
-  role: "guardian",
-  fallback: (
+export default withErrorBoundary(SystemSettingsPage, "SystemSettings", (
     <div className="min-h-screen p-8 bg-gray-900 text-white">
       <h1 className="text-2xl font-bold mb-4">System Settings Error</h1>
       <p>
         There was an error loading the system settings. Please try again later.
       </p>
     </div>
-  ),
-});
+  ));

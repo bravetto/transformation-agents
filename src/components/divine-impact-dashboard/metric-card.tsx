@@ -6,7 +6,7 @@ import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 // DivineParticles removed for hydration stability
 import { cn } from "@/lib/utils";
 import type { MetricCardProps } from "./types";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 /**
  * Metric Card Component
@@ -148,7 +148,4 @@ function MetricCard({
   );
 }
 
-export default withErrorBoundary(MetricCard, {
-  componentName: "MetricCard",
-  id: "metriccard",
-});
+export default withErrorBoundary(MetricCard, "MetricCard");

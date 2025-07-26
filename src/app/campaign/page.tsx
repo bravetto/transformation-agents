@@ -15,9 +15,9 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
-export default withDivineErrorBoundary(
+export default withErrorBoundary(
   function CampaignPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -235,13 +235,8 @@ export default withDivineErrorBoundary(
       </div>
     );
   },
-  {
-    componentName: "CampaignPage",
-    role: "messenger",
-    fallback: (
-      <div className="p-8 text-center">
-        Sorry, the campaign page could not be loaded.
-      </div>
-    ),
-  },
+  "CampaignPage",
+  <div className="p-8 text-center">
+    Sorry, the campaign page could not be loaded.
+  </div>
 );

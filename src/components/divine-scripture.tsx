@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useDivineLove } from "@/lib/divine-love";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface DivineScriptureProps {
   intensity?: "low" | "medium" | "high";
@@ -25,7 +25,4 @@ function DivineScriptureCore({ intensity = "high" }: DivineScriptureProps) {
 }
 
 // Export with divine error boundary
-export const DivineScripture = withDivineErrorBoundary(DivineScriptureCore, {
-  componentName: "DivineScripture",
-  role: "messenger",
-});
+export const DivineScripture = withErrorBoundary(DivineScriptureCore, "DivineScripture");

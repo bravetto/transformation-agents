@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -349,7 +349,4 @@ function ClickUpCRMDemoExported() {
 }
 
 // Export with error boundary
-export default withErrorBoundary(ClickUpCRMDemoExported, {
-  componentName: "clickup-crm-demo",
-  id: "clickup-crm-demo",
-});
+export default withErrorBoundary(ClickUpCRMDemoExported, "clickup-crm-demo");

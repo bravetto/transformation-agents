@@ -2,7 +2,7 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface DashboardContainerProps {
   children: React.ReactNode;
@@ -30,7 +30,4 @@ function DashboardContainer({
   );
 }
 
-export default withErrorBoundary(DashboardContainer, {
-  componentName: "DashboardContainer",
-  id: "dashboardcontainer",
-});
+export default withErrorBoundary(DashboardContainer, "DashboardContainer");

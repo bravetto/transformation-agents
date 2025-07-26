@@ -30,7 +30,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { trackEvent } from "@/lib/analytics";
 import {
   useMobileOptimization,
@@ -1115,11 +1115,8 @@ function LetterPortalPage() {
   );
 }
 
-export default withDivineErrorBoundary(LetterPortalPage, {
-  componentName: "LetterPortalPage",
-  fallback: (
+export default withErrorBoundary(LetterPortalPage, "LetterPortalPage", (
     <div className="p-8 text-center text-red-600">
       Letter portal temporarily unavailable
     </div>
-  ),
-});
+  ));

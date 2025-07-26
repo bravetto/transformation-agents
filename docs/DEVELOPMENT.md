@@ -14,11 +14,30 @@ npm install
 cp .env.example .env.local
 # Edit .env.local with your values (see Environment Variables section)
 
+# CRITICAL: Verify system health before development
+npm run type-check  # Must show 0 errors (currently 90+ errors)
+npm run lint        # Must pass
+
 # Start development
 npm run dev
 ```
 
 Visit `http://localhost:1437` - the app runs on this port specifically.
+
+## ⚠️ CRITICAL DEVELOPMENT ALERTS
+
+### Fast Refresh Runtime Errors
+- **Symptom**: `⚠ Fast Refresh had to perform a full reload due to a runtime error`
+- **Frequency**: 12+ occurrences in development sessions
+- **Root Cause**: Incorrect withErrorBoundary usage patterns
+- **Solution**: See [Fast Refresh Solutions Guide](./FAST_REFRESH_SOLUTIONS.md)
+- **Prevention**: Always use `withErrorBoundary(Component, "ComponentName")` - string parameter only
+
+### TypeScript Error Monitoring  
+- **Current State**: 90+ compilation errors (target: 0)
+- **Primary Issue**: withErrorBoundary signature mismatch across 69+ files
+- **Daily Check**: Run `npm run type-check` before starting development
+- **Fix Pattern**: Replace `{componentName: "X", id: "Y"}` with `"X"`
 
 ## Requirements
 

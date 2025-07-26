@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Volume2, VolumeX, ChevronRight } from "lucide-react";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 interface PropheticMomentProps {
   onComplete?: () => void;
@@ -295,7 +295,4 @@ function PropheticMoment({
 }
 
 // Export with divine error boundary
-export default withDivineErrorBoundary(PropheticMoment, {
-  componentName: "PropheticMoment",
-  role: "messenger",
-});
+export default withErrorBoundary(PropheticMoment, "PropheticMoment");

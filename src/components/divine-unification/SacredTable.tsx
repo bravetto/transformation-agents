@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { cn } from "@/lib/utils";
 
 import { useState } from "react";
@@ -267,7 +267,4 @@ function SacredTable({ className }: SacredTableProps) {
   );
 }
 
-export default withErrorBoundary(SacredTable, {
-  componentName: "SacredTable",
-  id: "sacredtable",
-});
+export default withErrorBoundary(SacredTable, "SacredTable");

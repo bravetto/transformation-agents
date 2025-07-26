@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import React, { Suspense } from "react";
 
 // Improved loading component
@@ -205,10 +205,7 @@ function PersonCustom({
   );
 }
 
-export default withDivineErrorBoundary(PersonCustom, {
-  componentName: "PersonCustom",
-  role: "guardian",
-  fallback: (
+export default withErrorBoundary(PersonCustom, "PersonCustom", (
     <section className="py-16 md:py-24 bg-comfort-cream w-full">
       <div className="container-wide">
         <div className="max-w-3xl mx-auto text-center">
@@ -224,5 +221,4 @@ export default withDivineErrorBoundary(PersonCustom, {
         </div>
       </div>
     </section>
-  ),
-});
+  ));

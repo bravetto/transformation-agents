@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
 import { Quote, X, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -257,7 +257,4 @@ function FloatingTestimonyExported() {
 }
 
 // Export with error boundary
-export default withErrorBoundary(FloatingTestimonyExported, {
-  componentName: "floating-testimony",
-  id: "floating-testimony",
-});
+export default withErrorBoundary(FloatingTestimonyExported, "floating-testimony");

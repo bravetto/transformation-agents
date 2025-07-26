@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import {
   Users,
   Heart,
@@ -256,10 +256,8 @@ function DivineConvergenceCore({ className }: DivineConvergenceProps) {
   );
 }
 
-export const DivineConvergence = withDivineErrorBoundary(
+export const DivineConvergence = withErrorBoundary(
   DivineConvergenceCore,
-  {
-    componentName: "DivineConvergence",
-    fallback: <div>Forces aligning...</div>,
-  },
+  "DivineConvergence",
+  <div>Forces aligning...</div>
 );

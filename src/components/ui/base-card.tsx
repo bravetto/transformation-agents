@@ -2,7 +2,7 @@
 
 import React, { memo } from "react";
 import { cn } from "@/lib/utils";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { withSafeUI } from "./with-safe-ui";
 
 /**
@@ -105,14 +105,11 @@ const BaseCardComponent = memo<BaseCardProps>(
 
 BaseCardComponent.displayName = "BaseCard";
 
-const BaseCard = withDivineErrorBoundary(BaseCardComponent, {
-  componentName: "BaseCard",
-  fallback: (
+const BaseCard = withErrorBoundary(BaseCardComponent, "BaseCard", (
     <div className="p-6 bg-red-50 text-red-600 rounded-lg">
       Card failed to load
     </div>
-  ),
-});
+  ));
 
 export default withSafeUI(BaseCard, {
   componentName: "BaseCard",

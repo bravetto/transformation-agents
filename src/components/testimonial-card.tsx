@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { Card } from "@/components/ui/card";
 import { Text, Quote } from "@/components/ui/typography";
 import { RevealOnScroll } from "@/components/ui/page-transition";
@@ -70,7 +70,4 @@ function TestimonialCardExported({
 }
 
 // Export with error boundary
-export default withErrorBoundary(TestimonialCardExported, {
-  componentName: "testimonial-card",
-  id: "testimonial-card",
-});
+export default withErrorBoundary(TestimonialCardExported, "testimonial-card");

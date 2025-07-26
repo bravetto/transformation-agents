@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import { getAllPeople } from "@/data/people";
 import InteractivePersonGrid from "@/components/people/interactive-person-grid";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import {
   GridLoadingSkeleton,
   LoadingMessages,
@@ -163,7 +163,4 @@ function PeopleContent({ simulationConfig }: PeopleContentProps) {
   );
 }
 
-export default withDivineErrorBoundary(PeopleContent, {
-  componentName: "PeopleContent",
-  role: "guardian",
-});
+export default withErrorBoundary(PeopleContent, "PeopleContent");

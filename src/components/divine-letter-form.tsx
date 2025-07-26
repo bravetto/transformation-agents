@@ -52,7 +52,7 @@ import {
   Send,
 } from "lucide-react";
 // DivineParticles removed for hydration stability
-import { withDivineErrorBoundary } from "./ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -1120,7 +1120,4 @@ function DivineLetterForm({
   );
 }
 
-export default withDivineErrorBoundary(DivineLetterForm, {
-  componentName: "DivineLetterForm",
-  role: "messenger",
-});
+export default withErrorBoundary(DivineLetterForm, "DivineLetterForm");

@@ -3,7 +3,7 @@
 import React from "react";
 import { RefreshCw } from "lucide-react";
 import useDashboard from "./context";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 /**
  * Dashboard Header Component
@@ -54,7 +54,4 @@ function DashboardHeader() {
   );
 }
 
-export default withErrorBoundary(DashboardHeader, {
-  componentName: "DashboardHeader",
-  id: "dashboardheader",
-});
+export default withErrorBoundary(DashboardHeader, "DashboardHeader");

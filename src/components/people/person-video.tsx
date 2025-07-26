@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
-import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 
 export interface PersonVideoProps {
   title: string;
@@ -79,7 +79,4 @@ function PersonVideo({
   );
 }
 
-export default withDivineErrorBoundary(PersonVideo, {
-  componentName: "PersonVideo",
-  role: "guardian",
-});
+export default withErrorBoundary(PersonVideo, "PersonVideo");

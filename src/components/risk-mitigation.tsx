@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { withErrorBoundary } from "@/components/with-error-boundary";
+import { withErrorBoundary } from "@/components/ui/error-boundary";
 import { motion } from "framer-motion";
 import {
   Shield,
@@ -300,7 +300,4 @@ function RiskMitigation() {
   );
 }
 
-export default withErrorBoundary(RiskMitigation, {
-  componentName: "RiskMitigation",
-  id: "risk-mitigation",
-});
+export default withErrorBoundary(RiskMitigation, "RiskMitigation");
