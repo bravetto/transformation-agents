@@ -24,10 +24,13 @@
     "useDefineForClassFields": true,
     "verbatimModuleSyntax": false,
 
-    // Enhanced strictness for divine type safety (temporarily relaxed for build)
-    "noUncheckedIndexedAccess": false,
-    "exactOptionalPropertyTypes": false,
-    "noImplicitReturns": false,
+    // Enhanced strictness for divine type safety (gradual migration)
+    "noUncheckedIndexedAccess": false,  // Temporarily relaxed for build success
+    "exactOptionalPropertyTypes": false, // Temporarily relaxed for build success  
+    "noImplicitReturns": false,         // Temporarily relaxed for build success
+    "noImplicitAny": true,              // Keep enabled for basic type safety
+    "strictNullChecks": true,           // Keep enabled for null safety
+    "strictFunctionTypes": true,        // Keep enabled for function safety
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 

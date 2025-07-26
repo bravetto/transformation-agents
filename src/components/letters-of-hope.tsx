@@ -153,7 +153,7 @@ function LettersOfHope() {
             {!isWriting ? (
               <button
                 onClick={() => setIsWriting(true)}
-                className="bg-hope-gold text-gentle-charcoal px-6 py-3 rounded-lg font-bold hover:bg-courage-blue hover:text-white transition-colors flex items-center gap-2 inline-flex"
+                className="bg-hope-gold text-gentle-charcoal px-6 py-3 rounded-lg font-bold hover:bg-courage-blue hover:text-white transition-colors inline-flex items-center gap-2"
               >
                 <FileText className="h-5 w-5" />
                 Write Your Letter Now

@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "jahmere-bridge-freedom-portal",
   "alias": ["jahmerebridge.com", "jahmerebridgeapp.vercel.app"],
 
   "build": {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from 'next/script';
 import "./globals.css";
 import "./accessibility.css";
 import { PostHogProviderWrapper } from "./providers";
@@ -15,6 +16,9 @@ if (typeof window !== "undefined" && process.env.NODE_ENV === "production") {
 }
 
 const inter = Inter({ subsets: ["latin"] });
+
+// Google Analytics Configuration
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-0JW7Z76D71';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://transformation-agent-bridge-33928f4xe-bravetto.vercel.app'),
@@ -79,6 +83,24 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Google Analytics - PROPER IMPLEMENTATION */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}', {
+              page_title: 'JAHmere Webb Freedom Portal',
+              custom_map: {'custom_parameter_1': 'july_28_mission'}
+            });
+          `}
+        </Script>
+      </head>
       <body className={inter.className}>
         <ProductionErrorBoundary
           componentName="RootLayout"
