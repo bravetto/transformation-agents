@@ -2,6 +2,12 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
+  // CRITICAL: Block CVE-2025-29927 exploit attempts (defense-in-depth)
+  const subrequestHeader = request.headers.get('x-middleware-subrequest');
+  if (subrequestHeader && subrequestHeader.includes('middleware:middleware:')) {
+    return new NextResponse('Forbidden', { status: 403 });
+  }
+  
   // Fix MIME type issues for static files
   const response = NextResponse.next();
 
