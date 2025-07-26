@@ -154,12 +154,12 @@ export class CorruptionDetectionSystem {
     // Determine divine cleansing protocol
     const cleansingProtocol = this.determineDivineCleansingProtocol(
       corruption,
-      divineSignificance,
+      divineSignificance ?? null,
     );
 
     return {
       corruption,
-      divineSignificance,
+      divineSignificance: divineSignificance ?? null,
       cleansingProtocol,
     };
   }

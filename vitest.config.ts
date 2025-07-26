@@ -1,0 +1,38 @@
+import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
+import path from "path";
+
+export default defineConfig({
+  plugins: [react()],
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./src/test/setup.ts",
+    // CI optimizations
+    reporters: process.env.CI ? ["verbose"] : ["default"],
+    outputFile: process.env.CI ? "test-results.xml" : undefined,
+    watch: false, // Disable watch mode in CI
+    pool: "threads",
+    poolOptions: {
+      threads: {
+        singleThread: process.env.CI ? true : false,
+      },
+    },
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json", "html"],
+      exclude: [
+        "node_modules/",
+        "src/test/",
+        "**/*.d.ts",
+        "**/*.config.*",
+        "src/types/",
+      ],
+    },
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+});

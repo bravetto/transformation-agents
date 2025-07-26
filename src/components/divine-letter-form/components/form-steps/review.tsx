@@ -14,22 +14,23 @@ import { letterImpactSchema } from "../../schema";
  * Final step of the letter form for reviewing and submitting
  */
 function Review() {
-  const { formData, setCurrentStep, impactScore, calculateImpactScore } = useLetterForm();
-  
+  const { formData, setCurrentStep, impactScore, calculateImpactScore } =
+    useLetterForm();
+
   // Calculate impact score on component mount
   useEffect(() => {
     calculateImpactScore();
   }, [calculateImpactScore]);
-  
+
   // Function to navigate to a specific step
   const goToStep = (step: FormStep) => {
     setCurrentStep(step);
   };
-  
+
   // Format the letter with proper styling
   const formattedLetter = () => {
     let signature = "";
-    
+
     switch (formData.signatureStyle) {
       case "formal":
         signature = `Sincerely,\n${formData.name}`;
@@ -43,7 +44,7 @@ function Review() {
       default:
         signature = `Sincerely,\n${formData.name}`;
     }
-    
+
     return `Dear Judge Ferrero,
 
 I am writing to express my strong support for JAHmere Webb. ${formData.relationship === "other" ? "" : `As ${formData.relationship?.replace("_", " ")}, `}I have known JAHmere for ${formData.timeKnown || "[time period]"} and have observed his character, growth, and positive impact.
@@ -55,7 +56,7 @@ ${formData.address || ""}
 ${formData.email || ""}
 ${formData.phone || ""}`;
   };
-  
+
   // Validate all fields
   const validateForm = () => {
     try {
@@ -65,13 +66,13 @@ ${formData.phone || ""}`;
       return false;
     }
   };
-  
+
   const isFormValid = validateForm();
-  
+
   // Get impact score color based on category
   const getImpactScoreColor = () => {
     if (!impactScore) return "text-gray-400";
-    
+
     switch (impactScore.category) {
       case "exceptional":
         return "text-green-600";
@@ -99,35 +100,42 @@ ${formData.phone || ""}`;
           Please review your letter before final submission
         </p>
       </div>
-      
+
       {/* Form validation status */}
-      <div className={`p-4 rounded-md ${isFormValid ? "bg-green-50" : "bg-yellow-50"}`}>
+      <div
+        className={`p-4 rounded-md ${isFormValid ? "bg-green-50" : "bg-yellow-50"}`}
+      >
         <div className="flex items-center">
           {isFormValid ? (
             <Check className="h-5 w-5 text-green-500 mr-2" />
           ) : (
             <AlertTriangle className="h-5 w-5 text-yellow-500 mr-2" />
           )}
-          <p className={`text-sm font-medium ${isFormValid ? "text-green-800" : "text-yellow-800"}`}>
-            {isFormValid 
-              ? "Your letter is ready for submission!" 
+          <p
+            className={`text-sm font-medium ${isFormValid ? "text-green-800" : "text-yellow-800"}`}
+          >
+            {isFormValid
+              ? "Your letter is ready for submission!"
               : "Please complete all required fields before submitting."}
           </p>
         </div>
       </div>
-      
+
       {/* Impact score */}
       {impactScore && (
         <div className="bg-gray-50 p-4 rounded-md">
           <h3 className="text-lg font-medium mb-2">Letter Impact Score</h3>
           <div className="flex items-center mb-3">
             <div className="w-full bg-gray-200 rounded-full h-2.5">
-              <div 
+              <div
                 className={`h-2.5 rounded-full ${
-                  impactScore.category === "exceptional" ? "bg-green-600" :
-                  impactScore.category === "high" ? "bg-blue-600" :
-                  impactScore.category === "medium" ? "bg-yellow-500" :
-                  "bg-red-500"
+                  impactScore.category === "exceptional"
+                    ? "bg-green-600"
+                    : impactScore.category === "high"
+                      ? "bg-blue-600"
+                      : impactScore.category === "medium"
+                        ? "bg-yellow-500"
+                        : "bg-red-500"
                 }`}
                 style={{ width: `${impactScore.score}%` }}
               ></div>
@@ -138,12 +146,14 @@ ${formData.phone || ""}`;
           </div>
           <div className="space-y-1">
             {impactScore.feedback.map((item, index) => (
-              <p key={index} className="text-sm text-gray-600">• {item}</p>
+              <p key={index} className="text-sm text-gray-600">
+                • {item}
+              </p>
             ))}
           </div>
         </div>
       )}
-      
+
       {/* Letter preview */}
       <div className="border rounded-md p-4 bg-white">
         <h3 className="text-lg font-medium mb-3">Letter Preview</h3>
@@ -151,17 +161,19 @@ ${formData.phone || ""}`;
           {formattedLetter()}
         </div>
       </div>
-      
+
       {/* Section reviews */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium">Review Sections</h3>
-        
+
         {/* Personal Info */}
         <div className="flex justify-between items-center p-3 border rounded-md bg-gray-50">
           <div>
             <h4 className="font-medium">Personal Information</h4>
             <p className="text-sm text-gray-600">
-              {formData.name ? `${formData.name}, ${formData.email}` : "Incomplete"}
+              {formData.name
+                ? `${formData.name}, ${formData.email}`
+                : "Incomplete"}
             </p>
           </div>
           <Button
@@ -173,13 +185,15 @@ ${formData.phone || ""}`;
             <Edit className="h-4 w-4 mr-1" /> Edit
           </Button>
         </div>
-        
+
         {/* Relationship */}
         <div className="flex justify-between items-center p-3 border rounded-md bg-gray-50">
           <div>
             <h4 className="font-medium">Relationship</h4>
             <p className="text-sm text-gray-600">
-              {formData.relationship ? `${formData.relationship.replace("_", " ")}, ${formData.timeKnown || "time not specified"}` : "Incomplete"}
+              {formData.relationship
+                ? `${formData.relationship.replace("_", " ")}, ${formData.timeKnown || "time not specified"}`
+                : "Incomplete"}
             </p>
           </div>
           <Button
@@ -191,14 +205,14 @@ ${formData.phone || ""}`;
             <Edit className="h-4 w-4 mr-1" /> Edit
           </Button>
         </div>
-        
+
         {/* Examples */}
         <div className="flex justify-between items-center p-3 border rounded-md bg-gray-50">
           <div>
             <h4 className="font-medium">Specific Examples</h4>
             <p className="text-sm text-gray-600">
-              {formData.specificExample1 && formData.specificExample2 
-                ? `${formData.specificExample1.substring(0, 50)}...` 
+              {formData.specificExample1 && formData.specificExample2
+                ? `${formData.specificExample1.substring(0, 50)}...`
                 : "Incomplete"}
             </p>
           </div>
@@ -211,14 +225,14 @@ ${formData.phone || ""}`;
             <Edit className="h-4 w-4 mr-1" /> Edit
           </Button>
         </div>
-        
+
         {/* Letter Content */}
         <div className="flex justify-between items-center p-3 border rounded-md bg-gray-50">
           <div>
             <h4 className="font-medium">Letter Content</h4>
             <p className="text-sm text-gray-600">
-              {formData.letterContent 
-                ? `${formData.letterContent.split(/\s+/).length} words` 
+              {formData.letterContent
+                ? `${formData.letterContent.split(/\s+/).length} words`
                 : "Incomplete"}
             </p>
           </div>
@@ -232,13 +246,14 @@ ${formData.phone || ""}`;
           </Button>
         </div>
       </div>
-      
+
       {/* Legal notice */}
       <div className="bg-blue-50 p-4 rounded-md mt-6">
         <p className="text-sm text-blue-800">
-          <strong>Final Submission:</strong> By submitting this letter, you confirm that all information 
-          provided is truthful and accurate to the best of your knowledge. This letter will be 
-          submitted as a formal document to the court.
+          <strong>Final Submission:</strong> By submitting this letter, you
+          confirm that all information provided is truthful and accurate to the
+          best of your knowledge. This letter will be submitted as a formal
+          document to the court.
         </p>
       </div>
     </motion.div>
@@ -247,4 +262,4 @@ ${formData.phone || ""}`;
 
 export default withSafeUI(Review, {
   componentName: "Review",
-}); 
+});

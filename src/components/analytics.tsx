@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import { onCLS, onFCP, onLCP, onTTFB, Metric } from "web-vitals";
+// 🔥 CRITICAL FIX: Replace usePathname with useStableNavigation for production stability
+import { useStableNavigation } from "@/hooks/useStableNavigation";
+import { useSearchParams } from "next/navigation";
+import { onCLS, onFCP, onLCP, onTTFB } from "web-vitals";
+import type { Metric } from "web-vitals";
 import { sendMetric, sendPageView } from "@/lib/analytics";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
@@ -11,7 +14,8 @@ import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
  * Handles reporting of web vitals and page views
  */
 function AnalyticsBase() {
-  const pathname = usePathname();
+  // 🔥 CRITICAL FIX: Use stable navigation hook to prevent re-render loops
+  const { pathname } = useStableNavigation();
   const searchParams = useSearchParams();
 
   // Track page views

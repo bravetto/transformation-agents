@@ -9,7 +9,7 @@ import { QuoteCardProps } from "../types";
 
 /**
  * QuoteCard Component
- * 
+ *
  * Displays a shareable quote from the story
  */
 const QuoteCard = ({ quote, onShare, className }: QuoteCardProps) => {
@@ -20,16 +20,14 @@ const QuoteCard = ({ quote, onShare, className }: QuoteCardProps) => {
       viewport={{ once: true, margin: "-100px" }}
       className={cn(
         "my-8 pl-4 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900/20 p-4 rounded-r-lg relative",
-        className
+        className,
       )}
     >
       <div className="absolute -left-5 top-3 bg-white dark:bg-gray-900 p-1 rounded-full">
         <Quote size={24} className="text-blue-500" />
       </div>
 
-      <p className="text-xl font-serif italic mb-2">
-        "{quote.text}"
-      </p>
+      <p className="text-xl font-serif italic mb-2">"{quote.text}"</p>
 
       {quote.attribution && (
         <footer className="text-sm text-gray-600 dark:text-gray-400">
@@ -52,4 +50,4 @@ const QuoteCard = ({ quote, onShare, className }: QuoteCardProps) => {
 
 export default withSafeUI(QuoteCard, {
   componentName: "QuoteCard",
-}); 
+});

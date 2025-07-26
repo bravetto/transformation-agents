@@ -14,6 +14,7 @@ import {
   Star,
 } from "lucide-react";
 import { useSafeState } from "@/hooks/useSafeState";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 
 interface TimeLeft {
   days: number;
@@ -139,7 +140,7 @@ const WarriorCard: React.FC<Warrior> = ({ name, location, status }) => (
 );
 
 // Main Freedom Portal Component
-export default function FreedomPortal() {
+function FreedomPortalCore() {
   const [timeLeft, setTimeLeft] = useSafeState<TimeLeft>({
     days: 0,
     hours: 0,
@@ -547,3 +548,22 @@ export default function FreedomPortal() {
     </div>
   );
 }
+
+// 🛡️ PRODUCTION-GRADE ERROR BOUNDARY WRAPPER
+export default withDivineErrorBoundary(FreedomPortalCore, {
+  componentName: "FreedomPortal",
+  role: "guardian",
+  fallback: (
+    <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="text-white text-center">
+        <h1 className="text-4xl font-bold mb-4 text-purple-400">
+          Freedom Portal
+        </h1>
+        <p className="text-purple-200">Divine systems initializing...</p>
+        <div className="mt-4 animate-pulse">
+          <div className="w-16 h-16 border-4 border-purple-400 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        </div>
+      </div>
+    </div>
+  ),
+});

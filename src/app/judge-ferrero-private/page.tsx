@@ -133,32 +133,49 @@ const JudgeDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-justice-black via-gray-900 to-justice-black">
-      {/* Header */}
-      <Section padding="small" className="border-b border-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      {/* Professional Header */}
+      <Section
+        padding="small"
+        className="border-b border-slate-200 bg-white/80 backdrop-blur-sm"
+      >
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">
-              Judge Ferrero's Private Dashboard
-            </h1>
-            <p className="text-gray-400">
-              Real-time case metrics and community impact data
+            <div className="flex items-center gap-3 mb-2">
+              <Shield className="w-8 h-8 text-blue-600" />
+              <h1 className="text-3xl font-bold text-slate-800">
+                Judicial Case Dashboard
+              </h1>
+            </div>
+            <p className="text-slate-600 font-medium">
+              Real-time community impact metrics for JAHmere Webb case
+            </p>
+            <p className="text-sm text-slate-500 mt-1">
+              Confidential - For Judicial Review Only
             </p>
           </div>
-          <Badge className="bg-green-600 text-white px-4 py-2">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-              Live Updates
-            </div>
-          </Badge>
+          <div className="flex flex-col items-end gap-2">
+            <Badge className="bg-green-100 text-green-800 border-green-300 px-4 py-2">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse" />
+                Live Updates
+              </div>
+            </Badge>
+            <p className="text-xs text-slate-500">
+              Last updated: {new Date().toLocaleTimeString()}
+            </p>
+          </div>
         </div>
       </Section>
 
       {/* Real-time Metrics */}
       <Section padding="medium">
-        <h2 className="text-2xl font-bold text-white mb-6">
-          Live Community Response
-        </h2>
+        <div className="flex items-center gap-3 mb-6">
+          <BarChart3 className="w-6 h-6 text-blue-600" />
+          <h2 className="text-2xl font-bold text-slate-800">
+            Community Impact Metrics
+          </h2>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {metrics.map((metric, index) => (
             <motion.div
@@ -167,20 +184,27 @@ const JudgeDashboard = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <Card className="bg-gray-900/50 border-gray-800 p-6">
+              <Card className="bg-white border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-start justify-between mb-4">
-                  <div className={metric.color}>{metric.icon}</div>
-                  <Badge variant="secondary" className="text-xs">
+                  <div className={`${metric.color} bg-slate-50 p-2 rounded-lg`}>
+                    {metric.icon}
+                  </div>
+                  <Badge
+                    variant="secondary"
+                    className="text-xs bg-blue-50 text-blue-700 border-blue-200"
+                  >
                     +{metric.change}% today
                   </Badge>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-gray-400 text-sm">{metric.label}</p>
-                  <p className="text-3xl font-bold text-white">
+                  <p className="text-slate-600 text-sm font-medium">
+                    {metric.label}
+                  </p>
+                  <p className="text-3xl font-bold text-slate-800">
                     {metric.value.toLocaleString()}
                   </p>
                 </div>
-                <Progress value={75} className="mt-4 h-1" />
+                <Progress value={75} className="mt-4 h-2 bg-slate-100" />
               </Card>
             </motion.div>
           ))}
@@ -188,15 +212,18 @@ const JudgeDashboard = () => {
       </Section>
 
       {/* Video Testimonials */}
-      <Section padding="medium" className="bg-gray-900/30">
-        <h2 className="text-2xl font-bold text-white mb-6">
-          Video Testimonials
-        </h2>
+      <Section padding="medium" className="bg-white/50">
+        <div className="flex items-center gap-3 mb-6">
+          <Play className="w-6 h-6 text-blue-600" />
+          <h2 className="text-2xl font-bold text-slate-800">
+            Character Witness Testimonials
+          </h2>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map((video) => (
             <Card
               key={video.id}
-              className="bg-gray-900/50 border-gray-800 overflow-hidden group cursor-pointer"
+              className="bg-white border-slate-200 overflow-hidden group cursor-pointer hover:shadow-lg transition-all duration-300"
             >
               <div className="relative aspect-video">
                 <img

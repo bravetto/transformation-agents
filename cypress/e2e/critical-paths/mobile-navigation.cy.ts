@@ -158,7 +158,7 @@ describe("Mobile Navigation", () => {
     cy.get('button, a, input, [role="button"], [tabindex="0"]').each(
       ($element) => {
         cy.wrap($element).should(($el) => {
-          const rect = $el[0].getBoundingClientRect();
+          const rect = ($el[0] as HTMLElement).getBoundingClientRect();
 
           // WCAG 2.1 AA requires minimum 44x44 CSS pixels for touch targets
           const minSize = 44;
@@ -167,7 +167,7 @@ describe("Mobile Navigation", () => {
           const meetsSize = rect.width >= minSize && rect.height >= minSize;
 
           // Check if element has adequate padding/margin to create 44x44 hit area
-          const computedStyle = window.getComputedStyle($el[0]);
+          const computedStyle = window.getComputedStyle($el[0] as HTMLElement);
           const paddingX =
             parseFloat(computedStyle.paddingLeft) +
             parseFloat(computedStyle.paddingRight);
@@ -190,7 +190,7 @@ describe("Mobile Navigation", () => {
           // Element should meet size requirements either directly or through padding/margin
           expect(
             meetsSize || meetsEffectiveSize,
-            `Element ${$el[0].tagName} should have 44x44 touch target. Current: ${rect.width}x${rect.height}, Effective: ${effectiveWidth}x${effectiveHeight}`,
+            `Element ${($el[0] as HTMLElement).tagName} should have 44x44 touch target. Current: ${rect.width}x${rect.height}, Effective: ${effectiveWidth}x${effectiveHeight}`,
           ).to.be.true;
         });
       },
@@ -201,12 +201,12 @@ describe("Mobile Navigation", () => {
     cy.visit("/");
 
     // Test keyboard navigation on mobile (external keyboard)
-    cy.get("body").tab();
+    cy.get("body").type("{tab}");
     cy.focused().should("be.visible");
 
     // Test that focused elements are clearly visible
     cy.focused().should(($el) => {
-      const styles = window.getComputedStyle($el[0]);
+      const styles = window.getComputedStyle($el[0] as HTMLElement);
 
       // Should have some form of focus indication
       const hasOutline = styles.outline !== "none" && styles.outline !== "0px";
@@ -288,7 +288,8 @@ describe("Mobile Navigation", () => {
         expect(bodyWidth).to.be.at.most(viewport.width);
 
         // Check for horizontal scroll
-        const hasHorizontalScroll = $body[0].scrollWidth > viewport.width;
+        const hasHorizontalScroll =
+          ($body[0] as HTMLElement).scrollWidth > viewport.width;
         expect(
           hasHorizontalScroll,
           `${viewport.name} should not have horizontal scroll`,
@@ -299,7 +300,7 @@ describe("Mobile Navigation", () => {
       cy.get("body")
         .should("have.css", "font-size")
         .then((fontSize) => {
-          const fontSizeValue = parseFloat(fontSize);
+          const fontSizeValue = parseFloat(fontSize as unknown as string);
           expect(
             fontSizeValue,
             "Font size should be at least 16px on mobile",
@@ -309,7 +310,7 @@ describe("Mobile Navigation", () => {
       // Check that interactive elements are not too small
       cy.get("button, a").each(($el) => {
         cy.wrap($el).should(($element) => {
-          const rect = $element[0].getBoundingClientRect();
+          const rect = ($element[0] as HTMLElement).getBoundingClientRect();
           expect(
             rect.height,
             "Interactive elements should be at least 32px tall",
@@ -336,7 +337,8 @@ describe("Mobile Navigation", () => {
       expect(bodyWidth).to.be.greaterThan(600); // Should use landscape space
 
       // Should not have horizontal scroll in landscape
-      const hasHorizontalScroll = $body[0].scrollWidth > bodyWidth;
+      const hasHorizontalScroll =
+        ($body[0] as HTMLElement).scrollWidth > (bodyWidth || 0);
       expect(hasHorizontalScroll).to.be.false;
     });
   });
@@ -373,7 +375,7 @@ describe("Mobile Navigation", () => {
       req.reply((res) => {
         // Add delay to simulate slow network
         return new Promise((resolve) => {
-          setTimeout(() => resolve(res), 1000);
+          setTimeout(() => resolve(), 1000);
         });
       });
     });

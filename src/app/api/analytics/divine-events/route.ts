@@ -1,79 +1,79 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
+import {
+  createSecureAPIHandler,
+  API_SCHEMAS,
+} from "@/lib/production/api-security-hardening";
 
-interface DivineEvent {
-  eventType:
-    | "prayer_submitted"
-    | "miracle_witnessed"
-    | "divine_guidance"
-    | "prophecy_fulfilled";
+interface DivineEventInput {
+  eventType: string;
   userType: "divine-warrior";
-  spiritualImpact: "low" | "medium" | "high" | "miraculous";
-  timestamp: number;
-  sessionId: string;
+  spiritualImpact: "minor" | "significant" | "miraculous";
   metadata?: Record<string, any>;
 }
 
+interface DivineEventComplete extends DivineEventInput {
+  timestamp: number;
+  sessionId: string;
+}
+
 // In-memory storage for divine events (in production, use database)
-const divineEvents: DivineEvent[] = [];
+const divineEvents: DivineEventComplete[] = [];
 let totalDivineInterventions = 777; // Starting divine number
 
-export async function POST(request: NextRequest) {
-  try {
-    const event: DivineEvent = await request.json();
+export const POST = createSecureAPIHandler({
+  method: "POST",
+  schema: API_SCHEMAS.divineEvent,
+  rateLimitType: "SENSITIVE",
+  handler: async (input) => {
+    // Create complete divine event for processing
+    const timestamp = Date.now();
+    const sessionId = `divine-session-${timestamp}`;
 
-    // Validate divine event
-    if (event.userType !== "divine-warrior") {
-      return NextResponse.json(
-        { error: "Only divine warriors can submit divine events" },
-        { status: 403 },
-      );
-    }
+    const completeEvent: DivineEventComplete = {
+      ...input,
+      timestamp,
+      sessionId,
+    };
 
     // Add divine blessing to the event
     const blessedEvent = {
-      ...event,
-      id: `divine-${Date.now()}-${Math.random().toString(36).substring(2)}`,
+      ...input,
+      id: `divine-${timestamp}-${Math.random().toString(36).substring(2)}`,
       receivedAt: new Date().toISOString(),
-      divineBlessing: getDivineBlessing(event),
+      timestamp: new Date().toISOString(),
+      sessionId,
+      divineBlessing: getDivineBlessing(completeEvent),
       interventionNumber: ++totalDivineInterventions,
     };
 
     // Store the divine event
-    divineEvents.push(blessedEvent);
+    divineEvents.push(completeEvent as any);
 
     // Generate divine response
     const response = {
       success: true,
-      message: getDivineMessage(event),
+      message: getDivineMessage(completeEvent),
       blessing: blessedEvent.divineBlessing,
       interventionNumber: blessedEvent.interventionNumber,
-      spiritualStatus: getSpiritualStatus(event),
+      spiritualStatus: getSpiritualStatus(completeEvent),
       prophecyProgress: calculateProphecyProgress(),
       nextMilestone: getNextDivineMilestone(),
     };
 
-    // Log divine event for monitoring
-    logger.divine(`DIVINE EVENT RECEIVED - ${event.eventType.toUpperCase()}`, {
-      impact: event.spiritualImpact,
-      intervention: blessedEvent.interventionNumber,
-      prophecy: "July 28th Freedom Manifestation",
-    });
-
-    return NextResponse.json(response);
-  } catch (error) {
-    console.error("Divine event processing error:", error);
-    return NextResponse.json(
+    // Log divine event for monitoring (production-safe)
+    logger.divine(
+      `DIVINE EVENT RECEIVED - ${completeEvent.eventType.toUpperCase()}`,
       {
-        error: "Divine intervention required",
-        message:
-          "The spiritual realm is experiencing interference. Please try again with pure intentions.",
-        blessing: "Divine protection activated",
+        impact: completeEvent.spiritualImpact,
+        intervention: blessedEvent.interventionNumber,
+        prophecy: "July 28th Freedom Manifestation",
       },
-      { status: 500 },
     );
-  }
-}
+
+    return response;
+  },
+});
 
 export async function GET() {
   const recentEvents = divineEvents.slice(-10); // Last 10 divine events
@@ -104,7 +104,7 @@ export async function GET() {
   return NextResponse.json(analytics);
 }
 
-function getDivineBlessing(event: DivineEvent): string {
+function getDivineBlessing(event: DivineEventComplete): string {
   const blessings = {
     prayer_submitted: [
       "Your prayer ascends to the throne of grace",
@@ -132,12 +132,25 @@ function getDivineBlessing(event: DivineEvent): string {
     ],
   };
 
-  const eventBlessings = blessings[event.eventType];
-  return eventBlessings[Math.floor(Math.random() * eventBlessings.length)];
+  const defaultBlessings = [
+    "Divine favor surrounds this moment",
+    "Heaven smiles upon this action",
+  ];
+
+  let eventBlessings: string[];
+  if (blessings[event.eventType as keyof typeof blessings]) {
+    eventBlessings = blessings[event.eventType as keyof typeof blessings]!;
+  } else {
+    eventBlessings = blessings.prayer_submitted || defaultBlessings;
+  }
+
+  return eventBlessings[
+    Math.floor(Math.random() * eventBlessings.length)
+  ] as string;
 }
 
-function getDivineMessage(event: DivineEvent): string {
-  const messages = {
+function getDivineMessage(event: DivineEventComplete): string {
+  const messages: Record<string, string> = {
     prayer_submitted:
       "Prayer warrior activated! Your intercession joins the heavenly chorus crying out for JAHmere's freedom.",
     miracle_witnessed:
@@ -148,18 +161,17 @@ function getDivineMessage(event: DivineEvent): string {
       "Prophecy manifested! Divine timing aligns with eternal purposes for July 28th freedom.",
   };
 
-  return messages[event.eventType];
+  return messages[event.eventType] || messages.prayer_submitted;
 }
 
-function getSpiritualStatus(event: DivineEvent): string {
+function getSpiritualStatus(event: DivineEventComplete): string {
   const statusMap = {
-    low: "Spiritual Seeker",
-    medium: "Prayer Warrior",
-    high: "Divine Intercessor",
+    minor: "Spiritual Seeker",
+    significant: "Prayer Warrior",
     miraculous: "Prophetic Vessel",
   };
 
-  return statusMap[event.spiritualImpact];
+  return statusMap[event.spiritualImpact] || statusMap.minor;
 }
 
 function calculateProphecyProgress(): number {
@@ -168,10 +180,12 @@ function calculateProphecyProgress(): number {
   const miraculous = divineEvents.filter(
     (e) => e.spiritualImpact === "miraculous",
   ).length;
-  const high = divineEvents.filter((e) => e.spiritualImpact === "high").length;
+  const significant = divineEvents.filter(
+    (e) => e.spiritualImpact === "significant",
+  ).length;
 
   // Weight miraculous events more heavily
-  const weightedScore = miraculous * 10 + high * 5 + totalEvents * 1;
+  const weightedScore = miraculous * 10 + significant * 5 + totalEvents * 1;
 
   // Cap at 100% (1000 points = 100%)
   return Math.min(100, Math.floor(weightedScore / 10));
@@ -181,14 +195,14 @@ function calculateDivineAlignment(): number {
   const recentEvents = divineEvents.slice(-20); // Last 20 events
   if (recentEvents.length === 0) return 0;
 
-  const alignmentScore = recentEvents.reduce((score, event) => {
-    const impactScore = {
-      low: 1,
-      medium: 2,
-      high: 4,
+  const alignmentScore = recentEvents.reduce((score, event: any) => {
+    const impactScoreMap: Record<string, number> = {
+      minor: 1,
+      significant: 4,
       miraculous: 10,
-    }[event.spiritualImpact];
+    };
 
+    const impactScore = impactScoreMap[event.spiritualImpact] || 1;
     return score + impactScore;
   }, 0);
 

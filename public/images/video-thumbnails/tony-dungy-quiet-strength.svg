@@ -1,0 +1,72 @@
+<svg width="320" height="180" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3730a3;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="overlay" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#000;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#000;stop-opacity:0.6" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="320" height="180" fill="url(#bgGradient)"/>
+  
+  <!-- Football field pattern -->
+  <g opacity="0.2">
+    <line x1="0" y1="60" x2="320" y2="60" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="90" x2="320" y2="90" stroke="white" stroke-width="2"/>
+    <line x1="0" y1="120" x2="320" y2="120" stroke="white" stroke-width="1"/>
+    <line x1="80" y1="0" x2="80" y2="180" stroke="white" stroke-width="1"/>
+    <line x1="160" y1="0" x2="160" y2="180" stroke="white" stroke-width="1"/>
+    <line x1="240" y1="0" x2="240" y2="180" stroke="white" stroke-width="1"/>
+  </g>
+  
+  <!-- Overlay -->
+  <rect width="320" height="180" fill="url(#overlay)"/>
+  
+  <!-- Main content -->
+  <g>
+    <!-- Title -->
+    <text x="160" y="45" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white">
+      TONY DUNGY
+    </text>
+    <text x="160" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#fbbf24">
+      NFL HALL OF FAME COACH
+    </text>
+    
+    <!-- Subtitle -->
+    <text x="160" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">
+      "QUIET STRENGTH"
+    </text>
+    <text x="160" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#e5e7eb">
+      Leadership Through Character
+    </text>
+    
+    <!-- Play button -->
+    <circle cx="160" cy="140" r="20" fill="white" opacity="0.9"/>
+    <polygon points="155,135 155,145 170,140" fill="#1e3a8a"/>
+    
+    <!-- Trophy icon -->
+    <g transform="translate(30, 40)">
+      <rect x="8" y="15" width="4" height="8" fill="#fbbf24"/>
+      <ellipse cx="10" cy="10" rx="8" ry="6" fill="#fbbf24"/>
+      <rect x="6" y="12" width="8" height="2" fill="#f59e0b"/>
+    </g>
+    
+    <!-- Football icon -->
+    <g transform="translate(280, 40)">
+      <ellipse cx="0" cy="0" rx="10" ry="6" fill="#8b4513"/>
+      <line x1="-6" y1="0" x2="6" y2="0" stroke="white" stroke-width="1"/>
+      <line x1="-3" y1="-2" x2="-3" y2="2" stroke="white" stroke-width="1"/>
+      <line x1="0" y1="-2" x2="0" y2="2" stroke="white" stroke-width="1"/>
+      <line x1="3" y1="-2" x2="3" y2="2" stroke="white" stroke-width="1"/>
+    </g>
+    
+    <!-- Duration -->
+    <rect x="250" y="155" width="60" height="20" rx="10" fill="black" opacity="0.7"/>
+    <text x="280" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">25:30</text>
+  </g>
+</svg> 

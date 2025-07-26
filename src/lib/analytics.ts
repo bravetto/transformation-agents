@@ -1,77 +1,63 @@
 "use client";
 
 /**
- * Analytics and Web Vitals Reporting
+ * Google Analytics and Web Vitals Reporting
+ * Updated for proper GA4 integration - JAHmere Webb Freedom Portal
  */
 import type { Metric } from "web-vitals";
 import { logger } from "@/lib/logger";
 
-const ANALYTICS_URL = process.env.NEXT_PUBLIC_ANALYTICS_URL || "";
+// Declare gtag for TypeScript
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void;
+    dataLayer?: any[];
+  }
+}
 
 /**
- * Send metrics to analytics endpoint
+ * Send metrics to Google Analytics
  */
 export function sendMetric(metric: Metric) {
-  // Check if analytics URL is configured
-  if (!ANALYTICS_URL) {
+  // Check if Google Analytics is loaded
+  if (typeof window === 'undefined' || !window.gtag) {
     // In development, log metrics to console
     logger.analytics("web_vital", metric);
     return;
   }
 
-  // Add project info to the metric
-  const body = JSON.stringify({
-    ...metric,
-    project: "the-bridge",
-    environment: process.env.NODE_ENV || "production",
-    timestamp: Date.now(),
+  // Send to Google Analytics
+  window.gtag('event', metric.name, {
+    event_category: 'Web Vitals',
+    event_label: metric.id,
+    value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+    non_interaction: true,
+    custom_map: {
+      metric_id: metric.id,
+      metric_value: metric.value,
+      metric_delta: metric.delta,
+      mission: 'july_28_freedom'
+    }
   });
-
-  // Use `navigator.sendBeacon()` if available
-  if (navigator.sendBeacon) {
-    navigator.sendBeacon(ANALYTICS_URL, body);
-  } else {
-    // Fall back to fetch API
-    fetch(ANALYTICS_URL, {
-      body,
-      method: "POST",
-      keepalive: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).catch((error) => {
-      console.error("Error reporting web vital:", error);
-    });
-  }
 }
 
 /**
- * Send page view to analytics
+ * Send page view to Google Analytics
  */
 export function sendPageView(url: string) {
-  if (!ANALYTICS_URL) {
+  if (typeof window === 'undefined' || !window.gtag) {
     logger.analytics("page_view", { url });
     return;
   }
 
-  const body = JSON.stringify({
-    type: "pageview",
-    url,
-    project: "the-bridge",
-    environment: process.env.NODE_ENV || "production",
-    timestamp: Date.now(),
-  });
-
-  // Use fetch API for page views
-  fetch(`${ANALYTICS_URL}/pageview`, {
-    body,
-    method: "POST",
-    keepalive: true,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).catch((error) => {
-    console.error("Error reporting page view:", error);
+  // Send page view to Google Analytics
+  window.gtag('event', 'page_view', {
+    page_location: url,
+    custom_map: {
+      mission: 'july_28_freedom',
+      platform: 'jahmere_bridge',
+      environment: process.env.NODE_ENV || 'production'
+    }
   });
 }
 
@@ -79,33 +65,23 @@ export function sendPageView(url: string) {
  * Report user error to analytics
  */
 export function reportError(error: Error, context?: Record<string, unknown>) {
-  if (!ANALYTICS_URL) {
+  if (typeof window === 'undefined' || !window.gtag) {
     if (process.env.NODE_ENV === "development") {
       console.error("Error:", error, context);
     }
     return;
   }
 
-  const body = JSON.stringify({
-    name: error.name,
-    message: error.message,
-    stack: error.stack,
-    context,
-    project: "the-bridge",
-    environment: process.env.NODE_ENV || "production",
-    timestamp: Date.now(),
-  });
-
-  // Use fetch API with keepalive for errors
-  fetch(`${ANALYTICS_URL}/error`, {
-    body,
-    method: "POST",
-    keepalive: true,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).catch((reportingError) => {
-    console.error("Error reporting error:", reportingError);
+  // Send error to Google Analytics
+  window.gtag('event', 'exception', {
+    description: error.message,
+    fatal: false,
+    custom_map: {
+      error_name: error.name,
+      error_stack: error.stack?.substring(0, 500), // Limit stack trace
+      mission: 'july_28_freedom',
+      context: JSON.stringify(context).substring(0, 500)
+    }
   });
 }
 
@@ -129,22 +105,47 @@ export function trackEvent(
   // In development, log to console
   logger.analytics("event_tracked", eventData);
 
-  if (process.env.NODE_ENV === "development") {
+  if (typeof window === 'undefined' || !window.gtag) {
     return Promise.resolve();
   }
 
-  // Send to analytics endpoint if configured
-  if (ANALYTICS_URL) {
-    return fetch(`${ANALYTICS_URL}/events`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(eventData),
-    }).catch((error) => {
-      console.error("Error tracking event:", error);
-    });
-  }
+  // Send to Google Analytics
+  window.gtag('event', eventName, {
+    event_category: 'JAHmere Mission',
+    event_label: properties?.label || eventName,
+    value: properties?.value || 1,
+    custom_map: {
+      mission_date: '2025-07-28',
+      user_type: properties?.userType || 'visitor',
+      mission: 'july_28_freedom',
+      ...properties
+    }
+  });
 
   return Promise.resolve();
+}
+
+/**
+ * Track prayer submissions - Mission Critical
+ */
+export function trackPrayerSubmission(prayerData: any) {
+  trackEvent('prayer_submitted', {
+    label: 'Prayer for JAHmere',
+    category: 'Spiritual Support',
+    intention: prayerData.intention,
+    location: prayerData.location,
+    mission_critical: true
+  });
+}
+
+/**
+ * Track character witness interactions - Legal Support
+ */
+export function trackCharacterWitness(action: string, witnessId?: string) {
+  trackEvent('character_witness_interaction', {
+    label: action,
+    category: 'Legal Support',
+    witness_id: witnessId,
+    mission_critical: true
+  });
 }

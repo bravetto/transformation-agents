@@ -37,16 +37,7 @@ const Hero = dynamic(() => import("@/components/hero"), {
   ),
 });
 
-// Dynamic imports with lazy loading for below-the-fold content
-const DivineParticlesLazy = dynamic(
-  () => import("@/components/divine-particles"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="min-h-[100px] animate-pulse bg-gray-100/10 rounded-md"></div>
-    ),
-  },
-);
+// Dynamic imports with lazy loading for below-the-fold content - Particles removed for hydration stability
 
 const DungyWisdom = dynamic(() => import("@/components/dungy-wisdom"), {
   ssr: false,

@@ -7,7 +7,7 @@ import { TableOfContentsProps } from "../types";
 
 /**
  * TableOfContents Component
- * 
+ *
  * Displays a navigation sidebar with sections of the story
  */
 const TableOfContents = ({
@@ -53,4 +53,4 @@ const TableOfContents = ({
 
 export default withSafeUI(TableOfContents, {
   componentName: "TableOfContents",
-}); 
+});

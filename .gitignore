@@ -104,3 +104,5 @@ index-*.txt
 
 # Local development
 .cursor/
+
+.env.local

@@ -1,335 +1,339 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import React, { useRef } from "react";
+import { motion, AnimatePresence, type MotionStyle } from "framer-motion";
 import { withErrorBoundary } from "@/components/with-error-boundary";
-import autoAnimate from "@formkit/auto-animate";
 
-import { cn } from "@/lib/utils";
+// 🚀 OPTIMIZED: Replaced @formkit/auto-animate with Framer Motion
+// This eliminates the dependency and provides more control
 
 interface AutoAnimateProps {
   children: React.ReactNode;
-  className?: string;
   duration?: number;
-  easing?: string;
-  disrespectUserMotionPreference?: boolean;
+  easing?: "ease" | "easeIn" | "easeOut" | "easeInOut" | "linear";
+  className?: string;
+  style?: MotionStyle;
 }
 
 function AutoAnimateContainer({
   children,
+  duration = 200,
+  easing = "easeInOut",
   className = "",
-  duration = 250,
-  easing = "ease-in-out",
-  disrespectUserMotionPreference = false,
+  style = {},
 }: AutoAnimateProps) {
-  const parent = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (parent.current) {
-      autoAnimate(parent.current, {
-        duration,
-        easing,
-        disrespectUserMotionPreference,
-      });
-    }
-  }, [duration, easing, disrespectUserMotionPreference]);
-
   return (
-    <div ref={parent} className={className}>
+    <motion.div
+      layout
+      transition={{
+        duration: duration / 1000,
+        ease: easing,
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+      }}
+      className={className}
+      style={style}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }
 
 interface AutoAnimateListProps<T = unknown> {
   items: T[];
   renderItem: (item: T, index: number) => React.ReactNode;
-  className?: string;
-  itemClassName?: string;
+  keyExtractor: (item: T, index: number) => string | number;
   duration?: number;
-  keyExtractor?: (item: T, index: number) => string | number;
+  className?: string;
+  style?: MotionStyle;
 }
 
 export function AutoAnimateList<T = unknown>({
   items,
   renderItem,
+  keyExtractor,
+  duration = 200,
   className = "",
-  itemClassName = "",
-  duration = 300,
-  keyExtractor = (item, index) => index,
+  style = {},
 }: AutoAnimateListProps<T>) {
-  const parent = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (parent.current) {
-      autoAnimate(parent.current, {
-        duration,
-        easing: "ease-out",
-      });
-    }
-  }, [duration]);
-
   return (
-    <div ref={parent} className={className}>
-      {items.map((item, index) => (
-        <div key={keyExtractor(item, index)} className={itemClassName}>
-          {renderItem(item, index)}
-        </div>
-      ))}
-    </div>
+    <motion.div layout className={className} style={style}>
+      <AnimatePresence mode="sync">
+        {items.map((item, index) => (
+          <motion.div
+            key={keyExtractor(item, index)}
+            layout
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{
+              duration: duration / 1000,
+              type: "spring",
+              stiffness: 300,
+              damping: 30,
+            }}
+          >
+            {renderItem(item, index)}
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </motion.div>
   );
 }
 
 interface AutoAnimateGridProps<T = unknown> {
   items: T[];
   renderItem: (item: T, index: number) => React.ReactNode;
+  keyExtractor: (item: T, index: number) => string | number;
   columns?: number;
-  className?: string;
-  itemClassName?: string;
   duration?: number;
-  keyExtractor?: (item: T, index: number) => string | number;
+  className?: string;
+  style?: MotionStyle;
 }
 
 export function AutoAnimateGrid<T = unknown>({
   items,
   renderItem,
-  columns = 2,
+  keyExtractor,
+  columns = 3,
+  duration = 200,
   className = "",
-  itemClassName = "",
-  duration = 350,
-  keyExtractor = (item, index) => index,
+  style = {},
 }: AutoAnimateGridProps<T>) {
-  const parent = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (parent.current) {
-      autoAnimate(parent.current, {
-        duration,
-        easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-      });
-    }
-  }, [duration]);
-
-  const gridClass = `grid grid-cols-1 md:grid-cols-${columns} gap-4 ${className}`;
-
   return (
-    <div ref={parent} className={gridClass}>
-      {items.map((item, index) => (
-        <div key={keyExtractor(item, index)} className={itemClassName}>
-          {renderItem(item, index)}
-        </div>
-      ))}
-    </div>
+    <motion.div
+      layout
+      className={`grid grid-cols-${columns} ${className}`}
+      style={style}
+    >
+      <AnimatePresence mode="sync">
+        {items.map((item, index) => (
+          <motion.div
+            key={keyExtractor(item, index)}
+            layout
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{
+              duration: duration / 1000,
+              type: "spring",
+              stiffness: 300,
+              damping: 30,
+            }}
+          >
+            {renderItem(item, index)}
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </motion.div>
   );
 }
 
 interface AutoAnimateStackProps {
   children: React.ReactNode;
-  className?: string;
-  spacing?: "none" | "sm" | "md" | "lg" | "xl";
+  direction?: "horizontal" | "vertical";
   duration?: number;
+  className?: string;
+  style?: MotionStyle;
 }
 
 export function AutoAnimateStack({
   children,
+  direction = "vertical",
+  duration = 200,
   className = "",
-  spacing = "md",
-  duration = 300,
+  style = {},
 }: AutoAnimateStackProps) {
-  const parent = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (parent.current) {
-      autoAnimate(parent.current, {
-        duration,
-        easing: "ease-in-out",
-      });
-    }
-  }, [duration]);
-
-  const spacingClasses = {
-    none: "space-y-0",
-    sm: "space-y-2",
-    md: "space-y-4",
-    lg: "space-y-6",
-    xl: "space-y-8",
-  };
-
   return (
-    <div
-      ref={parent}
-      className={`flex flex-col ${spacingClasses[spacing]} ${className}`}
+    <motion.div
+      layout
+      className={`flex ${direction === "vertical" ? "flex-col" : "flex-row"} ${className}`}
+      style={style}
     >
-      {children}
-    </div>
+      <AnimatePresence mode="sync">
+        {React.Children.map(children, (child, index) => (
+          <motion.div
+            key={index}
+            layout
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{
+              duration: duration / 1000,
+              type: "spring",
+              stiffness: 300,
+              damping: 30,
+            }}
+          >
+            {child}
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </motion.div>
   );
 }
 
 interface AutoAnimateModalProps {
-  isOpen: boolean;
-  onClose: () => void;
   children: React.ReactNode;
+  isOpen: boolean;
+  onClose?: () => void;
+  duration?: number;
   className?: string;
   overlayClassName?: string;
-  duration?: number;
 }
 
 export function AutoAnimateModal({
+  children,
   isOpen,
   onClose,
-  children,
+  duration = 200,
   className = "",
   overlayClassName = "",
-  duration = 250,
 }: AutoAnimateModalProps) {
-  const parent = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (parent.current) {
-      autoAnimate(parent.current, {
-        duration,
-        easing: "cubic-bezier(0.16, 1, 0.3, 1)",
-      });
-    }
-  }, [duration]);
-
   return (
-    <div ref={parent}>
+    <AnimatePresence>
       {isOpen && (
-        <div
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: duration / 1000 }}
           className={`fixed inset-0 z-50 flex items-center justify-center ${overlayClassName}`}
           onClick={onClose}
         >
-          <div
-            className={`bg-white rounded-lg shadow-xl max-w-lg w-full m-4 ${className}`}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            transition={{
+              duration: duration / 1000,
+              type: "spring",
+              stiffness: 300,
+              damping: 30,
+            }}
+            className={className}
             onClick={(e) => e.stopPropagation()}
           >
             {children}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
-    </div>
+    </AnimatePresence>
   );
 }
 
 interface AutoAnimateTabsProps {
-  tabs: {
+  tabs: Array<{
+    id: string;
     label: string;
     content: React.ReactNode;
-    id?: string | number;
-  }[];
-  activeTab: number;
-  onTabChange: (index: number) => void;
-  className?: string;
-  tabClassName?: string;
-  contentClassName?: string;
+  }>;
+  activeTab: string;
+  onTabChange: (tabId: string) => void;
   duration?: number;
+  className?: string;
+  tabsClassName?: string;
+  contentClassName?: string;
 }
 
 export function AutoAnimateTabs({
   tabs,
   activeTab,
   onTabChange,
-  className = "",
-  tabClassName = "",
-  contentClassName = "",
   duration = 200,
+  className = "",
+  tabsClassName = "",
+  contentClassName = "",
 }: AutoAnimateTabsProps) {
-  const contentParent = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (contentParent.current) {
-      autoAnimate(contentParent.current, {
-        duration,
-        easing: "ease-out",
-      });
-    }
-  }, [duration]);
-
   return (
     <div className={className}>
-      {/* Tab Headers */}
-      <div className="flex border-b border-gray-200">
-        {tabs.map((tab, index) => (
+      <div className={`flex border-b ${tabsClassName}`}>
+        {tabs.map((tab) => (
           <button
-            key={tab.id || index}
-            onClick={() => onTabChange(index)}
-            className={cn(
-              "relative px-4 py-2 font-medium transition-all duration-300",
-              activeTab === index
-                ? "text-hope-gold border-b-2 border-hope-gold"
-                : "text-soft-shadow hover:text-gentle-charcoal",
-            )}
+            key={tab.id}
+            onClick={() => onTabChange(tab.id)}
+            className={`px-4 py-2 ${
+              activeTab === tab.id
+                ? "border-b-2 border-blue-500 text-blue-600"
+                : "text-gray-600 hover:text-gray-800"
+            }`}
           >
             {tab.label}
           </button>
         ))}
       </div>
 
-      {/* Tab Content */}
-      <div ref={contentParent} className={`mt-4 ${contentClassName}`}>
-        {tabs[activeTab] && (
-          <div key={activeTab}>{tabs[activeTab].content}</div>
+      <AnimatePresence mode="wait">
+        {tabs.map(
+          (tab) =>
+            tab.id === activeTab && (
+              <motion.div
+                key={tab.id}
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: duration / 1000 }}
+                className={contentClassName}
+              >
+                {tab.content}
+              </motion.div>
+            ),
         )}
-      </div>
+      </AnimatePresence>
     </div>
   );
 }
 
 interface AutoAnimateAccordionProps {
-  items: { title: string; content: React.ReactNode }[];
-  openItems: number[];
-  onToggle: (index: number) => void;
-  className?: string;
-  itemClassName?: string;
+  items: Array<{
+    id: string;
+    title: string;
+    content: React.ReactNode;
+  }>;
+  openItems: string[];
+  onToggle: (itemId: string) => void;
   duration?: number;
-  allowMultiple?: boolean;
+  className?: string;
 }
 
 export function AutoAnimateAccordion({
   items,
   openItems,
   onToggle,
+  duration = 200,
   className = "",
-  itemClassName = "",
-  duration = 300,
-  allowMultiple = true,
 }: AutoAnimateAccordionProps) {
-  const parent = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (parent.current) {
-      autoAnimate(parent.current, {
-        duration,
-        easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-      });
-    }
-  }, [duration]);
-
-  const handleToggle = (index: number) => {
-    if (!allowMultiple) {
-      // Close all others if not allowing multiple
-      onToggle(openItems.includes(index) ? -1 : index);
-    } else {
-      onToggle(index);
-    }
-  };
-
   return (
-    <div ref={parent} className={`space-y-2 ${className}`}>
-      {items.map((item, index) => (
-        <div
-          key={index}
-          className={`border border-gray-200 rounded-lg ${itemClassName}`}
-        >
+    <div className={className}>
+      {items.map((item) => (
+        <div key={item.id} className="border-b">
           <button
-            onClick={() => handleToggle(index)}
-            className="w-full px-4 py-3 text-left font-medium hover:bg-gray-50 transition-colors"
+            onClick={() => onToggle(item.id)}
+            className="w-full px-4 py-3 text-left hover:bg-gray-50 flex justify-between items-center"
           >
-            {item.title}
+            <span>{item.title}</span>
+            <motion.span
+              animate={{ rotate: openItems.includes(item.id) ? 180 : 0 }}
+              transition={{ duration: duration / 1000 }}
+            >
+              ▼
+            </motion.span>
           </button>
-          {openItems.includes(index) && (
-            <div className="px-4 pb-4">{item.content}</div>
-          )}
+
+          <AnimatePresence>
+            {openItems.includes(item.id) && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: duration / 1000 }}
+                className="overflow-hidden"
+              >
+                <div className="px-4 py-3 border-t">{item.content}</div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       ))}
     </div>

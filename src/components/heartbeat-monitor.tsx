@@ -10,9 +10,7 @@ interface HeartbeatMonitorProps {
   className?: string;
 }
 
-function HeartbeatMonitorExported({
-  className = "",
-}: HeartbeatMonitorProps) {
+function HeartbeatMonitorExported({ className = "" }: HeartbeatMonitorProps) {
   const [heartCount, setHeartCount] = useState(247);
   const [isBeating, setIsBeating] = useState(true);
   const [showPulse, setShowPulse] = useState(false);

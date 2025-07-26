@@ -57,7 +57,8 @@ function CursorTrailExported() {
           vx: (Math.random() - 0.5) * 2,
           vy: (Math.random() - 0.5) * 2 - 1,
           life: 1,
-          word: HOPE_WORDS[Math.floor(Math.random() * HOPE_WORDS.length)],
+          word:
+            HOPE_WORDS[Math.floor(Math.random() * HOPE_WORDS.length)] || "Hope",
         });
         lastEmit.current = now;
 

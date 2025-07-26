@@ -4,7 +4,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Clock, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { AutoSaveStatus } from "../types";
+import type { AutoSaveStatus } from "../types";
 import { useLetterForm } from "../context";
 
 interface AutoSaveIndicatorProps {

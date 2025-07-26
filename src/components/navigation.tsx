@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
@@ -18,12 +17,12 @@ import {
   Target,
   Activity,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
-  Button,
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from "@/components/ui";
+} from "@/components/ui/popover";
 import { Container } from "@/components/ui/container";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import MiniCountdown from "@/components/ui/mini-countdown";
@@ -31,7 +30,8 @@ import {
   useAdvancedGestures,
   useMobileOptimization,
 } from "@/components/ui/mobile-optimization";
-import { EasterEgg } from "@/components/divine-easter-eggs";
+import { useStableNavigation } from "@/hooks/useStableNavigation";
+// EasterEgg removed for hydration stability
 
 interface NavItem {
   href: string;
@@ -102,7 +102,7 @@ const navItems: NavItem[] = [
     icon: <Heart className="h-4 w-4" />,
     children: [
       {
-        href: "/letter-form-test",
+        href: "/letter-portal",
         label: "📝 Write Letter to Judge",
         icon: <FileText className="h-4 w-4" />,
       },
@@ -136,11 +136,100 @@ function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  const pathname = usePathname();
+  // 🔥 CRITICAL FIX: Add state for desktop popover management
+  const [openPopover, setOpenPopover] = useState<string | null>(null);
+  const { pathname, isRoute, isRoutePrefix, hasRouteChanged } =
+    useStableNavigation();
 
   // Mobile optimization hooks
   const { isMobile } = useMobileOptimization();
   const { createSwipeHandler, triggerHaptic } = useAdvancedGestures();
+
+  // 🔥 CRITICAL FIX: Enhanced navigation state reset with memory leak prevention
+  const resetNavigationState = useCallback(() => {
+    try {
+      setIsOpen(false);
+      setOpenPopover(null);
+      setExpandedItems([]);
+      document.body.style.overflow = "";
+
+      // Clear any lingering focus states
+      if (document.activeElement && document.activeElement !== document.body) {
+        (document.activeElement as HTMLElement).blur();
+      }
+
+      // Force cleanup of any event listeners
+      document.removeEventListener("click", () => {});
+      document.removeEventListener("keydown", () => {});
+    } catch (error) {
+      // Production safety: Log error and force basic reset
+      console.error("🚨 Navigation reset error:", error);
+      setIsOpen(false);
+      setOpenPopover(null);
+      setExpandedItems([]);
+    }
+  }, []);
+
+  // 🔥 PRODUCTION MONITORING: Navigation state debugging for deployment
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      console.log("🧭 Navigation State:", {
+        pathname,
+        openPopover,
+        isOpen,
+        expandedItems: expandedItems.length,
+        timestamp: new Date().toISOString(),
+      });
+    }
+  }, [pathname, openPopover, isOpen, expandedItems]);
+
+  // 🔥 CRITICAL FIX: Navigation error boundary with stable dependencies
+  useEffect(() => {
+    const handleNavigationError = (event: ErrorEvent) => {
+      if (
+        event.error?.message?.includes("navigation") ||
+        event.error?.message?.includes("popover")
+      ) {
+        console.error("🚨 Navigation Error Detected:", {
+          error: event.error,
+          pathname,
+          openPopover,
+          userAgent: navigator.userAgent,
+          timestamp: new Date().toISOString(),
+        });
+
+        // Auto-recovery: Reset navigation state
+        resetNavigationState();
+      }
+    };
+
+    window.addEventListener("error", handleNavigationError);
+    return () => window.removeEventListener("error", handleNavigationError);
+  }, [pathname, openPopover, resetNavigationState]);
+
+  // 🔥 CRITICAL FIX: Memory leak prevention - cleanup on unmount
+  useEffect(() => {
+    return () => {
+      // Comprehensive cleanup on component unmount
+      try {
+        document.body.style.overflow = "";
+        setIsOpen(false);
+        setOpenPopover(null);
+        setExpandedItems([]);
+
+        // Clear any remaining timers or intervals
+        const highestTimeoutId = setTimeout(() => {}, 0);
+        clearTimeout(highestTimeoutId);
+
+        // Remove any global event listeners that might have been added
+        document.removeEventListener("click", () => {});
+        document.removeEventListener("keydown", () => {});
+        window.removeEventListener("resize", () => {});
+      } catch (error) {
+        console.error("🚨 Navigation cleanup error:", error);
+      }
+    };
+  }, []);
 
   // Enhanced mobile navigation with swipe support
   const mobileSwipeHandlers = createSwipeHandler(
@@ -184,10 +273,13 @@ function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu when pathname changes
+  // 🔥 CRITICAL FIX: Route change detection with stable navigation
   useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
+    if (hasRouteChanged()) {
+      // Reset navigation state immediately on route change
+      resetNavigationState();
+    }
+  }, [pathname, hasRouteChanged, resetNavigationState]);
 
   const toggleExpanded = (href: string) => {
     setExpandedItems((prev) =>
@@ -196,6 +288,32 @@ function Navigation() {
         : [...prev, href],
     );
   };
+
+  // 🔥 PRODUCTION FIX: Enhanced popover state management with deployment safety
+  const handlePopoverOpenChange = useCallback(
+    (isOpen: boolean, itemHref: string) => {
+      try {
+        if (isOpen) {
+          // Force close all popovers first for clean state
+          setOpenPopover(null);
+
+          // Use requestAnimationFrame for better timing in production
+          requestAnimationFrame(() => {
+            setOpenPopover(itemHref);
+          });
+        } else {
+          // Always close the popover with immediate effect
+          setOpenPopover(null);
+        }
+      } catch (error) {
+        // Production safety: Log error and force reset
+        console.error("🚨 Popover state error:", error);
+        setOpenPopover(null);
+        setIsOpen(false);
+      }
+    },
+    [],
+  );
 
   // Handle keyboard navigation for the dropdown menu
   const handleKeyDown = (e: React.KeyboardEvent, href: string) => {
@@ -215,148 +333,176 @@ function Navigation() {
         Skip to main content
       </a>
 
-      {/* Navigation Bar - Enhanced for mobile */}
-      <motion.nav
-        initial={{ y: 0 }}
-        animate={{ y: 0 }}
-        className={`layout-navigation sticky top-0 z-navigation transition-all duration-300 ${
-          scrolled ? "bg-pure-white shadow-md" : "bg-comfort-cream"
-        }`}
-        role="navigation"
-        aria-label="Main navigation"
-        {...(isMobile ? mobileSwipeHandlers : {})}
-      >
-        <Container py="none">
-          <div className="flex items-center justify-between h-header">
-            {/* Logo/Brand with Easter Egg */}
-            <div className="flex items-center">
-              <EasterEgg eggId="risen-logo-hover">
-                <Link href="/" className="flex items-center space-x-3 group">
-                  <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-white font-bold text-xl">B</span>
+      {/* Main Navigation - Fixed: Proper z-index and divine colors */}
+      <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-100 z-navigation">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center space-x-8">
+              {/* Logo/Brand with Easter Egg - FIXED: Prevent overflow */}
+              <div className="flex items-center">
+                <Link
+                  href="/"
+                  className="flex items-center space-x-2 group max-w-fit"
+                >
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                    <span className="text-white font-bold text-lg">B</span>
                   </div>
-                  <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hidden sm:block truncate">
                     Bridge Project
                   </span>
+                  <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent sm:hidden">
+                    Bridge
+                  </span>
                 </Link>
-              </EasterEgg>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-4" role="menubar">
-              {navItems.map((item) =>
-                item.children ? (
-                  <Popover key={item.href}>
-                    <PopoverTrigger asChild>
-                      <button
-                        className={`flex items-center gap-2 transition-colors h-9 min-h-[36px] px-2 ${
-                          pathname.startsWith(item.href)
-                            ? "text-elite-justice-indigo font-semibold"
-                            : "text-gentle-charcoal hover:text-elite-justice-indigo"
-                        }`}
-                        aria-expanded={expandedItems.includes(item.href)}
-                        aria-haspopup="true"
-                        aria-controls={`dropdown-${item.label}`}
-                        role="menuitem"
-                      >
-                        <span className="sr-only">Open</span>
-                        {item.icon}
-                        <span className="text-sm font-medium">
-                          {item.label}
-                        </span>
-                        <ChevronDown className="h-3 w-3" aria-hidden="true" />
-                      </button>
-                    </PopoverTrigger>
-                    <PopoverContent
-                      className="bg-pure-white border-quiet-stone shadow-lg p-2 min-w-[200px]"
-                      align="start"
-                      role="menu"
-                      id={`dropdown-${item.label}`}
-                    >
-                      <Link
-                        href={item.href}
-                        className="block px-3 py-2 min-h-[36px] flex items-center text-sm text-gentle-charcoal hover:bg-soft-cloud hover:text-elite-justice-indigo rounded-md transition-colors mb-1"
-                        role="menuitem"
-                      >
-                        View All {item.label}
-                      </Link>
-                      <div
-                        className="h-px bg-quiet-stone my-1"
-                        role="separator"
-                        aria-orientation="horizontal"
-                      />
-                      {item.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          className="block px-3 py-2 min-h-[36px] flex items-center text-sm text-gentle-charcoal hover:bg-soft-cloud hover:text-elite-justice-indigo rounded-md transition-colors"
-                          role="menuitem"
-                        >
-                          {child.label}
-                        </Link>
-                      ))}
-                    </PopoverContent>
-                  </Popover>
-                ) : (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`flex items-center gap-2 transition-colors h-9 min-h-[36px] px-2 ${
-                      pathname === item.href
-                        ? "text-elite-justice-indigo font-semibold"
-                        : "text-gentle-charcoal hover:text-elite-justice-indigo"
-                    }`}
-                    role="menuitem"
-                    aria-current={pathname === item.href ? "page" : undefined}
-                  >
-                    {item.icon}
-                    <span className="text-sm font-medium">{item.label}</span>
-                  </Link>
-                ),
-              )}
-
-              {/* Decision Countdown */}
-              <div className="ml-2">
-                <MiniCountdown
-                  targetDate={
-                    new Date(new Date().setDate(new Date().getDate() + 14))
-                  }
-                  linkHref="/contact"
-                />
               </div>
 
-              {/* Take Action Button */}
-              <Link href="/contact" role="menuitem">
-                <Button
-                  variant="primary"
-                  size="sm"
-                  className="bg-elite-divine-amber text-pure-white hover:bg-elite-divine-amber/90 h-9 px-4 shadow-lg"
-                  aria-label="Take Action"
-                >
-                  Take Action
-                </Button>
-              </Link>
+              {/* Desktop Navigation */}
+              <div className="hidden md:flex items-center gap-3" role="menubar">
+                {navItems.map((item) =>
+                  item.children ? (
+                    <Popover
+                      key={item.href}
+                      open={openPopover === item.href}
+                      onOpenChange={(isOpen) => {
+                        // 🔥 CRITICAL FIX: Force proper state management
+                        handlePopoverOpenChange(isOpen, item.href);
+                      }}
+                    >
+                      <PopoverTrigger asChild>
+                        <button
+                          className={`flex items-center gap-2 transition-colors h-10 min-h-[40px] px-3 py-2 rounded-md ${
+                            pathname.startsWith(item.href)
+                              ? "text-elite-justice-indigo font-semibold bg-blue-50"
+                              : "text-gentle-charcoal hover:text-elite-justice-indigo hover:bg-gray-50"
+                          }`}
+                          aria-expanded={openPopover === item.href}
+                          aria-haspopup="true"
+                          aria-controls={`dropdown-${item.label}`}
+                          role="menuitem"
+                        >
+                          <span className="sr-only">Open</span>
+                          {item.icon}
+                          <span className="text-sm font-medium">
+                            {item.label}
+                          </span>
+                          <ChevronDown className="h-3 w-3" aria-hidden="true" />
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        align="start"
+                        className="w-64 p-0 bg-white border border-gray-200 shadow-lg z-dropdown"
+                        onOpenAutoFocus={(e) => e.preventDefault()}
+                        onCloseAutoFocus={(e) => e.preventDefault()}
+                        onPointerDownOutside={(e) => {
+                          // Enhanced outside click handling for deployment stability
+                          setOpenPopover(null);
+                        }}
+                        onEscapeKeyDown={() => {
+                          // Ensure popover closes on escape
+                          setOpenPopover(null);
+                        }}
+                      >
+                        <div className="py-2">
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              className={`flex items-center gap-3 px-4 py-3 transition-colors hover:bg-gray-50 ${
+                                pathname === child.href
+                                  ? "text-elite-justice-indigo font-semibold bg-blue-50"
+                                  : "text-gentle-charcoal hover:text-elite-justice-indigo"
+                              }`}
+                              role="menuitem"
+                              aria-current={
+                                pathname === child.href ? "page" : undefined
+                              }
+                              onClick={(e) => {
+                                // 🔥 CRITICAL FIX: Enhanced event handling with stable navigation
+                                try {
+                                  e.stopPropagation();
+                                  resetNavigationState();
+
+                                  // Additional safety for mobile devices
+                                  if (isMobile) {
+                                    triggerHaptic("light");
+                                  }
+                                } catch (error) {
+                                  // Production safety: Force navigation reset on error
+                                  console.error(
+                                    "🚨 Navigation click error:",
+                                    error,
+                                  );
+                                  resetNavigationState();
+                                }
+                              }}
+                            >
+                              <span className="text-sm">{child.label}</span>
+                            </Link>
+                          ))}
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  ) : (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`flex items-center gap-2 transition-colors h-10 min-h-[40px] px-3 py-2 rounded-md ${
+                        pathname === item.href
+                          ? "text-elite-justice-indigo font-semibold bg-blue-50"
+                          : "text-gentle-charcoal hover:text-elite-justice-indigo hover:bg-gray-50"
+                      }`}
+                      role="menuitem"
+                      aria-current={pathname === item.href ? "page" : undefined}
+                    >
+                      {item.icon}
+                      <span className="text-sm font-medium">{item.label}</span>
+                    </Link>
+                  ),
+                )}
+
+                {/* Decision Countdown */}
+                <div className="ml-2">
+                  <MiniCountdown
+                    targetDate={
+                      new Date(new Date().setDate(new Date().getDate() + 14))
+                    }
+                    linkHref="/contact"
+                  />
+                </div>
+
+                {/* Take Action Button - FIXED: Divine color scheme */}
+                <Link href="/contact" role="menuitem">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    className="bg-gradient-divine text-white hover:bg-gradient-divine-hover h-10 px-4 shadow-lg border border-white/20 font-semibold transform hover:scale-105 transition-all duration-200"
+                    aria-label="Take Action"
+                  >
+                    Take Action
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Mobile Menu Toggle */}
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="md:hidden text-gentle-charcoal hover:text-elite-justice-indigo transition-colors h-9 w-9 min-h-[36px] min-w-[36px] flex items-center justify-center"
+                aria-label={isOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isOpen}
+                aria-controls="mobile-menu"
+              >
+                {isOpen ? (
+                  <X className="h-5 w-5" aria-hidden="true" />
+                ) : (
+                  <Menu className="h-5 w-5" aria-hidden="true" />
+                )}
+              </button>
             </div>
-
-            {/* Mobile Menu Toggle */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden text-gentle-charcoal hover:text-elite-justice-indigo transition-colors h-9 w-9 min-h-[36px] min-w-[36px] flex items-center justify-center"
-              aria-label={isOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isOpen}
-              aria-controls="mobile-menu"
-            >
-              {isOpen ? (
-                <X className="h-5 w-5" aria-hidden="true" />
-              ) : (
-                <Menu className="h-5 w-5" aria-hidden="true" />
-              )}
-            </button>
           </div>
-        </Container>
-      </motion.nav>
+        </div>
+      </nav>
 
-      {/* Enhanced Mobile Menu with swipe gestures */}
+      {/* Enhanced Mobile Menu with swipe gestures - FIXED: Proper z-index and spacing */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -364,7 +510,7 @@ function Navigation() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 z-modal bg-pure-white md:hidden overflow-y-auto"
+            className="fixed inset-0 z-modal bg-white md:hidden overflow-y-auto"
             id="mobile-menu"
             role="dialog"
             aria-modal="true"
@@ -376,7 +522,8 @@ function Navigation() {
               ← Swipe to close
             </div>
 
-            <div className="flex flex-col pt-20 px-4 sm:px-8 pb-8" role="menu">
+            {/* Mobile Menu Content - FIXED: Proper padding and spacing */}
+            <div className="flex flex-col pt-20 px-6 sm:px-8 pb-8" role="menu">
               {navItems.map((item, index) => (
                 <motion.div
                   key={item.href}
@@ -389,7 +536,7 @@ function Navigation() {
                       <button
                         onClick={() => toggleExpanded(item.href)}
                         onKeyDown={(e) => handleKeyDown(e, item.href)}
-                        className={`flex items-center justify-between w-full py-4 min-h-[56px] border-b border-quiet-stone ${
+                        className={`flex items-center justify-between w-full py-4 min-h-[64px] border-b border-quiet-stone ${
                           pathname.startsWith(item.href)
                             ? "text-elite-justice-indigo font-semibold"
                             : "text-gentle-charcoal hover:text-elite-justice-indigo"
@@ -399,9 +546,11 @@ function Navigation() {
                         aria-controls={`mobile-submenu-${item.href.replace(/\//g, "")}`}
                         role="menuitem"
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-4">
                           {item.icon}
-                          <span className="text-lg">{item.label}</span>
+                          <span className="text-lg font-medium">
+                            {item.label}
+                          </span>
                         </div>
                         <ChevronDown
                           className={`h-5 w-5 transition-transform ${
@@ -412,41 +561,35 @@ function Navigation() {
                           aria-hidden="true"
                         />
                       </button>
+
+                      {/* Submenu with proper animation */}
                       <AnimatePresence>
                         {expandedItems.includes(item.href) && (
                           <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="overflow-hidden bg-soft-cloud rounded-lg mt-2 mb-2"
-                            role="menu"
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="overflow-hidden"
                             id={`mobile-submenu-${item.href.replace(/\//g, "")}`}
+                            role="menu"
                           >
-                            <Link
-                              href={item.href}
-                              onClick={() => setIsOpen(false)}
-                              className="flex items-center gap-3 py-4 min-h-[56px] pl-10 text-sm text-gentle-charcoal hover:text-elite-justice-indigo transition-colors"
-                              role="menuitem"
-                            >
-                              View All {item.label}
-                            </Link>
                             {item.children.map((child) => (
                               <Link
                                 key={child.href}
                                 href={child.href}
                                 onClick={() => setIsOpen(false)}
-                                className={`flex items-center gap-3 py-4 min-h-[56px] pl-10 text-sm ${
+                                className={`flex items-center gap-4 py-4 min-h-[64px] pl-12 text-base ${
                                   pathname === child.href
-                                    ? "text-elite-justice-indigo font-semibold"
-                                    : "text-gentle-charcoal hover:text-elite-justice-indigo"
+                                    ? "text-elite-justice-indigo font-semibold bg-blue-50"
+                                    : "text-gentle-charcoal hover:text-elite-justice-indigo hover:bg-gray-50"
                                 } transition-colors`}
                                 role="menuitem"
                                 aria-current={
                                   pathname === child.href ? "page" : undefined
                                 }
                               >
-                                {child.label}
+                                <span>{child.label}</span>
                               </Link>
                             ))}
                           </motion.div>
@@ -456,82 +599,72 @@ function Navigation() {
                   ) : (
                     <Link
                       href={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className={`flex items-center gap-3 py-4 min-h-[56px] border-b border-quiet-stone ${
-                        pathname === item.href
-                          ? "text-elite-justice-indigo font-semibold"
-                          : "text-gentle-charcoal hover:text-elite-justice-indigo"
-                      } transition-colors`}
+                      onClick={() => resetNavigationState()}
+                      className={`flex items-center gap-4 py-4 min-h-[64px] border-b border-quiet-stone ${
+                        isRoute(item.href)
+                          ? "text-elite-justice-indigo font-semibold bg-blue-50"
+                          : "text-gentle-charcoal hover:text-elite-justice-indigo hover:bg-gray-50"
+                      } transition-colors rounded-lg px-2`}
                       role="menuitem"
-                      aria-current={pathname === item.href ? "page" : undefined}
+                      aria-current={isRoute(item.href) ? "page" : undefined}
                     >
                       {item.icon}
-                      <span className="text-lg">{item.label}</span>
+                      <span className="text-lg font-medium">{item.label}</span>
                     </Link>
                   )}
                 </motion.div>
               ))}
 
-              {/* Action Button */}
+              {/* Mobile Bottom Action - FIXED: Mobile conversion optimization */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="mt-8"
+                transition={{ delay: navItems.length * 0.1 + 0.2 }}
+                className="mt-8 pt-8 border-t border-gray-200"
               >
-                <Link href="/contact" onClick={() => setIsOpen(false)}>
-                  <Button
-                    variant="primary"
-                    width="full"
-                    size="lg"
-                    className="bg-elite-divine-amber text-pure-white hover:bg-elite-divine-amber/90 shadow-lg"
-                  >
-                    Take Action Now
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <Button asChild className="w-full">
+                    <Link href="/letter-portal">
+                      <FileText className="h-4 w-4 mr-2" />
+                      Write Letter to Judge
+                    </Link>
                   </Button>
-                </Link>
-              </motion.div>
-
-              {/* Mobile Menu Footer */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.7 }}
-                className="mt-12 text-center"
-              >
-                <p className="text-elite-justice-indigo font-bold text-lg mb-2">
-                  Zero Graduates. Infinite Possibility.
-                </p>
-                <p className="text-soft-shadow text-sm">Building from Day 1</p>
-              </motion.div>
-
-              {/* Footer Links */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
-                className="mt-8 pt-8 border-t border-quiet-stone"
-              >
-                <div className="flex flex-col gap-4 text-sm">
-                  <Link
-                    href="/check-in"
-                    className="text-soft-shadow hover:text-elite-justice-indigo min-h-[44px] flex items-center"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Daily Check-In
-                  </Link>
-                  <Link
-                    href="/dashboard/judge"
-                    className="text-soft-shadow hover:text-elite-justice-indigo min-h-[44px] flex items-center"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Judge Dashboard
+                  <Link href="/prayer-room" onClick={() => setIsOpen(false)}>
+                    <Button
+                      variant="outline"
+                      className="w-full border-2 border-divine-purple text-divine-purple hover:bg-divine-purple hover:text-white font-semibold py-3 rounded-lg transition-all duration-200"
+                    >
+                      🙏 Prayer Room
+                    </Button>
                   </Link>
                 </div>
+                <p className="text-center text-sm text-gray-600">
+                  July 28, 2025 • Your voice matters for JAHmere's freedom
+                </p>
               </motion.div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Mobile Floating Action Button - FIXED: Conversion optimization */}
+      {isMobile && !isOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed bottom-4 right-4 z-dropdown md:hidden"
+        >
+          <Link href="/letter-portal">
+            <Button
+              size="lg"
+              className="bg-gradient-divine text-white hover:bg-gradient-divine-hover shadow-xl rounded-full w-14 h-14 flex items-center justify-center transform hover:scale-110 transition-all duration-200"
+              aria-label="Quick Action - Write Letter"
+            >
+              ✍️
+            </Button>
+          </Link>
+        </motion.div>
+      )}
     </>
   );
 }

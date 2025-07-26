@@ -1,0 +1,31 @@
+{
+  "scripts": {
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest run --coverage",
+    "test:divine": "vitest --reporter=verbose --run",
+    "test:prayer-warriors": "vitest --grep='prayer|warrior|divine'",
+    "test:jahmere": "vitest --grep='jahmere|freedom|court'",
+    "test:countdown": "vitest --grep='countdown|july.*28'",
+    "test:ci": "vitest run --coverage --reporter=json --reporter=text",
+    "test:debug": "vitest --inspect-brk --no-coverage",
+    "test:mission-critical": "vitest --grep='mission.*critical|critical.*mission'",
+    "test:spiritual": "vitest --grep='spiritual|divine|prayer'",
+    "test:performance": "vitest --grep='performance|timeout|speed'",
+    "test:e2e-prep": "vitest run --coverage && npm run build",
+    "divine:test-all": "npm run test:divine && npm run test:coverage",
+    "divine:validate": "npm run test:mission-critical && npm run test:spiritual",
+    "divine:ci": "npm run test:ci && npm run divine:validate"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/user-event": "^14.5.1",
+    "@vitejs/plugin-react": "^4.1.1",
+    "@vitest/ui": "^1.0.4",
+    "jsdom": "^23.0.1",
+    "vitest": "^1.0.4"
+  }
+}

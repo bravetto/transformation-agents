@@ -47,6 +47,7 @@ export interface ConversationContext {
  */
 export interface AIPersonality {
   name: string;
+  description: string;
   role: string;
   background: string;
   expertise: string[];
@@ -55,6 +56,7 @@ export interface AIPersonality {
   traits: string[];
   voiceExamples: string[];
   avoids: string[];
+  responseStyle: "formal" | "casual" | "divine" | "technical";
 
   // Optional specialized fields
   faithPerspective?: string;
@@ -105,6 +107,8 @@ export interface TemplateSection {
   id: string;
   name: string;
   content: string;
+  variables: string[];
+  order: number;
   priority: number;
   isRequired: boolean;
   condition?: (
@@ -123,6 +127,7 @@ export interface PromptTemplateConfig {
   version: string;
   sections: TemplateSection[];
   variables: string[];
+  metadata: any;
   contextAdaptations?: {
     timeOfDay?: Record<string, string>;
     userMood?: Record<string, string>;

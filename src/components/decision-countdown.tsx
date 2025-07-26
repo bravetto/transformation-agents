@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
-import PropheticCountdown from "./prophetic-countdown";
+// PropheticCountdown removed for hydration stability
 import { Button } from "@/components/ui/button";
 import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import { cn } from "@/lib/utils";
@@ -106,13 +106,21 @@ function DecisionCountdown({
               </h2>
 
               <div className="mb-6">
-                <PropheticCountdown
-                  targetDate={targetDate}
-                  milestone="Until Judge Ferrero's Decision"
-                  role="messenger"
-                  showProgress={true}
-                  onMilestoneReached={handleMilestoneReached}
-                />
+                <div className="bg-purple-900/90 backdrop-blur-sm border border-purple-500/30 rounded-lg p-4 shadow-xl text-center">
+                  <div className="text-purple-100 text-sm">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                      <span>⚖️ Decision Timeline Protected</span>
+                    </div>
+                    <div className="text-xs text-purple-300 mb-2">
+                      Judge Ferrero's decision approaches in divine timing
+                    </div>
+                    <div className="text-xs text-purple-400">
+                      "He has made everything beautiful in its time" -
+                      Ecclesiastes 3:11
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <p className="text-center text-gray-600 dark:text-gray-400 mb-6">
@@ -151,14 +159,15 @@ function DecisionCountdown({
             <Calendar className="h-5 w-5 text-hope-gold mr-2" />
             <h3 className="text-lg font-semibold">Judge Ferrero's Decision</h3>
           </div>
-          <PropheticCountdown
-            targetDate={targetDate}
-            milestone="Time Remaining"
-            role="messenger"
-            showProgress={true}
-            onMilestoneReached={handleMilestoneReached}
-            className="mb-4"
-          />
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-3 mb-4 text-center">
+            <div className="text-sm font-medium text-gray-800 mb-1">
+              Time Remaining
+            </div>
+            <div className="text-lg font-bold text-blue-600">Divine Timing</div>
+            <div className="text-xs text-gray-500">
+              "Everything in its season"
+            </div>
+          </div>
           <div className="mt-4 text-center">
             <Link href={ctaLink}>
               <Button size="sm" variant="outline" className="w-full">

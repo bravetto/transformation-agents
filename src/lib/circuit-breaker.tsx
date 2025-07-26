@@ -147,7 +147,7 @@ export function useCircuitBreaker(
       componentName,
       config,
     );
-  }, [componentName]);
+  }, [componentName, config]); // Added config to dependency array
 
   // Record render on every call
   renderCountRef.current++;
@@ -207,3 +207,6 @@ export function CircuitBreakerFallback({
 }
 
 export default DivineCircuitBreaker;
+
+// Named export alias for compatibility
+export { DivineCircuitBreaker as CircuitBreaker };

@@ -1,20 +1,17 @@
 "use client";
 
+import "@testing-library/jest-dom";
 import React, { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import { AnimationProvider } from "@/components/animation-context";
-import { EasterEggProvider } from "@/components/divine-easter-eggs";
+// EasterEggProvider removed for MVP hydration stability
 
 interface AllProvidersProps {
   children: React.ReactNode;
 }
 
 const AllProviders = ({ children }: AllProvidersProps) => {
-  return (
-    <EasterEggProvider>
-      <AnimationProvider>{children}</AnimationProvider>
-    </EasterEggProvider>
-  );
+  return <AnimationProvider>{children}</AnimationProvider>;
 };
 
 const customRender = (
@@ -33,19 +30,19 @@ global.IntersectionObserver = class IntersectionObserver {
   unobserve() {}
 } as any;
 
-// Mock matchMedia
+// Mock matchMedia (non-Jest version for compatibility)
 Object.defineProperty(window, "matchMedia", {
   writable: true,
-  value: jest.fn().mockImplementation((query) => ({
+  value: (query: string) => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(), // deprecated
-    removeListener: jest.fn(), // deprecated
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
-  })),
+    addListener: () => {}, // deprecated
+    removeListener: () => {}, // deprecated
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    dispatchEvent: () => false,
+  }),
 });
 
 // Common test utilities

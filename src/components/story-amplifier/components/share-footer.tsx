@@ -7,7 +7,7 @@ import ShareButton from "./share-button";
 
 /**
  * ShareFooter Component
- * 
+ *
  * Displays a footer section with sharing options
  */
 const ShareFooter = ({ className }: { className?: string }) => {
@@ -36,4 +36,4 @@ const ShareFooter = ({ className }: { className?: string }) => {
 
 export default withSafeUI(ShareFooter, {
   componentName: "ShareFooter",
-}); 
+});

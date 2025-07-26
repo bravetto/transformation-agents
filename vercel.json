@@ -1,24 +1,25 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "framework": "nextjs",
-  "regions": ["iad1"],
+  "version": 2,
+  "alias": ["jahmerebridge.com", "jahmerebridgeapp.vercel.app"],
+
+  "build": {
+    "env": {
+      "NEXT_TELEMETRY_DISABLED": "1",
+      "NODE_OPTIONS": "--max-old-space-size=4096"
+    }
+  },
+
   "functions": {
-    "app/api/prayers/route.ts": {
+    "src/app/api/**/*.ts": {
       "maxDuration": 10
     },
-    "app/api/countdown/route.ts": {
-      "maxDuration": 5
-    },
-    "app/api/divine-status/route.ts": {
-      "maxDuration": 5
-    },
-    "app/dashboard/judge/page.tsx": {
+    "src/app/api/ai/**/*.ts": {
       "maxDuration": 30
     }
   },
+
+  "regions": ["iad1", "sfo1"],
+
   "headers": [
     {
       "source": "/(.*)",
@@ -36,12 +37,12 @@
           "value": "1; mode=block"
         },
         {
-          "key": "X-Divine-Portal",
-          "value": "July-28-Freedom"
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
         },
         {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
         }
       ]
     },
@@ -50,9 +51,50 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
+          "value": "s-maxage=60, stale-while-revalidate=300"
+        }
+      ]
+    },
+    {
+      "source": "/:path*\\.(js|css|ico|png|jpg|jpeg|gif|svg|webp|avif|woff|woff2|ttf|eot)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     }
-  ]
+  ],
+
+  "redirects": [
+    {
+      "source": "/old-url",
+      "destination": "/new-url",
+      "permanent": true
+    }
+  ],
+
+  "rewrites": [
+    {
+      "source": "/healthz",
+      "destination": "/api/health"
+    }
+  ],
+
+  "crons": [
+    {
+      "path": "/api/monitoring/health",
+      "schedule": "0 */6 * * *"
+    }
+  ],
+
+
+
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build:prod",
+  "outputDirectory": ".next",
+
+  "github": {
+    "autoAlgorithm": "ort"
+  }
 }

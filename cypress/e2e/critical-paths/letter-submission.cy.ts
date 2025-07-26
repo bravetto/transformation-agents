@@ -211,7 +211,7 @@ describe("Letter Submission Critical Path", () => {
           .should(($input) => {
             // Data might or might not be preserved - this is exploratory
             expect($input.val()).to.satisfy(
-              (val) => typeof val === "string", // Just verify input is accessible
+              (val: any) => typeof val === "string", // Just verify input is accessible
             );
           });
       }

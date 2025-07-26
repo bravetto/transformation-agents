@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
-import { DivineParticles } from "@/components/divine-particles";
+// DivineParticles removed for hydration stability
 import { cn } from "@/lib/utils";
 import type { MetricCardProps } from "./types";
 import { withErrorBoundary } from "@/components/with-error-boundary";
@@ -49,13 +49,13 @@ function MetricCard({
         className,
       )}
     >
-      {/* Background particles */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <DivineParticles
-          variant="minimal"
-          intensity="low"
-          interactive={false}
-        />
+      {/* Static Background */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none bg-gradient-to-br from-white/10 via-transparent to-black/10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1),transparent)] animate-pulse"></div>
+        <div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(255,255,255,0.05),transparent)] animate-pulse"
+          style={{ animationDelay: "2s" }}
+        ></div>
       </div>
 
       {/* Content container */}

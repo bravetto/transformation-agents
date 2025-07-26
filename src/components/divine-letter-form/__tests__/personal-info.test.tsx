@@ -43,7 +43,7 @@ describe("PersonalInfo", () => {
 
   it("renders the personal info form", () => {
     render(<PersonalInfo />);
-    
+
     expect(screen.getByText("Your Information")).toBeInTheDocument();
     expect(screen.getByLabelText("Full Name")).toBeInTheDocument();
     expect(screen.getByLabelText("Email Address")).toBeInTheDocument();
@@ -61,31 +61,37 @@ describe("PersonalInfo", () => {
         address: "123 Main St, Anytown, USA",
       },
     };
-    
+
     jest.mocked(useLetterForm).mockReturnValue(customMockContextValue);
-    
+
     render(<PersonalInfo />);
-    
+
     expect(screen.getByLabelText("Full Name")).toHaveValue("John Doe");
-    expect(screen.getByLabelText("Email Address")).toHaveValue("john@example.com");
+    expect(screen.getByLabelText("Email Address")).toHaveValue(
+      "john@example.com",
+    );
     expect(screen.getByLabelText(/Phone Number/)).toHaveValue("123-456-7890");
-    expect(screen.getByLabelText("Full Address")).toHaveValue("123 Main St, Anytown, USA");
+    expect(screen.getByLabelText("Full Address")).toHaveValue(
+      "123 Main St, Anytown, USA",
+    );
   });
 
   it("calls updateFormData when fields change", () => {
     render(<PersonalInfo />);
-    
+
     fireEvent.change(screen.getByLabelText("Full Name"), {
       target: { value: "John Doe" },
     });
-    
+
     expect(mockUpdateFormData).toHaveBeenCalledWith({ name: "John Doe" });
-    
+
     fireEvent.change(screen.getByLabelText("Email Address"), {
       target: { value: "john@example.com" },
     });
-    
-    expect(mockUpdateFormData).toHaveBeenCalledWith({ email: "john@example.com" });
+
+    expect(mockUpdateFormData).toHaveBeenCalledWith({
+      email: "john@example.com",
+    });
   });
 
   it("displays error messages when errors exist", () => {
@@ -96,15 +102,15 @@ describe("PersonalInfo", () => {
         email: "Invalid email address",
       },
     };
-    
+
     jest.mocked(useLetterForm).mockReturnValue(customMockContextValue);
-    
+
     render(<PersonalInfo />);
-    
+
     expect(screen.getByText("Name is required")).toBeInTheDocument();
     expect(screen.getByText("Invalid email address")).toBeInTheDocument();
   });
 });
 
 // Import at the bottom to avoid reference error
-import { useLetterForm } from "../context"; 
+import { useLetterForm } from "../context";

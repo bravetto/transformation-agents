@@ -1,6 +1,13 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
 import { useScroll, useTransform } from "framer-motion";
 import {
   StoryContent,
@@ -8,7 +15,7 @@ import {
   RelatedStory,
   EngagementMetrics,
   StoryContextType,
-  StoryAmplifierProps
+  StoryAmplifierProps,
 } from "./types";
 
 // Create the context
@@ -18,7 +25,9 @@ const StoryContext = createContext<StoryContextType | undefined>(undefined);
  * StoryProvider component
  * Provides state management and functionality for the StoryAmplifier component
  */
-export const StoryProvider: React.FC<React.PropsWithChildren<StoryAmplifierProps>> = ({
+export const StoryProvider: React.FC<
+  React.PropsWithChildren<StoryAmplifierProps>
+> = ({
   story,
   metrics: initialMetrics,
   onShare: externalOnShare,
@@ -47,7 +56,7 @@ export const StoryProvider: React.FC<React.PropsWithChildren<StoryAmplifierProps
       readingTime: 0,
       completionRate: 0,
       callToActionClicks: 0,
-    }
+    },
   );
 
   // State for active quotes
@@ -91,7 +100,7 @@ export const StoryProvider: React.FC<React.PropsWithChildren<StoryAmplifierProps
         const sectionHeight = contentHeight / sectionCount;
         const currentSection = Math.min(
           Math.floor(scrollPosition / sectionHeight),
-          sectionCount - 1
+          sectionCount - 1,
         );
         setActiveSection(currentSection);
       }
@@ -157,87 +166,96 @@ export const StoryProvider: React.FC<React.PropsWithChildren<StoryAmplifierProps
   }, [readingProgress]);
 
   // Share the story on social media
-  const handleShare = useCallback((platform: string) => {
-    let shareUrl = "";
-    const url = typeof window !== "undefined" ? window.location.href : "";
+  const handleShare = useCallback(
+    (platform: string) => {
+      let shareUrl = "";
+      const url = typeof window !== "undefined" ? window.location.href : "";
 
-    switch (platform) {
-      case "twitter":
-        const twitterText =
-          story.socialSharing.platforms.twitter?.text ||
-          story.socialSharing.title;
-        const twitterHashtags =
-          story.socialSharing.platforms.twitter?.hashtags?.join(",") ||
-          story.socialSharing.hashtags.join(",");
-        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(twitterText)}&hashtags=${encodeURIComponent(twitterHashtags)}`;
-        break;
+      switch (platform) {
+        case "twitter":
+          const twitterText =
+            story.socialSharing.platforms.twitter?.text ||
+            story.socialSharing.title;
+          const twitterHashtags =
+            story.socialSharing.platforms.twitter?.hashtags?.join(",") ||
+            story.socialSharing.hashtags.join(",");
+          shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(twitterText)}&hashtags=${encodeURIComponent(twitterHashtags)}`;
+          break;
 
-      case "facebook":
-        const fbQuote =
-          story.socialSharing.platforms.facebook?.quote ||
-          story.socialSharing.description;
-        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(fbQuote)}`;
-        break;
+        case "facebook":
+          const fbQuote =
+            story.socialSharing.platforms.facebook?.quote ||
+            story.socialSharing.description;
+          shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(fbQuote)}`;
+          break;
 
-      case "linkedin":
-        const liTitle =
-          story.socialSharing.platforms.linkedin?.title ||
-          story.socialSharing.title;
-        const liSummary =
-          story.socialSharing.platforms.linkedin?.summary ||
-          story.socialSharing.description;
-        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(liTitle)}&summary=${encodeURIComponent(liSummary)}`;
-        break;
+        case "linkedin":
+          const liTitle =
+            story.socialSharing.platforms.linkedin?.title ||
+            story.socialSharing.title;
+          const liSummary =
+            story.socialSharing.platforms.linkedin?.summary ||
+            story.socialSharing.description;
+          shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(liTitle)}&summary=${encodeURIComponent(liSummary)}`;
+          break;
 
-      case "email":
-        const subject =
-          story.socialSharing.platforms.email?.subject ||
-          story.socialSharing.title;
-        const body =
-          story.socialSharing.platforms.email?.body ||
-          `${story.socialSharing.description}\n\nRead more: ${url}`;
-        shareUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        break;
+        case "email":
+          const subject =
+            story.socialSharing.platforms.email?.subject ||
+            story.socialSharing.title;
+          const body =
+            story.socialSharing.platforms.email?.body ||
+            `${story.socialSharing.description}\n\nRead more: ${url}`;
+          shareUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+          break;
 
-      case "copy":
-        navigator.clipboard.writeText(url).then(() => {
-          setCopiedToClipboard(true);
-          setTimeout(() => setCopiedToClipboard(false), 2000);
-        });
-        break;
-    }
+        case "copy":
+          navigator.clipboard.writeText(url).then(() => {
+            setCopiedToClipboard(true);
+            setTimeout(() => setCopiedToClipboard(false), 2000);
+          });
+          break;
+      }
 
-    // Open share dialog for platforms other than copy
-    if (shareUrl && platform !== "copy") {
-      window.open(shareUrl, "_blank", "width=600,height=400");
-    }
+      // Open share dialog for platforms other than copy
+      if (shareUrl && platform !== "copy") {
+        window.open(shareUrl, "_blank", "width=600,height=400");
+      }
 
-    // Update metrics and call onShare callback
-    setMetrics((prev) => ({
-      ...prev,
-      shares: prev.shares + 1,
-    }));
+      // Update metrics and call onShare callback
+      setMetrics((prev) => ({
+        ...prev,
+        shares: prev.shares + 1,
+      }));
 
-    if (externalOnShare) {
-      externalOnShare(platform);
-    }
-  }, [story.socialSharing, externalOnShare]);
+      if (externalOnShare) {
+        externalOnShare(platform);
+      }
+    },
+    [story.socialSharing, externalOnShare],
+  );
 
   // Share a specific quote
-  const handleQuoteShare = useCallback((quote: Quote) => {
-    setActiveQuote(quote);
+  const handleQuoteShare = useCallback(
+    (quote: Quote) => {
+      setActiveQuote(quote);
 
-    if (externalOnQuoteShare) {
-      externalOnQuoteShare(quote);
-    }
-  }, [externalOnQuoteShare]);
+      if (externalOnQuoteShare) {
+        externalOnQuoteShare(quote);
+      }
+    },
+    [externalOnQuoteShare],
+  );
 
   // Handle click on a related story
-  const handleRelatedStoryClick = useCallback((story: RelatedStory) => {
-    if (externalOnRelatedStoryClick) {
-      externalOnRelatedStoryClick(story);
-    }
-  }, [externalOnRelatedStoryClick]);
+  const handleRelatedStoryClick = useCallback(
+    (story: RelatedStory) => {
+      if (externalOnRelatedStoryClick) {
+        externalOnRelatedStoryClick(story);
+      }
+    },
+    [externalOnRelatedStoryClick],
+  );
 
   // Handle call to action click
   const handleCallToAction = useCallback(() => {
@@ -320,4 +338,4 @@ export const useStoryRefs = () => {
     storyRef: useRef<HTMLDivElement>(null),
     contentRef: useRef<HTMLDivElement>(null),
   };
-}; 
+};

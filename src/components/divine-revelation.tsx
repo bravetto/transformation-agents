@@ -4,7 +4,7 @@ import React from "react";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { DivineParticles } from "./divine-particles";
+// DivineParticles removed for hydration stability
 
 import { cn } from "@/lib/utils";
 
@@ -93,10 +93,7 @@ function DivineRevelation({
         animate="visible"
         className="absolute inset-0"
       >
-        <DivineParticles
-          variant="sacred"
-          className="h-full w-full opacity-40"
-        />
+        {/* DivineParticles removed for MVP hydration stability */}
       </motion.div>
 
       {/* Divine revelations */}

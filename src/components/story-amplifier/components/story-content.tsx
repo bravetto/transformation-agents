@@ -8,7 +8,7 @@ import QuoteCard from "./quote-card";
 
 /**
  * StoryContent Component
- * 
+ *
  * Displays the main content of the story with embedded quotes
  */
 const StoryContent = ({
@@ -26,7 +26,7 @@ const StoryContent = ({
       {story.content.split("\n\n").map((paragraph, index) => {
         // Check if there's a quote that should appear after this paragraph
         const quoteAfterParagraph = story.quotes.find(
-          (quote) => Math.floor(quote.position / 10) === index
+          (quote) => Math.floor(quote.position / 10) === index,
         );
 
         return (
@@ -34,10 +34,7 @@ const StoryContent = ({
             <p>{paragraph}</p>
 
             {quoteAfterParagraph && (
-              <QuoteCard 
-                quote={quoteAfterParagraph} 
-                onShare={onQuoteShare} 
-              />
+              <QuoteCard quote={quoteAfterParagraph} onShare={onQuoteShare} />
             )}
           </div>
         );
@@ -48,4 +45,4 @@ const StoryContent = ({
 
 export default withSafeUI(StoryContent, {
   componentName: "StoryContent",
-}); 
+});

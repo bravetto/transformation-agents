@@ -4,8 +4,8 @@ export const brooksLopez: PersonData = {
   id: "brooks-lopez",
   slug: "brooks-lopez",
   name: "Brooks Lopez",
-  title: "Divine Mischief Maker & Experience Architect",
-  heroImage: "/images/profiles/brooks-lopez.svg",
+  title: "NBA Center & Community Leader",
+  heroImage: "/images/people/brooks-lopez.svg",
   localImage: true,
 
   // Filter properties

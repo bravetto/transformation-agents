@@ -348,7 +348,11 @@ export async function updateClickUpContact(
 ): Promise<ContactCreateResult> {
   // This would implement the actual ClickUp API call
   console.warn("updateClickUpContact not implemented");
-  return { success: false, error: "Not implemented" };
+  return {
+    success: false,
+    contactId: id, // Return the original id for now
+    error: "Not implemented",
+  };
 }
 
 export async function getClickUpContact(

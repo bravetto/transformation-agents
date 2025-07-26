@@ -1,53 +1,169 @@
-# 🏆 BRIDGE PROJECT - CURSOR RULES
-# State Protection & Development Excellence Protocol
+# 🎯 NEXUS QUANTUM ARCHITECT v8.2
+# JAHmere Webb Freedom Portal - Pragmatic AI Alignment
+# July 25, 2025 - 3 DAYS TO FREEDOM
 
-## 🛡️ CASCADE PREVENTION (SACRED LAW)
-- NEVER run multiple dev servers simultaneously
-- ALWAYS kill existing processes before starting new ones  
-- Clear cache on ANY import error
-- Commit working states immediately
-- Use manual precision methodology ONLY
+## MISSION CRITICAL
+Project: JAHmere Webb Freedom Platform  
+Deadline: July 28, 2025 (3 DAYS)  
+Purpose: Divine justice through technological excellence
 
-## 🌐 PORT MANAGEMENT
-preferred_port: 1437  # Known clean state (v1.0-clean-state)
-proven_clean_ports: [1437]
-fallback_ports: [3000, 3001, 4000, 4242]
-avoid_ports: [3714]  # Known problematic state
+## AI SYSTEM ALIGNMENT (SIMPLIFIED v8.2)
+### KISS Principle: Keep It Simple, Secure
+- NEVER over-optimize AI validation systems
+- Apply basic trust-but-verify: Generate → Review → Deploy
+- Use existing tools: TypeScript compiler, ESLint, human review
+- Avoid complex AI monitoring that creates more problems than it solves
 
-## 🚀 DEVELOPMENT WORKFLOW
-1. Use `./scripts/clean-start.sh` for fresh starts
-2. Run `npm run build` before any commit
-3. Fix ESLint errors immediately (no @ts-ignore)
-4. Test analytics at /analytics-dashboard
-5. Preserve clean state with git tags
+### Clear Boundary Controls
+- AI generates code → Human validates → Human deploys
+- NO autonomous AI deployments or global executive scripts
+- NO complex salience monitoring or neural howlround detection
+- YES simple validation rules and clear human checkpoints
 
-## 📊 ANALYTICS PERFORMANCE STANDARDS
-- API response time: <50ms (current: 7ms ✅)
-- Event processing: <10ms
-- Modal selection rate: >30% (current: 33.33% ✅)
-- Build time: <10s
-- Zero TypeScript errors (MANDATORY)
+### Pragmatic Validation (Enterprise-Grade)
+```bash
+# Simple pre-deployment checks (NO complex AI validation)
+npm run type-check    # TypeScript validation
+npm run build        # Production build verification  
+npm run test         # Run existing tests
+git status           # Clean working directory
+```
 
-## 🎯 3-PATH SYSTEM PRIORITIES
-1. Coach Path: Complete leadership development tools
-2. Judge Path: Enhance evidence dashboard
-3. Activist Path: Finish letter portal templates
+## OUTPUT CONTROL (Pragmatic Efficiency)
+- Max 500 words unless explicit request
+- Production-ready code only
+- No placeholders, no TODOs
+- TypeScript strict mode always
+- Human review for all AI outputs
 
-## ⚡ QUICK COMMANDS
-- Clean start: `./scripts/clean-start.sh`
-- Health check: `curl http://localhost:1437/api/health`
-- Analytics: `open http://localhost:1437/analytics-dashboard`
-- Cache clear: `rm -rf .next node_modules/.cache`
+## TECH STACK (IMMUTABLE)
+```typescript
+const stack = {
+  framework: "Next.js 15.4.3",
+  runtime: "React 19 + Node.js 22.15.0",
+  language: "TypeScript 5.9+ (strict)",
+  styling: "Tailwind CSS 3.4",
+  state: "Zustand 5.0", // NEVER Redux
+  database: "Prisma 5.0 + PostgreSQL",
+  deployment: "Vercel"
+}
+```
 
-## 🏆 SUCCESS METRICS
-- Zero import errors: ✅ ACHIEVED
-- Championship analytics: ✅ ACHIEVED (7ms)
-- Production build: ✅ ACHIEVED
-- Clean state tagged: ✅ v1.0-clean-state
+## 🚀 DEPLOYMENT PIPELINE (SIMPLIFIED)
+### PRE-DEPLOYMENT MANDATORY CHECKS:
+```bash
+npm run type-check    # TypeScript validation
+npm run build        # Production build verification
+npm install          # Sync package-lock.json
+git status           # Clean working directory
+# NO complex AI validation scripts
+```
 
-## 🚨 EMERGENCY RECOVERY
-If cascade failure occurs:
-1. `git checkout v1.0-clean-state`
-2. `./scripts/clean-start.sh`
-3. Verify at http://localhost:1437
-4. Proceed with manual precision only 
+### CRITICAL DEPLOYMENT FIXES:
+1. **CSP Font Loading**: Always include `https://fonts.gstatic.com https://fonts.googleapis.com` in font-src
+2. **Package Lock Sync**: Run `npm install` before deployment to prevent npm ci failures
+3. **MetadataBase**: Always set metadataBase in layout.tsx for social sharing
+4. **Vercel Config**: Ensure next.config.mjs CSP headers match middleware.ts
+
+## COMPONENT PATTERN (Human-Validated)
+```typescript
+// Server Component (default) - Human Reviewed
+export default async function Component() {
+  const data = await fetchData()
+  return <div className="container">{data}</div>
+}
+
+// Client Component (only when needed) - Human Reviewed
+'use client'
+export default function Interactive() {
+  const [state, setState] = useState('')
+  return <button onClick={() => setState('new')}>Click</button>
+}
+```
+
+## SIMPLE VALIDATION RULES
+### Required Patterns (Human-Checked):
+- ✅ `export default async function` for Server Components
+- ✅ TypeScript type annotations (`: string`, `: number`, etc.)
+- ✅ Mission context alignment (july-28, freedom, jahmere, divine)
+- ❌ Anti-patterns: `getServerSideProps`, `getStaticProps`, `any` type
+
+### Human Verification Steps:
+1. **Functional Correctness**: Does code meet requirements?
+2. **Architectural Compliance**: Follows Next.js 15.4.3 patterns?
+3. **Security Check**: Free from obvious vulnerabilities?
+4. **Performance Impact**: Meets <7ms API, <5s build targets?
+5. **Mission Alignment**: Serves JAHmere's freedom purpose?
+
+## DESIGN SYSTEM
+- Primary: `divine-gold (#F59E0B)` - CTAs & conversion
+- Secondary: `courage-blue (#2563EB)` - trust & wisdom
+- Success: `growth-green (#10B981)` - positive actions
+- Sacred: `sacred-purple (#8B5CF6)` - spiritual elements
+- Mobile-first, accessible, beautiful
+
+## PERFORMANCE REQUIREMENTS (Human-Monitored)
+- API Response: <7ms (maintain excellence)
+- LCP: <1.5s
+- Bundle: <200KB per page
+- Core Web Vitals: Green only
+
+## SHIPPING PROTOCOLS (Enterprise-Grade)
+✅ ALWAYS:
+- Complete, functional implementations
+- TypeScript interfaces for all props
+- Error boundaries & loading states
+- Responsive design (mobile-first)
+- Accessibility (WCAG 2.1 AA)
+- Human validation of all AI outputs
+- Standard security practices
+
+❌ NEVER:
+- Pages directory (App Router only)
+- Class components (functional only)
+- `any` types (proper TypeScript)
+- Global executive scripts
+- Over-engineered AI monitoring
+- Deploy without human review
+- Complex automation systems
+
+## SECURITY (Enterprise-Grade, Simplified)
+### Basic Security Principles:
+- Input validation on all user inputs
+- Secure authentication and authorization
+- HTTPS everywhere
+- Regular dependency updates
+- Standard CSP headers
+- No global execution privileges
+
+### NO Complex AI Security Systems:
+- No autonomous security scanning
+- No AI-driven security decisions
+- No complex monitoring dashboards
+- Human oversight for all security matters
+
+## MISSION ALIGNMENT (Human-Reinforced)
+Every line serves JAHmere's freedom:
+- Legal documents optimized for impact
+- Character witnesses designed for sharing
+- Trust signals & social proof prominent
+- Clear CTAs driving support
+- Human validation ensuring alignment
+- Simple, effective solutions
+
+## AI COLLABORATION GUIDELINES (KISS)
+### Simple Trust-But-Verify:
+1. **Generate**: Use AI for rapid code generation
+2. **Review**: Human validates all outputs
+3. **Test**: Run standard tests and checks
+4. **Deploy**: Human-controlled deployment only
+
+### Boundary Controls:
+- AI suggests, human decides
+- No autonomous AI actions
+- Clear human checkpoints
+- Simple validation rules
+- Standard development practices
+
+Remember: Ship excellent code that transforms lives by July 28, 2025.
+Keep it simple, keep it secure, keep it human-controlled. 🙏 

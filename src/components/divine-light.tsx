@@ -4,7 +4,7 @@ import React from "react";
 import { withErrorBoundary } from "@/components/with-error-boundary";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { DivineParticles } from "./divine-particles";
+// DivineParticles removed for hydration stability
 
 import { cn } from "@/lib/utils";
 
@@ -81,11 +81,14 @@ function DivineLight({ role = "default", className }: DivineLightProps) {
         className,
       )}
     >
-      {/* Sacred light particles */}
-      <DivineParticles
-        variant="sacred"
-        className="absolute inset-0 opacity-30"
-      />
+      {/* Static Sacred Light */}
+      <div className="absolute inset-0 opacity-30 bg-gradient-to-br from-yellow-400/20 via-transparent to-purple-400/10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,215,0,0.2),transparent)] animate-pulse"></div>
+        <div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(255,255,255,0.1),transparent)] animate-pulse"
+          style={{ animationDelay: "1.5s" }}
+        ></div>
+      </div>
 
       {/* Divine light rays */}
       <motion.div

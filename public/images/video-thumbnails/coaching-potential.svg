@@ -1,0 +1,58 @@
+<svg width="320" height="180" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="overlay2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#000;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#000;stop-opacity:0.7" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="320" height="180" fill="url(#bgGradient2)"/>
+  
+  <!-- Coaching diagram background -->
+  <g opacity="0.3">
+    <circle cx="80" cy="90" r="3" fill="white"/>
+    <circle cx="160" cy="60" r="3" fill="white"/>
+    <circle cx="160" cy="120" r="3" fill="white"/>
+    <circle cx="240" cy="90" r="3" fill="white"/>
+    <line x1="80" y1="90" x2="160" y2="60" stroke="white" stroke-width="1"/>
+    <line x1="80" y1="90" x2="160" y2="120" stroke="white" stroke-width="1"/>
+    <line x1="160" y1="60" x2="240" y2="90" stroke="white" stroke-width="1"/>
+    <line x1="160" y1="120" x2="240" y2="90" stroke="white" stroke-width="1"/>
+  </g>
+  
+  <rect width="320" height="180" fill="url(#overlay2)"/>
+  
+  <g>
+    <text x="160" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">
+      COACHING PLAYERS
+    </text>
+    <text x="160" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#fbbf24">
+      TOWARD REACHING
+    </text>
+    <text x="160" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white">
+      POTENTIAL
+    </text>
+    <text x="160" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#e5e7eb">
+      Tony Dungy's Philosophy
+    </text>
+    
+    <!-- Play button -->
+    <circle cx="160" cy="135" r="18" fill="white" opacity="0.9"/>
+    <polygon points="156,130 156,140 168,135" fill="#7c3aed"/>
+    
+    <!-- Stars for potential -->
+    <g transform="translate(50, 25)">
+      <polygon points="5,0 6,3 10,3 7,5 8,9 5,7 2,9 3,5 0,3 4,3" fill="#fbbf24"/>
+    </g>
+    <g transform="translate(265, 25)">
+      <polygon points="5,0 6,3 10,3 7,5 8,9 5,7 2,9 3,5 0,3 4,3" fill="#fbbf24"/>
+    </g>
+    
+    <rect x="250" y="155" width="60" height="20" rx="10" fill="black" opacity="0.7"/>
+    <text x="280" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">18:45</text>
+  </g>
+</svg> 

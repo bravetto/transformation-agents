@@ -5,11 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  EasterEgg,
-  SynchronicityEgg,
-  useEasterEggs,
-} from "@/components/divine-easter-eggs";
+// EasterEgg, SynchronicityEgg, and useEasterEggs removed for hydration stability
 import {
   Search,
   MapPin,
@@ -245,8 +241,12 @@ const difficultyIcons = {
 };
 
 export function DivineTreasuresDemo() {
-  const { eggs, foundEggs, totalEggs, discoveryProgress, resetProgress } =
-    useEasterEggs();
+  // Easter eggs functionality removed for MVP hydration stability
+  const eggs: any[] = [];
+  const foundEggs: any[] = []; // Keep as array for compatibility with .length
+  const totalEggs = 0;
+  const discoveryProgress = 0;
+  const resetProgress = () => {};
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>("all");
   const [showHints, setShowHints] = useState(false);
 
@@ -405,7 +405,7 @@ export function DivineTreasuresDemo() {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
-                  <EasterEgg eggId={treasure.id}>
+                  <div data-treasure-id={treasure.id}>
                     <Card
                       className={`p-6 h-full transition-all duration-300 cursor-pointer hover:shadow-lg ${
                         isFound
@@ -738,7 +738,7 @@ export function DivineTreasuresDemo() {
                         )}
                       </div>
                     </Card>
-                  </EasterEgg>
+                  </div>
                 </motion.div>
               );
             })}
@@ -801,21 +801,18 @@ export function DivineTreasuresDemo() {
         </p>
 
         <div className="bg-black/30 p-4 rounded-lg border border-yellow-400/50">
-          <SynchronicityEgg trigger="console">
-            <div className="text-center p-6 bg-gradient-to-r from-red-900/50 to-yellow-900/50 rounded-lg border border-yellow-400/50 cursor-pointer hover:border-yellow-300 transition-colors">
-              <div className="text-4xl mb-2">⚡</div>
-              <h4 className="text-yellow-100 font-bold mb-2">
-                Console Error Revelation
-              </h4>
-              <code className="text-red-200 bg-red-900/50 px-3 py-1 rounded text-sm">
-                InvalidStateError: Only the active worker can claim clients.
-              </code>
-              <p className="text-yellow-300 text-sm mt-2">
-                Click to reveal the divine prophecy hidden in this error
-                message!
-              </p>
-            </div>
-          </SynchronicityEgg>
+          <div className="text-center p-6 bg-gradient-to-r from-red-900/50 to-yellow-900/50 rounded-lg border border-yellow-400/50 cursor-pointer hover:border-yellow-300 transition-colors">
+            <div className="text-4xl mb-2">⚡</div>
+            <h4 className="text-yellow-100 font-bold mb-2">
+              Console Error Revelation
+            </h4>
+            <code className="text-red-200 bg-red-900/50 px-3 py-1 rounded text-sm">
+              InvalidStateError: Only the active worker can claim clients.
+            </code>
+            <p className="text-yellow-300 text-sm mt-2">
+              Click to reveal the divine prophecy hidden in this error message!
+            </p>
+          </div>
         </div>
 
         <div className="mt-4 text-center text-yellow-200 text-sm">

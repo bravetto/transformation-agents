@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileText, Send, Sparkles, TrendingUp } from "lucide-react";
 import { impactEvents } from "./impact-dashboard";
-import { DivineParticles } from "./divine-particles";
+// DivineParticles removed for MVP hydration stability
 import {
   SacredReveal,
   MagneticButton,
@@ -62,11 +62,14 @@ function LettersOfHope() {
     };
 
     window.addEventListener("impact-update", handleImpact as EventListener);
-    return () =>
+
+    // 🔥 CRITICAL FIX: Proper cleanup to prevent navigation interference
+    return () => {
       window.removeEventListener(
         "impact-update",
         handleImpact as EventListener,
       );
+    };
   }, []);
 
   const handleSubmitLetter = async (e: React.FormEvent) => {
@@ -150,7 +153,7 @@ function LettersOfHope() {
             {!isWriting ? (
               <button
                 onClick={() => setIsWriting(true)}
-                className="bg-hope-gold text-gentle-charcoal px-6 py-3 rounded-lg font-bold hover:bg-courage-blue hover:text-white transition-colors flex items-center gap-2 inline-flex"
+                className="bg-hope-gold text-gentle-charcoal px-6 py-3 rounded-lg font-bold hover:bg-courage-blue hover:text-white transition-colors inline-flex items-center gap-2"
               >
                 <FileText className="h-5 w-5" />
                 Write Your Letter Now

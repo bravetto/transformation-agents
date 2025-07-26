@@ -114,7 +114,7 @@ export function useUniversalAgent(options: UseUniversalAgentOptions = {}) {
       logger.divine("🌟 Divine Pattern Detected", { pattern: randomPattern });
 
       if (onPattern) {
-        onPattern(randomPattern);
+        onPattern(randomPattern as any);
       }
     }, 5000);
 

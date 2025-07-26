@@ -8,12 +8,20 @@ import { ReadingProgressBarProps } from "../types";
 
 /**
  * ReadingProgressBar Component
- * 
+ *
  * Displays a progress bar indicating the user's reading progress through the story
  */
-const ReadingProgressBar = ({ progress, className }: ReadingProgressBarProps) => {
+const ReadingProgressBar = ({
+  progress,
+  className,
+}: ReadingProgressBarProps) => {
   return (
-    <div className={cn("fixed top-0 left-0 right-0 h-1 bg-gray-200 z-50", className)}>
+    <div
+      className={cn(
+        "fixed top-0 left-0 right-0 h-1 bg-gray-200 z-50",
+        className,
+      )}
+    >
       <motion.div
         className="h-full bg-blue-600"
         style={{ width: `${progress}%` }}
@@ -27,4 +35,4 @@ const ReadingProgressBar = ({ progress, className }: ReadingProgressBarProps) =>
 
 export default withSafeUI(ReadingProgressBar, {
   componentName: "ReadingProgressBar",
-}); 
+});

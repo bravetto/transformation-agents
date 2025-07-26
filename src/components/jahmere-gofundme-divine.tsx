@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { withDivineErrorBoundary } from "@/components/ui/divine-error-boundary";
 import {
   DollarSign,
   Calendar,
@@ -28,7 +29,7 @@ import Particles from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import type { Engine, ISourceOptions } from "@tsparticles/engine";
 
-export default function JAHmereGoFundMeDivine() {
+function JAHmereGoFundMeDivine() {
   const [raised, setRaised] = useState(2847);
   const [donors, setDonors] = useState(47);
   const [daysLeft, setDaysLeft] = useState(13);
@@ -735,3 +736,8 @@ export default function JAHmereGoFundMeDivine() {
     </div>
   );
 }
+
+export default withDivineErrorBoundary(JAHmereGoFundMeDivine, {
+  componentName: "JAHmereGoFundMeDivine",
+  role: "messenger",
+});

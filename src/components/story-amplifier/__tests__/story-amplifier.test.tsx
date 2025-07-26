@@ -60,36 +60,38 @@ const mockStory: StoryContent = {
 describe("StoryAmplifier", () => {
   it("renders the story title and subtitle", () => {
     render(<StoryAmplifier story={mockStory} />);
-    
+
     expect(screen.getByText("Test Story Title")).toBeInTheDocument();
     expect(screen.getByText("Test Story Subtitle")).toBeInTheDocument();
   });
-  
+
   it("renders the author information", () => {
     render(<StoryAmplifier story={mockStory} />);
-    
+
     expect(screen.getByText("Test Author")).toBeInTheDocument();
     expect(screen.getByText("Test Role")).toBeInTheDocument();
   });
-  
+
   it("renders the story content", () => {
     render(<StoryAmplifier story={mockStory} />);
-    
+
     expect(screen.getByText("This is a test paragraph.")).toBeInTheDocument();
     expect(screen.getByText("This is another paragraph.")).toBeInTheDocument();
   });
-  
+
   it("renders related stories section", () => {
     render(<StoryAmplifier story={mockStory} />);
-    
+
     expect(screen.getByText("Related Stories")).toBeInTheDocument();
     expect(screen.getByText("Related Story 1")).toBeInTheDocument();
   });
-  
+
   it("renders call to action section", () => {
     render(<StoryAmplifier story={mockStory} />);
-    
-    expect(screen.getByText("Be Part of The Bridge Project")).toBeInTheDocument();
+
+    expect(
+      screen.getByText("Be Part of The Bridge Project"),
+    ).toBeInTheDocument();
     expect(screen.getByText("Submit Your Letter")).toBeInTheDocument();
   });
-}); 
+});

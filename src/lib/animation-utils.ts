@@ -458,3 +458,7 @@ export function getDivineAnimationPreset(
  * The divine easing curve - exponential ease out
  */
 export const divineEase = animations.easings.easeOut;
+
+export function enableAdvancedAnimations(): void {
+  console.log("Advanced animations enabled");
+}

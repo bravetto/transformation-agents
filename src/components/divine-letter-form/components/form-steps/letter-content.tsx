@@ -15,15 +15,16 @@ import { SignatureStyle } from "../../types";
  * Fourth step of the letter form for composing the letter content
  */
 function LetterContent() {
-  const { formData, updateFormData, errors, calculateImpactScore } = useLetterForm();
+  const { formData, updateFormData, errors, calculateImpactScore } =
+    useLetterForm();
   const [wordCount, setWordCount] = useState(0);
-  
+
   // Calculate word count when letter content changes
   useEffect(() => {
     const content = formData.letterContent || "";
     const words = content.trim().split(/\s+/).filter(Boolean).length;
     setWordCount(words);
-    
+
     // Calculate impact score when content changes
     if (content.length > 100) {
       calculateImpactScore();
@@ -107,7 +108,9 @@ Sincerely,"
           <div className="flex items-start space-x-2">
             <RadioGroupItem value="formal" id="formal" className="mt-1" />
             <div>
-              <Label htmlFor="formal" className="cursor-pointer font-medium">Formal</Label>
+              <Label htmlFor="formal" className="cursor-pointer font-medium">
+                Formal
+              </Label>
               <p className="text-sm text-gray-500">
                 "Sincerely, [Your Full Name]"
               </p>
@@ -116,7 +119,9 @@ Sincerely,"
           <div className="flex items-start space-x-2">
             <RadioGroupItem value="personal" id="personal" className="mt-1" />
             <div>
-              <Label htmlFor="personal" className="cursor-pointer font-medium">Personal</Label>
+              <Label htmlFor="personal" className="cursor-pointer font-medium">
+                Personal
+              </Label>
               <p className="text-sm text-gray-500">
                 "With deep concern for JAHmere's future, [Your Full Name]"
               </p>
@@ -125,7 +130,9 @@ Sincerely,"
           <div className="flex items-start space-x-2">
             <RadioGroupItem value="spiritual" id="spiritual" className="mt-1" />
             <div>
-              <Label htmlFor="spiritual" className="cursor-pointer font-medium">Spiritual</Label>
+              <Label htmlFor="spiritual" className="cursor-pointer font-medium">
+                Spiritual
+              </Label>
               <p className="text-sm text-gray-500">
                 "With faith in JAHmere's transformation, [Your Full Name]"
               </p>
@@ -149,7 +156,8 @@ Sincerely,"
             Allow Contact
           </Label>
           <p className="text-sm text-gray-500">
-            I am willing to be contacted by the court or legal representatives if they have questions about my letter.
+            I am willing to be contacted by the court or legal representatives
+            if they have questions about my letter.
           </p>
         </div>
       </div>
@@ -157,8 +165,9 @@ Sincerely,"
       {/* Legal notice */}
       <div className="bg-blue-50 p-4 rounded-md mt-6">
         <p className="text-sm text-blue-800">
-          <strong>Legal Note:</strong> Your letter will be submitted as a formal document to the court. 
-          It should be truthful, specific, and reflect your genuine assessment of JAHmere's character.
+          <strong>Legal Note:</strong> Your letter will be submitted as a formal
+          document to the court. It should be truthful, specific, and reflect
+          your genuine assessment of JAHmere's character.
         </p>
       </div>
     </motion.div>
@@ -167,4 +176,4 @@ Sincerely,"
 
 export default withSafeUI(LetterContent, {
   componentName: "LetterContent",
-}); 
+});

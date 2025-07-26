@@ -8,12 +8,14 @@ import { EngagementPanelProps } from "../types";
 
 /**
  * EngagementPanel Component
- * 
+ *
  * Displays engagement metrics for the story
  */
 const EngagementPanel = ({ metrics, className }: EngagementPanelProps) => {
   return (
-    <div className={cn("fixed bottom-4 left-4 z-40 hidden lg:block", className)}>
+    <div
+      className={cn("fixed bottom-4 left-4 z-40 hidden lg:block", className)}
+    >
       <div className="bg-white/10 backdrop-blur-sm p-3 rounded-lg">
         <div className="flex items-center space-x-4 text-xs text-gray-600 dark:text-gray-400">
           <div className="flex items-center">
@@ -28,9 +30,7 @@ const EngagementPanel = ({ metrics, className }: EngagementPanelProps) => {
 
           <div className="flex items-center">
             <Clock size={14} className="mr-1" />
-            <span>
-              {Math.floor(metrics.readingTime / 60)} min avg. read
-            </span>
+            <span>{Math.floor(metrics.readingTime / 60)} min avg. read</span>
           </div>
 
           <div className="flex items-center">
@@ -45,4 +45,4 @@ const EngagementPanel = ({ metrics, className }: EngagementPanelProps) => {
 
 export default withSafeUI(EngagementPanel, {
   componentName: "EngagementPanel",
-}); 
+});
